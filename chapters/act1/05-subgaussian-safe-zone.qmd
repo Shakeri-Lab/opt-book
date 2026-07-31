@@ -1,0 +1,570 @@
+---
+subtitle: "Exponential tails, simultaneous control, and scale"
+description: "Why a large collection of random coordinates can remain predictable, and how the MGF, union bound, independent sums, and the sub-Gaussian Orlicz norm define a usable safe zone."
+number-offset: 4
+jupyter: python3
+harness-ref: ch-05
+harness-api: "0.5"
+harness-wheel-sha256: "316959af60076c4c79cf740212c866a155fa78bf9b1cea0ba9a819b90b2d769a"
+phenomenon_id: c05-simultaneous-safe-zone
+claim_ids:
+  - c05-simultaneous-control-001
+  - c05-projection-scale-001
+threads:
+  subgaussian-safe-zone: seed
+lenses:
+  geometric: primary
+  dynamic: quiet
+  algorithmic: supporting
+---
+
+# The Safe Zone Is Logarithmic {#c05}
+
+<span class="thread">SG · The sub-Gaussian safe zone</span>
+<span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
+
+Draw one standard-normal vector of length $100$, then one of length one
+million. The second vector contains ten thousand times as many opportunities
+for an extreme coordinate. Its largest magnitude is not ten thousand times
+larger. In the seeded witness below, the maxima are about $2.50$ and $4.71$.
+
+::: {.callout-important title="Prediction"}
+If the number of coordinates grows by a factor of ten, should a
+99%-simultaneous deviation threshold:
+
+1. grow by a factor of ten;
+2. grow by a factor of $\sqrt{10}$; or
+3. increase only through a logarithm?
+
+Choose one, then name the tail assumption your answer needs.
+:::
+
+## A million chances to fail {#sec-c05-opening}
+
+The study uses one independent random stream per vector length. Each maximum
+is a single seeded witness, not an estimate of the expected maximum. The
+comparison curve is a theorem-derived threshold at failure probability
+$\delta=0.01$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate `harness@ch-05`.
+2. Draw one independent standard-normal vector at each declared size.
+3. Compute the simultaneous sub-Gaussian threshold.
+4. Assert the witness remains inside the threshold.
+5. Plot observed maxima against logarithmic and polynomial scales.
+:::
+
+```{python}
+#| label: fig-c05-simultaneous-maxima
+#| fig-cap: "Observed coordinate maxima grow slowly across vector sizes from 100 to one million. The sub-Gaussian 99%-simultaneous threshold grows as the square root of a logarithm, while a variance-only union-bound threshold grows as the square root of the count. The observed line is one seeded witness; it does not estimate the expected maximum or certify an unknown distribution's tail class."
+#| fig-alt: "Log-log plot of maximum absolute standard-normal coordinate versus vector length. The observed maxima rise slowly from about 2.5 to 4.7 and remain below a sub-Gaussian threshold rising from 4.45 to 6.18. A variance-only threshold rises much more steeply."
+#| code-summary: "Code: compare simultaneous-control scales across many random coordinates"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-05/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    empirical_tail_profile,
+    moment_growth_profile,
+    rademacher_projection_trials,
+    standard_normal_maxima,
+    subgaussian_max_threshold,
+)
+
+# [2]
+counts = np.array([100, 1_000, 10_000, 100_000, 1_000_000])
+maxima = standard_normal_maxima(counts, seed=6214)
+observed = np.array([maxima[int(count)] for count in counts])
+
+# [3]
+delta = 0.01
+safe_threshold = np.array(
+    [subgaussian_max_threshold(int(count), delta) for count in counts]
+)
+variance_only_threshold = np.sqrt(counts / delta)
+
+# [4]
+assert np.all(observed < safe_threshold)
+billion_threshold = subgaussian_max_threshold(1_000_000_000, delta)
+
+# [5]
+fig, ax = plt.subplots(figsize=(7.0, 3.8))
+ax.loglog(counts, observed, "o-", linewidth=2.2, label="single seeded maximum")
+ax.loglog(counts, safe_threshold, linewidth=2.2, label="sub-Gaussian threshold")
+ax.loglog(
+    counts,
+    variance_only_threshold,
+    linestyle="--",
+    linewidth=1.8,
+    label="variance-only threshold",
+)
+ax.set(xlabel="number of coordinates", ylabel="simultaneous magnitude")
+ax.grid(alpha=0.25, which="both")
+ax.legend(frameon=False)
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+for count, maximum, threshold in zip(counts, observed, safe_threshold):
+    print(f"m={count:>7}: max={maximum:.4f}, 99%-threshold={threshold:.4f}")
+print(f"billion-coordinate model threshold={billion_threshold:.4f}")
+```
+::::
+
+The bound pays for one million opportunities through
+$\sqrt{\log(10^6)}$, not $\sqrt{10^6}$. The final printed number, $7.2141$,
+is a model calculation for one billion independent standard-normal
+coordinates under the same proxy scale. The code did not generate a billion
+values.
+
+The geometric problem is now precise: we need a tail envelope strong enough
+to survive a union over many quantities, and we need a scale that composes
+under weighted sums.
+
+## Exponentiate, then optimize {#sec-c05-mgf}
+
+For a centered real random variable $X$, suppose
+
+$$
+\E\!\left[e^{\lambda X}\right]
+\le
+\exp\!\left(\frac{\sigma^2\lambda^2}{2}\right)
+\qquad
+\text{for every }\lambda\in\mathbb{R}.
+$$ {#eq-c05-mgf-envelope}
+
+We call $\sigma$ a **sub-Gaussian MGF proxy scale**. It is an admissible
+envelope, not automatically the smallest such scale and not automatically
+the standard deviation.
+
+::: {#thm-c05-mgf-tail phenomenon_id="c05-simultaneous-safe-zone"}
+## MGF envelope implies a Gaussian tail
+
+Under @eq-c05-mgf-envelope, for every $t\ge0$,
+
+$$
+\Pr(|X|\ge t)
+\le
+2\exp\!\left(-\frac{t^2}{2\sigma^2}\right).
+$$ {#eq-c05-two-sided-tail}
+:::
+
+### Proof
+
+For any $\lambda>0$, monotonicity of the exponential and Markov's inequality
+give
+
+$$
+\Pr(X\ge t)
+=
+\Pr(e^{\lambda X}\ge e^{\lambda t})
+\le
+e^{-\lambda t}\E[e^{\lambda X}]
+\le
+\exp\!\left(
+-\lambda t+\frac{\sigma^2\lambda^2}{2}
+\right).
+$$
+
+The exponent is a quadratic in $\lambda$, minimized at
+$\lambda^\star=t/\sigma^2$. Substitution gives
+$\Pr(X\ge t)\le e^{-t^2/(2\sigma^2)}$. Apply the same argument to $-X$ and
+add the two tail probabilities. $\square$
+
+This is the exponential lift: a probability question becomes a
+one-dimensional optimization problem. The theorem does not manufacture an
+MGF bound. It tells us what the bound buys once we establish it.
+
+For a Rademacher sign $\varepsilon\in\{-1,+1\}$ with equal probabilities,
+
+$$
+\E[e^{\lambda\varepsilon}]
+=
+\cosh(\lambda)
+\le
+e^{\lambda^2/2}.
+$$ {#eq-c05-rademacher-mgf}
+
+Thus a random sign has proxy scale one. The inequality can be proved by
+comparing the power series or by checking that
+$e^{-\lambda^2/2}\cosh(\lambda)$ decreases for $\lambda>0$.
+
+## Coefficient energy controls a sum {#sec-c05-sums}
+
+The usefulness of @eq-c05-mgf-envelope is compositional.
+
+::: {#thm-c05-independent-sum phenomenon_id="c05-simultaneous-safe-zone"}
+## Independent weighted sums
+
+Let $X_1,\ldots,X_d$ be independent, centered random variables with MGF proxy
+scales $\sigma_1,\ldots,\sigma_d$. For fixed coefficients
+$\vect{a}\in\mathbb{R}^d$,
+
+$$
+S
+:=
+\sum_{j=1}^d a_jX_j
+$$
+
+has proxy variance
+
+$$
+\sigma_S^2
+=
+\sum_{j=1}^d a_j^2\sigma_j^2.
+$$ {#eq-c05-weighted-proxy}
+:::
+
+### Proof
+
+Independence factorizes the MGF:
+
+$$
+\begin{aligned}
+\E[e^{\lambda S}]
+&=
+\prod_{j=1}^d
+\E[e^{\lambda a_jX_j}]\\
+&\le
+\prod_{j=1}^d
+\exp\!\left(
+\frac{\lambda^2a_j^2\sigma_j^2}{2}
+\right)\\
+&=
+\exp\!\left(
+\frac{\lambda^2}{2}
+\sum_{j=1}^d a_j^2\sigma_j^2
+\right).
+\end{aligned}
+$$
+
+This is the required envelope. $\square$
+
+Independence is doing identifiable work: it turns one MGF into a product.
+Without it, @eq-c05-weighted-proxy is not licensed.
+
+If the $X_j$ are Rademacher and
+$a_j=1/\sqrt{d}$, then
+$\sum_j a_j^2=1$. The sum keeps proxy scale one at every width. Width alone
+does not cause the scalar projection to explode; coefficient energy decides.
+
+## Pay only a logarithm for simultaneous control {#sec-c05-union}
+
+::: {#thm-c05-simultaneous-control phenomenon_id="c05-simultaneous-safe-zone"}
+## Simultaneous sub-Gaussian control
+
+Suppose $X_1,\ldots,X_m$ each satisfy @eq-c05-two-sided-tail with the same
+proxy scale $\sigma$. Mutual independence is not required. For any
+$0<\delta<1$, with probability at least $1-\delta$,
+
+$$
+\max_{1\le j\le m}|X_j|
+\le
+\sigma\sqrt{2\log\!\left(\frac{2m}{\delta}\right)}.
+$$ {#eq-c05-simultaneous-threshold}
+:::
+
+### Proof
+
+For any $t\ge0$, the union bound gives
+
+$$
+\Pr\!\left(\max_j|X_j|\ge t\right)
+\le
+\sum_{j=1}^m\Pr(|X_j|\ge t)
+\le
+2m e^{-t^2/(2\sigma^2)}.
+$$
+
+Set the last expression equal to $\delta$ and solve for $t$. $\square$
+
+Dependence can make the union bound loose, but it does not invalidate the
+guarantee. Independence was essential for closing weighted sums; it is not
+essential for union-bounding already available marginal tails.
+
+::: {.callout-warning title="Named wrong answer: 'A billion variables require a billion-sigma threshold'"}
+The number of opportunities appears inside a logarithm under a sub-Gaussian
+tail envelope. The threshold at $m=10^9$ and $\delta=0.01$ is about
+$7.21\sigma$, not $10^9\sigma$. Change the tail class, however, and the
+scaling can change with it.
+:::
+
+## Four instruments for the same safe zone {#sec-c05-equivalence}
+
+Sometimes the MGF is easy to calculate. Sometimes moments or a tail bound are
+what the problem exposes. The following theorem makes those entry points
+interchangeable at the level of tail class, not at the level of identical
+constants.
+
+::: {#thm-c05-equivalent-diagnostics phenomenon_id="c05-simultaneous-safe-zone"}
+## Equivalent sub-Gaussian diagnostics
+
+For a centered real random variable $X$, the following properties are
+equivalent up to universal constant factors:
+
+1. $\Pr(|X|\ge t)\le2e^{-t^2/K_1^2}$ for all $t\ge0$;
+2. $(\E|X|^p)^{1/p}\le K_2\sqrt{p}$ for every $p\ge1$;
+3. $\E e^{X^2/K_3^2}\le2$;
+4. $\E e^{\lambda X}\le e^{K_4^2\lambda^2}$ for every real $\lambda$.
+
+The best admissible constants $K_1,\ldots,K_4$ are comparable up to universal
+factors.
+:::
+
+The full equivalence is proved in Vershynin's Proposition 2.5.2
+[@vershynin2018]. One direction is immediate here: property 3 and Markov's
+inequality give
+
+$$
+\Pr(|X|\ge t)
+=
+\Pr\!\left(e^{X^2/K_3^2}\ge e^{t^2/K_3^2}\right)
+\le
+2e^{-t^2/K_3^2}.
+$$
+
+The exponential-square characterization defines the Orlicz norm
+
+$$
+\norm{X}_{\psi_2}
+:=
+\inf\left\{
+K>0:
+\E e^{X^2/K^2}\le2
+\right\}.
+$$ {#eq-c05-psi2-norm}
+
+It is a population quantity. An empirical moment curve may reveal a violation
+or suggest a regime, but a finite sample cannot certify what happens beyond
+its largest observation.
+
+| Available object | Diagnostic question | Boundary |
+|---|---|---|
+| tail probabilities | does $-\log\Pr(|X|\ge t)$ grow quadratically? | rare tails may be unseen |
+| moments | does $\norm{X}_p/\sqrt p$ remain bounded? | high-order estimates are unstable |
+| exponential-square moment | is a candidate $K$ integrable? | sample averages can hide divergence |
+| MGF | is log-MGF bounded by a quadratic for all $\lambda$? | local-in-$\lambda$ control gives local tails |
+
+::: {.callout-note title="Field note: proxy variance is not variance"}
+Differentiating an exact MGF at zero connects its second derivative to
+variance, so every valid proxy variance is at least the actual variance.
+Equality is special. Record “MGF proxy scale” when that is the object used by
+the proof.
+:::
+
+## Width without scale explosion {#sec-c05-projection}
+
+The next study uses independent Rademacher signs and the normalized
+coefficients $a_j=1/\sqrt d$. For each width, 20,000 independent projections
+estimate the mean, sample standard deviation, and the two-sided event
+$|S|\ge2$. Each width receives a separate named seed.
+
+:::: {.plan-code}
+::: {.plan}
+1. Declare widths, trial count, coefficient norm, and seed policy.
+2. Generate normalized Rademacher projections.
+3. Estimate mean, standard deviation, and a two-sided tail probability.
+4. Report estimator uncertainty and assert order-one scale.
+5. Plot scale and tail behavior across widths.
+:::
+
+```{python}
+#| label: fig-c05-projection-scale
+#| fig-cap: "Normalized Rademacher projections retain sample standard deviation near one from width 16 through 1024, as predicted by coefficient energy. The empirical event probability for absolute projection at least two varies with the finite lattice and approaches the Gaussian-like regime; the loose sub-Gaussian upper bound is shown only as a guarantee."
+#| fig-alt: "Two-panel plot across widths 16, 64, 256, and 1024. The left panel shows sample standard deviations with error bars clustered near the horizontal reference value one. The right panel shows empirical tail probabilities decreasing toward about 0.048, below a horizontal sub-Gaussian upper bound near 0.271."
+#| code-summary: "Code: test coefficient-energy scaling across projection widths"
+#| code-fold: false
+
+# [1]
+widths = np.array([16, 64, 256, 1024])
+trials = 20_000
+base_seed = 6215
+
+# [2]
+projection_samples = {}
+for index, width in enumerate(widths):
+    coefficients = np.ones(width) / np.sqrt(width)
+    assert np.isclose(np.linalg.norm(coefficients), 1.0)
+    projection_samples[int(width)] = rademacher_projection_trials(
+        coefficients,
+        trials=trials,
+        seed=base_seed + index,
+    )
+
+# [3]
+means = np.array([projection_samples[int(width)].mean() for width in widths])
+standard_deviations = np.array(
+    [projection_samples[int(width)].std(ddof=1) for width in widths]
+)
+tails = np.array(
+    [
+        empirical_tail_profile(
+            projection_samples[int(width)],
+            [2.0],
+        )[2.0]
+        for width in widths
+    ]
+)
+
+# [4]
+mean_standard_errors = standard_deviations / np.sqrt(trials)
+sd_standard_errors = standard_deviations / np.sqrt(2 * (trials - 1))
+tail_standard_errors = np.sqrt(tails * (1 - tails) / trials)
+assert np.all(np.abs(means) < 4 * mean_standard_errors)
+assert np.all(np.abs(standard_deviations - 1) < 0.04)
+tail_upper_bound = 2 * np.exp(-2)
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+axes[0].errorbar(
+    widths,
+    standard_deviations,
+    yerr=1.96 * sd_standard_errors,
+    marker="o",
+    linewidth=2,
+    capsize=3,
+)
+axes[0].axhline(1.0, color="black", linestyle="--", label="theoretical scale")
+axes[0].set(xlabel="width", ylabel="sample standard deviation")
+axes[1].errorbar(
+    widths,
+    tails,
+    yerr=1.96 * tail_standard_errors,
+    marker="o",
+    linewidth=2,
+    capsize=3,
+    label=r"empirical $\Pr(|S|\geq2)$",
+)
+axes[1].axhline(
+    tail_upper_bound,
+    color="black",
+    linestyle="--",
+    label="sub-Gaussian upper bound",
+)
+axes[1].set(xlabel="width", ylabel="probability")
+for ax in axes:
+    ax.set_xscale("log", base=2)
+    ax.grid(alpha=0.25)
+    ax.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+for index, width in enumerate(widths):
+    print(
+        f"d={width:>4}: mean={means[index]: .5f} "
+        f"(SE {mean_standard_errors[index]:.5f}), "
+        f"sd={standard_deviations[index]:.5f}, "
+        f"P(|S|>=2)={tails[index]:.5f}"
+    )
+```
+::::
+
+The sample standard deviations range from about $0.996$ to $1.004$. That is
+evidence for this seeded protocol, with approximate standard error about
+$0.005$ for each standard deviation. The theorem explains why the scale
+should remain order one: $\norm{\vect{a}}_2=1$ at every width.
+
+The tail bound $2e^{-2}\approx0.271$ is deliberately loose. It is a valid
+envelope, not a prediction of the exact tail probability.
+
+## Geometry meets the finite grid {#sec-c05-hardware}
+
+Suppose a computation produces $m$ centered scalar quantities with proxy scale
+$\sigma$. Equation @eq-c05-simultaneous-threshold gives a high-probability
+envelope for their maximum. C03 then asks whether that envelope fits the
+declared storage range and whether the sums forming each quantity use an
+adequate accumulator.
+
+For $m=10^9$, $\delta=0.01$, and $\sigma=1$, the model threshold $7.21$ is
+far below FP16's largest finite value. That statement alone does **not**
+guarantee safe training:
+
+- the proxy scale may drift;
+- coordinates may cease to be sub-Gaussian;
+- depth can multiply scales;
+- intermediate reductions can overflow even when outputs do not;
+- an implementation can change the accumulation contract.
+
+The safe zone is a diagnostic hypothesis with a numerical consequence, not a
+branding phrase. C14 will derive when initialization keeps the coefficient
+energy controlled across depth. C06 has the nearer obligation: it will square
+a sub-Gaussian quantity and show why the same tail model no longer applies.
+
+::: {.callout-tip title="Check yourself"}
+Let $m=10^7$, $\delta=10^{-3}$, and proxy scale $\sigma=0.5$. Compute the
+simultaneous threshold from @eq-c05-simultaneous-threshold. If all variables
+are identical copies of the same random variable rather than independent,
+does the theorem remain valid? Which earlier proof step changes?
+:::
+
+## Okay, so —
+
+- **Inherited:** C03 supplied the range/accumulation contract, and C04 showed
+  why controlling one direction is not enough when many modes coexist.
+- **Changed:** Randomness is now described by a tail class and proxy scale
+  that can survive simultaneous control.
+- **Instrumented:** The harness computes simultaneous thresholds, seeded
+  maxima, weighted-sign projections, empirical tails, and moment-growth
+  profiles.
+- **Established:** A quadratic MGF envelope yields Gaussian tail decay,
+  independent weighted sums add proxy variances, and a union bound charges
+  only $\sqrt{\log m}$.
+- **Unresolved:** Squares and products leave this safe zone, empirical samples
+  do not certify population tails, and depth introduces dependent,
+  state-changing scales.
+
+## Sources and further reading
+
+Chernoff's exponential method supplies the optimization view of tail bounds
+[@chernoff1952]. Hoeffding develops probability inequalities for sums of
+bounded independent variables [@hoeffding1963]. Vershynin gives the modern
+sub-Gaussian equivalence, Orlicz norm, and high-dimensional toolkit used here
+[@vershynin2018]. The canonical instructor slides supplied the simultaneous-
+control phenomenon and safe-zone thread; claims that Gaussian behavior is
+universal or automatically preserved by depth were rejected.
+
+## Exercises
+
+1. **(Pencil.) Optimize the exponent.** Repeat the proof of
+   @thm-c05-mgf-tail when the MGF bound is known only for
+   $|\lambda|\le\lambda_0$. Derive the range of $t$ in which the quadratic
+   optimizer remains admissible and state what happens outside it.
+
+2. **(Pencil.) Dependence audit.** Give two examples with identical
+   sub-Gaussian marginals: one with independent coordinates and one with all
+   coordinates equal. Compare their exact maxima and the common union-bound
+   guarantee. Explain why validity and sharpness are separate questions.
+
+3. **(Code.) Maxima as an estimator.** Replace the single opening witness with
+   repeated maxima at each feasible count. Predeclare trial counts, report the
+   empirical median and a quantile interval, and keep the total draw budget
+   fixed across design choices.
+
+4. **(Code.) Coefficient geometry.** Compare three coefficient sequences:
+   uniform $1/\sqrt d$, one-spike, and geometrically decaying, all normalized
+   to the same $\ell_2$ norm. Measure tails and explain what the MGF theorem
+   predicts identically and what the exact distributions retain.
+
+5. **(Audit.) The empirical certificate.** A report computes
+   $\norm{X}_p/\sqrt p$ for $p\le8$ on 10,000 observations and declares the
+   population sub-Gaussian. Predict a contamination distribution that is
+   likely to evade the sample, then state a defensible empirical conclusion.
+
+6. **(Audit.) Paper audit: Hoeffding's bounded-sum inequality.** Read the
+   primary paper and extract the independence assumption, the bounded-range
+   quantity, and the tail exponent for a weighted sum. Map each object to the
+   MGF proxy language of this chapter and identify any constant or scope that
+   cannot be transferred verbatim.

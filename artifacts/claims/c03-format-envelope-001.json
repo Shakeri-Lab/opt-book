@@ -1,0 +1,49 @@
+{
+  "chapter": "c03",
+  "claim_id": "c03-format-envelope-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float16",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "CPU simulation of a declared numerical contract; no accelerator timing or throughput conclusion.",
+  "harness_ref": "ch-03",
+  "harness_wheel_sha256": "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918",
+  "hypothesis": "Binary formats with different exponent and significand allocations have measurably different range and local resolution.",
+  "payload_sha256": "ff9c8792944ca09a125a23a8df91f8d0e226fcbd886ef1457917e3aeda88b2cc",
+  "phenomenon_id": "c03-vanishing-update",
+  "provenance_class": "a",
+  "result": {
+    "float16": {
+      "bits": 16,
+      "dtype": "float16",
+      "epsilon": 0.0009765625,
+      "exponent_bits": 5,
+      "fraction_bits": 10,
+      "largest_finite": 65504.0,
+      "significand_bits": 11,
+      "smallest_normal": 6.103515625e-05,
+      "smallest_subnormal": 5.960464477539063e-08,
+      "unit_roundoff": 0.00048828125
+    },
+    "float32": {
+      "bits": 32,
+      "dtype": "float32",
+      "epsilon": 1.1920928955078125e-07,
+      "exponent_bits": 8,
+      "fraction_bits": 23,
+      "largest_finite": 3.4028234663852886e+38,
+      "significand_bits": 24,
+      "smallest_normal": 1.1754943508222875e-38,
+      "smallest_subnormal": 1.401298464324817e-45,
+      "unit_roundoff": 5.960464477539063e-08
+    }
+  },
+  "schema_version": 1
+}

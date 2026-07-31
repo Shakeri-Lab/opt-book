@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "chapter": "c04",
+  "sources": [
+    {
+      "id": "src-c04-instructor-convex-bridge",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/0- ALg recap/3- Convexity/meet5_convexI.tex",
+      "sha256": "b3b348c1c398c6c695c5913a5a738a907dcc351dc51c732ee7b8dcd4dd78760b",
+      "reuse": "objective-to-dynamics transition only; surrogate and feature mechanics are not retaught"
+    },
+    {
+      "id": "src-c04-instructor-dynamics",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/0- ALg recap/3- Convexity/meet6_convexII.tex",
+      "sha256": "58e96d99aeaed7ee06ab327b8c27386f1a22cbbeaec73b5749af22fd417014ed",
+      "reuse": "quadratic phenomenon, reveal order, condition-number thread, stochastic-floor question, and later callbacks; all claims rederived"
+    },
+    {
+      "id": "nesterov2004-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/Nesterov_Introductory-Lectures-on-Convex-Programming-Yurii-Nesterov-2004.pdf",
+      "sha256": "948944ad561291165949d92d83e2d72e1d83a465fc8733a5c3c19d2353fb3813",
+      "reuse": "smooth strongly convex gradient-method rates and spectral control"
+    },
+    {
+      "id": "robbins1951",
+      "class": "primary-scholarly",
+      "doi": "10.1214/aoms/1177729586",
+      "reuse": "stochastic-approximation context; the chapter's finite recurrence is independently derived"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "Iteration count is not converted into GPU hours without a hardware measurement.",
+    "A coordinate-wise adaptive method is not claimed to invert the Hessian.",
+    "Normalization is not claimed to make every condition number equal to one.",
+    "The scalar additive-noise floor is not generalized to state-dependent or heavy-tailed gradient noise.",
+    "The fixed quadratic stability boundary is not presented as an edge-of-stability explanation."
+  ]
+}

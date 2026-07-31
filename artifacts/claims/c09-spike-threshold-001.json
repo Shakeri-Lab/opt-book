@@ -1,0 +1,74 @@
+{
+  "chapter": "c09",
+  "claim_id": "c09-spike-threshold-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6292,
+    "seed_role": "data generation or finite-null calibration"
+  },
+  "hardware_claim_boundary": "Laptop-CPU float64 eigendecomposition study; no CPU timing is presented as accelerator performance, and no trained matrix or Hessian is assigned a Wishart null.",
+  "harness_ref": "ch-09",
+  "harness_wheel_sha256": "0d4b6e953774005f928e74b4e0617e4451f0e82c64adc4d7a1b4c4ad4a504751",
+  "hypothesis": "At aspect ratio one half, a genuine rank-one population spike below 1+sqrt(gamma) remains largely absorbed by the finite null, whereas a supercritical spike separates in most trials.",
+  "payload_sha256": "8a2e26a71412101a018d519428d0cd2fc998ee6832a10a50bd11c839581741e2",
+  "phenomenon_id": "c09-bulk-not-verdict",
+  "provenance_class": "a",
+  "result": {
+    "aspect_ratio_features_over_samples": 0.5,
+    "boundary": "These are finite ensembles for a declared rank-one spiked Gaussian model; the Baik--Silverstein locations are asymptotic benchmarks, not finite exact thresholds.",
+    "false_positive_rate": 0.05,
+    "feature_count": 64,
+    "finite_null_threshold": 2.9879402885520094,
+    "model": "Gaussian rows with population covariance diag(beta,1,...,1)",
+    "records": {
+      "null": {
+        "asymptotic_sample_location": 2.914213562373095,
+        "asymptotic_separation_threshold": 1.7071067811865475,
+        "fraction_above_finite_null_threshold": 0.05,
+        "lambda_max_quantiles": {
+          "median": 2.786935033425702,
+          "q05": 2.6237113716503773,
+          "q95": 2.9879402885520094
+        },
+        "population_spike": 1.0,
+        "seed": 6291,
+        "trials": 2000
+      },
+      "subcritical": {
+        "asymptotic_sample_location": 2.914213562373095,
+        "asymptotic_separation_threshold": 1.7071067811865475,
+        "fraction_above_finite_null_threshold": 0.109,
+        "lambda_max_quantiles": {
+          "median": 2.831451625027735,
+          "q05": 2.6543398026423874,
+          "q95": 3.045126713772594
+        },
+        "population_spike": 1.5,
+        "seed": 6292,
+        "trials": 2000
+      },
+      "supercritical": {
+        "asymptotic_sample_location": 3.333333333333333,
+        "asymptotic_separation_threshold": 1.7071067811865475,
+        "fraction_above_finite_null_threshold": 0.9165,
+        "lambda_max_quantiles": {
+          "median": 3.311397103431328,
+          "q05": 2.9295787454601308,
+          "q95": 3.7961608462343888
+        },
+        "population_spike": 2.5,
+        "seed": 6293,
+        "trials": 2000
+      }
+    },
+    "sample_count": 128,
+    "trials_per_model": 2000
+  },
+  "schema_version": 1
+}

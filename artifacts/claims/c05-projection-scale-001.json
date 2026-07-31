@@ -1,0 +1,86 @@
+{
+  "chapter": "c05",
+  "claim_id": "c05-projection-scale-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6215,
+    "seed_role": "independent named streams"
+  },
+  "hardware_claim_boundary": "Laptop-CPU probability witness; no accelerator throughput claim.",
+  "harness_ref": "ch-05",
+  "harness_wheel_sha256": "316959af60076c4c79cf740212c866a155fa78bf9b1cea0ba9a819b90b2d769a",
+  "hypothesis": "Rademacher projections with coefficient norm one retain order-one scale as width grows.",
+  "payload_sha256": "1ec6fa3418ab95f9d28f69f0bbb76a17f684a48fce5854e3e8c4629d44445139",
+  "phenomenon_id": "c05-simultaneous-safe-zone",
+  "provenance_class": "a",
+  "result": {
+    "distribution": "independent Rademacher signs",
+    "estimator_contract": {
+      "mean": "arithmetic mean over independent trials",
+      "tail_denominator": 20000,
+      "tail_event": "absolute projection at least 2",
+      "variance_denominator": 19999
+    },
+    "records": {
+      "1024": {
+        "approximate_standard_error_of_standard_deviation": 0.004986612479467871,
+        "binomial_standard_error_of_tail": 0.0015093107284452729,
+        "coefficient_l2_norm": 1.0,
+        "empirical_two_sided_tail_at_2": 0.04785,
+        "moment_growth_l2_over_sqrt2": 0.70520262491535,
+        "sample_mean": 0.00829375,
+        "sample_standard_deviation": 0.997297562519506,
+        "seed": 6218,
+        "standard_error_of_mean": 0.0070519586931835744
+      },
+      "16": {
+        "approximate_standard_error_of_standard_deviation": 0.0050191774984224965,
+        "binomial_standard_error_of_tail": 0.0018822783734081417,
+        "coefficient_l2_norm": 1.0,
+        "empirical_two_sided_tail_at_2": 0.07675,
+        "moment_growth_l2_over_sqrt2": 0.7098459339884957,
+        "sample_mean": 0.013325,
+        "sample_standard_deviation": 1.0038104034833009,
+        "seed": 6215,
+        "standard_error_of_mean": 0.0070980114332864636
+      },
+      "256": {
+        "approximate_standard_error_of_standard_deviation": 0.004995181946684444,
+        "binomial_standard_error_of_tail": 0.001569968152543229,
+        "coefficient_l2_norm": 1.0,
+        "empirical_two_sided_tail_at_2": 0.052,
+        "moment_growth_l2_over_sqrt2": 0.7064015324162313,
+        "sample_mean": 0.0056875,
+        "sample_standard_deviation": 0.9990114131149487,
+        "seed": 6217,
+        "standard_error_of_mean": 0.007064077446963356
+      },
+      "64": {
+        "approximate_standard_error_of_standard_deviation": 0.004982313556232926,
+        "binomial_standard_error_of_tail": 0.0016667797919941313,
+        "coefficient_l2_norm": 1.0,
+        "empirical_two_sided_tail_at_2": 0.05905,
+        "moment_growth_l2_over_sqrt2": 0.7045865365588531,
+        "sample_mean": -0.0067625,
+        "sample_standard_deviation": 0.9964377993674017,
+        "seed": 6216,
+        "standard_error_of_mean": 0.007045879249632903
+      }
+    },
+    "subgaussian_tail_upper_bound_at_2": 0.2706705664732254,
+    "trials_per_width": 20000,
+    "widths": [
+      16,
+      64,
+      256,
+      1024
+    ]
+  },
+  "schema_version": 1
+}

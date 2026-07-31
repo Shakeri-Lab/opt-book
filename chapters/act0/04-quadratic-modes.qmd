@@ -1,0 +1,626 @@
+---
+subtitle: "Stability, conditioning, and the stochastic floor"
+description: "Why one learning rate creates a different clock in every eigendirection, and how a quadratic control experiment separates oscillation, slow convergence, preconditioning, and stochastic forcing."
+number-offset: 3
+jupyter: python3
+harness-ref: ch-04
+harness-api: "0.4"
+harness-wheel-sha256: "a3478fd77e8c9b4401ae5d23e35d7b7bddd45ae5211bd14f72662be6dadcd62b"
+phenomenon_id: c04-many-clocks
+claim_ids:
+  - c04-mode-dynamics-001
+  - c04-preconditioner-001
+  - c04-noise-floor-001
+threads:
+  landscape-update-geometry: seed
+lenses:
+  geometric: supporting
+  dynamic: primary
+  algorithmic: supporting
+---
+
+# One Step, Many Clocks {#c04}
+
+<span class="thread">LG · Landscape and update geometry</span>
+<span class="lens-ledger">Geometric supporting · Dynamic primary · Algorithmic supporting</span>
+
+One update rule acts on the two coordinates of
+
+$$
+\loss(\vect{e})
+=
+\frac12\vect{e}^{\mathsf T}
+\begin{bmatrix}
+1&0\\
+0&100
+\end{bmatrix}
+\vect{e},
+\qquad
+\vect{e}_0=
+\begin{bmatrix}
+1\\1
+\end{bmatrix}.
+$$ {#eq-c04-opening-quadratic}
+
+The step size is $\alpha=0.019$. It is below the classical stability limit.
+The objective decreases at every step. Yet the second coordinate crosses zero
+on every update while the first coordinate appears almost frozen.
+
+::: {.callout-important title="Prediction"}
+Before running the recurrence, decide:
+
+1. Which coordinate limits the largest safe step?
+2. Which coordinate determines the time needed to reach a small error?
+3. Can a decreasing scalar objective reveal the sign alternation?
+
+Name the quantity you would record to distinguish the three answers.
+:::
+
+## Rotate the trace, not the story {#sec-c04-opening}
+
+A first optimization course supplies the update
+$\vect{w}_{t+1}=\vect{w}_t-\alpha\nabla\loss(\vect{w}_t)$. The diagnostic
+question begins after that line: what does the update do in each direction?
+
+The opening study uses a centered quadratic, so $\vect{e}_t$ is both the
+iterate and the error from the minimizer. It verifies and activates its exact
+vendored harness wheel before importing the quadratic instruments.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate `harness@ch-04`.
+2. Run four hundred exact quadratic steps.
+3. Rotate the iterates into Hessian eigencoordinates.
+4. Assert the closed form and classify the mode factors.
+5. Plot signed and absolute mode coordinates.
+:::
+
+```{python}
+#| label: fig-c04-mode-clocks
+#| fig-cap: "The same scalar step creates two clocks. The flat mode stays positive and decays by 0.981 per step; the sharp mode alternates sign and decays in magnitude by 0.9. The figure establishes the exact behavior of this fixed quadratic recurrence, not the behavior of a changing training landscape."
+#| fig-alt: "Two-panel line plot of quadratic eigencoordinates. The left panel shows the flat coordinate decreasing slowly without changing sign and the sharp coordinate alternating above and below zero. The right log-scale panel shows the sharp magnitude falling faster while the flat magnitude controls the long wait."
+#| code-summary: "Code: expose the independent clocks hidden inside one gradient trajectory"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-04/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    classify_mode_factors,
+    quadratic_spectrum,
+    quadratic_trace,
+    scalar_noisy_quadratic_trials,
+)
+
+# [2]
+hessian = np.diag([1.0, 100.0])
+initial_error = np.array([1.0, 1.0])
+step_size, steps = 0.019, 400
+trace = quadratic_trace(
+    hessian,
+    initial_error,
+    step_size=step_size,
+    steps=steps,
+)
+
+# [3]
+mode_coordinates = trace.mode_coordinates
+eigenvalues = trace.eigenvalues
+
+# [4]
+factors, labels = classify_mode_factors(
+    eigenvalues,
+    step_size=step_size,
+)
+closed_form = factors[None, :] ** np.arange(steps + 1)[:, None]
+assert np.allclose(mode_coordinates, closed_form)
+assert np.all(np.diff(trace.objectives) < 0)
+tolerance = 1e-3
+waits = [
+    int(np.ceil(np.log(tolerance) / np.log(abs(factor))))
+    for factor in factors
+]
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+for index, (eigenvalue, label) in enumerate(zip(eigenvalues, labels)):
+    axes[0].plot(
+        mode_coordinates[:90, index],
+        linewidth=2,
+        label=fr"$\lambda={eigenvalue:g}$: {label}",
+    )
+    axes[1].semilogy(
+        np.abs(mode_coordinates[:, index]),
+        linewidth=2,
+        label=fr"$\lambda={eigenvalue:g}$",
+    )
+axes[0].axhline(0, color="black", linewidth=0.8)
+axes[0].set(xlabel="step", ylabel="signed eigencoordinate")
+axes[1].axhline(tolerance, color="black", linestyle="--", linewidth=1)
+axes[1].set(xlabel="step", ylabel="absolute eigencoordinate")
+for ax in axes:
+    ax.grid(alpha=0.25)
+    ax.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+for eigenvalue, factor, label, wait in zip(eigenvalues, factors, labels, waits):
+    print(
+        f"lambda={eigenvalue:g}: factor={factor:.3f}, "
+        f"{label}, steps-to-1e-3={wait}"
+    )
+```
+::::
+
+The sharp mode limits the step because its multiplier reaches magnitude one
+first. It does **not** set the stopping time here. Its magnitude falls below
+$10^{-3}$ after 66 steps, whereas the flat mode waits 361 steps. The scalar
+objective is monotone because it squares the coordinates; it cannot show that
+the sharp coordinate changes sign.
+
+## The update matrix is the instrument {#sec-c04-exact-modes}
+
+Let $\matr{Q}\in\mathbb{R}^{d\times d}$ be symmetric positive definite and
+
+$$
+\loss(\vect{w})
+=
+\frac12(\vect{w}-\vect{w}^\star)^{\mathsf T}
+\matr{Q}
+(\vect{w}-\vect{w}^\star).
+$$
+
+With $\vect{e}_t:=\vect{w}_t-\vect{w}^\star$, one gradient step becomes
+
+$$
+\vect{e}_{t+1}
+=
+(\matr{I}-\alpha\matr{Q})\vect{e}_t.
+$$ {#eq-c04-error-update}
+
+::: {#thm-c04-mode-dynamics phenomenon_id="c04-many-clocks"}
+## Exact quadratic mode dynamics
+
+Write
+$\matr{Q}=\matr{U}\operatorname{diag}(\lambda_1,\ldots,\lambda_d)
+\matr{U}^{\mathsf T}$ with
+$0<\lambda_{\min}\le\lambda_k\le\lambda_{\max}$ and define
+$\vect{z}_t=\matr{U}^{\mathsf T}\vect{e}_t$. Then
+
+$$
+z_{k,t}
+=
+(1-\alpha\lambda_k)^t z_{k,0}.
+$$ {#eq-c04-mode-closed-form}
+
+All errors converge to zero exactly when
+
+$$
+0<\alpha<\frac{2}{\lambda_{\max}}.
+$$ {#eq-c04-stability-interval}
+:::
+
+### Proof
+
+Left-multiply @eq-c04-error-update by $\matr{U}^{\mathsf T}$:
+
+$$
+\vect{z}_{t+1}
+=
+\left(
+\matr{I}
+-\alpha\operatorname{diag}(\lambda_1,\ldots,\lambda_d)
+\right)\vect{z}_t.
+$$
+
+The recurrence is diagonal, so the $k$th coordinate multiplies by
+$1-\alpha\lambda_k$ at every step, which gives
+@eq-c04-mode-closed-form. That coordinate converges for every initial value
+exactly when $|1-\alpha\lambda_k|<1$, or
+$0<\alpha\lambda_k<2$. Satisfying the inequality for the largest eigenvalue
+satisfies it for all modes. $\square$
+
+| Mode factor $r_k=1-\alpha\lambda_k$ | What the coordinate does |
+|---:|---|
+| $0<r_k<1$ | decays without changing sign |
+| $-1<r_k<0$ | decays while alternating sign |
+| $r_k=0$ | vanishes in one step |
+| $|r_k|=1$ | remains on the stability boundary |
+| $|r_k|>1$ | grows in magnitude |
+
+::: {.callout-warning title="Named wrong answer: 'The largest eigenvalue controls convergence'"}
+It controls the largest stable scalar step. Once that step is chosen, the
+smallest eigenvalue often controls the slowest decay. “Controls convergence”
+collapses two different diagnostic jobs into one phrase.
+:::
+
+This is the first public object in the landscape/update-geometry thread:
+the landscape supplies eigendirections and curvature; the update assigns a
+scalar multiplier to each one.
+
+## The condition number is a waiting-time tax {#sec-c04-condition}
+
+A smaller step avoids divergence but does not make all clocks agree. Define
+
+$$
+\kappa
+:=
+\frac{\lambda_{\max}}{\lambda_{\min}}.
+$$
+
+For a constant scalar step, the worst mode contracts by
+
+$$
+\rho(\matr{I}-\alpha\matr{Q})
+=
+\max_k |1-\alpha\lambda_k|.
+$$
+
+::: {#thm-c04-optimal-step phenomenon_id="c04-many-clocks"}
+## Best constant scalar step
+
+Among positive constant scalar steps, the smallest worst-mode contraction is
+attained at
+
+$$
+\alpha^\star
+=
+\frac{2}{\lambda_{\max}+\lambda_{\min}},
+$$
+
+and equals
+
+$$
+\rho^\star
+=
+\frac{\kappa-1}{\kappa+1}.
+$$ {#eq-c04-optimal-contraction}
+:::
+
+### Proof
+
+Because $\lambda\mapsto|1-\alpha\lambda|$ is convex, its maximum on
+$[\lambda_{\min},\lambda_{\max}]$ occurs at an endpoint. At the minimax step,
+the endpoint errors have equal magnitude and opposite signs:
+
+$$
+1-\alpha^\star\lambda_{\min}
+=
+-\left(1-\alpha^\star\lambda_{\max}\right).
+$$
+
+Solving gives $\alpha^\star=2/(\lambda_{\max}+\lambda_{\min})$.
+Substitution gives
+
+$$
+1-\alpha^\star\lambda_{\min}
+=
+\frac{\lambda_{\max}-\lambda_{\min}}
+{\lambda_{\max}+\lambda_{\min}}
+=
+\frac{\kappa-1}{\kappa+1}.
+\qquad\square
+$$
+
+When $\kappa$ is large, $\rho^\star$ is close to one. A scalar step cannot
+simultaneously erase a flat mode and remain stable in a sharp mode.
+
+## Change the geometry seen by the update {#sec-c04-precondition}
+
+Consider a positive-definite matrix $\matr{P}$ and the update
+
+$$
+\vect{e}_{t+1}
+=
+\left(\matr{I}-\alpha\matr{P}\matr{Q}\right)\vect{e}_t.
+$$ {#eq-c04-preconditioned-update}
+
+This is a matrix change of scale, or **preconditioning**. The relevant
+eigenvalues are those of the effective operator. For positive
+$\matr{P}$ and $\matr{Q}$,
+$\matr{P}\matr{Q}$ is similar to the symmetric positive matrix
+$\matr{P}^{1/2}\matr{Q}\matr{P}^{1/2}$, so its eigenvalues are positive.
+The repair succeeds when those eigenvalues are more tightly clustered.
+
+The next control does not use the oracle inverse. It scales the sharp
+coordinate by $1/25$, changing effective eigenvalues $(1,100)$ into $(1,4)$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Run thirty unscaled steps under the opening contract.
+2. Declare a diagonal preconditioner and its effective spectrum.
+3. Use the optimal scalar step for the compressed spectrum.
+4. Compare error norms and assert the predicted separation.
+:::
+
+```{python}
+#| label: fig-c04-preconditioning
+#| fig-cap: "A declared diagonal preconditioner compresses the effective spectrum from condition number 100 to 4. After 30 iterations the raw error norm is about 0.564, while the preconditioned error is about 3.13e-7. This is an exact quadratic model comparison; it does not establish the quality or cost of estimating a preconditioner in a changing problem."
+#| fig-alt: "Log-scale line plot comparing error norms over 30 steps. The unscaled gradient trajectory decreases slowly, while the preconditioned trajectory falls as 0.6 to the iteration power and reaches near zero."
+#| code-summary: "Code: test preconditioning as explicit spectrum compression"
+#| code-fold: false
+
+# [1]
+raw = quadratic_trace(
+    hessian,
+    initial_error,
+    step_size=step_size,
+    steps=30,
+)
+
+# [2]
+preconditioner = np.diag([1.0, 1 / 25])
+effective_eigenvalues = np.linalg.eigvalsh(preconditioner @ hessian)
+effective_kappa = effective_eigenvalues[-1] / effective_eigenvalues[0]
+
+# [3]
+compressed_step = 2 / effective_eigenvalues.sum()
+compressed = quadratic_trace(
+    hessian,
+    initial_error,
+    step_size=compressed_step,
+    steps=30,
+    preconditioner=preconditioner,
+)
+
+# [4]
+raw_norms = np.linalg.norm(raw.iterates, axis=1)
+compressed_norms = np.linalg.norm(compressed.iterates, axis=1)
+assert np.isclose(effective_kappa, 4.0)
+assert compressed.final_error_norm < 1e-6
+assert raw.final_error_norm > 0.5
+
+fig, ax = plt.subplots(figsize=(7.0, 3.7))
+ax.semilogy(raw_norms, linewidth=2.2, label=r"raw spectrum: $\kappa=100$")
+ax.semilogy(
+    compressed_norms,
+    linewidth=2.2,
+    label=r"effective spectrum: $\kappa=4$",
+)
+ax.set(xlabel="step", ylabel=r"$\|\mathbf{e}_t\|_2$")
+ax.grid(alpha=0.25)
+ax.legend(frameon=False)
+plt.show()
+
+print(
+    f"effective eigenvalues={effective_eigenvalues.tolist()}, "
+    f"kappa={effective_kappa:g}, step={compressed_step:g}"
+)
+print(
+    f"step 30: raw norm={raw.final_error_norm:.6f}, "
+    f"preconditioned norm={compressed.final_error_norm:.9f}"
+)
+```
+::::
+
+::: {.callout-note title="Field note: count the cost of the repair"}
+An iteration reduction is not yet a wall-clock speedup. Applying or estimating
+$\matr{P}$ moves bytes and performs work. The book will not convert a condition
+number into accelerator time without a hardware contract.
+:::
+
+## A stochastic update has no point endpoint {#sec-c04-noise}
+
+Now isolate one scalar mode of curvature $\lambda>0$. Suppose the observed
+gradient contains additive noise:
+
+$$
+e_{t+1}
+=
+(1-\alpha\lambda)e_t-\alpha\xi_t,
+\qquad
+\E[\xi_t]=0,
+\qquad
+\E[\xi_t^2]=\tau^2.
+$$ {#eq-c04-noisy-recurrence}
+
+The noise is independent across time and independent of the current state.
+These assumptions are the model, not decorative caveats.
+
+::: {#thm-c04-noisy-second-moment phenomenon_id="c04-many-clocks"}
+## Exact second moment under additive noise
+
+If $|1-\alpha\lambda|<1$, then
+
+$$
+\E[e_t^2]
+=
+(1-\alpha\lambda)^{2t}e_0^2
++
+\frac{\alpha\tau^2}{\lambda(2-\alpha\lambda)}
+\left[
+1-(1-\alpha\lambda)^{2t}
+\right].
+$$ {#eq-c04-noisy-second-moment}
+
+Consequently,
+
+$$
+\lim_{t\to\infty}\E[e_t^2]
+=
+\frac{\alpha\tau^2}{\lambda(2-\alpha\lambda)}.
+$$ {#eq-c04-stationary-floor}
+:::
+
+### Proof
+
+Let $r=1-\alpha\lambda$. Squaring @eq-c04-noisy-recurrence and taking
+expectations removes the cross term by independence and zero mean:
+
+$$
+\E[e_{t+1}^2]
+=
+r^2\E[e_t^2]+\alpha^2\tau^2.
+$$
+
+Unrolling the scalar recurrence gives
+
+$$
+\E[e_t^2]
+=
+r^{2t}e_0^2
++
+\alpha^2\tau^2\sum_{j=0}^{t-1}r^{2j}.
+$$
+
+The geometric sum is $(1-r^{2t})/(1-r^2)$, and
+$1-r^2=\alpha\lambda(2-\alpha\lambda)$. Substitution proves the result.
+$\square$
+
+:::: {.plan-code}
+::: {.plan}
+1. Simulate independent noisy scalar trajectories.
+2. Estimate mean squared error over the trial axis.
+3. Compute the exact finite-time and stationary predictions.
+4. Assert agreement using the endpoint standard error.
+5. Plot the transient and the floor.
+:::
+
+```{python}
+#| label: fig-c04-noise-floor
+#| fig-cap: "Across 20,000 independent trials, the estimated squared error approaches the exact finite-time prediction and the stationary value 0.05263. The figure supports the additive, independent, finite-variance model in Equation 4.8; it does not establish a universal stochastic-gradient floor."
+#| fig-alt: "Log-scale plot of mean squared error over 120 steps. A noisy Monte Carlo curve falls from 9 toward 0.052, closely following the exact finite-time curve, with a horizontal dashed line at the stationary second moment."
+#| code-summary: "Code: distinguish a decaying transient from a stochastic second-moment floor"
+#| code-fold: false
+
+# [1]
+noisy = scalar_noisy_quadratic_trials(
+    curvature=1.0,
+    step_size=0.1,
+    noise_standard_deviation=1.0,
+    initial_error=3.0,
+    steps=120,
+    trials=20_000,
+    seed=6213,
+)
+
+# [2]
+estimated_mse = noisy.mean_squared_error
+endpoint_se = noisy.endpoint_standard_error
+
+# [3]
+time = np.arange(121)
+noise_factor = 1 - noisy.step_size * noisy.curvature
+stationary = noisy.stationary_second_moment
+predicted_mse = (
+    noise_factor ** (2 * time) * noisy.initial_error**2
+    + stationary * (1 - noise_factor ** (2 * time))
+)
+
+# [4]
+assert abs(estimated_mse[-1] - predicted_mse[-1]) < 4 * endpoint_se
+
+# [5]
+fig, ax = plt.subplots(figsize=(7.0, 3.7))
+ax.semilogy(time, estimated_mse, linewidth=1.8, label="Monte Carlo mean")
+ax.semilogy(time, predicted_mse, linewidth=2.2, label="exact finite-time moment")
+ax.axhline(stationary, color="black", linestyle="--", label="stationary moment")
+ax.set(xlabel="step", ylabel=r"$\widehat{\mathbb{E}}[e_t^2]$")
+ax.grid(alpha=0.25)
+ax.legend(frameon=False)
+plt.show()
+
+print(
+    f"endpoint MSE={estimated_mse[-1]:.8f}, "
+    f"SE={endpoint_se:.8f}"
+)
+print(
+    f"finite-time prediction={predicted_mse[-1]:.8f}, "
+    f"stationary={stationary:.8f}"
+)
+```
+::::
+
+This floor is algorithmic. C03's stalled update was representational. A
+coordinate can also appear stationary because its deterministic multiplier is
+near one. These diagnoses require different controls:
+
+| Symptom | Instrument | Supported diagnosis |
+|---|---|---|
+| coordinate alternates sign | signed eigencoordinate | negative stable mode factor |
+| coordinate decays very slowly | $|1-\alpha\lambda_k|$ | conditioning tax |
+| mean squared error plateaus across independent trials | estimator plus exact recurrence | stochastic floor under the declared model |
+| requested change is below a local midpoint | local ULP audit | finite-grid stagnation |
+| measured time remains large after iteration count falls | bytes/work profile | implementation cost |
+
+The fixed boundary in @eq-c04-stability-interval is now a registered control.
+C16 is obligated to compare it with a setting in which the curvature itself
+moves during training.
+
+::: {.callout-tip title="Check yourself"}
+For eigenvalues $(2,20)$ and step $\alpha=0.075$, compute both mode factors.
+Classify their sign behavior, identify the slow mode, and decide whether
+reducing the step to $0.025$ removes oscillation, improves the slowest
+contraction, both, or neither.
+:::
+
+## Okay, so —
+
+- **Inherited:** C03 taught us to separate a missing update from a
+  representational failure; basic gradient mechanics are assumed.
+- **Changed:** A gradient trajectory is now an operator recurrence with a
+  separate clock in every eigendirection.
+- **Instrumented:** The harness records spectra, mode factors, exact quadratic
+  traces, preconditioned traces, and stochastic second moments.
+- **Established:** The stability interval, optimal constant-step contraction,
+  and additive-noise floor follow exactly under their stated models.
+- **Unresolved:** Real curvature moves, stochastic gradients need not be
+  additive or light-tailed, and a cheaper iteration count need not mean a
+  faster machine execution.
+
+## Sources and further reading
+
+Nesterov develops gradient methods for smooth, strongly convex objectives and
+the role of conditioning [@nesterov2004]. Robbins and Monro supply the
+foundational stochastic-approximation setting [@robbins1951]. This chapter
+uses those sources as context, but derives its three exact recurrences on the
+page. The instructor's quadratic sequence supplied the phenomenon and reveal
+order; its hardware slogans and branded optimizer claims were not imported.
+
+## Exercises
+
+1. **(Pencil.) Mode phase diagram.** For a scalar curvature $\lambda$, draw
+   the five regimes of $1-\alpha\lambda$ as a function of $\alpha$. Mark
+   monotone decay, one-step annihilation, oscillatory decay, boundary
+   behavior, and divergence.
+
+2. **(Pencil.) Bits and conditioning.** Starting from
+   @eq-c04-optimal-contraction, derive an exact ceiling formula for the number
+   of iterations required to reduce every eigencoordinate by a factor
+   $2^{-b}$. Then give its large-$\kappa$ approximation and state where the
+   approximation enters.
+
+3. **(Code.) A misleading loss curve.** Construct two quadratic trajectories
+   whose scalar objective curves are nearly indistinguishable for 50 steps
+   but whose signed eigencoordinates have different mode classifications.
+   Report the spectra and the control that separates them.
+
+4. **(Code.) Imperfect preconditioning.** Sweep the second diagonal entry of
+   $\matr{P}=\operatorname{diag}(1,p)$ for the opening Hessian. For each
+   value, choose the optimal constant step for the effective spectrum and
+   report iteration count, matrix-application cost model, and final error.
+
+5. **(Audit.) The precision diagnosis.** A report says, “The flat coordinate
+   stopped changing, so the optimizer reached its noise floor.” List the
+   eigencoordinate, repeated-trial, and local-ULP controls required before
+   that conclusion is admissible. Predict what each rival explanation would
+   do under those controls.
+
+6. **(Audit.) Paper audit: stochastic approximation.** Read the assumptions
+   of Robbins and Monro's primary paper. Identify which step-size, noise, and
+   convergence claims differ from the constant-step finite recurrence in this
+   chapter. Label each extracted result as theorem, asymptotic statement, or
+   heuristic interpretation.

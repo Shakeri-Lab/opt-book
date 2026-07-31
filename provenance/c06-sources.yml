@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "chapter": "c06",
+  "sources": [
+    {
+      "id": "src-c06-instructor-concentration",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/4- High-D concentration/meet8.tex",
+      "sha256": "aa30d48bc32abeb99b03936570b9bed201aa0141ecd8d050df072fae51a29c04",
+      "reuse": "square-break phenomenon, exact centered-chi-square MGF, Orlicz reveal order, constrained-Chernoff diagnosis, Bernstein regimes, and clipping audit; all prose rewritten and claims re-scoped"
+    },
+    {
+      "id": "src-c06-core-syllabus",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Syllabus_simple.tex",
+      "sha256": "2671dc810f8069731f15b740e7ca427eb5a665ecdc6078faf3a19bd3abe44249",
+      "reuse": "C06 ownership boundary and C05-to-C07 placement"
+    },
+    {
+      "id": "vershynin2018-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/3-Vershynin_High-Dimensional Probability.pdf",
+      "sha256": "6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4",
+      "reuse": "sub-exponential equivalences, square identity, and Bernstein proof; local file is a non-redistributable 2025 prepublication second edition used only for verification"
+    },
+    {
+      "id": "simsekli2019",
+      "class": "primary-scholarly",
+      "url": "https://proceedings.mlr.press/v97/simsekli19a.html",
+      "reuse": "paper-audit bridge for empirical tail-index claims; not treated as universal gradient-noise law"
+    },
+    {
+      "id": "koloskova2023",
+      "class": "primary-scholarly",
+      "url": "https://proceedings.mlr.press/v202/koloskova23a.html",
+      "reuse": "research bridge for clipping bias and threshold-dependent convergence claims"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "An empirical gradient tail is not called universally heavy-tailed without a model-, data-, training-time-, and estimator-specific protocol.",
+    "A tail index above two does not imply sub-Gaussianity.",
+    "Repeated products are not asserted to move exactly one named Orlicz class per multiplication.",
+    "Clipping is not said to restore the original distribution or preserve an unbiased gradient.",
+    "Bernstein's transition scale is not presented as a universal clipping threshold.",
+    "CPU tail calculations are not offered as low-precision hardware measurements.",
+    "Claims about heavy-tailed noise selecting flat minima are deferred as research-frontier dynamics rather than taught as a consequence of Bernstein's inequality."
+  ]
+}

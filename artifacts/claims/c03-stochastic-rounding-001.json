@@ -1,0 +1,40 @@
+{
+  "chapter": "c03",
+  "claim_id": "c03-stochastic-rounding-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float16",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6212,
+    "seed_role": "simulation"
+  },
+  "hardware_claim_boundary": "CPU simulation of a declared numerical contract; no accelerator timing or throughput conclusion.",
+  "harness_ref": "ch-03",
+  "harness_wheel_sha256": "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918",
+  "hypothesis": "Distance-proportional adjacent rounding removes the deterministic endpoint bias of repeated sub-grid updates in expectation.",
+  "payload_sha256": "b4b1b298b55abf45c63bbde0c919b920377ef71967f2adc3861d51969e3f1438",
+  "phenomenon_id": "c03-vanishing-update",
+  "provenance_class": "b",
+  "result": {
+    "endpoint_maximum": 1160.0,
+    "endpoint_mean": 1124.00655,
+    "endpoint_minimum": 1091.0,
+    "endpoint_standard_deviation": 8.648545945119807,
+    "endpoint_standard_error": 0.06115445485197634,
+    "exact_endpoint": 1124.0,
+    "initial": 1024.0,
+    "normal_95_percent_interval_for_mean": [
+      1123.8866872684903,
+      1124.1264127315098
+    ],
+    "requested_increment": 0.25,
+    "seed": 6212,
+    "steps": 400,
+    "trials": 20000
+  },
+  "schema_version": 1
+}

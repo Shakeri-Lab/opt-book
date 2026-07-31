@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "chapter": "c08",
+  "sources": [
+    {
+      "id": "src-c08-instructor-rmt",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/5- RMT/meet10.tex",
+      "sha256": "ef0f8f36842e609a45bcddf0b5ad0a13660bbba1b9512a21a982e7665588885b",
+      "reuse": "random-operator motivation, singular-value diagnostics, aspect-ratio reveal, and power-iteration instrument; Marchenko--Pastur content displaced to C09"
+    },
+    {
+      "id": "src-c08-core-syllabus",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Syllabus_simple.tex",
+      "sha256": "2671dc810f8069731f15b740e7ca427eb5a665ecdc6078faf3a19bd3abe44249",
+      "reuse": "random-operator bridge before covariance spectra"
+    },
+    {
+      "id": "src-c08-legacy-rmt",
+      "class": "instructor-legacy",
+      "path": "../old/DS6210_Book/chapters/ch05_random_matrices.tex",
+      "sha256": "b2e289edbdcd184e2663d1a42653b56cc87f7f29dec39941a94efb34950edbc9",
+      "reuse": "source-discovery and collision audit only; false conditioning and outlier claims rejected"
+    },
+    {
+      "id": "vershynin2018-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/3-Vershynin_High-Dimensional Probability.pdf",
+      "sha256": "6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4",
+      "reuse": "SVD identities, two-sided sub-Gaussian matrix theorem, and Gaussian comparison edge benchmark; local file used only for verification"
+    },
+    {
+      "id": "miyato2018",
+      "class": "primary-scholarly",
+      "url": "https://openreview.net/forum?id=B1QRgziT-",
+      "reuse": "paper-audit example of an upper-edge intervention and power-iteration approximation; no lower-edge guarantee is inferred"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "Fixed-direction expected norm preservation is not identified with a realized isometry.",
+    "A square Gaussian matrix is not called uniformly well-conditioned as dimension grows.",
+    "A small singular value is not called floating-point underflow without an absolute scale and dtype contract.",
+    "No generic claim is made that backward gradients drown in mantissa noise.",
+    "A spectral outlier is not labeled signal without a finite-size null, spike model, and separation theorem.",
+    "Coordinate-wise normalization is not claimed to reset a condition number to one.",
+    "Hessians are not claimed to follow Marchenko--Pastur.",
+    "Matrix Bernstein, covariance spectra, effective rank, depth-wise products, and update-rule claims remain outside C08."
+  ]
+}

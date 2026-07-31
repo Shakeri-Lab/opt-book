@@ -1,0 +1,43 @@
+{
+  "chapter": "c04",
+  "claim_id": "c04-noise-floor-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6213,
+    "seed_role": "Monte Carlo"
+  },
+  "hardware_claim_boundary": "Laptop-CPU model calculation; iteration counts are not wall-clock or accelerator-performance claims.",
+  "harness_ref": "ch-04",
+  "harness_wheel_sha256": "a3478fd77e8c9b4401ae5d23e35d7b7bddd45ae5211bd14f72662be6dadcd62b",
+  "hypothesis": "A stable scalar quadratic driven by independent mean-zero gradient noise approaches the exact second-moment floor of its AR(1) recurrence.",
+  "payload_sha256": "63aa6d5cb034fb371b2734239cc0274134d3f0be4e2a900e499d3d508aff91ab",
+  "phenomenon_id": "c04-many-clocks",
+  "provenance_class": "a",
+  "result": {
+    "curvature": 1.0,
+    "denominator": 20000,
+    "endpoint_mean_squared_error": 0.05229016132417437,
+    "endpoint_standard_error": 0.0005252628959237416,
+    "estimator": "mean endpoint squared error",
+    "finite_step_second_moment": 0.05263157904067185,
+    "initial_error": 3.0,
+    "noise_standard_deviation": 1.0,
+    "normal_95_percent_interval": [
+      0.051260646048163834,
+      0.053319676600184905
+    ],
+    "reduction_axis": "independent trials",
+    "seed": 6213,
+    "stationary_second_moment": 0.052631578947368425,
+    "step_size": 0.1,
+    "steps": 120,
+    "trials": 20000
+  },
+  "schema_version": 1
+}

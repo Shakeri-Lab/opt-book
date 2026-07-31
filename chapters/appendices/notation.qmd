@@ -1,0 +1,56 @@
+---
+title: "Notation Covenant"
+description: "Core notation inherited from the sibling volume and additive notation introduced here."
+---
+
+Notation is a public interface between this book and its sibling. Core symbols
+retain their meanings; this volume adds symbols when the new diagnostic
+objects require them.
+
+## Inherited core
+
+| Object | Notation | Contract |
+|---|---:|---|
+| Scalar | $x$ | Italic lowercase unless a field convention requires otherwise |
+| Vector | $\vect{x}$ | Bold; a column on paper |
+| Matrix or batched array | $\matr{A}$ | Bold; shape completes the type |
+| Aggregate objective | $\loss$ | A local loss is $\ell_i$ |
+| Expectation | $\E$ | Population and conditioning are stated |
+| Variance | $\var$ | Denominator convention is stated |
+| Covariance | $\cov$ | Sample and population objects are distinguished |
+| Norm | $\norm{\cdot}$ | The subscript names the norm when ambiguity matters |
+| Definition | $:=$ | Equality remains $=$ |
+| Approximation | $\approx$ | Never used as silent equality |
+| Algorithmic update | $\leftarrow$ | Distinct from a mathematical identity |
+
+Code stores a batch by rows unless a chapter explicitly declares otherwise.
+Every non-obvious matrix product states dimensions first, and every reduction
+names its axes.
+
+## New in this volume
+
+| Object | Notation | First use |
+|---|---:|---|
+| Centered sum of squares | $M_{2,n}$ | Streaming state |
+| Operator norm | $\norm{\matr{A}}_{\mathrm{op}}$ | Random operators |
+| Largest singular value | $\sigma_{\max}(\matr{A})$ | Random operators |
+| Smallest singular value | $\sigma_{\min}(\matr{A})$ | Random operators |
+| Frobenius norm | $\norm{\matr{A}}_{\mathrm{F}}$ | Random operators |
+| Epsilon-net | $\mathcal{N}_{\epsilon}$ | Continuous extrema |
+| Covering number | $N(K,d,\epsilon)$ | Continuous extrema |
+| Sub-Gaussian Orlicz norm | $\norm{X}_{\psi_2}$ | Safe-zone concentration |
+| Sub-exponential Orlicz norm | $\norm{X}_{\psi_1}$ | Products and squares |
+| Unit roundoff | $u$ | Floating-point contract |
+| Unit in the last place | $\operatorname{ulp}(x)$ | Floating-point contract |
+| Spectral condition number | $\kappa$ | Quadratic modes |
+| Spectral radius | $\rho(\matr{A})$ | Quadratic modes |
+| Sub-Gaussian MGF proxy scale | $\sigma$ | Safe-zone concentration |
+| Sample covariance | $\widehat{\matr{\Sigma}}$ | Spectral nulls |
+| Empirical spectral distribution | $\mu_{\matr{M}}$ | Spectral nulls |
+| Aspect ratio | $\gamma=n/m$ | Spectral nulls |
+| Marchenko--Pastur edges | $\lambda_-,\lambda_+$ | Spectral nulls |
+| Population spike | $\beta$ | Spectral nulls |
+
+The machine-readable source is `contracts/notation-covenant.yml`. A notation
+change is incomplete until that covenant, the HTML macros, the PDF macros, and
+this appendix agree.

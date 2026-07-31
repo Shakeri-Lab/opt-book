@@ -1,0 +1,52 @@
+{
+  "chapter": "c09",
+  "claim_id": "c09-finite-null-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6291,
+    "seed_role": "data generation or finite-null calibration"
+  },
+  "hardware_claim_boundary": "Laptop-CPU float64 eigendecomposition study; no CPU timing is presented as accelerator performance, and no trained matrix or Hessian is assigned a Wishart null.",
+  "harness_ref": "ch-09",
+  "harness_wheel_sha256": "0d4b6e953774005f928e74b4e0617e4451f0e82c64adc4d7a1b4c4ad4a504751",
+  "hypothesis": "Crossing the asymptotic Marchenko--Pastur upper edge is routine at this finite shape, while an independently calibrated finite upper-tail threshold does not reject the opening pure-noise witness.",
+  "payload_sha256": "bd2ec1b2f9b5e569479e8f0ea5939fb031c6e61930da607ab36a320d3ad432fe",
+  "phenomenon_id": "c09-bulk-not-verdict",
+  "provenance_class": "a",
+  "result": {
+    "asymptotic_edge_crossing_rate": 0.1385,
+    "asymptotic_edge_crossings": 277,
+    "asymptotic_upper_edge": 2.914213562373095,
+    "boundary": "The empirical threshold is calibrated only for the declared Gaussian shape and estimator; changing centering, denominator, dependence, tails, or the number of inspected statistics changes the null contract.",
+    "false_positive_rate": 0.05,
+    "feature_count": 64,
+    "finite_upper_threshold": 2.9879402885520094,
+    "independent_looks": 20,
+    "null_model": "independent N(0,1) entries with known zero mean",
+    "null_quantiles": {
+      "median": 2.786935033425702,
+      "q05": 2.6237113716503773,
+      "q95": 2.9879402885520094
+    },
+    "null_seed": 6291,
+    "probability_at_least_one_asymptotic_edge_crossing_under_independence": 0.9492885958768397,
+    "probability_at_least_one_finite_threshold_crossing_under_independence": 0.6415140775914581,
+    "quantile_method": "NumPy linear empirical quantile",
+    "sample_count": 128,
+    "statistic": "largest eigenvalue of X.T @ X / sample_count",
+    "trials": 2000,
+    "witness_claim": "c09-bulk-shape-001",
+    "witness_crosses_asymptotic_edge": true,
+    "witness_crosses_finite_threshold": false,
+    "witness_lambda_max": 2.921243894930073,
+    "witness_seed": 2600960089,
+    "witness_seed_rule": "first 32 bits of SHA-256('c09-bulk-not-verdict')"
+  },
+  "schema_version": 1
+}

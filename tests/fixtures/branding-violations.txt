@@ -1,0 +1,4 @@
+The attention mechanism normalizes its scores.
+Use He initialization for this layer.
+The Transformer architecture contains repeated blocks.
+Adam is the optimizer used for the update.

@@ -1,0 +1,62 @@
+{
+  "chapter": "c06",
+  "claim_id": "c06-square-break-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "Laptop-CPU probability calculation; no accelerator throughput or low-precision range claim.",
+  "harness_ref": "ch-06",
+  "harness_wheel_sha256": "160afa2bff7051769d71818551178fc1cbfc3c21ff8f4c44e721f92a81621410",
+  "hypothesis": "Centering and squaring a standard normal destroys every global quadratic MGF envelope even though its upper tail remains exponential.",
+  "payload_sha256": "da9e15dab2d074b557de9aafb3eabe0ba831def3b49fa1c58e1d7f6c028c85f4",
+  "phenomenon_id": "c06-square-two-regimes",
+  "provenance_class": "a",
+  "result": {
+    "exact_upper_tail_probabilities": {
+      "1.0": 0.15729920705028516,
+      "16.0": 3.7379818401701506e-05,
+      "2.0": 0.08326451666355043,
+      "32.0": 9.215887201256213e-09,
+      "4.0": 0.02534731867746826,
+      "8.0": 0.0026997960632601913
+    },
+    "finite_mgf_domain": "lambda < 0.5",
+    "first_recorded_candidate_violation": 4.0,
+    "log_mgf_formula": "-lambda - 0.5*log(1-2*lambda)",
+    "log_mgf_values": {
+      "0.1": 0.011571775657104877,
+      "0.25": 0.09657359027997264,
+      "0.4": 0.40471895621705023,
+      "0.49": 1.4660115027140725
+    },
+    "standard_normal_psi2_norm": 1.632993161855452,
+    "standard_normal_square_psi1_norm": 2.6666666666666665,
+    "upper_tail_thresholds": [
+      1.0,
+      2.0,
+      4.0,
+      8.0,
+      16.0,
+      32.0
+    ],
+    "variable": "X = Z^2 - 1 for Z standard normal",
+    "variance": 2.0,
+    "variance_matched_quadratic_candidate": {
+      "1.0": 0.7788007830714049,
+      "16.0": 1.603810890548638e-28,
+      "2.0": 0.36787944117144233,
+      "32.0": 6.616261056709485e-112,
+      "4.0": 0.01831563888873418,
+      "8.0": 1.1253517471925912e-07
+    }
+  },
+  "schema_version": 1
+}

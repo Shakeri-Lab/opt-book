@@ -1,0 +1,69 @@
+{
+  "chapter": "c03",
+  "claim_id": "c03-grid-collapse-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float16",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "CPU simulation of a declared numerical contract; no accelerator timing or throughput conclusion.",
+  "harness_ref": "ch-03",
+  "harness_wheel_sha256": "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918",
+  "hypothesis": "A single outlier-selected symmetric scale erases small coordinates that survive when resolution is allocated by declared blocks.",
+  "payload_sha256": "e2364cc6a9d9539f8ee290c1d9b60dfe8af3948301379f35488246ca5272e2e3",
+  "phenomenon_id": "c03-vanishing-update",
+  "provenance_class": "b",
+  "result": {
+    "bits": 8,
+    "blocked": {
+      "block_size": 3,
+      "dequantized": [
+        0.09921259842519685,
+        0.20078740157480315,
+        0.3,
+        100.0
+      ],
+      "integer_codes": [
+        42,
+        85,
+        127,
+        127
+      ],
+      "scales": [
+        0.002362204724409449,
+        0.7874015748031497
+      ]
+    },
+    "global": {
+      "block_size": 4,
+      "dequantized": [
+        0.0,
+        0.0,
+        0.0,
+        100.0
+      ],
+      "integer_codes": [
+        0,
+        0,
+        0,
+        127
+      ],
+      "scales": [
+        0.7874015748031497
+      ]
+    },
+    "values": [
+      0.1,
+      0.2,
+      0.3,
+      100.0
+    ]
+  },
+  "schema_version": 1
+}

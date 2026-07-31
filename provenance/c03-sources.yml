@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "chapter": "c03",
+  "sources": [
+    {
+      "id": "src-c03-instructor-slides",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/0- ALg recap/2- Precision/meet4_precision.tex",
+      "sha256": "8ad2edce40818e810ccc3de302c430343020ff8e6bc1399c8216b8d21634298a",
+      "reuse": "phenomena, reveal order, precision taxonomy, and exercise intent; all prose rewritten and claims re-audited"
+    },
+    {
+      "id": "src-c03-instructor-transcript",
+      "class": "instructor-context",
+      "path": "../my_lectures/0- ALg recap/2- Precision/meet4_transcript.tex",
+      "sha256": "be56f97a647c76d420819f0e817261494b346fb128fa558adb01e5bfed9e10ad",
+      "reuse": "diagnostic emphasis and anticipated wrong answers; no transcript prose reused"
+    },
+    {
+      "id": "src-c03-legacy-chapter",
+      "class": "legacy-draft",
+      "path": "../old/DS6210_Book/chapters/chapter04_finite_precision.tex",
+      "sha256": "2013609ee787583528df39567f4071993c9cf23dd4903a9724678c0c098769d0",
+      "reuse": "recoverable mathematical skeleton and exercise candidates; independently rederived"
+    },
+    {
+      "id": "src-sibling-a3",
+      "class": "sibling-public-interface",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance",
+      "source_commit": "bd4e06f934e0e38eb06eb6ab1e3a8585982bb2cb",
+      "reuse": "ownership pointer for introductory format anatomy and hardware mechanics"
+    },
+    {
+      "id": "ieee7542019",
+      "class": "primary-standard",
+      "url": "https://standards.ieee.org/ieee/754/6210/",
+      "reuse": "floating-point terminology and operation contract"
+    },
+    {
+      "id": "higham2002",
+      "class": "primary-monograph",
+      "doi": "10.1137/1.9780898718027",
+      "reuse": "unit-roundoff model, cancellation analysis, and boundaries"
+    },
+    {
+      "id": "connolly2021",
+      "class": "primary-scholarly",
+      "doi": "10.1137/20M1334796",
+      "reuse": "stochastic-rounding definition, unbiasedness, and probabilistic error context"
+    },
+    {
+      "id": "micikevicius2022",
+      "class": "primary-scholarly",
+      "url": "https://arxiv.org/abs/2209.05433",
+      "reuse": "modern low-precision format context only; no universal convergence or throughput claim"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "Reduced precision does not imply a universal throughput multiplier.",
+    "A broad claim that one floating format just works is not admissible.",
+    "Loss scaling is not described as protection from every overflow mode.",
+    "Stochastic rounding is not claimed to be sufficient for low-precision training."
+  ]
+}

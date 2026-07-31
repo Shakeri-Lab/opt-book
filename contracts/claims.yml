@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "claims": [
+    {
+      "claim_id": "c02-variance-crash-001",
+      "phenomenon_id": "c02-negative-variance",
+      "chapter": "c02",
+      "status": "empirical-observation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c02-variance-crash-001.json"
+    },
+    {
+      "claim_id": "c02-welford-invariant-001",
+      "phenomenon_id": "c02-negative-variance",
+      "chapter": "c02",
+      "status": "derivation-and-executable-assertion",
+      "provenance_class": "a",
+      "evidence": "harness/tests/test_streaming.py"
+    },
+    {
+      "claim_id": "c02-merge-correction-001",
+      "phenomenon_id": "c02-negative-variance",
+      "chapter": "c02",
+      "status": "derivation-and-model-calculation",
+      "provenance_class": "a",
+      "evidence": "harness/tests/test_streaming.py"
+    },
+    {
+      "claim_id": "c02-reduction-order-001",
+      "phenomenon_id": "c02-negative-variance",
+      "chapter": "c02",
+      "status": "empirical-observation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c02-reduction-order-001.json"
+    },
+    {
+      "claim_id": "c03-update-stagnation-001",
+      "phenomenon_id": "c03-vanishing-update",
+      "chapter": "c03",
+      "status": "deterministic-format-simulation",
+      "provenance_class": "b",
+      "evidence": "artifacts/claims/c03-update-stagnation-001.json"
+    },
+    {
+      "claim_id": "c03-format-envelope-001",
+      "phenomenon_id": "c03-vanishing-update",
+      "chapter": "c03",
+      "status": "runtime-format-query",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c03-format-envelope-001.json"
+    },
+    {
+      "claim_id": "c03-grid-collapse-001",
+      "phenomenon_id": "c03-vanishing-update",
+      "chapter": "c03",
+      "status": "deterministic-quantization-model",
+      "provenance_class": "b",
+      "evidence": "artifacts/claims/c03-grid-collapse-001.json"
+    },
+    {
+      "claim_id": "c03-stochastic-rounding-001",
+      "phenomenon_id": "c03-vanishing-update",
+      "chapter": "c03",
+      "status": "seeded-distributional-simulation",
+      "provenance_class": "b",
+      "evidence": "artifacts/claims/c03-stochastic-rounding-001.json"
+    },
+    {
+      "claim_id": "c04-mode-dynamics-001",
+      "phenomenon_id": "c04-many-clocks",
+      "chapter": "c04",
+      "status": "derivation-and-deterministic-execution",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c04-mode-dynamics-001.json"
+    },
+    {
+      "claim_id": "c04-preconditioner-001",
+      "phenomenon_id": "c04-many-clocks",
+      "chapter": "c04",
+      "status": "deterministic-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c04-preconditioner-001.json"
+    },
+    {
+      "claim_id": "c04-noise-floor-001",
+      "phenomenon_id": "c04-many-clocks",
+      "chapter": "c04",
+      "status": "seeded-monte-carlo-against-exact-recurrence",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c04-noise-floor-001.json"
+    },
+    {
+      "claim_id": "c05-simultaneous-control-001",
+      "phenomenon_id": "c05-simultaneous-safe-zone",
+      "chapter": "c05",
+      "status": "seeded-witness-and-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c05-simultaneous-control-001.json"
+    },
+    {
+      "claim_id": "c05-projection-scale-001",
+      "phenomenon_id": "c05-simultaneous-safe-zone",
+      "chapter": "c05",
+      "status": "seeded-monte-carlo",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c05-projection-scale-001.json"
+    },
+    {
+      "claim_id": "c06-square-break-001",
+      "phenomenon_id": "c06-square-two-regimes",
+      "chapter": "c06",
+      "status": "exact-mgf-and-tail-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c06-square-break-001.json"
+    },
+    {
+      "claim_id": "c06-two-regimes-001",
+      "phenomenon_id": "c06-square-two-regimes",
+      "chapter": "c06",
+      "status": "seeded-monte-carlo-against-exact-tail",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c06-two-regimes-001.json"
+    },
+    {
+      "claim_id": "c06-clipping-bias-001",
+      "phenomenon_id": "c06-square-two-regimes",
+      "chapter": "c06",
+      "status": "exact-heavy-tail-clipping-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c06-clipping-bias-001.json"
+    },
+    {
+      "claim_id": "c07-hidden-direction-001",
+      "phenomenon_id": "c07-finite-price",
+      "chapter": "c07",
+      "status": "deterministic-rotated-map-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c07-hidden-direction-001.json"
+    },
+    {
+      "claim_id": "c07-tail-budget-001",
+      "phenomenon_id": "c07-finite-price",
+      "chapter": "c07",
+      "status": "exact-covering-budget-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c07-tail-budget-001.json"
+    },
+    {
+      "claim_id": "c08-average-edges-001",
+      "phenomenon_id": "c08-one-average-two-edges",
+      "chapter": "c08",
+      "status": "seeded-matrix-witness-against-exact-svd",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c08-average-edges-001.json"
+    },
+    {
+      "claim_id": "c08-aspect-ratio-001",
+      "phenomenon_id": "c08-one-average-two-edges",
+      "chapter": "c08",
+      "status": "seeded-gaussian-ensemble-with-exact-svd",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c08-aspect-ratio-001.json"
+    },
+    {
+      "claim_id": "c08-power-iteration-001",
+      "phenomenon_id": "c08-one-average-two-edges",
+      "chapter": "c08",
+      "status": "deterministic-iteration-trace-against-exact-svd",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c08-power-iteration-001.json"
+    },
+    {
+      "claim_id": "c09-bulk-shape-001",
+      "phenomenon_id": "c09-bulk-not-verdict",
+      "chapter": "c09",
+      "status": "seeded-finite-esd-against-analytic-mp-density",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c09-bulk-shape-001.json"
+    },
+    {
+      "claim_id": "c09-finite-null-001",
+      "phenomenon_id": "c09-bulk-not-verdict",
+      "chapter": "c09",
+      "status": "independently-seeded-gaussian-null-calibration",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c09-finite-null-001.json"
+    },
+    {
+      "claim_id": "c09-spike-threshold-001",
+      "phenomenon_id": "c09-bulk-not-verdict",
+      "chapter": "c09",
+      "status": "seeded-spiked-covariance-ensemble",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c09-spike-threshold-001.json"
+    }
+  ]
+}

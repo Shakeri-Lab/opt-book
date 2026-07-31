@@ -1,0 +1,300 @@
+{
+  "version": 1,
+  "required_fields": [
+    "phenomenon_explained",
+    "assumptions",
+    "conclusion",
+    "proof_mode",
+    "diagnostic_corollary",
+    "boundary",
+    "source"
+  ],
+  "theorems": [
+    {
+      "id": "thm-c02-welford",
+      "chapter": "c02",
+      "phenomenon_explained": "c02-negative-variance",
+      "assumptions": "Exact arithmetic and a valid centered state for the first n-1 observations.",
+      "conclusion": "The online mean and centered-sum updates preserve the M2 invariant after observation n.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A one-pass algorithm can avoid the raw-moment subtraction while retaining only count, mean, and M2.",
+      "boundary": "The invariant proof does not imply exact preservation under floating-point rounding.",
+      "source": "welford1962"
+    },
+    {
+      "id": "thm-c02-merge",
+      "chapter": "c02",
+      "phenomenon_explained": "c02-negative-variance",
+      "assumptions": "Exact arithmetic, disjoint collections, and valid centered states for both collections.",
+      "conclusion": "The pairwise correction produces the valid centered state of the union.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Centered states admit a parallel reduction tree when between-block mean variation is restored.",
+      "boundary": "Floating-point merge orders need not be bitwise identical.",
+      "source": "chan1983"
+    },
+    {
+      "id": "thm-c03-binade-spacing",
+      "chapter": "c03",
+      "phenomenon_explained": "c03-vanishing-update",
+      "assumptions": "A normalized radix-two format with p significand bits and a fixed exponent binade.",
+      "conclusion": "Consecutive values in [2^e, 2^(e+1)) have spacing 2^(e-(p-1)); round-to-nearest changes a stored value only after the local midpoint is reached, subject to the tie rule.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The local ULP at the current state, not a global decimal-digit slogan, predicts update stagnation.",
+      "boundary": "Subnormals, overflow, signed zero, exceptional values, and other rounding rules require separate clauses.",
+      "source": "ieee7542019"
+    },
+    {
+      "id": "thm-c03-cancellation",
+      "chapter": "c03",
+      "phenomenon_explained": "c03-vanishing-update",
+      "assumptions": "Nonzero exact difference and relative operand representation errors bounded by unit roundoff.",
+      "conclusion": "Relative error in the represented difference is bounded by unit roundoff times (|x|+|y|)/|x-y| before final-subtraction rounding.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A wider final subtraction cannot recover low bits already lost while its operands were formed or stored.",
+      "boundary": "This sensitivity result omits reduction length, order, fused operations, and accumulator precision.",
+      "source": "higham2002"
+    },
+    {
+      "id": "thm-c03-stochastic-rounding",
+      "chapter": "c03",
+      "phenomenon_explained": "c03-vanishing-update",
+      "assumptions": "The exact value lies between adjacent grid points and each point is selected with distance-proportional probability.",
+      "conclusion": "The rounded value is unbiased and its error variance is (x-a)(b-x).",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Stochastic adjacent rounding removes deterministic sub-grid drift for one event and prevents the opening stagnation in expectation.",
+      "boundary": "Local unbiasedness does not imply unbiased nonlinear trajectories, prevent overflow, choose a scale, or guarantee convergence.",
+      "source": "connolly2021"
+    },
+    {
+      "id": "thm-c04-mode-dynamics",
+      "chapter": "c04",
+      "phenomenon_explained": "c04-many-clocks",
+      "assumptions": "A real symmetric positive-definite Hessian, centered quadratic objective, exact arithmetic, and a constant positive scalar step.",
+      "conclusion": "Each eigencoordinate follows z[k,t]=(1-alpha*lambda[k])^t z[k,0], and all errors converge exactly when 0<alpha<2/lambda_max.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The scalar mode factor classifies monotone decay, oscillatory decay, boundary behavior, and divergence.",
+      "boundary": "Changing curvature, indefinite Hessians, momentum, preconditioning, and floating-point effects alter the recurrence.",
+      "source": "nesterov2004"
+    },
+    {
+      "id": "thm-c04-optimal-step",
+      "chapter": "c04",
+      "phenomenon_explained": "c04-many-clocks",
+      "assumptions": "A positive spectrum in [lambda_min,lambda_max], one constant scalar step, and Euclidean error.",
+      "conclusion": "The minimax scalar step is 2/(lambda_max+lambda_min), with worst-mode contraction (kappa-1)/(kappa+1).",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The best scalar step still pays for spectral spread, so a wide spectrum creates many clocks.",
+      "boundary": "Nonstationary, accelerated, or preconditioned updates use a different polynomial or effective operator.",
+      "source": "nesterov2004"
+    },
+    {
+      "id": "thm-c04-noisy-second-moment",
+      "chapter": "c04",
+      "phenomenon_explained": "c04-many-clocks",
+      "assumptions": "Scalar positive curvature, a strictly stable constant step, and independent additive mean-zero gradient noise with finite variance tau^2.",
+      "conclusion": "The error second moment is an exact geometric transient plus a finite geometric noise sum converging to alpha*tau^2/[lambda(2-alpha*lambda)].",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A constant-step stochastic recurrence has a calculable algorithmic floor distinct from finite-grid stagnation.",
+      "boundary": "State-dependent, correlated, multiplicative, or infinite-variance noise is outside the model.",
+      "source": "robbins1951"
+    },
+    {
+      "id": "thm-c05-mgf-tail",
+      "chapter": "c05",
+      "phenomenon_explained": "c05-simultaneous-safe-zone",
+      "assumptions": "A centered real random variable whose MGF is bounded by exp(sigma^2*lambda^2/2) for all real lambda.",
+      "conclusion": "The two-sided tail is at most 2 exp(-t^2/(2 sigma^2)).",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The MGF envelope turns a tail question into a one-dimensional optimization over lambda.",
+      "boundary": "The proxy variance need not be minimal or equal the actual variance, and the theorem says nothing beyond the declared MGF range.",
+      "source": "chernoff1952"
+    },
+    {
+      "id": "thm-c05-independent-sum",
+      "chapter": "c05",
+      "phenomenon_explained": "c05-simultaneous-safe-zone",
+      "assumptions": "Independent centered variables with declared quadratic MGF proxy variances.",
+      "conclusion": "A weighted sum has proxy variance equal to the coefficient-squared weighted sum of the individual proxies.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Coefficient l2 energy, not width alone, controls a weighted random projection.",
+      "boundary": "Dependence prevents the MGF factorization without additional structure.",
+      "source": "hoeffding1963"
+    },
+    {
+      "id": "thm-c05-simultaneous-control",
+      "chapter": "c05",
+      "phenomenon_explained": "c05-simultaneous-safe-zone",
+      "assumptions": "Each of m variables has the same two-sided sub-Gaussian tail envelope; mutual independence is not required.",
+      "conclusion": "With probability at least 1-delta, the maximum magnitude is at most sigma sqrt(2 log(2m/delta)).",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Simultaneous control pays a square-root-logarithmic threshold in the number of quantities.",
+      "boundary": "The union bound can be loose and does not describe the detailed joint law.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c05-equivalent-diagnostics",
+      "chapter": "c05",
+      "phenomenon_explained": "c05-simultaneous-safe-zone",
+      "assumptions": "A centered real random variable.",
+      "conclusion": "Gaussian tail decay, sqrt(p) moment growth, a finite exponential-square moment, and a quadratic MGF envelope are equivalent up to universal constants.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "Use the characterization matched to the available algebra or evidence while retaining one common tail class.",
+      "boundary": "Finite empirical samples cannot certify a population tail class.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c06-square-subexponential",
+      "chapter": "c06",
+      "phenomenon_explained": "c06-square-two-regimes",
+      "assumptions": "Real sub-Gaussian variables measured by the exponential-square Orlicz norm; no independence is required for the product statement.",
+      "conclusion": "A square is sub-exponential with ||X^2||_psi1 = ||X||_psi2^2; centering changes the scale by at most a universal constant factor; and ||XY||_psi1 is at most ||X||_psi2 ||Y||_psi2.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Norms, energies, and diagonal covariance terms require a psi1 rather than psi2 tail contract.",
+      "boundary": "The two-factor product result permits dependence, but repeated products and arbitrary nonlinear transforms need separate analysis.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c06-bernstein",
+      "chapter": "c06",
+      "phenomenon_explained": "c06-square-two-regimes",
+      "assumptions": "Independent centered sub-exponential variables with finite declared psi1 norms.",
+      "conclusion": "Their sum obeys a two-regime bound with exponent min(t^2/sum K_i^2, t/max K_i), up to universal constants.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The unconstrained Chernoff optimizer controls moderate deviations; the local MGF boundary controls large deviations.",
+      "boundary": "Dependence breaks MGF factorization, and variables without a finite positive MGF are outside the theorem.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c06-clipping-contract",
+      "chapter": "c06",
+      "phenomenon_explained": "c06-square-two-regimes",
+      "assumptions": "An integrable scalar variable is symmetrically clipped to [-C,C] and then centered by the clipped population mean.",
+      "conclusion": "The centered clipped variable is sub-Gaussian with MGF proxy variance at most C^2, while its unclipped-target bias is E[clip_C(X)]-E[X].",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Clipping repairs a concentration class only by changing the estimator, so its bias must be audited separately.",
+      "boundary": "The result does not choose C, preserve the original mean, or guarantee that a low-precision norm computation reaches the clipping operation safely.",
+      "source": "hoeffding1963"
+    },
+    {
+      "id": "thm-c07-covering-upper",
+      "chapter": "c07",
+      "phenomenon_explained": "c07-finite-price",
+      "assumptions": "A finite-dimensional Euclidean unit ball or sphere and epsilon greater than zero.",
+      "conclusion": "There exists an epsilon-net of size at most (1+2/epsilon)^d.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "An exponential cover costs only d log(1+2/epsilon) in a logarithmic tail budget.",
+      "boundary": "This upper bound is not an exact covering count, and the compactness argument is finite-dimensional.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c07-operator-net",
+      "chapter": "c07",
+      "phenomenon_explained": "c07-finite-price",
+      "assumptions": "A real linear map and an epsilon-net of the Euclidean unit sphere with 0<epsilon<1.",
+      "conclusion": "The operator norm is at most the largest net-point stretch divided by 1-epsilon.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A finite sampled maximum becomes a continuum certificate only after paying an interpolation factor.",
+      "boundary": "Unverified random probes are not automatically an epsilon-net.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c07-uniformization",
+      "chapter": "c07",
+      "phenomenon_explained": "c07-finite-price",
+      "assumptions": "A compact metric set with a finite epsilon-net, deterministically L-Lipschitz sample paths, and a common fixed-anchor sub-Gaussian upper-tail envelope.",
+      "conclusion": "With failure probability at most delta, the supremum is bounded by the anchor center plus sigma sqrt(2(log(2/delta)+log|N_epsilon|)) plus L epsilon.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Uniform control has three separately auditable costs: the fixed-point tail, metric entropy, and interpolation.",
+      "boundary": "Random or local Lipschitz constants need an additional event, and the theorem does not establish its own fixed-point tail.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c08-svd-stretch",
+      "chapter": "c08",
+      "phenomenon_explained": "c08-one-average-two-edges",
+      "assumptions": "A real m-by-n matrix with m at least n.",
+      "conclusion": "Every vector stretch lies between the smallest and largest singular values times its Euclidean norm, with equality at the corresponding right singular vectors.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Uniform near-isometry requires both singular edges rather than an average squared stretch or the upper edge alone.",
+      "boundary": "Rank-deficient and wide maps have a zero lower edge on the full input space.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c08-subgaussian-edges",
+      "chapter": "c08",
+      "phenomenon_explained": "c08-one-average-two-edges",
+      "assumptions": "Independent centered isotropic sub-Gaussian rows with a common declared row scale.",
+      "conclusion": "With high probability every singular value lies in a universal-constant interval centered at sqrt(m) with width proportional to K^2(sqrt(n)+t).",
+      "proof_mode": "diagnostic-proof-sketch",
+      "diagnostic_corollary": "Isotropy supplies the center while uniformization over adaptive directions supplies the dimensional width.",
+      "boundary": "The universal constant is not a calibrated confidence interval, and the lower statement is informative only when positive.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c08-gaussian-edges",
+      "chapter": "c08",
+      "phenomenon_explained": "c08-one-average-two-edges",
+      "assumptions": "An m-by-n matrix with independent standard-normal entries and m at least n.",
+      "conclusion": "The expected upper and lower singular edges are bounded by sqrt(m)+sqrt(n) and sqrt(m)-sqrt(n), with sub-Gaussian deviations supplied by Gaussian concentration.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "After reciprocal-sqrt(m) scaling, aspect ratio supplies the benchmark interval 1 plus or minus sqrt(n/m).",
+      "boundary": "The square lower benchmark is zero and supplies neither a positive condition-number guarantee nor an underflow conclusion.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c09-esd-moments",
+      "chapter": "c09",
+      "phenomenon_explained": "c09-bulk-not-verdict",
+      "assumptions": "A real symmetric n-by-n matrix with real eigenvalues.",
+      "conclusion": "The empirical spectral distribution is a probability measure whose kth moment is tr(M^k)/n.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Normalized trace and an extremal eigenvalue are distinct functionals of the same finite spectral measure.",
+      "boundary": "Finitely many moments or a histogram do not validate a finite generative null.",
+      "source": "marchenko1967"
+    },
+    {
+      "id": "thm-c09-marchenko-pastur",
+      "chapter": "c09",
+      "phenomenon_explained": "c09-bulk-not-verdict",
+      "assumptions": "An m-by-n matrix with independent mean-zero variance-one entries under proportional growth n/m to gamma and a suitable finite-moment condition.",
+      "conclusion": "The empirical spectrum of X^T X/m converges to the Marchenko--Pastur law on the squared singular-edge interval, with a zero atom when gamma exceeds one.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "Aspect ratio predicts an asymptotic null bulk under a declared scaling convention.",
+      "boundary": "Weak convergence of the empirical measure is neither exact finite eigenvalue confinement nor a calibrated largest-eigenvalue test.",
+      "source": "marchenko1967"
+    },
+    {
+      "id": "thm-c09-covariance-error",
+      "chapter": "c09",
+      "phenomenon_explained": "c09-bulk-not-verdict",
+      "assumptions": "Independent copies of a centered sub-Gaussian vector with covariance Sigma and a relative psi2-to-L2 constant K.",
+      "conclusion": "The expected operator-norm sample-covariance error is at most C K^2 (sqrt(n/m)+n/m) times the population operator norm.",
+      "proof_mode": "diagnostic-proof-sketch",
+      "diagnostic_corollary": "A deterministic bulk shape can coexist with order-one population-covariance error when dimension and sample size are comparable.",
+      "boundary": "The ambient-dimension rate is refined by effective rank in C10.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c09-repeated-looks",
+      "chapter": "c09",
+      "phenomenon_explained": "c09-bulk-not-verdict",
+      "assumptions": "K inspected spectra and a per-look null event with probability at most alpha.",
+      "conclusion": "At least one false alarm has probability at most K alpha; for independent exact-alpha looks it has probability 1-(1-alpha)^K.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Layers, checkpoints, seeds, and candidate matrices all consume a shared false-positive budget.",
+      "boundary": "Dependence preserves the union bound but invalidates the exact independent-look formula.",
+      "source": "elementary-probability"
+    },
+    {
+      "id": "thm-c09-spike-separation",
+      "chapter": "c09",
+      "phenomenon_explained": "c09-bulk-not-verdict",
+      "assumptions": "A rank-one spiked covariance with population eigenvalue beta greater than one, unit remaining eigenvalues, finite-fourth-moment standardized entries, and n/m tending to gamma in (0,1).",
+      "conclusion": "The largest sample eigenvalue stays at the null edge for beta at most 1+sqrt(gamma), and separates to beta(1+gamma/(beta-1)) above that threshold.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "Even a real population spike can be absorbed by the null bulk below the model-specific separation threshold.",
+      "boundary": "This asymptotic spiked-Wishart result is not a generic model for trained parameter matrices or Hessians.",
+      "source": "baik2006"
+    }
+  ]
+}

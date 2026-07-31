@@ -1,0 +1,40 @@
+{
+  "chapter": "c08",
+  "claim_id": "c08-average-edges-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6224,
+    "seed_role": "matrix generation or iteration initialization"
+  },
+  "hardware_claim_boundary": "Laptop-CPU float64 linear-algebra study; no CPU timing is presented as accelerator performance and no singular value is identified with low-precision underflow.",
+  "harness_ref": "ch-08",
+  "harness_wheel_sha256": "9ec8176699a4a5f297fdbade68dd42d94cd46ab0e1940d79f705fe84a0b65cf1",
+  "hypothesis": "A scaled Gaussian matrix can preserve a fixed direction and the average squared stretch near one while its data-dependent singular directions realize widely separated edges.",
+  "payload_sha256": "6b822859bd0b1b6d238bc432c5e240ae2effa460088e2916e90c6cbca4d0039a",
+  "phenomenon_id": "c08-one-average-two-edges",
+  "provenance_class": "a",
+  "result": {
+    "bottom_singular_direction_stretch": 0.020406953177666307,
+    "condition_number": 99.77284679212217,
+    "entry_distribution": "N(0, 1/rows)",
+    "fixed_direction": "first coordinate vector, declared before matrix",
+    "fixed_direction_stretch": 0.9840119954880587,
+    "matrix_seed": 6224,
+    "mean_squared_stretch": 1.0191849927524734,
+    "shape": [
+      64,
+      64
+    ],
+    "sigma_max": 2.0360598128893037,
+    "sigma_min": 0.020406953177666234,
+    "square_gaussian_lower_benchmark": 0.0,
+    "top_singular_direction_stretch": 2.0360598128893015
+  },
+  "schema_version": 1
+}

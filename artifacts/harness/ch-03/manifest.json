@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "chapter": "c03",
+  "harness_ref": "ch-03",
+  "package": "trainable-harness",
+  "version": "0.3.0",
+  "api": "0.3",
+  "wheel": "trainable_harness-0.3.0-py3-none-any.whl",
+  "wheel_sha256": "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918",
+  "python": "3.12.13",
+  "dependencies": {
+    "numpy": "2.5.1",
+    "uv_lock_sha256": "3d437373fde78b09a63e4b4e054f056d5171c86c2aa52c0581d9b3ab127864ef"
+  },
+  "source": {
+    "status": "pre-release-uncommitted",
+    "commit": null,
+    "annotated_tag": null,
+    "tag_required_before_publication": "harness-ch-03-v1",
+    "pyproject_sha256": "497fed72bae3a022883a54424491c26d9fd5de0833e76bc7411336c2b1497c20",
+    "init_sha256": "701b2d8e3255c3326c9818c1d63e66433e8addb59340ad2cf82e20ec7fc74fee",
+    "streaming_sha256": "8549a3dbc681e18410d9567d7bab97352d0c873b4cca2f9dd3b2ccb3642fd205",
+    "precision_sha256": "6230901bc8de84b0243cc58239f32907ea882fa62fc4944f1867214c6cabd03b"
+  },
+  "public_operations": [
+    "observation_ledger",
+    "naive_moments",
+    "stable_online_moments",
+    "merge_moments",
+    "comparison_audit",
+    "float_contract",
+    "local_spacing",
+    "repeated_update",
+    "stochastic_update_trials",
+    "symmetric_quantize"
+  ]
+}

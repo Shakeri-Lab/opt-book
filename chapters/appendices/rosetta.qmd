@@ -1,0 +1,39 @@
+---
+title: "Rosetta: Primitive to Literature Name"
+description: "Searchable bridges from mathematical primitives to conventional deep-learning terminology."
+search-aliases:
+  - LayerNorm
+  - RMSNorm
+  - BatchNorm
+  - Adam
+  - AdamW
+  - attention
+  - FlashAttention
+  - Muon
+  - QJL
+  - TurboQuant
+---
+
+This appendix is the sanctioned bridge between the book's mechanism-first
+language and the names used in papers, libraries, and search queries. A name
+identifies a family; it does not remove the need to state axes, precision,
+state, or assumptions.
+
+::: {.table-responsive}
+
+| Primitive in this book | Standard name or aliases | Notation and diagnostic contract | Unit |
+|:--------------------------|:-----------------------|:---------------------------------|:---------|
+| Coordinate-wise or token-wise normalization | LayerNorm; RMSNorm | Axes; centering; scale; $\varepsilon$ placement | C15 |
+| Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators | C15 |
+| Variance-preserving initialization | Xavier/Glorot; He/Kaiming | Variance convention; nonlinearity assumptions | C14 |
+| Diagonal moment preconditioning | Adam; AdamW | Moments; bias correction; decay; $\varepsilon$ placement | C13/C17 |
+| Similarity-weighted aggregation | attention; self-attention | Scale; normalized axis; mask; materialization | Synthesis |
+| IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order | Synthesis |
+| Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state | C17 |
+| Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint | C17 |
+
+:::
+
+The unit column records where the full entry is scheduled, not where the
+literature name is owned. Each completed row will gain a stable chapter anchor,
+sibling pointer when applicable, primary citation, and tested aliases.

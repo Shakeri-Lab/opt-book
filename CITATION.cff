@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this book, please cite it as below."
+title: "Deep Learning: Making It Trainable"
+type: book
+authors:
+  - family-names: Shakeri
+    given-names: Heman
+version: 0.1.0
+date-released: 2026-07-30
+url: "https://shakeri-lab.github.io/opt-book/"
+repository-code: "https://github.com/Shakeri-Lab/opt-book"
+license: CC-BY-NC-SA-4.0

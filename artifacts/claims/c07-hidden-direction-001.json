@@ -1,0 +1,78 @@
+{
+  "chapter": "c07",
+  "claim_id": "c07-hidden-direction-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable; deterministic calculation"
+  },
+  "hardware_claim_boundary": "Laptop-CPU geometry calculation; no accelerator throughput or low-precision format claim.",
+  "harness_ref": "ch-07",
+  "harness_wheel_sha256": "50543994a041525dd5b8704120558bf0e87ea518e28272f67e94eb3d9513a252",
+  "hypothesis": "A finite probe set can miss a data-dependent extremal direction, while a verified epsilon-net turns its sampled maximum into a deterministic operator-norm certificate.",
+  "payload_sha256": "b8f4a8a61f5c5b0cdb7a5ad9c43496a319094b5b62cd683cb175c0406331dc9b",
+  "phenomenon_id": "c07-finite-price",
+  "provenance_class": "a",
+  "result": {
+    "certificate_formula": "sampled_maximum / (1 - epsilon)",
+    "coordinate_probe_gap": 0.39436000283930284,
+    "coordinate_probe_maximum": 5.605639997160698,
+    "epsilon_net_records": {
+      "0.0625": {
+        "actual_covering_radius": 0.06159011711234142,
+        "declared_radius_certificate": 6.3999995000688,
+        "exact_radius_certificate": 6.393794056016765,
+        "net_points": 51,
+        "relative_sample_gap": 7.811425017933969e-08,
+        "sampled_maximum": 5.9999995313145
+      },
+      "0.125": {
+        "actual_covering_radius": 0.12075699484457245,
+        "declared_radius_certificate": 6.814386267996082,
+        "exact_radius_certificate": 6.781501757233245,
+        "net_points": 26,
+        "relative_sample_gap": 0.0062353359172382375,
+        "sampled_maximum": 5.9625879844965715
+      },
+      "0.25": {
+        "actual_covering_radius": 0.2410733605106468,
+        "declared_radius_certificate": 7.950117312662095,
+        "exact_radius_certificate": 7.8566065206362,
+        "net_points": 13,
+        "relative_sample_gap": 0.0062353359172382375,
+        "sampled_maximum": 5.9625879844965715
+      },
+      "0.5": {
+        "actual_covering_radius": 0.4450418679126288,
+        "declared_radius_certificate": 11.96379953461192,
+        "exact_radius_certificate": 10.77901092251079,
+        "net_points": 7,
+        "relative_sample_gap": 0.0030167054490067473,
+        "sampled_maximum": 5.98189976730596
+      }
+    },
+    "exact_operator_norm": 6.000000000000001,
+    "matrix": [
+      [
+        5.34617139682397,
+        1.685719779070363
+      ],
+      [
+        1.6857197790703626,
+        1.6538286031760303
+      ]
+    ],
+    "right_singular_rotation_radians": 0.37,
+    "singular_values": [
+      6.0,
+      1.0
+    ]
+  },
+  "schema_version": 1
+}

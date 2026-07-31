@@ -1,0 +1,125 @@
+{
+  "chapter": "c08",
+  "claim_id": "c08-aspect-ratio-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6225,
+    "seed_role": "matrix generation or iteration initialization"
+  },
+  "hardware_claim_boundary": "Laptop-CPU float64 linear-algebra study; no CPU timing is presented as accelerator performance and no singular value is identified with low-precision underflow.",
+  "harness_ref": "ch-08",
+  "harness_wheel_sha256": "9ec8176699a4a5f297fdbade68dd42d94cd46ab0e1940d79f705fe84a0b65cf1",
+  "hypothesis": "For finite scaled Gaussian matrices with a fixed input width, increasing the row-to-column aspect ratio opens a positive lower edge while the fixed-direction and Frobenius averages remain centered near one.",
+  "payload_sha256": "64d7071e3a9250d4083597f59a9ac1571f415bf4f909ab0d6c2d97266aa914ca",
+  "phenomenon_id": "c08-one-average-two-edges",
+  "provenance_class": "a",
+  "result": {
+    "boundary": "Benchmark curves are Gaussian edge locations, not a Marchenko--Pastur empirical-density theorem or calibrated finite-size confidence interval.",
+    "columns": 64,
+    "entry_distribution": "N(0, 1/rows)",
+    "estimator": "5th, 50th, and 95th empirical quantiles",
+    "records": {
+      "128": {
+        "aspect_ratio_columns_over_rows": 0.5,
+        "columns": 64,
+        "fixed_direction_stretch": {
+          "median": 1.0054660227558314,
+          "q05": 0.9051109872401579,
+          "q95": 1.1005393821838274
+        },
+        "gaussian_lower_benchmark": 0.2928932188134524,
+        "gaussian_upper_benchmark": 1.7071067811865475,
+        "mean_squared_stretch": {
+          "median": 1.000851986113659,
+          "q05": 0.9802125344156238,
+          "q95": 1.0228341910490477
+        },
+        "rows": 128,
+        "seed": 6226,
+        "sigma_max": {
+          "median": 1.6706451431114735,
+          "q05": 1.6164607771873594,
+          "q95": 1.727577260967903
+        },
+        "sigma_min": {
+          "median": 0.31057039597371083,
+          "q05": 0.2810773411476832,
+          "q95": 0.34265945573067835
+        },
+        "trials": 160
+      },
+      "256": {
+        "aspect_ratio_columns_over_rows": 0.25,
+        "columns": 64,
+        "fixed_direction_stretch": {
+          "median": 0.9982350567493452,
+          "q05": 0.928074615561693,
+          "q95": 1.0758040804732063
+        },
+        "gaussian_lower_benchmark": 0.5,
+        "gaussian_upper_benchmark": 1.5,
+        "mean_squared_stretch": {
+          "median": 1.000120193287711,
+          "q05": 0.978862660154535,
+          "q95": 1.0155812834461073
+        },
+        "rows": 256,
+        "seed": 6227,
+        "sigma_max": {
+          "median": 1.4732609560028633,
+          "q05": 1.4423449532027006,
+          "q95": 1.5150104450400326
+        },
+        "sigma_min": {
+          "median": 0.514655105456255,
+          "q05": 0.48789197846856946,
+          "q95": 0.539321582977936
+        },
+        "trials": 160
+      },
+      "64": {
+        "aspect_ratio_columns_over_rows": 1.0,
+        "columns": 64,
+        "fixed_direction_stretch": {
+          "median": 0.9935277286586852,
+          "q05": 0.8800949570688289,
+          "q95": 1.135381591087363
+        },
+        "gaussian_lower_benchmark": 0.0,
+        "gaussian_upper_benchmark": 2.0,
+        "mean_squared_stretch": {
+          "median": 1.0027133517461995,
+          "q05": 0.9639458245237311,
+          "q95": 1.039436469059912
+        },
+        "rows": 64,
+        "seed": 6225,
+        "sigma_max": {
+          "median": 1.9445301185768726,
+          "q05": 1.8735982243377531,
+          "q95": 2.03424147112
+        },
+        "sigma_min": {
+          "median": 0.008078536308473463,
+          "q05": 0.001104076149601806,
+          "q95": 0.02399486350827698
+        },
+        "trials": 160
+      }
+    },
+    "reduction_axis": "independent matrix trials",
+    "rows_grid": [
+      64,
+      128,
+      256
+    ],
+    "trials_per_shape": 160
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,607 @@
+---
+subtitle: "Epsilon-nets, covering budgets, and continuous extrema"
+description: "How a finite cover and a deterministic interpolation rule turn fixed-direction concentration into a uniform diagnostic."
+number-offset: 6
+jupyter: python3
+harness-ref: ch-07
+harness-api: "0.7"
+harness-wheel-sha256: "50543994a041525dd5b8704120558bf0e87ea518e28272f67e94eb3d9513a252"
+phenomenon_id: c07-finite-price
+claim_ids:
+  - c07-hidden-direction-001
+  - c07-tail-budget-001
+threads:
+  subgaussian-safe-zone: callback
+lenses:
+  geometric: primary
+  dynamic: quiet
+  algorithmic: supporting
+fulfills:
+  - promise-c06-c07-tail-budget
+---
+
+# The Sphere Has a Finite Price {#c07}
+
+<span class="thread">SG · The sub-Gaussian safe zone</span>
+<span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
+
+Consider a linear map $\matr{A}:\mathbb{R}^2\to\mathbb{R}^2$ with singular
+values $6$ and $1$. Rotate its most stretched direction away from both
+coordinate axes. The largest stretch seen by those two predeclared probes is
+about $5.606$. The true maximum is $6$.
+
+Nothing random or numerically unstable happened. The probes answered the
+questions they were asked. The direction that maximizes
+$\norm{\matr{A}\vect{x}}_2$ is selected *after* $\matr{A}$ is known, whereas
+the coordinate probes were selected before it.
+
+::: {.callout-important title="Prediction"}
+Suppose a probability bound controls each one of one million predeclared
+directions. Does it control every direction on the unit sphere? If not, name
+the additional deterministic fact that would let the finite calculation reach
+the continuum.
+:::
+
+## A sampled maximum is not a supremum {#sec-c07-opening}
+
+C05 paid a logarithmic price for finitely many random variables. C06 showed
+that the price depends on the tail class. Neither chapter authorized a union
+bound over an uncountable sphere.
+
+The opening study makes the missing step inspectable. An **epsilon-net** is a
+finite set of anchors close enough to every point in the target set. The
+largest anchor value can still underestimate the true maximum. The covering
+radius supplies a deterministic correction that turns the underestimate into
+an upper certificate.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate `harness@ch-07`.
+2. Construct a rotated map with known singular values.
+3. Evaluate its stretch over the entire circle and on verified epsilon-nets.
+4. Compute the sampled maximum and interpolation certificate separately.
+5. Plot the hidden direction, anchors, and certificate gap.
+:::
+
+```{python}
+#| label: fig-c07-hidden-direction
+#| fig-cap: "A finite cover converts missed extrema into a certificate. At left, the stretch of a rotated map varies over the unit circle; the coordinate probes miss the peak, and a verified one-quarter net samples it closely. At right, finer nets close the sampled gap while the deterministic one-over-one-minus-epsilon certificate remains above the exact operator norm. The sampled maximum and the certificate are different quantities."
+#| fig-alt: "Two-panel plot. A polar curve shows directional stretch with a peak at a rotated direction, two coordinate probes below the peak, and thirteen epsilon-net anchors around the circle. A second plot shows sampled maxima approaching the exact norm six from below and certified upper bounds approaching it from above as epsilon decreases."
+#| code-summary: "Code: turn a finite set of directional probes into an operator-norm certificate"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-07/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    circle_covering_radius,
+    circle_epsilon_net,
+    operator_net_certificate,
+    operator_net_estimate,
+    sphere_cover_log_upper,
+    uniform_subgaussian_threshold,
+)
+
+# [2]
+angle = 0.37
+rotation = np.array(
+    [[np.cos(angle), -np.sin(angle)], [np.sin(angle), np.cos(angle)]]
+)
+matrix = rotation @ np.diag([6.0, 1.0]) @ rotation.T
+exact_norm = np.linalg.norm(matrix, ord=2)
+
+# [3]
+angles = np.linspace(0.0, 2.0 * np.pi, 721)
+directions = np.column_stack((np.cos(angles), np.sin(angles)))
+stretches = np.linalg.norm(directions @ matrix.T, axis=1)
+display_net = circle_epsilon_net(0.25)
+display_angles = np.mod(
+    np.arctan2(display_net[:, 1], display_net[:, 0]),
+    2.0 * np.pi,
+)
+display_stretches = np.linalg.norm(display_net @ matrix.T, axis=1)
+
+# [4]
+epsilons = np.array([0.5, 0.25, 0.125, 0.0625])
+sampled, certified = [], []
+for epsilon in epsilons:
+    net = circle_epsilon_net(float(epsilon))
+    maximum = operator_net_estimate(matrix, net)
+    sampled.append(maximum)
+    certified.append(operator_net_certificate(maximum, float(epsilon)))
+sampled = np.asarray(sampled)
+certified = np.asarray(certified)
+assert np.all(sampled <= exact_norm + 1e-12)
+assert np.all(certified >= exact_norm)
+
+# [5]
+figure = plt.figure(figsize=(8.2, 3.6))
+polar = figure.add_subplot(1, 2, 1, projection="polar")
+polar.plot(angles, stretches, linewidth=2.2, label="all directions")
+polar.scatter(
+    display_angles,
+    display_stretches,
+    s=24,
+    color="#d95f02",
+    label=r"$\epsilon=0.25$ anchors",
+    zorder=3,
+)
+coordinate_angles = np.array([0.0, np.pi / 2.0])
+coordinate_stretches = np.linalg.norm(
+    np.column_stack((np.cos(coordinate_angles), np.sin(coordinate_angles)))
+    @ matrix.T,
+    axis=1,
+)
+polar.scatter(
+    coordinate_angles,
+    coordinate_stretches,
+    marker="s",
+    s=38,
+    color="black",
+    label="coordinate probes",
+    zorder=4,
+)
+polar.set_yticklabels([])
+polar.legend(frameon=False, loc="lower left", bbox_to_anchor=(-0.25, -0.27))
+
+axis = figure.add_subplot(1, 2, 2)
+axis.plot(epsilons, sampled, "o-", linewidth=2.0, label="sampled maximum")
+axis.plot(epsilons, certified, "s--", linewidth=2.0, label="certificate")
+axis.axhline(exact_norm, color="black", linestyle=":", label="exact norm")
+axis.invert_xaxis()
+axis.set(xlabel=r"declared radius $\epsilon$", ylabel="stretch")
+axis.grid(alpha=0.25)
+axis.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+coordinate_maximum = operator_net_estimate(matrix, np.eye(2))
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+print(
+    f"coordinate probes={coordinate_maximum:.6f}; "
+    f"exact operator norm={exact_norm:.6f}"
+)
+for epsilon, maximum, certificate in zip(
+    epsilons,
+    sampled,
+    certified,
+    strict=True,
+):
+    print(
+        f"epsilon={epsilon:g}: sampled={maximum:.6f}, "
+        f"certificate={certificate:.6f}"
+    )
+```
+::::
+
+The net with declared radius $0.25$ uses $13$ points. Its sampled maximum is
+about $5.963$, still below $6$. The theorem below turns that shortfall into a
+valid statement: $5.963/(1-0.25)\approx7.950$ is conservative, but it cannot
+miss the true norm.
+
+This is the book's recurring distinction in geometric form:
+
+| Quantity | Meaning |
+|---|---|
+| sampled maximum | largest value at the anchors actually evaluated |
+| covering radius | largest permitted distance from any target point to an anchor |
+| interpolation rule | deterministic control of change between nearby points |
+| certificate | sampled maximum plus the declared interpolation cost |
+| true supremum | control value for a small study; usually unavailable at scale |
+
+## Make the continuum finite {#sec-c07-cover}
+
+Let $(K,d)$ be a metric space. A finite subset
+$\mathcal{N}_{\epsilon}\subseteq K$ is an **epsilon-net** of $K$ when every
+$x\in K$ has an anchor $y\in\mathcal{N}_{\epsilon}$ satisfying
+$d(x,y)\le\epsilon$. The **covering number**
+
+$$
+N(K,d,\epsilon)
+:=
+\min\left\{
+|\mathcal{N}|:
+\mathcal{N}\text{ is an epsilon-net of }K
+\right\}
+$$ {#eq-c07-covering-number}
+
+measures the smallest such price. Its logarithm is called the **metric
+entropy**.
+
+The word *finite* matters. In $\mathbb{R}^d$, a closed and bounded set is
+compact, so every open cover has a finite subcover. Outside finite-dimensional
+Euclidean space, boundedness alone does not establish compactness.
+
+::: {#thm-c07-covering-upper phenomenon_id="c07-finite-price"}
+## Volumetric upper bound
+
+For every $\epsilon>0$, the Euclidean unit ball $B_2^d$ has an epsilon-net
+with
+
+$$
+N(B_2^d,\norm{\cdot}_2,\epsilon)
+\le
+\left(1+\frac{2}{\epsilon}\right)^d.
+$$ {#eq-c07-ball-cover}
+
+The same upper bound holds for the unit sphere $S^{d-1}$.
+:::
+
+### Proof
+
+Choose a maximal epsilon-separated subset
+$\{x_1,\ldots,x_M\}$ of the ball: distinct centers are more than epsilon
+apart, and no new point can be added while preserving that property. The
+closed balls of radius $\epsilon/2$ centered at the $x_i$ have disjoint
+interiors. Every one lies inside
+$(1+\epsilon/2)B_2^d$. Comparing volumes gives
+
+$$
+M\,\operatorname{Vol}\!\left((\epsilon/2)B_2^d\right)
+\le
+\operatorname{Vol}\!\left((1+\epsilon/2)B_2^d\right).
+$$
+
+Euclidean volume scales as the $d$th power of the radius, hence
+
+$$
+M
+\le
+\left(\frac{1+\epsilon/2}{\epsilon/2}\right)^d
+=
+\left(1+\frac{2}{\epsilon}\right)^d.
+$$
+
+Maximal separation also implies covering: if some point were farther than
+epsilon from every center, it could be added. The identical packing argument
+with centers restricted to the sphere proves the sphere upper bound.
+$\square$
+
+The count is exponential in $d$, but probability calculations pay its
+logarithm:
+
+$$
+\log N(S^{d-1},\norm{\cdot}_2,\epsilon)
+\le
+d\log\!\left(1+\frac{2}{\epsilon}\right).
+$$ {#eq-c07-log-cover}
+
+This is an upper certificate, not an exact count. For diagnostics, the
+important question is whether the available tail exponent can pay
+@eq-c07-log-cover.
+
+## Fill the gaps deterministically {#sec-c07-interpolation}
+
+A cover controls distances. It does not, by itself, control the function being
+evaluated. The opening map works because linearity and the operator norm bound
+the change between nearby directions.
+
+::: {#thm-c07-operator-net phenomenon_id="c07-finite-price"}
+## Operator norm from an epsilon-net
+
+Let $\mathcal{N}_{\epsilon}$ be an epsilon-net of $S^{d-1}$ with
+$0<\epsilon<1$. For every real matrix $\matr{A}$ with $d$ input columns,
+
+$$
+\norm{\matr{A}}_{\mathrm{op}}
+\le
+\frac{1}{1-\epsilon}
+\max_{\vect{y}\in\mathcal{N}_{\epsilon}}
+\norm{\matr{A}\vect{y}}_2.
+$$ {#eq-c07-operator-net}
+:::
+
+### Proof
+
+Let $\vect{x}\in S^{d-1}$ attain the operator norm and choose an anchor
+$\vect{y}$ with $\norm{\vect{x}-\vect{y}}_2\le\epsilon$. Then
+
+$$
+\begin{aligned}
+\norm{\matr{A}}_{\mathrm{op}}
+=\norm{\matr{A}\vect{x}}_2
+&\le
+\norm{\matr{A}\vect{y}}_2
++
+\norm{\matr{A}(\vect{x}-\vect{y})}_2 \\
+&\le
+\max_{\vect{z}\in\mathcal{N}_{\epsilon}}
+\norm{\matr{A}\vect{z}}_2
++
+\epsilon\norm{\matr{A}}_{\mathrm{op}}.
+\end{aligned}
+$$
+
+Move the last term to the left and divide by $1-\epsilon$. $\square$
+
+::: {.callout-warning title="Named wrong answer: 'Enough random probes make a net'"}
+A cloud of random directions may have good coverage, but sample count alone
+does not certify its covering radius. The diagnostic needs either a verified
+construction or a separate probability statement for the random cover. A
+large probe count is not a geometric certificate.
+:::
+
+## Tail budget plus interpolation {#sec-c07-uniformization}
+
+The same pattern applies beyond linear maps. Fix a random function
+$f_\omega:K\to\mathbb{R}$. The randomness is in $\omega$; the index
+$x\in K$ identifies the query.
+
+::: {#thm-c07-uniformization phenomenon_id="c07-finite-price"}
+## Finite-cover uniformization
+
+Let $\mathcal{N}_{\epsilon}$ be a finite epsilon-net of $(K,d)$. Suppose every
+sample path is $L$-Lipschitz:
+
+$$
+|f_\omega(x)-f_\omega(y)|
+\le
+L\,d(x,y)
+\quad\text{for all }x,y\in K,
+$$
+
+and every fixed anchor satisfies the common upper-tail bound
+
+$$
+\Pr\!\left(f_\omega(y)>a+t\right)
+\le
+2\exp\!\left(-\frac{t^2}{2\sigma^2}\right).
+$$
+
+Then, with probability at least $1-\delta$,
+
+$$
+\sup_{x\in K}f_\omega(x)
+\le
+a
++
+\sigma\sqrt{
+2\left[
+\log\!\left(\frac{2}{\delta}\right)
++
+\log|\mathcal{N}_{\epsilon}|
+\right]
+}
++
+L\epsilon.
+$$ {#eq-c07-uniformization}
+:::
+
+### Proof
+
+Apply the fixed-anchor bound and a union bound:
+
+$$
+\Pr\!\left(
+\max_{y\in\mathcal{N}_{\epsilon}}f_\omega(y)>a+t
+\right)
+\le
+2|\mathcal{N}_{\epsilon}|
+\exp\!\left(-\frac{t^2}{2\sigma^2}\right).
+$$
+
+Choose $t$ so the right side equals $\delta$. On the complementary event,
+each $x\in K$ has an anchor $y$ within epsilon, and Lipschitz continuity gives
+
+$$
+f_\omega(x)
+\le
+f_\omega(y)+L\epsilon
+\le
+a+t+L\epsilon.
+$$
+
+Take the supremum over $x$. $\square$
+
+There are three independent obligations:
+
+1. prove a tail bound for each fixed anchor;
+2. price a cover in the same metric used by the function;
+3. justify the interpolation constant.
+
+If $L$ is random, the theorem does not permit silently replacing it with its
+mean. One must first control an event on which $L$ is bounded, then include
+that event's failure probability in the budget.
+
+## Which tails can afford the sphere? {#sec-c07-tail-budget}
+
+Set $\epsilon=0.25$ and $\delta=0.01$. The volumetric upper bound has
+
+$$
+\log|\mathcal{N}_{\epsilon}|
+\le
+d\log 9.
+$$
+
+Under a unit-scale sub-Gaussian anchor tail, the union threshold is
+
+$$
+t_{\mathrm{SG}}
+=
+\sqrt{2\left[\log(2/\delta)+d\log9\right]},
+$$
+
+which grows like $\sqrt d$. Under only the second-moment envelope
+$\Pr(|X|\ge t)\le1/t^2$, the same union calculation requires
+$t\ge\sqrt{|\mathcal{N}_{\epsilon}|/\delta}$, exponential in $d$.
+
+The latter calculation is valid. It is simply too weak to give a useful
+high-dimensional diagnostic.
+
+:::: {.plan-code}
+::: {.plan}
+1. Fix the covering radius and failure probability.
+2. Compute the log covering upper bound without materializing the cover.
+3. Solve the sub-Gaussian union budget for its threshold.
+4. Solve the second-moment union budget on a log-ten scale.
+5. Compare how both thresholds grow with dimension.
+:::
+
+```{python}
+#| label: fig-c07-tail-budget
+#| fig-cap: "Tail class determines whether an exponential cover is affordable. At left, the sub-Gaussian union threshold grows on a square-root-dimensional scale. At right, the base-ten logarithm of the second-moment threshold grows linearly with dimension; by dimension 512 the threshold is above ten to the 245. Both are valid union calculations under their stated envelopes, but only one is diagnostically useful."
+#| fig-alt: "Two-panel plot over dimensions 8, 32, 128, and 512. The sub-Gaussian threshold rises from about 6.8 to 47.5. The base-ten logarithm of the Chebyshev threshold rises from about 4.8 to 245.3."
+#| code-summary: "Code: price the same Euclidean cover under two fixed-anchor tail envelopes"
+#| code-fold: false
+
+# [1]
+dimensions = np.array([8, 32, 128, 512])
+epsilon, delta = 0.25, 0.01
+
+# [2]
+log_covers = np.array(
+    [sphere_cover_log_upper(int(dimension), epsilon) for dimension in dimensions]
+)
+
+# [3]
+subgaussian_thresholds = np.array(
+    [
+        uniform_subgaussian_threshold(log_cover, delta)
+        for log_cover in log_covers
+    ]
+)
+
+# [4]
+chebyshev_log10_thresholds = (
+    0.5 * (log_covers + np.log(1.0 / delta)) / np.log(10.0)
+)
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+axes[0].plot(dimensions, subgaussian_thresholds, "o-", linewidth=2.2)
+axes[0].set(
+    xlabel="dimension",
+    ylabel="sub-Gaussian anchor threshold",
+    xscale="log",
+)
+axes[1].plot(dimensions, chebyshev_log10_thresholds, "s-", linewidth=2.2)
+axes[1].set(
+    xlabel="dimension",
+    ylabel=r"$\log_{10}$ second-moment threshold",
+    xscale="log",
+)
+for axis in axes:
+    axis.grid(alpha=0.25)
+plt.tight_layout()
+plt.show()
+
+for dimension, log_cover, sg, cheb_log in zip(
+    dimensions,
+    log_covers,
+    subgaussian_thresholds,
+    chebyshev_log10_thresholds,
+    strict=True,
+):
+    print(
+        f"d={dimension}: log-cover<={log_cover:.3f}, "
+        f"sub-Gaussian threshold={sg:.3f}, "
+        f"log10 second-moment threshold={cheb_log:.3f}"
+    )
+```
+::::
+
+The comparison also explains why C06 had to distinguish tail regimes before
+this chapter. A linear Bernstein exponent can still pay a finite cover, but
+its threshold scales like the log covering number rather than its square root.
+The geometry has not changed; the available probabilistic currency has.
+
+::: {.callout-note title="Field note: discretization is not quantization"}
+A numerical format supplies representable scalar levels, rounding rules,
+range limits, and arithmetic semantics. An epsilon-net supplies metric
+coverage of a declared set. Counting $2^b$ scalar levels does not establish
+coverage of a $d$-dimensional parameter sphere, and the nearest
+representable vector need not lie on that sphere. Use C03's format contract
+for arithmetic and this chapter's covering contract for geometry.
+:::
+
+The same warning applies to data. A concentration theorem for a declared
+random model does not prove that a finite training set represents every
+population the system may encounter. The index set, metric, fixed-point tail,
+and interpolation rule must all be named.
+
+::: {.callout-tip title="Check yourself"}
+An epsilon-net has $N$ anchors. Each fixed anchor obeys
+$\Pr(f(y)>a+t)\le2e^{-t^2/(2\sigma^2)}$, and every sample path is
+$L$-Lipschitz. Write the smallest union-bound threshold that gives failure
+probability delta. Then identify which term changes if the cover is refined
+from epsilon to epsilon over two, and which term does not.
+:::
+
+## Okay, so —
+
+- **Inherited:** C05 supplied fixed-point sub-Gaussian control; C06 turned a
+  tail exponent into a finite statistical budget.
+- **Changed:** the target is now a continuum, so probability at anchors is
+  insufficient without geometric coverage and deterministic interpolation.
+- **Instrumented:** the harness constructs verified circle nets, measures
+  their actual covering radii, certifies operator norms, and prices sphere
+  covers without materializing them.
+- **Established:** Euclidean covers have exponential size but linear log cost;
+  an epsilon-net and a Lipschitz rule convert anchor control into a uniform
+  bound.
+- **Unresolved:** the extremal directions of a random matrix are selected
+  after the matrix is observed. C08 will spend this machinery on those adaptive
+  singular directions.
+
+## Sources and further reading
+
+Vershynin develops covering and packing numbers, the volumetric upper bound,
+and epsilon-net arguments for random operators [@vershynin2018]. The canonical
+instructor slides supplied the phenomenon-first order; analogies equating
+floating-point grids with sphere covers and concentration with population
+generalization were rejected. Baraniuk, Davenport, DeVore, and Wakin combine
+fixed-vector concentration with finite-dimensional covering numbers in a
+restricted-isometry proof [@baraniuk2008].
+
+## Exercises
+
+1. **(Pencil.) A circle cover.** Derive the exact chord covering radius of
+   $k$ equally spaced points on $S^1$. Find the smallest $k$ that certifies
+   radius at most $0.1$, and compare it with the volumetric upper bound.
+
+2. **(Pencil.) Symmetric quadratic forms.** Let $\matr{B}$ be symmetric and
+   $\mathcal{N}_{\epsilon}$ an epsilon-net of the unit sphere with
+   $\epsilon<1/2$. Prove
+   $$
+   \norm{\matr{B}}_{\mathrm{op}}
+   \le
+   \frac{1}{1-2\epsilon}
+   \max_{\vect{x}\in\mathcal{N}_{\epsilon}}
+   |\vect{x}^{\mathsf T}\matr{B}\vect{x}|.
+   $$
+   Mark the two interpolation errors that create $2\epsilon$.
+
+3. **(Code.) Random probes versus a verified cover.** In two dimensions,
+   compare $k$ uniformly random directions with $k$ equally spaced directions
+   over 10,000 independent probe sets. Report the distribution of the actual
+   covering radius, not only the largest observed stretch.
+
+4. **(Code.) Choose epsilon.** For
+   @eq-c07-uniformization with the volumetric sphere bound, minimize the sum of
+   anchor threshold and $L\epsilon$ numerically over epsilon for several
+   values of $d$, $L$, and delta. Explain why the finest cover need not give
+   the smallest final certificate.
+
+5. **(Audit.) A missing regularity contract.** A report evaluates a random
+   function at one million directions, applies a union bound, and calls the
+   result a bound on the sphere. Write the strongest claim the evidence
+   actually supports. Then list two distinct regularity statements that could
+   repair the continuum step.
+
+6. **(Audit.) Paper audit: where the cover enters.** Read Baraniuk,
+   Davenport, DeVore, and Wakin [@baraniuk2008]. Identify the fixed-vector
+   concentration statement, the set being covered, the covering-number cost,
+   and the deterministic step extending anchor control. Separate those
+   ingredients from the paper's additional union over supports.

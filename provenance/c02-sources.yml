@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "chapter": "c02",
+  "sources": [
+    {
+      "id": "src-c02-instructor-slides",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/0- ALg recap/1- Alg_Roofline/meet3_streaming.tex",
+      "sha256": "e54440a15c5578f63550046aa9c4dcb386fa1a28fe27ae833017932466fe98c8",
+      "reuse": "phenomenon, reveal order, examples, exercise intent; prose rewritten"
+    },
+    {
+      "id": "src-c02-legacy-chapter",
+      "class": "legacy-draft",
+      "path": "../old/DS6210_Book/chapters/chapter03_streaming_state.tex",
+      "sha256": "d06eacddff2d82fbbd90dd7e0f2c3a350d73b24b491f5ea336988807b875e51c",
+      "reuse": "derivation order and boundary distinctions; independently rederived"
+    },
+    {
+      "id": "src-sibling-a3",
+      "class": "sibling-public-interface",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance",
+      "source_commit": "bd4e06f934e0e38eb06eb6ab1e3a8585982bb2cb",
+      "reuse": "ownership pointer only"
+    },
+    {
+      "id": "welford1962",
+      "class": "primary-scholarly",
+      "doi": "10.1080/00401706.1962.10490022",
+      "pages": "419-420",
+      "reuse": "historical source and corrected online sums of squares"
+    },
+    {
+      "id": "chan1983",
+      "class": "primary-scholarly",
+      "doi": "10.1080/00031305.1983.10483115",
+      "pages": "242-247",
+      "reuse": "roundoff analysis, recommendations, pairwise algorithm"
+    },
+    {
+      "id": "src-pytorch-moment-main",
+      "class": "primary-official-code",
+      "url": "https://github.com/pytorch/pytorch/blob/main/aten/src/ATen/native/cuda/ReduceMomentKernel.cu",
+      "observed": "2026-07-30",
+      "reuse": "private correction audit; public use requires commit pin"
+    }
+  ]
+}

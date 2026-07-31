@@ -1,0 +1,64 @@
+{
+  "chapter": "c07",
+  "claim_id": "c07-tail-budget-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable; deterministic calculation"
+  },
+  "hardware_claim_boundary": "Laptop-CPU geometry calculation; no accelerator throughput or low-precision format claim.",
+  "harness_ref": "ch-07",
+  "harness_wheel_sha256": "50543994a041525dd5b8704120558bf0e87ea518e28272f67e94eb3d9513a252",
+  "hypothesis": "An exponential-size Euclidean cover remains affordable under a sub-Gaussian fixed-anchor tail because the threshold pays only the logarithm of the cover, whereas a second-moment tail requires an exponentially large threshold.",
+  "payload_sha256": "b87a1a94f42ab94e46830ed5f6624e765a69dc05520912503f9b2c49252866d2",
+  "phenomenon_id": "c07-finite-price",
+  "provenance_class": "a",
+  "result": {
+    "boundary": "The comparison prices two declared tail envelopes; it does not prove that either envelope holds for a new random object.",
+    "chebyshev_tail_model": "1/t^2",
+    "cover_upper_formula": "(1 + 2/epsilon)^dimension",
+    "dimensions": [
+      8,
+      32,
+      128,
+      512
+    ],
+    "epsilon": 0.25,
+    "failure_probability": 0.01,
+    "interpolation_term_per_unit_lipschitz": 0.25,
+    "records": {
+      "128": {
+        "chebyshev_anchor_threshold_log10": 62.071520604116785,
+        "log10_cover_upper": 122.14304120823358,
+        "log_cover_upper": 281.2447458990361,
+        "subgaussian_anchor_threshold": 23.939217333304118
+      },
+      "32": {
+        "chebyshev_anchor_threshold_log10": 16.267880151029196,
+        "log10_cover_upper": 30.535760302058396,
+        "log_cover_upper": 70.31118647475903,
+        "subgaussian_anchor_threshold": 12.29711379481438
+      },
+      "512": {
+        "chebyshev_anchor_threshold_log10": 245.28608241646717,
+        "log10_cover_upper": 488.57216483293433,
+        "log_cover_upper": 1124.9789835961444,
+        "subgaussian_anchor_threshold": 47.545290007795565
+      },
+      "8": {
+        "chebyshev_anchor_threshold_log10": 4.816970037757299,
+        "log10_cover_upper": 7.633940075514599,
+        "log_cover_upper": 17.577796618689757,
+        "subgaussian_anchor_threshold": 6.764039323545923
+      }
+    },
+    "subgaussian_tail_model": "2 exp(-t^2/2)"
+  },
+  "schema_version": 1
+}

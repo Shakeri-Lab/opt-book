@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "chapter": "c05",
+  "sources": [
+    {
+      "id": "src-c05-instructor-concentration",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/4- High-D concentration/meet7-slides.tex",
+      "sha256": "f85d9fcdab902ce8bc32fc9baa762efb7308fc26e373c5bdc5ce79934a99e318",
+      "reuse": "simultaneous-control phenomenon, MGF reveal order, safe-zone terminology, and initialization seed; all prose rewritten and constants re-audited"
+    },
+    {
+      "id": "vershynin2018-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/3-Vershynin_High-Dimensional Probability.pdf",
+      "sha256": "6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4",
+      "reuse": "sub-Gaussian equivalences, Orlicz norm, independent-sum consequences, and boundaries"
+    },
+    {
+      "id": "chernoff1952",
+      "class": "primary-scholarly",
+      "doi": "10.1214/aoms/1177729330",
+      "reuse": "exponential Markov optimization context"
+    },
+    {
+      "id": "hoeffding1963",
+      "class": "primary-scholarly",
+      "doi": "10.1080/01621459.1963.10500830",
+      "reuse": "bounded-variable exponential inequalities and weighted-sum context"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "Exponential tails are not called universally necessary; they are the declared sufficient safe zone for the simultaneous guarantees used here.",
+    "A finite empirical tail plot is not treated as proof of sub-Gaussianity.",
+    "The sub-Gaussian proxy variance is not silently identified with actual variance.",
+    "A Gaussian model is not treated as universal data geometry.",
+    "One-layer scale control is not claimed to guarantee safe depth-wise dynamics."
+  ]
+}

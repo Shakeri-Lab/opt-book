@@ -1,0 +1,134 @@
+/*-- scss:defaults --*/
+$jblue: #232D4B;
+$rotunda: #E57200;
+$uniblue: #5379AA;
+$stable: #2E7D32;
+$danger: #9C2F2F;
+
+$primary: $jblue;
+$link-color: $uniblue;
+$code-block-bg: #f7f8fa;
+$toc-active-border: $rotunda;
+
+/*-- scss:rules --*/
+h1, h2, h3, h4 {
+  color: $jblue;
+}
+
+.sidebar-title,
+.quarto-title-banner h1 {
+  color: $jblue;
+}
+
+main.content {
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.quarto-figure img.figure-img,
+.cell-output-display img.figure-img {
+  max-width: 100%;
+  height: auto;
+}
+
+.math.display,
+mjx-container[display="true"] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.12rem;
+}
+
+.callout-important {
+  border-left-color: $danger;
+}
+
+.callout-tip {
+  border-left-color: $stable;
+}
+
+.thread {
+  display: inline-block;
+  border: 1px solid #c8ced8;
+  border-radius: 999px;
+  padding: 0.08rem 0.48rem;
+  margin: 0 0.15rem 0.2rem 0;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  color: $jblue;
+  background: #f8f9fb;
+}
+
+.lens-ledger {
+  display: block;
+  margin: 0.05rem 0 1rem;
+  color: #68707d;
+  font-size: 0.78rem;
+  letter-spacing: 0.01em;
+}
+
+.plan-code {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  column-gap: 1.2rem;
+  align-items: start;
+  margin: 1.35rem 0;
+  padding: 0.8rem 0.95rem 0.7rem;
+  border: 1px solid #dce1e8;
+  border-radius: 6px;
+  background: #fcfcfd;
+}
+
+.plan-code > * {
+  min-width: 0;
+}
+
+.plan-code .plan::before,
+.plan-code .cell::before {
+  display: block;
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.55rem;
+  border-bottom: 1px solid #e5e8ed;
+  color: #68707d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.plan-code .plan::before {
+  content: "Plan";
+}
+
+.plan-code .cell::before {
+  content: "Code";
+}
+
+.plan-code .plan ol {
+  margin-bottom: 0;
+  padding-left: 1.6rem;
+}
+
+.plan-code .plan li {
+  margin-bottom: 0.55rem;
+}
+
+.plan-code .cell-output::before {
+  content: "Output";
+  display: block;
+  margin: 0.55rem 0 0.25rem;
+  color: #68707d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .plan-code {
+    grid-template-columns: 1fr;
+    row-gap: 0.4rem;
+  }
+}

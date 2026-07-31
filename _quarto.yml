@@ -1,0 +1,76 @@
+project:
+  type: book
+  output-dir: _book
+  execute-dir: project
+  post-render:
+    - python3 scripts/stabilize_html_numbering.py
+
+book:
+  title: "Deep Learning: Making It Trainable"
+  subtitle: "Geometry, Dynamics, and the Machine"
+  author: "Heman Shakeri"
+  date: "2026-07-30"
+  repo-url: https://github.com/Shakeri-Lab/opt-book
+  site-url: https://shakeri-lab.github.io/opt-book/
+  sidebar:
+    style: docked
+    search: true
+  page-footer:
+    left: >
+      © Heman Shakeri · Text CC BY-NC-SA 4.0 · Code MIT ·
+      School of Data Science, University of Virginia
+    right: >
+      DS 6210 · Numerical Analysis & Optimization
+  chapters:
+    - index.qmd
+    - part: "Act 0 — The computational arena"
+      chapters:
+        - chapters/act0/02-streaming-state.qmd
+        - chapters/act0/03-precision-contract.qmd
+        - chapters/act0/04-quadratic-modes.qmd
+    - part: "Act I — Geometry of high dimensions"
+      chapters:
+        - chapters/act1/05-subgaussian-safe-zone.qmd
+        - chapters/act1/06-products-squares.qmd
+        - chapters/act1/07-epsilon-nets.qmd
+        - chapters/act1/08-random-operators.qmd
+        - chapters/act1/09-marchenko-pastur.qmd
+  appendices:
+    - chapters/appendices/notation.qmd
+    - chapters/appendices/rosetta.qmd
+
+bibliography: references.bib
+filters:
+  - filters/stable-chapter-numbering.lua
+
+execute:
+  freeze: auto
+  error: true
+  warning: false
+
+format:
+  html:
+    theme: [cosmo, trainable.scss]
+    html-math-method: mathjax
+    include-in-header: mathjax-config.html
+    code-link: true
+    code-copy: true
+    code-fold: false
+    toc: true
+    toc-depth: 3
+    number-depth: 2
+  pdf:
+    documentclass: scrbook
+    pdf-engine: lualatex
+    include-in-header:
+      - tex/macros.tex
+      - tex/accessibility.tex
+    toc: true
+    number-sections: true
+    colorlinks: true
+    keep-tex: true
+    geometry:
+      - margin=1.05in
+
+language:
+  title-block-author-single: "Author"

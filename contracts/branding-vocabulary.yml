@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "allowed_scopes": [
+    "brand-bridge",
+    "paper-audit",
+    "sources",
+    "rosetta",
+    "search-aliases",
+    "literal-code"
+  ],
+  "rules": [
+    {"term": "neural network", "context_regex": "(model|architecture|layer|training|composition)", "severity": "error"},
+    {"term": "MLP", "context_regex": "(model|architecture|layer|training)", "severity": "error"},
+    {"term": "LayerNorm", "context_regex": ".*", "severity": "error"},
+    {"term": "RMSNorm", "context_regex": ".*", "severity": "error"},
+    {"term": "BatchNorm", "context_regex": ".*", "severity": "error"},
+    {"term": "He", "context_regex": "(initialization|initialize|init)", "severity": "error"},
+    {"term": "Xavier", "context_regex": "(initialization|initialize|init)", "severity": "error"},
+    {"term": "Adam", "context_regex": "(optimizer|update|moment|parameter|precondition)", "severity": "error"},
+    {"term": "attention", "context_regex": "(mechanism|head|layer|weights|scores|matrix|block|self-attention)", "severity": "error"},
+    {"term": "Transformer", "context_regex": "(model|architecture|block|layer|encoder|decoder)", "severity": "error"},
+    {"term": "FlashAttention", "context_regex": ".*", "severity": "error"},
+    {"term": "Muon", "context_regex": ".*", "severity": "error"},
+    {"term": "QJL", "context_regex": ".*", "severity": "error"},
+    {"term": "TurboQuant", "context_regex": ".*", "severity": "error"}
+  ]
+}

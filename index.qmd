@@ -1,0 +1,102 @@
+---
+description: "A phenomenon-first graduate course book connecting high-dimensional probability, optimization dynamics, numerical stability, and accelerator constraints."
+aliases:
+  - /algorithms-for-deep-learning.html
+---
+
+# Deep Learning: Making It Trainable {.unnumbered}
+
+Training fails in ways that look deceptively alike.
+
+A loss spike may be caused by a step that crosses a curvature boundary. It may
+be caused by a value that leaves the representable range. It may be caused by
+a noisy direction that only looks like signal. It may be caused by an
+implementation that moves the right mathematical object through the machine
+in the wrong way.
+
+The trace alone does not name the cause. We need instruments.
+
+This book develops those instruments through three lenses:
+
+- **geometry**, which describes the high-dimensional arena;
+- **dynamics**, which describes how the update moves through it;
+- **algorithms and systems**, which describe the arithmetic, state, and data
+  movement that make the update physically executable.
+
+The governing question is:
+
+> What mathematical and physical conditions make a modern learning system
+> trainable, and which diagnostic tells us which condition failed?
+
+## How the book moves
+
+Chapters begin with something that breaks. You will predict a cause before the
+diagnostic is revealed. The mathematics then arrives as the smallest language
+that separates the competing explanations, and the chapter closes with a
+repair and an audit of its boundary.
+
+The recurring order is:
+
+> Problem → Prediction → Instrumentation → Diagnosis → Theory → Solution →
+> Audit
+
+The book is inductive on purpose. A finished term can make an object feel
+settled before its assumptions are visible. We therefore build the primitive
+first and supply the conventional literature name when that name becomes
+useful for search, comparison, and primary sources.
+
+## The computational harness
+
+One codebase grows with the argument. The first capability is deliberately
+small: a state that can carry stable moments through a stream and merge partial
+states without revisiting the data. Later chapters add precision diagnostics,
+spectral instruments, curvature products, and update audits.
+
+Visible code is divided into:
+
+1. the **equation**;
+2. the **kernel** that exposes the mechanism;
+3. the **harness** that declares data, dtype, device, estimator, and checks.
+
+Every published numerical result is either produced on the page or linked to a
+machine-readable provenance record.
+
+## Reading contract
+
+The book assumes graduate linear algebra and probability, plus working Python,
+NumPy, and PyTorch. It assumes the mechanics of a first deep learning course
+and does not reteach model assembly. Those mechanics live in the sibling
+volume, [*Deep Learning: Making It
+Learnable*](https://shakeri-lab.github.io/dl-book/).
+
+The destination is not recall of a catalog. It is the ability to read a
+current optimization or systems paper and identify:
+
+- the assumption carrying the claim;
+- the quantity that was actually measured;
+- the estimator, reduction axes, and denominator behind that quantity;
+- the numerical and hardware contract;
+- the regime in which the conclusion survives;
+- the control that would distinguish the proposed mechanism from a plausible
+  rival.
+
+## Colophon and edition note
+
+The HTML edition is canonical; the PDF is a derived, content-equivalent print
+conversion. Differences are limited to pagination, float placement, line
+breaking, and other presentation requirements.
+
+This volume is developed for **DS 6210 — Computation II: Numerical Analysis &
+Optimization**, also known as *Algorithms for Deep Learning*, in the School of
+Data Science at the University of Virginia. It is the advanced companion to
+[*Deep Learning: Making It
+Learnable*](https://shakeri-lab.github.io/dl-book/).
+
+This is a working `v0.x` edition. The C02 pilot is complete only when its
+mathematics, code, provenance, HTML, and PDF pass the repository audits.
+
+## Suggested citation
+
+Shakeri, Heman. 2026. *Deep Learning: Making It Trainable*. Draft version
+0.1. School of Data Science, University of Virginia.
+<https://shakeri-lab.github.io/opt-book/>.

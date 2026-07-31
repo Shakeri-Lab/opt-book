@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "promises": [
+    {
+      "id": "promise-canonical-html",
+      "text": "HTML is canonical and PDF is content-equivalent.",
+      "scope": "front-matter",
+      "owner": "scripts/audit_book_structure.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-opening-phenomenon",
+      "text": "Every numbered chapter begins with an inspectable phenomenon.",
+      "scope": "numbered-chapter",
+      "owner": "scripts/audit_book_structure.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-theorem-phenomenon",
+      "text": "Every theorem names the phenomenon it explains.",
+      "scope": "theorem",
+      "owner": "scripts/audit_book_structure.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-plan-code",
+      "text": "Every learner-visible code surface has Plan to Code parity.",
+      "scope": "visible-code",
+      "owner": "scripts/audit_plan_code.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-number-provenance",
+      "text": "Every book-generated numerical result has a claim ID.",
+      "scope": "generated-number",
+      "owner": "scripts/audit_claims.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-chapter-close",
+      "text": "Every numbered chapter has Check yourself, five-slot recap, Sources, and canonical exercises.",
+      "scope": "numbered-chapter",
+      "owner": "scripts/audit_book_structure.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-alt-text",
+      "text": "Every HTML figure has substantive alt text.",
+      "scope": "html-figure",
+      "owner": "scripts/audit_rendered.py",
+      "status": "active"
+    },
+    {
+      "id": "promise-c02-c03-loss-boundary",
+      "text": "C03 distinguishes arithmetic cancellation from distinctions already lost when inputs were represented.",
+      "scope": "c02-to-c03",
+      "source": "chapters/act0/02-streaming-state.qmd",
+      "owner": "chapters/act0/03-precision-contract.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c02-c03-precision-contract",
+      "text": "C03 makes unit roundoff, local spacing, range, and the storage-compute-accumulation contract quantitative.",
+      "scope": "c02-to-c03",
+      "source": "chapters/act0/02-streaming-state.qmd",
+      "owner": "chapters/act0/03-precision-contract.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c04-c16-fixed-boundary",
+      "text": "C16 compares moving-curvature edge-of-stability behavior with C04's fixed quadratic boundary.",
+      "scope": "c04-to-c16",
+      "source": "chapters/act0/04-quadratic-modes.qmd",
+      "owner": "chapters/act2/16-edge-of-stability.qmd",
+      "status": "pending-owner"
+    },
+    {
+      "id": "promise-c05-c06-squared-boundary",
+      "text": "C06 shows why squaring a sub-Gaussian quantity leaves the sub-Gaussian safe zone and produces a two-regime tail diagnostic.",
+      "scope": "c05-to-c06",
+      "source": "chapters/act1/05-subgaussian-safe-zone.qmd",
+      "owner": "chapters/act1/06-products-squares.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c06-c07-tail-budget",
+      "text": "C07 converts a fixed-direction tail budget into control of a continuous supremum by discretizing the sphere with an epsilon-net.",
+      "scope": "c06-to-c07",
+      "source": "chapters/act1/06-products-squares.qmd",
+      "owner": "chapters/act1/07-epsilon-nets.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c07-c08-adaptive-directions",
+      "text": "C08 applies C07's finite-cover logic to a random operator whose extremal singular directions are chosen after the matrix is observed.",
+      "scope": "c07-to-c08",
+      "source": "chapters/act1/07-epsilon-nets.qmd",
+      "owner": "chapters/act1/08-random-operators.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c08-c09-spectral-mass",
+      "text": "C09 explains how empirical spectral distributions and Marchenko--Pastur describe the mass between C08's singular edges, with a finite-size null before any outlier is called signal.",
+      "scope": "c08-to-c09",
+      "source": "chapters/act1/08-random-operators.qmd",
+      "owner": "chapters/act1/09-marchenko-pastur.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c09-c10-effective-dimension",
+      "text": "C10 replaces C09's ambient-dimension covariance-estimation diagnostic with effective rank and explains why spectral mass can be far smaller than parameter count.",
+      "scope": "c09-to-c10",
+      "source": "chapters/act1/09-marchenko-pastur.qmd",
+      "owner": "chapters/act1/10-effective-rank.qmd",
+      "status": "pending-owner"
+    }
+  ]
+}

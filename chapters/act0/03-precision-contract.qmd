@@ -1,0 +1,670 @@
+---
+subtitle: "Range, resolution, and rounding"
+description: "Why a nonzero update can become identically zero, and how a complete precision contract separates range, representation, arithmetic, cancellation, and scale allocation."
+number-offset: 2
+jupyter: python3
+harness-ref: ch-03
+harness-api: "0.3"
+harness-wheel-sha256: "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918"
+phenomenon_id: c03-vanishing-update
+claim_ids:
+  - c03-update-stagnation-001
+  - c03-format-envelope-001
+  - c03-grid-collapse-001
+  - c03-stochastic-rounding-001
+threads:
+  numerical-stability: callback
+lenses:
+  geometric: supporting
+  dynamic: supporting
+  algorithmic: primary
+fulfills:
+  - promise-c02-c03-loss-boundary
+  - promise-c02-c03-precision-contract
+---
+
+# The Grid Under the Update {#c03}
+
+<span class="thread">NS · Numerical stability</span>
+<span class="lens-ledger">Geometric supporting · Dynamic supporting · Algorithmic primary</span>
+
+A parameter is stored as FP16 at the value $1024$. An algorithm asks for the
+same update, $+0.25$, four hundred times. Exact arithmetic ends at $1124$.
+The stored parameter never moves.
+
+Nothing overflowed. The update was not zero. The code executed all four
+hundred additions. Yet every requested change disappeared.
+
+::: {.callout-important title="Prediction"}
+Which boundary swallowed the update?
+
+1. The value left the format's range.
+2. The input $0.25$ could not be represented.
+3. The addition produced a result that rounded back to $1024$.
+4. Positive and negative quantities catastrophically cancelled.
+
+Choose one, then name the control that would separate it from the others.
+:::
+
+## The update that never lands {#sec-c03-opening}
+
+The opening witness is a format simulation on a CPU. It makes a statement
+about FP16 rounding, not about CPU or accelerator speed. The chapter verifies
+and imports its own vendored harness wheel, so later changes to the package
+cannot silently alter this result.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate the chapter's exact harness wheel.
+2. Request four hundred $+0.25$ updates from the same initial value.
+3. Record the local spacing and the full precision contract.
+4. Assert the stalled stored path against the exact path.
+:::
+
+```{python}
+#| label: fig-c03-stalled-update
+#| fig-cap: "A requested update of 0.25 advances the exact trajectory but never changes an FP16 value stored at 1024. The figure supports a local-resolution diagnosis under the declared round-after-each-step contract; it is not a hardware timing result."
+#| fig-alt: "Line plot over 400 update steps. The exact trajectory rises from 1024 to 1124, while the FP16 stored trajectory remains horizontal at 1024."
+#| code-summary: "Code: expose a nonzero update that never changes stored state"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-03/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    float_contract,
+    local_spacing,
+    repeated_update,
+    stochastic_update_trials,
+    symmetric_quantize,
+)
+
+# [2]
+initial, increment, steps = 1024.0, 0.25, 400
+trace = repeated_update(initial, increment, steps, dtype=np.float16)
+
+# [3]
+spacing = local_spacing(initial, dtype=np.float16)
+precision_ledger = {
+    "storage": "float16",
+    "operands": "exactly representable float16 inputs",
+    "compute": "correctly rounded binary addition",
+    "accumulator": "stored state itself",
+    "output": "float16 after every step",
+    "rounding": "nearest, ties to even",
+}
+
+# [4]
+assert trace.exact_final == 1124.0
+assert trace.final == 1024.0
+assert trace.changed_steps == 0
+
+fig, ax = plt.subplots(figsize=(7.0, 3.8))
+ax.plot(trace.exact, color="#232D4B", linewidth=2.2, label="Exact requested path")
+ax.plot(trace.stored, color="#9C2F2F", linewidth=2.2, label="Stored FP16 path")
+ax.set(xlabel="update step", ylabel="state")
+ax.grid(alpha=0.25)
+ax.legend(frameon=False)
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+print(f"local spacing={spacing:g}; half spacing={spacing / 2:g}")
+print(f"exact endpoint={trace.exact_final:g}; stored endpoint={trace.final:g}")
+```
+::::
+
+The value $0.25$ is exactly representable in binary. The exact sum
+$1024.25$ is also far inside the finite range of FP16. The failure occurs
+when that sum must be stored back on the local FP16 grid. Its neighbors are
+$1024$ and $1025$; round-to-nearest returns $1024$. The next step starts
+from the same state and repeats the same loss.
+
+This is stagnation by local resolution. Describing the computation only as
+“FP16” does not reveal it. We needed the state value, update size, storage
+point, and rounding rule.
+
+## A floating format is a changing grid {#sec-c03-local-grid}
+
+A normalized radix-two value with $p$ significand bits has the form
+
+$$
+x
+=
+\pm\left(1.b_1b_2\cdots b_{p-1}\right)_2 2^e.
+$$ {#eq-c03-normal-form}
+
+The leading one is fixed for normal values. Incrementing the last stored bit
+changes the significand by $2^{-(p-1)}$, then the exponent scales that
+change by $2^e$.
+
+::: {#thm-c03-binade-spacing phenomenon_id="c03-vanishing-update"}
+## Binade spacing
+
+In a normalized radix-two format with $p$ significand bits, consecutive
+representable values in the binade $[2^e,2^{e+1})$ differ by
+
+$$
+\Delta_e=2^{e-(p-1)}.
+$$ {#eq-c03-binade-spacing}
+
+Under round-to-nearest, an update from a representable value cannot change the
+stored result unless the exact result reaches a midpoint between grid points,
+with the midpoint itself decided by the tie rule.
+:::
+
+### Proof
+
+Within one binade, the exponent $e$ is fixed. The stored significands are
+
+$$
+1+\frac{k}{2^{p-1}},
+\qquad
+k=0,1,\ldots,2^{p-1}-1.
+$$
+
+Consecutive values therefore differ by
+
+$$
+2^e
+\left[
+\left(1+\frac{k+1}{2^{p-1}}\right)
+-
+\left(1+\frac{k}{2^{p-1}}\right)
+\right]
+=2^{e-(p-1)}.
+$$
+
+Round-to-nearest assigns every exact value between two adjacent midpoints to
+the enclosed grid point. A smaller perturbation cannot cross that cell's
+boundary. $\square$
+
+For FP16, $p=11$. At $1024=2^{10}$,
+@eq-c03-binade-spacing gives
+
+$$
+\operatorname{ulp}(1024)=2^{10-(11-1)}=1.
+$$
+
+The update $0.25$ is only one quarter of the local spacing and one half of
+the distance to the rounding boundary.
+
+### Three nearby quantities that are not synonyms
+
+- $\operatorname{ulp}(x)$ is a **local** grid spacing near $x$.
+- Machine epsilon, $\varepsilon_{\mathrm{mach}}$, is the gap from $1$ to
+  the next larger representable value.
+- For round-to-nearest in a normal binade, the unit roundoff is
+  $u=\varepsilon_{\mathrm{mach}}/2$.
+
+The conventional one-operation model is
+
+$$
+\operatorname{fl}(z)=z(1+\delta),
+\qquad |\delta|\le u.
+$$ {#eq-c03-standard-model}
+
+It applies when one exact result $z$ is correctly rounded to a normal finite
+value. It is not a license to ignore overflow, gradual underflow, multiple
+operations, an already-rounded input, or an unspecified reduction.
+
+::: {.callout-warning title="Named wrong answer: 'Machine epsilon is the smallest number the format can store'"}
+Machine epsilon describes the gap after one. The smallest positive normal and
+the smallest positive subnormal describe range near zero. Local spacing grows
+with the exponent. One number cannot stand in for all three.
+:::
+
+## Range and resolution are separate budgets {#sec-c03-range}
+
+The next instrument queries the format instead of relying on remembered
+decimal approximations.
+
+:::: {.plan-code}
+::: {.plan}
+1. Query the FP16 and FP32 format contracts at runtime.
+2. Separate significand allocation from exponent allocation.
+3. Report epsilon, unit roundoff, and both lower range boundaries.
+4. Verify the observed spacing at the opening state.
+:::
+
+```{python}
+#| label: c03-format-contract
+#| code-summary: "Code: inspect range and resolution as separate fields"
+#| code-fold: false
+
+# [1]
+contracts = {
+    "FP16": float_contract(np.float16),
+    "FP32": float_contract(np.float32),
+}
+
+# [2]
+for name, contract in contracts.items():
+    print(
+        f"{name}: significand={contract['significand_bits']} bits, "
+        f"exponent={contract['exponent_bits']} bits"
+    )
+
+# [3]
+for name, contract in contracts.items():
+    print(
+        f"{name}: eps={contract['epsilon']:.8g}, "
+        f"u={contract['unit_roundoff']:.8g}, "
+        f"smallest normal={contract['smallest_normal']:.8g}, "
+        f"smallest subnormal={contract['smallest_subnormal']:.8g}, "
+        f"largest finite={contract['largest_finite']:.8g}"
+    )
+
+# [4]
+assert contracts["FP16"]["unit_roundoff"] == 2**-11
+assert local_spacing(1024.0, dtype=np.float16) == 1.0
+```
+::::
+
+Increasing exponent bits extends the range; increasing significand bits
+refines the grid within a binade. Those are different resources. A value can
+be finite but too coarsely resolved for the update applied to it. Conversely,
+a computation can have fine relative resolution throughout its normal range
+and still overflow because that range is too short.
+
+Subnormal values extend the grid below the smallest normal with reduced
+relative precision. A system may also change their execution behavior. The
+portable claim is therefore not merely a smallest-positive number: the
+contract must say whether subnormals are supported or flushed.
+
+::: {.callout-note title="Field note: a dtype name leaves four blanks"}
+Record **storage**, **compute**, **accumulation**, and **output** dtypes
+separately. Then record the rounding rule and exceptional-value behavior. A
+reduction can read narrow operands, multiply in one format, accumulate in a
+wider format, and round to a narrow output. Calling the entire path “FP16”
+hides the operation most likely to fail.
+:::
+
+This chapter simulates the declared rounding contract on a CPU. It never uses
+CPU FP16 timing as evidence about accelerator performance.
+
+## Two losses that no longer look alike {#sec-c03-loss-boundary}
+
+Chapter 2 separated two failures:
+
+1. distinctions can disappear when real inputs are represented on a grid;
+2. represented inputs can survive, while the evaluation path destroys the
+   desired result.
+
+Local spacing now makes the first boundary quantitative. If two real values
+round to the same stored value, no later algorithm can infer which one
+arrived. Wider accumulation begins too late.
+
+Cancellation is different. Suppose $x$ and $y$ are close, but the
+represented operands satisfy
+
+$$
+\widehat{x}=x(1+\delta_x),
+\qquad
+\widehat{y}=y(1+\delta_y),
+\qquad
+|\delta_x|,|\delta_y|\le u.
+$$
+
+::: {#thm-c03-cancellation phenomenon_id="c03-vanishing-update"}
+## Cancellation amplification
+
+If $x\ne y$, then even before rounding the subtraction itself,
+
+$$
+\frac{
+\left|(\widehat{x}-\widehat{y})-(x-y)\right|
+}{
+|x-y|
+}
+\le
+u\frac{|x|+|y|}{|x-y|}.
+$$ {#eq-c03-cancellation-bound}
+:::
+
+### Proof
+
+Substitute the represented operands:
+
+$$
+\begin{aligned}
+(\widehat{x}-\widehat{y})-(x-y)
+&=x\delta_x-y\delta_y.
+\end{aligned}
+$$
+
+The triangle inequality gives
+
+$$
+\left|x\delta_x-y\delta_y\right|
+\le u(|x|+|y|).
+$$
+
+Divide by the nonzero exact difference $|x-y|$. $\square$
+
+When $|x-y|$ is tiny compared with $|x|+|y|$, the subtraction exposes
+errors that were small relative to the operands but large relative to the
+answer. Performing that final subtraction in a wider format does not restore
+bits already lost while the two operands were formed.
+
+This closes the first promise from Chapter 2. Its raw moments occupied the
+scale of $\mu^2$, and their rounded values differed by exactly one
+$\operatorname{ulp}(\mu^2)=32$. The impossible variance was therefore
+$-32$, while the centered algorithms avoided constructing those two large
+nearby operands. At a still larger offset, distinct deviations eventually map
+to the same FP32 input; that later representation loss is irrecoverable.
+
+The bound in @eq-c03-cancellation-bound is a diagnostic sensitivity statement.
+It does not include the addition count, reduction tree, fused operations, or
+accumulator format of a complete kernel. Those belong in the precision
+contract.
+
+## Resolution must be allocated {#sec-c03-quantization}
+
+A finite grid is not merely chosen; it is placed. Consider a signed
+$b$-bit symmetric integer grid with
+
+$$
+q_{\max}=2^{b-1}-1,
+\qquad
+s=\frac{\max_i |x_i|}{q_{\max}},
+\qquad
+Q_s(x_i)=s\,
+\operatorname{clip}\!\left(
+\operatorname{round}\!\left(\frac{x_i}{s}\right),
+-q_{\max},q_{\max}
+\right).
+$$ {#eq-c03-symmetric-quantizer}
+
+One scale for $[0.1,0.2,0.3,100]$ must cover the outlier. The following model
+uses eight signed bits. It is a uniform integer quantizer, not a floating-point
+format.
+
+:::: {.plan-code}
+::: {.plan}
+1. Quantize all four coordinates with one declared symmetric scale.
+2. Quantize the first three coordinates as one block and the outlier as another.
+3. Compare integer codes and reconstructed values.
+4. Assert that only the global scale erases every small coordinate.
+:::
+
+```{python}
+#| label: c03-grid-allocation
+#| code-summary: "Code: show an outlier collapsing a global quantization grid"
+#| code-fold: false
+
+values = np.array([0.1, 0.2, 0.3, 100.0])
+
+# [1]
+global_grid = symmetric_quantize(values, bits=8)
+
+# [2]
+blocked_grid = symmetric_quantize(values, bits=8, block_size=3)
+
+# [3]
+for name, result in (("global", global_grid), ("blocked", blocked_grid)):
+    print(
+        f"{name:>7}: scales={np.array2string(result.scales, precision=6)}, "
+        f"codes={result.integer_codes.tolist()}, "
+        f"reconstructed={np.array2string(result.dequantized, precision=6)}"
+    )
+
+# [4]
+assert np.all(global_grid.integer_codes[:3] == 0)
+assert np.all(blocked_grid.integer_codes[:3] != 0)
+```
+::::
+
+The global step is
+`{python} f"{global_grid.scales[0]:.6f}"`; every small coordinate lies below
+half that step and rounds to zero. The first block's step is
+`{python} f"{blocked_grid.scales[0]:.6f}"`, so those coordinates receive useful
+codes. Nothing about the bit count alone predicted the difference. Scale
+granularity was part of the algorithm.
+
+Blocking is not free. It stores more scales, adds grouping rules, and can
+introduce discontinuities at block boundaries. The supported conclusion is
+not that smaller blocks are always better. It is that a claim about
+quantization error is incomplete until scale selection and block axes are
+specified.
+
+## Changing the rounding rule {#sec-c03-stochastic}
+
+The opening update is always pushed toward the old state by deterministic
+rounding. A different rounding rule can remove that one-sided local error.
+
+Let $a<x<b$ be adjacent grid points. Define stochastic adjacent rounding by
+
+$$
+\Pr(Q_{\mathrm{sr}}(x)=a)=\frac{b-x}{b-a},
+\qquad
+\Pr(Q_{\mathrm{sr}}(x)=b)=\frac{x-a}{b-a}.
+$$ {#eq-c03-stochastic-rule}
+
+::: {#thm-c03-stochastic-rounding phenomenon_id="c03-vanishing-update"}
+## Unbiased adjacent stochastic rounding
+
+Under @eq-c03-stochastic-rule,
+
+$$
+\E[Q_{\mathrm{sr}}(x)]=x,
+\qquad
+\E[(Q_{\mathrm{sr}}(x)-x)^2]=(x-a)(b-x).
+$$ {#eq-c03-stochastic-moments}
+:::
+
+### Proof
+
+The expectation is
+
+$$
+a\frac{b-x}{b-a}+b\frac{x-a}{b-a}=x.
+$$
+
+The error equals $-(x-a)$ when rounding to $a$ and $b-x$ when rounding
+to $b$. Its second moment is
+
+$$
+(x-a)^2\frac{b-x}{b-a}
++
+(b-x)^2\frac{x-a}{b-a}
+=(x-a)(b-x).
+$$
+
+Because the mean error is zero, this second moment is also the variance.
+$\square$
+
+At the opening state, each requested value is an integer plus $0.25$ and
+the grid spacing remains one. Each step therefore moves upward with
+probability $0.25$. Under independent draws, the endpoint has the model
+
+$$
+1024+\operatorname{Binomial}(400,0.25),
+$$
+
+with mean $1124$ and standard deviation
+$\sqrt{400(0.25)(0.75)}\approx 8.66$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Run seeded stochastic-rounding trials under the opening contract.
+2. Estimate the endpoint mean, standard deviation, and standard error.
+3. Compare the mean with the exact endpoint and the binomial model.
+4. Plot the endpoint distribution with both reference locations.
+:::
+
+```{python}
+#| label: fig-c03-stochastic-endpoints
+#| fig-cap: "Across 20,000 seeded trials, stochastic adjacent rounding centers the endpoint distribution near the exact endpoint 1124, whereas deterministic rounding ends at 1024. The figure supports an expectation claim for this declared model, not exact trajectories or general training convergence."
+#| fig-alt: "Histogram of stochastic endpoints centered near 1124. A solid vertical line marks the exact endpoint at 1124 and a dashed line marks the deterministic endpoint at 1024, far to the left."
+#| code-summary: "Code: replace deterministic stagnation with an unbiased endpoint estimator"
+#| code-fold: false
+
+# [1]
+stochastic_seed, trials = 6212, 20_000
+endpoints = stochastic_update_trials(
+    initial,
+    increment,
+    steps,
+    trials,
+    dtype=np.float16,
+    seed=stochastic_seed,
+).astype(np.float64)
+
+# [2]
+endpoint_mean = float(endpoints.mean())
+endpoint_sd = float(endpoints.std(ddof=1))
+endpoint_se = endpoint_sd / np.sqrt(trials)
+
+# [3]
+model_sd = np.sqrt(steps * 0.25 * 0.75)
+assert abs(endpoint_mean - trace.exact_final) < 4 * endpoint_se
+assert abs(endpoint_sd - model_sd) < 0.2
+
+# [4]
+fig, ax = plt.subplots(figsize=(7.0, 3.8))
+ax.hist(endpoints, bins=np.arange(endpoints.min() - 0.5, endpoints.max() + 1.5),
+        color="#5379AA", alpha=0.82)
+ax.axvline(trace.exact_final, color="#2E7D32", linewidth=2.2,
+           label="Exact endpoint")
+ax.axvline(trace.final, color="#9C2F2F", linewidth=2.2, linestyle="--",
+           label="Deterministic endpoint")
+ax.set(xlabel="stored endpoint", ylabel="trial count")
+ax.legend(frameon=False)
+plt.show()
+
+print(
+    f"mean={endpoint_mean:.5f}, sd={endpoint_sd:.5f}, "
+    f"SE(mean)={endpoint_se:.5f}"
+)
+print(
+    f"normal 95% interval for mean="
+    f"[{endpoint_mean - 1.96 * endpoint_se:.5f}, "
+    f"{endpoint_mean + 1.96 * endpoint_se:.5f}]"
+)
+```
+::::
+
+The estimated mean is
+`{python} f"{endpoint_mean:.5f}"`, with standard error
+`{python} f"{endpoint_se:.5f}"`. The exact endpoint lies inside the displayed
+normal-approximation interval for the mean. Individual trajectories remain
+noisy; their standard deviation is about
+`{python} f"{endpoint_sd:.2f}"`.
+
+::: {.callout-warning title="Named wrong answer: 'Unbiased rounding makes the training run unbiased'"}
+The theorem concerns one rounding event conditional on its input. A later
+state depends on earlier random outcomes, and nonlinear maps do not generally
+preserve unbiasedness. Stochastic rounding prevents this deterministic
+sub-grid stagnation in expectation. It does not prevent overflow, choose a
+good scale, stabilize an update rule, or guarantee convergence.
+:::
+
+## Diagnose before prescribing {#sec-c03-audit}
+
+The same symptom—no visible progress—admits different repairs.
+
+| Diagnostic | Instrument | Matched repair | Repair cannot do |
+|---|---|---|---|
+| Value exceeds range | Peak and exceptional-value trace | Rescale, widen exponent range, or change the evaluation | Recover an overflowed intermediate after the fact |
+| Update lies below local midpoint | $\operatorname{ulp}(w)$ versus $|\Delta w|$ | Retain a wider state, rescale, accumulate increments, or use a scoped rounding change | Make the mathematical update direction correct |
+| Inputs already coincide on the grid | Same-input wider reference | Change upstream storage or scaling | Infer distinctions absent from the input |
+| Nearby large operands expose prior errors | Cancellation ratio and wider controls | Reformulate or form operands more accurately | Repair arbitrary ill-conditioning |
+| One outlier sets a global quantization step | Per-block maxima and zero-code rate | Allocate scales by a declared block or channel | Eliminate scale metadata and boundary costs |
+| Long reduction loses increments | Accumulator dtype and reduction-order audit | Widen or compensate the accumulation | Establish accelerator speed from CPU timing |
+
+This table is the precision language promised by Chapter 2. The dtype is one
+field inside the diagnosis, not the diagnosis itself.
+
+The same discipline will return in later acts. A variance-preserving
+initialization must keep values in range as well as control exact moments.
+Batch-coordinate normalization inherits the centered-state estimator and its
+accumulator contract. An edge-of-stability trace needs a precision control
+before a spike is assigned to curvature. A quantized update must declare
+where its scale came from.
+
+::: {.callout-tip title="Check yourself"}
+A stored parameter is $2048$ in FP16 and a computation requests
+$+0.75$. Without running code, compute the local spacing, identify the two
+adjacent stored candidates, and predict the round-to-nearest result. Which
+part of the answer would change under stochastic adjacent rounding?
+:::
+
+## Okay, so —
+
+- **Inherited:** Chapter 2 showed that algebraically equal formulas can have
+  different execution behavior and that wider downstream arithmetic cannot
+  reconstruct absent inputs.
+- **Changed:** “FP16” is no longer an explanation. The operative object is a
+  contract over storage, compute, accumulation, output, rounding, range, and
+  scale.
+- **Instrumented:** The harness now measures local spacing, queries format
+  envelopes, simulates round-after-each-step trajectories, audits block
+  quantizers, and estimates stochastic endpoints with uncertainty.
+- **Established:** Binade spacing predicts the stalled update; cancellation
+  amplifies operand errors relative to a small difference; stochastic
+  adjacent rounding is locally unbiased with an exact error variance.
+- **Unresolved:** Local unbiasedness is not trajectory-level convergence, CPU
+  simulation is not accelerator performance, and later chapters must test
+  whether an observed training failure is numerical, dynamic, or geometric.
+
+## Sources and further reading
+
+IEEE 754 specifies floating-point formats and operations
+[@ieee7542019]. Higham develops the standard rounding model, cancellation,
+stability, and error analysis in detail [@higham2002]. Connolly, Higham, and
+Mary analyze stochastic rounding and its probabilistic backward-error
+behavior [@connolly2021]. The FP8 proposal by Micikevicius and collaborators
+is useful modern format context, but it does not make a format name a complete
+execution contract [@micikevicius2022].
+
+For introductory format anatomy, mixed-precision roles, and the hardware
+motivation, see the sibling volume's
+[precision and hardware appendix](https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance).
+This chapter owns the local-grid diagnosis, the cancellation boundary,
+resolution allocation, and the rounding-rule audit.
+
+## Exercises
+
+1. **(Pencil.) Binade boundaries.** For FP16, compute the spacing immediately
+   below $2^{10}$, at $2^{10}$, and at $2^{11}$. Explain why
+   $\operatorname{ulp}(x)$ jumps at a power of two even though relative
+   precision remains of the same order.
+
+2. **(Pencil.) Cancellation control.** Let $x=1+\eta$ and $y=1$, with
+   $\eta>0$. Use @eq-c03-cancellation-bound to identify the amplification
+   factor. Then explain why the bound diagnoses sensitivity without predicting
+   the exact sign of the error.
+
+3. **(Code.) Stagnation map.** Sweep represented FP16 states across several
+   binades and requested positive updates. Predict stagnation from the local
+   midpoint before running the harness. Report a confusion matrix between the
+   prediction and observed state changes.
+
+4. **(Code.) Scale allocation.** Add one adjustable outlier to a vector of
+   small coordinates. Compare global, fixed-block, and per-coordinate
+   symmetric scales using reconstruction error and zero-code rate. Count scale
+   metadata explicitly; do not rank methods on error alone.
+
+5. **(Audit.) The incomplete precision claim.** A report says, “The model was
+   trained in FP16 and remained stable.” Write the missing storage, compute,
+   accumulation, output, rounding, exceptional-value, and scaling questions.
+   For each question, name one rival explanation it could eliminate.
+
+6. **(Audit.) Paper audit: FP8 formats.** Read the primary FP8 format proposal
+   cited above. Extract one claim about a format, one about an execution path,
+   and one empirical result. For each, record its assumptions and identify
+   whether the paper's evidence is a proof, model calculation, simulation, or
+   hardware measurement. Do not convert a paper-reported endpoint into a
+   reproduced book claim.

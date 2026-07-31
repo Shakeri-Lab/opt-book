@@ -1,0 +1,46 @@
+% Canonical PDF macros. Keep synchronized with mathjax-config.html and the
+% machine-readable notation covenant.
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{accsupp}
+\definecolor{trainblue}{HTML}{232D4B}
+\definecolor{trainorange}{HTML}{E57200}
+\definecolor{trainpurple}{HTML}{7A5195}
+\definecolor{traingreen}{HTML}{2E7D32}
+\definecolor{trainwine}{HTML}{722F37}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\var}{\operatorname{Var}}
+\newcommand{\cov}{\operatorname{Cov}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\vect}[1]{\symbf{#1}}
+\newcommand{\matr}[1]{\symbf{#1}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\loss}{\mathcal{L}}
+
+% Decorative callout icons should not become copied or spoken words.
+\AtBeginDocument{%
+  \ifdefined\faInfo
+    \let\trainableOriginalFaInfo\faInfo
+    \renewcommand{\faInfo}{%
+      \BeginAccSupp{method=pdfstringdef,ActualText={}}\trainableOriginalFaInfo\EndAccSupp{}%
+    }%
+  \fi
+  \ifdefined\faLightbulb
+    \let\trainableOriginalFaLightbulb\faLightbulb
+    \renewcommand{\faLightbulb}{%
+      \BeginAccSupp{method=pdfstringdef,ActualText={}}\trainableOriginalFaLightbulb\EndAccSupp{}%
+    }%
+  \fi
+  \ifdefined\faExclamationTriangle
+    \let\trainableOriginalFaWarning\faExclamationTriangle
+    \renewcommand{\faExclamationTriangle}{%
+      \BeginAccSupp{method=pdfstringdef,ActualText={}}\trainableOriginalFaWarning\EndAccSupp{}%
+    }%
+  \fi
+}
+
+\raggedbottom

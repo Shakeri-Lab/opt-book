@@ -1,0 +1,44 @@
+{
+  "chapter": "c04",
+  "claim_id": "c04-preconditioner-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "Laptop-CPU model calculation; iteration counts are not wall-clock or accelerator-performance claims.",
+  "harness_ref": "ch-04",
+  "harness_wheel_sha256": "a3478fd77e8c9b4401ae5d23e35d7b7bddd45ae5211bd14f72662be6dadcd62b",
+  "hypothesis": "A positive diagonal change of scale that compresses the effective spectrum from condition number 100 to 4 shortens the slow-mode wait.",
+  "payload_sha256": "31ff3979c12e8c7f8745cfccfb371200219a91a8495721f8654d01279fd79f3f",
+  "phenomenon_id": "c04-many-clocks",
+  "provenance_class": "a",
+  "result": {
+    "preconditioned": {
+      "effective_condition_number": 4.0,
+      "effective_eigenvalues": [
+        1.0,
+        4.0
+      ],
+      "final_error_norm": 3.1264573555604205e-07,
+      "preconditioner_diagonal": [
+        1.0,
+        0.04
+      ],
+      "step_size": 0.4,
+      "steps": 30
+    },
+    "raw": {
+      "final_error_norm": 0.5640275304093993,
+      "step_size": 0.019,
+      "steps": 30
+    }
+  },
+  "schema_version": 1
+}

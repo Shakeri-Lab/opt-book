@@ -1,0 +1,60 @@
+{
+  "chapter": "c06",
+  "claim_id": "c06-clipping-bias-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "Laptop-CPU probability calculation; no accelerator throughput or low-precision range claim.",
+  "harness_ref": "ch-06",
+  "harness_wheel_sha256": "160afa2bff7051769d71818551178fc1cbfc3c21ff8f4c44e721f92a81621410",
+  "hypothesis": "Clipping makes a heavy-tailed variable bounded but changes its mean; the concentration repair and estimator bias are distinct.",
+  "payload_sha256": "bfd9c48d044efd3b3f324d9985d55352623e91c4735681bd5e8d7aa2427e095f",
+  "phenomenon_id": "c06-square-two-regimes",
+  "provenance_class": "a",
+  "result": {
+    "bias_formula": "-2/sqrt(C+3)",
+    "boundary": "The centered clipped variable is sub-Gaussian by boundedness, but it estimates a clipped target unless the bias is handled.",
+    "centered_clipped_proxy_variance_upper_bound": {
+      "128.0": 16384.0,
+      "16.0": 256.0,
+      "2.0": 4.0,
+      "32.0": 1024.0,
+      "4.0": 16.0,
+      "64.0": 4096.0,
+      "8.0": 64.0
+    },
+    "exact_clipped_mean_bias": {
+      "128.0": -0.1747408113322076,
+      "16.0": -0.45883146774112354,
+      "2.0": -0.8944271909999159,
+      "32.0": -0.3380617018914066,
+      "4.0": -0.7559289460184545,
+      "64.0": -0.24433888871261045,
+      "8.0": -0.6030226891555273
+    },
+    "original_mean": 0.0,
+    "original_variance": "infinite",
+    "pareto_scale": 1.0,
+    "pareto_shape": 1.5,
+    "positive_mgf": "infinite for every lambda > 0",
+    "symmetric_clip_thresholds": [
+      2.0,
+      4.0,
+      8.0,
+      16.0,
+      32.0,
+      64.0,
+      128.0
+    ],
+    "variable": "X = Y - E[Y], Y Pareto(shape=1.5, scale=1)"
+  },
+  "schema_version": 1
+}

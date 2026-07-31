@@ -1,0 +1,160 @@
+name: book
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "23 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  fast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked
+      - run: uv build harness --wheel --out-dir /tmp/harness-build
+      - name: Test immediately previous harness pin
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-08/trainable_harness-0.8.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py
+          uv run python - <<'PY'
+          import numpy as np
+          from trainable_harness import matrix_spectrum_summary, power_iteration_spectral_norm
+          matrix = np.diag([5.0, 2.0, 0.5])
+          summary = matrix_spectrum_summary(matrix)
+          assert summary.singular_values == (5.0, 2.0, 0.5)
+          result = power_iteration_spectral_norm(matrix, iterations=12, seed=6223)
+          assert abs(result.estimates[-1] - 5.0) < 1e-8
+          PY
+      - name: Test current harness pin
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-09/trainable_harness-0.9.0-py3-none-any.whl
+          uv run pytest -q harness/tests
+      - run: uv run python scripts/run_fast_audits.py
+
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+      - run: uv sync --locked
+      - run: QUARTO_PYTHON=.venv/bin/python quarto render
+      - name: Recompile retained TeX and preserve the LuaLaTeX log
+        run: |
+          mkdir -p tmp/pdfs
+          TEXINPUTS=./_book//: lualatex -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
+          TEXINPUTS=./_book//: lualatex -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
+          cp tmp/pdfs/Deep-Learning--Making-It-Trainable.log tmp/pdfs/book-build.log
+      - run: uv run python scripts/audit_rendered.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rendered-book
+          path: _book/
+      - name: Configure GitHub Pages
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+        uses: actions/configure-pages@v5
+      - name: Upload GitHub Pages artifact
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _book/
+
+  historical:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: uv sync --locked
+      - name: Execute historical ch-02 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-02/trainable_harness-0.2.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py
+          uv run python experiments/c02_variance.py
+      - name: Execute historical ch-03 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-03/trainable_harness-0.3.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py
+          uv run python experiments/c03_precision.py
+      - name: Execute historical ch-04 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-04/trainable_harness-0.4.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py
+          uv run python experiments/c04_quadratics.py
+      - name: Execute historical ch-05 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-05/trainable_harness-0.5.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py
+          uv run python experiments/c05_subgaussian.py
+      - name: Execute historical ch-06 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-06/trainable_harness-0.6.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py
+          uv run python experiments/c06_subexponential.py
+      - name: Execute historical ch-07 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-07/trainable_harness-0.7.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py
+          uv run python experiments/c07_epsilon_nets.py
+      - name: Execute historical ch-08 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-08/trainable_harness-0.8.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py
+          uv run python - <<'PY'
+          import numpy as np
+          from trainable_harness import matrix_spectrum_summary, power_iteration_spectral_norm
+          matrix = np.diag([5.0, 2.0, 0.5])
+          summary = matrix_spectrum_summary(matrix)
+          assert summary.singular_values == (5.0, 2.0, 0.5)
+          result = power_iteration_spectral_norm(matrix, iterations=12, seed=6223)
+          assert abs(result.estimates[-1] - 5.0) < 1e-8
+          PY
+          uv run python experiments/c08_random_operators.py
+      - name: Execute current ch-09 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-09/trainable_harness-0.9.0-py3-none-any.whl
+          uv run pytest -q harness/tests
+          uv run python experiments/c09_spectral_null.py
+      - run: git diff --exit-code -- artifacts/claims
+
+  deploy:
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
+    needs: [fast, render]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

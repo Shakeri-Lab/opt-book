@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "chapter": "c09",
+  "sources": [
+    {
+      "id": "src-c09-instructor-rmt",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/5- RMT/meet10.tex",
+      "sha256": "ef0f8f36842e609a45bcddf0b5ad0a13660bbba1b9512a21a982e7665588885b",
+      "reuse": "empirical spectral distribution, Marchenko--Pastur reveal, covariance-estimation question, and spectral-null motivation; prose rewritten and finite-significance overclaims corrected"
+    },
+    {
+      "id": "src-c09-instructor-handout",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/5- RMT/handout.tex",
+      "sha256": "03b3bb5a66f82668ece0b2beb1b507e717f7276d7d03aaa352e5c18afc42fc48",
+      "reuse": "sample-covariance orientation and the transition from spectral mass to finite samples; effective-rank material displaced to C10"
+    },
+    {
+      "id": "src-c09-core-syllabus",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Syllabus_simple.tex",
+      "sha256": "2671dc810f8069731f15b740e7ca427eb5a665ecdc6078faf3a19bd3abe44249",
+      "reuse": "Marchenko--Pastur and covariance concentration before effective rank"
+    },
+    {
+      "id": "src-c09-legacy-rmt",
+      "class": "instructor-legacy",
+      "path": "../old/DS6210_Book/chapters/ch05_random_matrices.tex",
+      "sha256": "b2e289edbdcd184e2663d1a42653b56cc87f7f29dec39941a94efb34950edbc9",
+      "reuse": "source-discovery and claim audit only; in-bulk-equals-noise and outlier-equals-signal claims rejected"
+    },
+    {
+      "id": "vershynin2018-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/3-Vershynin_High-Dimensional Probability.pdf",
+      "sha256": "6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4",
+      "reuse": "sub-Gaussian covariance-estimation theorem and whitening proof architecture; local file used only for verification"
+    },
+    {
+      "id": "marchenko1967",
+      "class": "primary-scholarly",
+      "url": "https://doi.org/10.1070/SM1967v001n04ABEH001994",
+      "reuse": "original limiting empirical spectral distribution"
+    },
+    {
+      "id": "baik2006",
+      "class": "primary-scholarly",
+      "url": "https://doi.org/10.1016/j.jmva.2005.08.003",
+      "reuse": "rank-one spiked-covariance separation threshold and paper-audit contract"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "The Marchenko--Pastur upper support edge is not used as an exact finite-sample significance threshold.",
+    "An eigenvalue inside the asymptotic bulk is not declared to contain no signal.",
+    "A spectral outlier is not labeled learned signal without a matched null, a false-positive budget, and an alternative model.",
+    "A trained parameter matrix, update, or Hessian is not assigned an independent isotropic Wishart null by visual resemblance.",
+    "Marchenko--Pastur weak convergence is not presented as exact finite eigenvalue confinement.",
+    "The square-case lower edge at zero is not presented as a finite-matrix singularity identity.",
+    "Effective rank, generalization, depth-wise products, initialization, and optimizer interventions remain outside C09."
+  ]
+}

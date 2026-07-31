@@ -1,0 +1,153 @@
+{
+  "chapter": "c06",
+  "claim_id": "c06-two-regimes-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6219,
+    "seed_role": "Monte Carlo"
+  },
+  "hardware_claim_boundary": "Laptop-CPU probability calculation; no accelerator throughput or low-precision range claim.",
+  "harness_ref": "ch-06",
+  "harness_wheel_sha256": "160afa2bff7051769d71818551178fc1cbfc3c21ff8f4c44e721f92a81621410",
+  "hypothesis": "A sum of centered Gaussian squares has collective quadratic-rate deviations near its mean and linear-rate control after the MGF constraint becomes active.",
+  "payload_sha256": "4bf49336aa1abc7b8129680db968fe32a103166c54cb65b07c477f06108a936a",
+  "phenomenon_id": "c06-square-two-regimes",
+  "provenance_class": "a",
+  "result": {
+    "empirical_records": {
+      "12.0": {
+        "binomial_standard_error": 0.0002502212944415403,
+        "denominator": 500000,
+        "exact_probability": 0.03161965563738433,
+        "exceedances": 16176,
+        "probability": 0.032352
+      },
+      "16.0": {
+        "binomial_standard_error": 0.00014341552451530484,
+        "denominator": 500000,
+        "exact_probability": 0.009999780953104791,
+        "exceedances": 5196,
+        "probability": 0.010392
+      },
+      "2.0": {
+        "binomial_standard_error": 0.0006616474658668316,
+        "denominator": 500000,
+        "exact_probability": 0.32389696431289605,
+        "exceedances": 161808,
+        "probability": 0.323616
+      },
+      "20.0": {
+        "binomial_standard_error": 7.841541868790856e-05,
+        "denominator": 500000,
+        "exact_probability": 0.0028934650909455584,
+        "exceedances": 1542,
+        "probability": 0.003084
+      },
+      "24.0": {
+        "binomial_standard_error": 4.067712910223631e-05,
+        "denominator": 500000,
+        "exact_probability": 0.000778590082507363,
+        "exceedances": 414,
+        "probability": 0.000828
+      },
+      "32.0": {
+        "binomial_standard_error": 9.999749996874923e-06,
+        "denominator": 500000,
+        "exact_probability": 4.7499919599487556e-05,
+        "exceedances": 25,
+        "probability": 5e-05
+      },
+      "4.0": {
+        "binomial_standard_error": 0.0005863367653763492,
+        "denominator": 500000,
+        "exact_probability": 0.22022064660169896,
+        "exceedances": 110264,
+        "probability": 0.220528
+      },
+      "40.0": {
+        "binomial_standard_error": 2.828421467886284e-06,
+        "denominator": 500000,
+        "exact_probability": 2.4335718718410254e-06,
+        "exceedances": 2,
+        "probability": 4e-06
+      },
+      "6.0": {
+        "binomial_standard_error": 0.0004963092811221648,
+        "denominator": 500000,
+        "exact_probability": 0.14319153465074289,
+        "exceedances": 71928,
+        "probability": 0.143856
+      },
+      "8.0": {
+        "binomial_standard_error": 0.00040496919664586835,
+        "denominator": 500000,
+        "exact_probability": 0.08950449684017583,
+        "exceedances": 45061,
+        "probability": 0.090122
+      }
+    },
+    "estimator": "upper-tail exceedance proportion",
+    "exact_chi_square_chernoff_upper_bounds": {
+      "12.0": 0.2180406650817627,
+      "16.0": 0.08587843274304303,
+      "2.0": 0.9438993731583948,
+      "20.0": 0.029820527800068386,
+      "24.0": 0.009375324025464187,
+      "32.0": 0.0007383432813330591,
+      "4.0": 0.8066611482895177,
+      "40.0": 4.6414611186669613e-05,
+      "6.0": 0.6361186661485321,
+      "8.0": 0.46940979198822247
+    },
+    "explicit_bernstein_upper_bounds": {
+      "12.0": 0.2764530466295643,
+      "16.0": 0.1353352832366127,
+      "2.0": 0.9459594689067654,
+      "20.0": 0.06217652402211632,
+      "24.0": 0.02732372244729256,
+      "32.0": 0.004827949993831441,
+      "4.0": 0.8187307530779818,
+      "40.0": 0.0007904903231199661,
+      "6.0": 0.6642538428642953,
+      "8.0": 0.513417119032592
+    },
+    "piecewise_bernstein_rate": {
+      "12.0": 2.25,
+      "16.0": 4.0,
+      "2.0": 0.0625,
+      "20.0": 5.0,
+      "24.0": 6.0,
+      "32.0": 8.0,
+      "4.0": 0.25,
+      "40.0": 10.0,
+      "6.0": 0.5625,
+      "8.0": 1.0
+    },
+    "reduction_axis": "independent trials",
+    "seed": 6219,
+    "stream_policy": "one declared NumPy generator, chunked generation",
+    "terms": 16,
+    "thresholds": [
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      12.0,
+      16.0,
+      20.0,
+      24.0,
+      32.0,
+      40.0
+    ],
+    "transition_scale": 16.0,
+    "trials": 500000,
+    "variable": "sum of 16 independent (Z_i^2 - 1)"
+  },
+  "schema_version": 1
+}

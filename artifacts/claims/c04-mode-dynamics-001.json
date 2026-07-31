@@ -1,0 +1,60 @@
+{
+  "chapter": "c04",
+  "claim_id": "c04-mode-dynamics-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "Laptop-CPU model calculation; iteration counts are not wall-clock or accelerator-performance claims.",
+  "harness_ref": "ch-04",
+  "harness_wheel_sha256": "a3478fd77e8c9b4401ae5d23e35d7b7bddd45ae5211bd14f72662be6dadcd62b",
+  "hypothesis": "A single gradient step on an ill-conditioned quadratic makes the sharp mode alternate while the flat mode controls the wait.",
+  "payload_sha256": "84d45776cbd64cb71a5a1504f247860e9bf65a8375136fa3e01fc9d634fa5f25",
+  "phenomenon_id": "c04-many-clocks",
+  "provenance_class": "a",
+  "result": {
+    "absolute_tolerance": 0.001,
+    "final_mode_coordinates": [
+      0.00046516063207371953,
+      4.977414122938396e-19
+    ],
+    "hessian_diagonal": [
+      1.0,
+      100.0
+    ],
+    "initial_error": [
+      1.0,
+      1.0
+    ],
+    "iterations_to_tolerance_by_mode": [
+      361,
+      66
+    ],
+    "mode_factors": [
+      0.981,
+      -0.8999999999999999
+    ],
+    "mode_labels": [
+      "monotone",
+      "oscillatory"
+    ],
+    "spectrum": {
+      "condition_number": 100.0,
+      "largest_eigenvalue": 100.0,
+      "largest_stable_step": 0.02,
+      "optimal_constant_step": 0.019801980198019802,
+      "optimal_worst_mode_contraction": 0.9801980198019802,
+      "smallest_eigenvalue": 1.0
+    },
+    "step_size": 0.019,
+    "steps": 400
+  },
+  "schema_version": 1
+}

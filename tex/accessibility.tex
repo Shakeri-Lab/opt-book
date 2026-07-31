@@ -1,0 +1,9 @@
+% Tagged-PDF fallback for the main render.
+%
+% The first-build attempt is preserved in tex/tagged-pdf-attempt.tex. Quarto's
+% include-in-header insertion occurs after \documentclass, but the current
+% LaTeX PDF resource manager must be activated before it. Loading tagpdf here
+% therefore fails with "PDF resource management is not active." Until a
+% version-pinned pre-documentclass template is installed and validated, the
+% main PDF retains clean text extraction and the ActualText/artifact safeguards
+% in tex/macros.tex without claiming a tagged or PDF/UA-conformant result.

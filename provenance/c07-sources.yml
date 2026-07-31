@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "chapter": "c07",
+  "sources": [
+    {
+      "id": "src-c07-instructor-concentration",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Act 1- High-D Probability n Geometry/4- High-D concentration/meet9_v3.tex",
+      "sha256": "db7e9431335165190afa9d1f88946848020505a6cd684db4c78792350cafdeb6",
+      "reuse": "epsilon-net reveal order, volumetric argument, and fixed-to-uniform motivation; all prose rewritten and hardware analogies re-scoped"
+    },
+    {
+      "id": "src-c07-core-syllabus",
+      "class": "instructor-canonical",
+      "path": "../my_lectures/Syllabus_simple.tex",
+      "sha256": "2671dc810f8069731f15b740e7ca427eb5a665ecdc6078faf3a19bd3abe44249",
+      "reuse": "C07 placement between concentration and random operators"
+    },
+    {
+      "id": "vershynin2018-local",
+      "class": "primary-monograph-local",
+      "path": "../Resources/3-Vershynin_High-Dimensional Probability.pdf",
+      "sha256": "6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4",
+      "reuse": "covering and packing definitions, Euclidean volumetric bound, operator-net argument, and sub-Gaussian matrix bridge; local file used only for verification"
+    },
+    {
+      "id": "baraniuk2008",
+      "class": "primary-scholarly",
+      "url": "https://doi.org/10.1007/s00365-007-9003-x",
+      "reuse": "paper-audit example of fixed-vector concentration plus covering numbers; restricted-isometry theorem itself is not taught here"
+    }
+  ],
+  "rejected_or_scoped_claims": [
+    "Compactness is not equated with boundedness outside finite-dimensional Euclidean space.",
+    "The sphere covering upper bound is not presented as an exact count.",
+    "Polynomial tails are not called impossible; their exponentially costly uniform threshold is shown explicitly.",
+    "A low-precision numerical format is not identified with an epsilon-net of a parameter sphere.",
+    "Products of Gaussian coordinates are not described as globally sub-Gaussian.",
+    "Concentration alone is not claimed to prove population generalization.",
+    "Lipschitz concentration is invoked only when a Lipschitz assumption is declared."
+  ]
+}

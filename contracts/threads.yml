@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "acts": ["act-0", "act-1", "act-2"],
+  "threads": [
+    {
+      "id": "numerical-stability",
+      "label": "Numerical stability",
+      "sigil": "NS",
+      "seed_chapter": "c02",
+      "seed_act": "act-0"
+    },
+    {
+      "id": "random-matrix-spectra",
+      "label": "Random-matrix spectra",
+      "sigil": "RS",
+      "seed_chapter": "c08",
+      "seed_act": "act-1"
+    },
+    {
+      "id": "landscape-update-geometry",
+      "label": "Landscape and update geometry",
+      "sigil": "LG",
+      "seed_chapter": "c04",
+      "seed_act": "act-0"
+    },
+    {
+      "id": "subgaussian-safe-zone",
+      "label": "The sub-Gaussian safe zone",
+      "sigil": "SG",
+      "seed_chapter": "c05",
+      "seed_act": "act-1"
+    }
+  ],
+  "chapters": {
+    "c02": {
+      "act": "act-0",
+      "threads": {
+        "numerical-stability": "seed"
+      }
+    },
+    "c03": {
+      "act": "act-0",
+      "threads": {
+        "numerical-stability": "callback"
+      }
+    },
+    "c04": {
+      "act": "act-0",
+      "threads": {
+        "landscape-update-geometry": "seed"
+      }
+    },
+    "c05": {
+      "act": "act-1",
+      "threads": {
+        "subgaussian-safe-zone": "seed"
+      }
+    },
+    "c06": {
+      "act": "act-1",
+      "threads": {
+        "subgaussian-safe-zone": "callback"
+      }
+    },
+    "c07": {
+      "act": "act-1",
+      "threads": {
+        "subgaussian-safe-zone": "callback"
+      }
+    },
+    "c08": {
+      "act": "act-1",
+      "threads": {
+        "random-matrix-spectra": "seed",
+        "subgaussian-safe-zone": "callback"
+      }
+    },
+    "c09": {
+      "act": "act-1",
+      "threads": {
+        "random-matrix-spectra": "callback",
+        "subgaussian-safe-zone": "callback"
+      }
+    }
+  }
+}

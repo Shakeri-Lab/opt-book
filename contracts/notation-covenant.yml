@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "sibling_contract": "Deep Learning: Making It Learnable, Appendix D",
+  "core": [
+    {"id": "scalar", "latex": "x", "meaning": "scalar", "policy": "italic"},
+    {"id": "vector", "latex": "\\vect{x}", "meaning": "vector", "macro": "\\vect"},
+    {"id": "matrix", "latex": "\\matr{A}", "meaning": "matrix or batched array", "macro": "\\matr"},
+    {"id": "objective", "latex": "\\loss", "meaning": "aggregate objective", "macro": "\\loss"},
+    {"id": "local-loss", "latex": "\\ell_i", "meaning": "local or per-example loss"},
+    {"id": "expectation", "latex": "\\E", "meaning": "expectation", "macro": "\\E"},
+    {"id": "variance", "latex": "\\var", "meaning": "variance", "macro": "\\var"},
+    {"id": "covariance", "latex": "\\cov", "meaning": "covariance", "macro": "\\cov"},
+    {"id": "norm", "latex": "\\norm{\\cdot}", "meaning": "context-declared norm", "macro": "\\norm"},
+    {"id": "definition", "latex": ":=", "meaning": "definition"},
+    {"id": "approximation", "latex": "\\approx", "meaning": "approximation"},
+    {"id": "update", "latex": "\\leftarrow", "meaning": "algorithmic update"}
+  ],
+  "extensions": [
+    {"id": "centered-sum-squares", "latex": "M_{2,n}", "meaning": "sum of squared deviations from the current mean", "new_in_volume": true},
+    {"id": "operator-norm", "latex": "\\norm{\\matr{A}}_{\\mathrm{op}}", "meaning": "operator norm", "new_in_volume": true},
+    {"id": "largest-singular-value", "latex": "\\sigma_{\\max}(\\matr{A})", "meaning": "largest singular value", "new_in_volume": true},
+    {"id": "smallest-singular-value", "latex": "\\sigma_{\\min}(\\matr{A})", "meaning": "smallest singular value on the declared input space", "new_in_volume": true},
+    {"id": "frobenius-norm", "latex": "\\norm{\\matr{A}}_{\\mathrm{F}}", "meaning": "Frobenius norm", "new_in_volume": true},
+    {"id": "epsilon-net", "latex": "\\mathcal{N}_{\\epsilon}", "meaning": "epsilon-net in the locally declared metric", "new_in_volume": true},
+    {"id": "covering-number", "latex": "N(K,d,\\epsilon)", "meaning": "minimum size of an epsilon-net of K under metric d", "new_in_volume": true},
+    {"id": "subgaussian-norm", "latex": "\\norm{X}_{\\psi_2}", "meaning": "sub-Gaussian Orlicz norm", "new_in_volume": true},
+    {"id": "subexponential-norm", "latex": "\\norm{X}_{\\psi_1}", "meaning": "sub-exponential Orlicz norm", "new_in_volume": true},
+    {"id": "unit-roundoff", "latex": "u", "meaning": "unit roundoff", "new_in_volume": true},
+    {"id": "ulp", "latex": "\\operatorname{ulp}(x)", "meaning": "unit in the last place near x", "new_in_volume": true},
+    {"id": "condition-number", "latex": "\\kappa", "meaning": "declared spectral condition number", "new_in_volume": true},
+    {"id": "spectral-radius", "latex": "\\rho(\\matr{A})", "meaning": "spectral radius", "new_in_volume": true},
+    {"id": "subgaussian-proxy", "latex": "\\sigma", "meaning": "sub-Gaussian MGF proxy scale when locally declared", "new_in_volume": true},
+    {"id": "sample-covariance", "latex": "\\widehat{\\matr{\\Sigma}}", "meaning": "sample covariance or second-moment estimator under a locally declared centering and denominator contract", "new_in_volume": true},
+    {"id": "empirical-spectral-distribution", "latex": "\\mu_{\\matr{M}}", "meaning": "empirical spectral distribution of the declared symmetric matrix", "new_in_volume": true},
+    {"id": "aspect-ratio", "latex": "\\gamma=n/m", "meaning": "number of coordinates divided by number of observations unless locally redeclared", "new_in_volume": true},
+    {"id": "marchenko-pastur-edges", "latex": "\\lambda_-,\\lambda_+", "meaning": "lower and upper Marchenko--Pastur support edges under the declared variance scale", "new_in_volume": true},
+    {"id": "population-spike", "latex": "\\beta", "meaning": "non-unit population covariance eigenvalue in a locally declared spiked model", "new_in_volume": true}
+  ],
+  "global_rules": {
+    "paper_vectors": "column",
+    "code_batches": "rows",
+    "shape_before_product": true,
+    "named_reduction_axes": true,
+    "core_redefinition_allowed": false
+  }
+}

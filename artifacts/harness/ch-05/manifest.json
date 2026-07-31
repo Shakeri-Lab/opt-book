@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "chapter": "c05",
+  "harness_ref": "ch-05",
+  "package": "trainable-harness",
+  "version": "0.5.0",
+  "api": "0.5",
+  "wheel": "trainable_harness-0.5.0-py3-none-any.whl",
+  "wheel_sha256": "316959af60076c4c79cf740212c866a155fa78bf9b1cea0ba9a819b90b2d769a",
+  "python": "3.12.13",
+  "dependencies": {
+    "numpy": "2.5.1",
+    "uv_lock_sha256": "3d437373fde78b09a63e4b4e054f056d5171c86c2aa52c0581d9b3ab127864ef"
+  },
+  "source": {
+    "status": "pre-release-uncommitted",
+    "commit": null,
+    "annotated_tag": null,
+    "tag_required_before_publication": "harness-ch-05-v1",
+    "pyproject_sha256": "0acbe96b6a87474e9266d24e6dd97421d192be13f071f9e5fd086845a33fc28c",
+    "init_sha256": "73c77496eb6058c6023467eaf5ec7633151e4842745a5885f219e3910553a53a",
+    "streaming_sha256": "8549a3dbc681e18410d9567d7bab97352d0c873b4cca2f9dd3b2ccb3642fd205",
+    "precision_sha256": "6230901bc8de84b0243cc58239f32907ea882fa62fc4944f1867214c6cabd03b",
+    "optimization_sha256": "796cb4119e0943a6e0c373e0d7f3a63e016b7fd404cc30f9b9cdd39c68e89b2b",
+    "probability_sha256": "cc9c5c54536313476b36cfbe6b5ce93fb3198050d4165f3b618a9d21b3c60723"
+  },
+  "public_operations": [
+    "observation_ledger",
+    "naive_moments",
+    "stable_online_moments",
+    "merge_moments",
+    "comparison_audit",
+    "float_contract",
+    "local_spacing",
+    "repeated_update",
+    "stochastic_update_trials",
+    "symmetric_quantize",
+    "quadratic_spectrum",
+    "classify_mode_factors",
+    "quadratic_trace",
+    "scalar_noisy_quadratic_trials",
+    "subgaussian_max_threshold",
+    "standard_normal_maxima",
+    "rademacher_projection_trials",
+    "empirical_tail_profile",
+    "moment_growth_profile"
+  ]
+}

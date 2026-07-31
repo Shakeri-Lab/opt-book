@@ -1,0 +1,55 @@
+{
+  "chapter": "c02",
+  "claim_id": "c02-reduction-order-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float32",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6211
+  },
+  "estimator": {
+    "denominator": "n",
+    "reference": "same represented inputs promoted to float64",
+    "target": "population variance of the represented FP32 values"
+  },
+  "harness_ref": "ch-02",
+  "harness_wheel_sha256": "253a9367089f073e468608a4eee2ff4e4842eabb3c54b0663b49d6497e3830fd",
+  "hypothesis": "Valid exact-arithmetic merge orders need not be bitwise identical when the same partial states are merged in FP32.",
+  "input": {
+    "blocks": 128,
+    "count": 131072,
+    "distribution": "offset + standard normal",
+    "offset": 20000.0,
+    "represented_dtype": "float32",
+    "seed": 6211
+  },
+  "payload_sha256": "28036e0ebc8e99aefa25694a7db9d14c78666ddb24fa6a97509bcf35fd4ed9da",
+  "phenomenon_id": "c02-negative-variance",
+  "provenance_class": "a",
+  "result": {
+    "orders": {
+      "balanced": {
+        "absolute_error": 0.0001910040344945685,
+        "population_variance": 0.9986129999160767
+      },
+      "left": {
+        "absolute_error": 0.00019368624350946106,
+        "population_variance": 0.9986156821250916
+      },
+      "right": {
+        "absolute_error": 0.00019130205771844544,
+        "population_variance": 0.9986132979393005
+      },
+      "sequential": {
+        "absolute_error": 0.0017044851746312872,
+        "population_variance": 1.0001264810562134
+      }
+    },
+    "reference": 0.9984219958815821
+  },
+  "schema_version": 1
+}

@@ -1,0 +1,775 @@
+---
+subtitle: "Squares, local MGFs, and Bernstein's constrained optimizer"
+description: "Why a harmless square destroys global sub-Gaussian control, how a local MGF creates Bernstein's two deviation regimes, and why clipping repairs concentration only by changing the estimator."
+number-offset: 5
+jupyter: python3
+harness-ref: ch-06
+harness-api: "0.6"
+harness-wheel-sha256: "160afa2bff7051769d71818551178fc1cbfc3c21ff8f4c44e721f92a81621410"
+phenomenon_id: c06-square-two-regimes
+claim_ids:
+  - c06-square-break-001
+  - c06-two-regimes-001
+  - c06-clipping-bias-001
+threads:
+  subgaussian-safe-zone: callback
+lenses:
+  geometric: primary
+  dynamic: quiet
+  algorithmic: supporting
+fulfills:
+  - promise-c05-c06-squared-boundary
+---
+
+# One Square, Two Regimes {#c06}
+
+<span class="thread">SG · The sub-Gaussian safe zone</span>
+<span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
+
+Let $Z\sim\mathcal{N}(0,1)$. C05 puts $Z$ safely inside a global quadratic MGF
+envelope. Now perform one of the most ordinary operations in computation:
+
+$$
+X=Z^2-1.
+$$
+
+The centering makes $\E X=0$, and $\var(X)=2$. Neither fact saves the old tail
+contract. On the declared threshold grid, the exact upper tail at $t=4$ is
+about $0.02535$, already larger than the variance-matched quadratic candidate
+$e^{-t^2/4}\approx0.01832$. At $t=8$, the gap is no longer close.
+
+::: {.callout-important title="Prediction"}
+Which diagnosis survives a stronger test?
+
+1. The variance proxy merely needs a slightly larger constant.
+2. Centering should eventually restore a global quadratic envelope.
+3. Squaring changed the domain on which the MGF exists.
+
+Choose before inspecting the generating function. Then predict which step of
+C05's Chernoff optimization will become constrained.
+:::
+
+## Inspect the domain, not only the variance {#sec-c06-opening}
+
+For this distribution the MGF is available in closed form. The opening study
+places its log beside a variance-matched quadratic candidate and then compares
+the exact upper-tail rate with quadratic and linear guides. A guide is not a
+probability bound; its job is to expose the shape that eventually becomes
+impossible.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate `harness@ch-06`.
+2. Evaluate the exact log-MGF below its finite boundary.
+3. Evaluate exact upper tails on a declared threshold grid.
+4. Locate the first failure of a variance-matched quadratic candidate.
+5. Plot the MGF domain and tail-rate change.
+:::
+
+```{python}
+#| label: fig-c06-square-break
+#| fig-cap: "A square breaks the global quadratic contract. At left, the exact log-MGF of the centered Gaussian square rises toward a singularity at one half, so no finite parabola can dominate it on all positive parameters. At right, the exact upper-tail rate bends toward linear growth while the variance-matched quadratic candidate becomes far too optimistic. The guides diagnose shape; only the exact MGF domain proves non-sub-Gaussianity."
+#| fig-alt: "Two-panel plot. The left panel shows the centered chi-square log-MGF curving sharply upward toward a vertical boundary at lambda one half, above a quadratic variance-matched curve. The right panel shows negative log upper-tail probability increasing much more slowly than a quadratic guide and approaching a linear guide as the threshold grows."
+#| code-summary: "Code: expose the finite MGF domain created by one square"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-06/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    bernstein_two_regime_rate,
+    centered_chi_square_log_mgf,
+    centered_chi_square_sum_trials,
+    centered_chi_square_sum_upper_tail,
+    centered_chi_square_upper_tail,
+    centered_pareto_clip_bias,
+)
+
+# [2]
+mgf_parameters = np.linspace(-0.45, 0.49, 300)
+log_mgf = centered_chi_square_log_mgf(mgf_parameters)
+log_mgf_values = np.array([log_mgf[float(value)] for value in mgf_parameters])
+
+# [3]
+tail_thresholds = np.geomspace(0.25, 32.0, 100)
+exact_tail = centered_chi_square_upper_tail(tail_thresholds)
+tail_values = np.array(
+    [exact_tail[float(value)] for value in tail_thresholds]
+)
+
+# [4]
+audit_thresholds = np.array([1.0, 2.0, 4.0, 8.0, 16.0, 32.0])
+audit_tail = centered_chi_square_upper_tail(audit_thresholds)
+quadratic_candidate = np.exp(-(audit_thresholds**2) / 4.0)
+violations = [
+    float(threshold)
+    for threshold, candidate in zip(
+        audit_thresholds,
+        quadratic_candidate,
+        strict=True,
+    )
+    if audit_tail[float(threshold)] > candidate
+]
+assert violations[0] == 4.0
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+axes[0].plot(mgf_parameters, log_mgf_values, linewidth=2.2, label="exact log-MGF")
+axes[0].plot(
+    mgf_parameters,
+    mgf_parameters**2,
+    linestyle="--",
+    linewidth=1.8,
+    label="variance-matched quadratic",
+)
+axes[0].axvline(0.5, color="black", linestyle=":", label="MGF boundary")
+axes[0].set(xlabel=r"$\lambda$", ylabel="log-MGF", ylim=(-0.02, 1.7))
+
+tail_rate = -np.log(tail_values)
+axes[1].plot(tail_thresholds, tail_rate, linewidth=2.2, label="exact tail rate")
+axes[1].plot(
+    tail_thresholds,
+    tail_thresholds**2 / 4.0,
+    linestyle="--",
+    linewidth=1.8,
+    label="quadratic guide",
+)
+axes[1].plot(
+    tail_thresholds,
+    tail_thresholds / 2.0,
+    linestyle=":",
+    linewidth=1.8,
+    label="linear guide",
+)
+axes[1].set(
+    xlabel=r"threshold $t$",
+    ylabel=r"$-\log\Pr(X\geq t)$",
+    xscale="log",
+    yscale="log",
+)
+for axis in axes:
+    axis.grid(alpha=0.25)
+    axis.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+for threshold in (4.0, 8.0):
+    candidate = np.exp(-(threshold**2) / 4.0)
+    print(
+        f"t={threshold:g}: exact tail={audit_tail[threshold]:.8g}, "
+        f"variance-matched candidate={candidate:.8g}"
+    )
+print("exact MGF domain: lambda < 0.5")
+```
+::::
+
+The decisive observation is not the crossing at $t=4$. A different finite
+quadratic could postpone that crossing. The decisive observation is that
+
+$$
+\E e^{\lambda(Z^2-1)}
+=
+\frac{e^{-\lambda}}{\sqrt{1-2\lambda}}
+$$ {#eq-c06-centered-chi-mgf}
+
+is infinite for every $\lambda\ge1/2$. No finite quadratic envelope can
+dominate an infinite MGF. The square is not sub-Gaussian.
+
+For $\lambda<1/2$, @eq-c06-centered-chi-mgf follows by inserting the standard
+normal density:
+
+$$
+\begin{aligned}
+\E e^{\lambda(Z^2-1)}
+&=
+\frac{e^{-\lambda}}{\sqrt{2\pi}}
+\int_{\mathbb{R}}
+\exp\!\left[-\frac{1-2\lambda}{2}z^2\right]\,dz \\
+&=
+\frac{e^{-\lambda}}{\sqrt{1-2\lambda}}.
+\end{aligned}
+$$
+
+At $\lambda\ge1/2$, the integrand no longer decays at infinity. Centering
+removes the linear term near the origin; it cannot reopen the MGF after the
+quadratic transform has closed it.
+
+## The square keeps an exponential contract {#sec-c06-square-map}
+
+The safe zone did not disappear. It became smaller. Define
+
+$$
+\norm{X}_{\psi_1}
+:=
+\inf\left\{
+K>0:
+\E e^{|X|/K}\le2
+\right\}.
+$$ {#eq-c06-psi1}
+
+A random variable with finite $\psi_1$ norm is called **sub-exponential**.
+The name describes an exponential tail class; it does not mean that the
+random variable itself is an exponential distribution.
+
+::: {#thm-c06-square-subexponential phenomenon_id="c06-square-two-regimes"}
+## Squares and products remain sub-exponential
+
+If $X$ is sub-Gaussian, then
+
+$$
+\norm{X^2}_{\psi_1}
+=
+\norm{X}_{\psi_2}^2.
+$$ {#eq-c06-square-orlicz}
+
+Moreover,
+
+$$
+\norm{X^2-\E X^2}_{\psi_1}
+\le
+2\norm{X}_{\psi_2}^2.
+$$ {#eq-c06-centered-square-orlicz}
+
+If $X$ and $Y$ are sub-Gaussian, without any independence requirement, then
+
+$$
+\norm{XY}_{\psi_1}
+\le
+\norm{X}_{\psi_2}\norm{Y}_{\psi_2}.
+$$ {#eq-c06-product-orlicz}
+:::
+
+### Proof
+
+Let $a=\norm{X}_{\psi_2}$. The defining condition
+$\E e^{X^2/a^2}\le2$ is exactly the condition that
+$\norm{X^2}_{\psi_1}\le a^2$. Taking the infimum in both definitions gives
+equality in @eq-c06-square-orlicz.
+
+Jensen's inequality also gives
+
+$$
+\exp\!\left(\frac{\E X^2}{a^2}\right)
+\le
+\E\exp\!\left(\frac{X^2}{a^2}\right)
+\le2,
+$$
+
+so $\E X^2\le a^2\log2$. A constant $c$ has
+$\psi_1$ norm $|c|/\log2$. The triangle inequality for the Orlicz norm
+therefore yields @eq-c06-centered-square-orlicz.
+
+For the product, put $a=\norm{X}_{\psi_2}$ and
+$b=\norm{Y}_{\psi_2}$. The elementary inequality
+
+$$
+\frac{|XY|}{ab}
+\le
+\frac12\frac{X^2}{a^2}
++
+\frac12\frac{Y^2}{b^2}
+$$
+
+and Cauchy–Schwarz give
+
+$$
+\E e^{|XY|/(ab)}
+\le
+\left(\E e^{X^2/a^2}\right)^{1/2}
+\left(\E e^{Y^2/b^2}\right)^{1/2}
+\le2.
+$$
+
+This proves @eq-c06-product-orlicz. $\square$
+
+For a standard normal variable, the definitions even expose an exact scale:
+
+$$
+\norm{Z}_{\psi_2}^2
+=
+\norm{Z^2}_{\psi_1}
+=
+\frac83.
+$$
+
+Indeed, $\E e^{Z^2/K^2}=(1-2/K^2)^{-1/2}\le2$ exactly when
+$K^2\ge8/3$. This number is a definition-dependent scale, not the variance of
+$Z^2$.
+
+::: {.callout-warning title="Named wrong answer: 'Squaring destroys concentration'"}
+Squaring destroys the **global quadratic MGF envelope**. It leaves an
+exponential-moment contract, which is strong enough for useful concentration
+but changes the deviation rate and the diagnostic scale.
+:::
+
+## A local parabola creates two regimes {#sec-c06-bernstein}
+
+A centered sub-exponential variable still looks quadratic near
+$\lambda=0$. The difference from C05 is the quantifier:
+
+| Tail contract | Quadratic log-MGF bound | Chernoff optimizer |
+|---|---|---|
+| sub-Gaussian | every real $\lambda$ | unconstrained |
+| sub-exponential | only $|\lambda|\le c/K$ | constrained |
+| no positive MGF | no interval to the right of zero | unavailable |
+
+The sub-exponential equivalence theorem makes the middle row precise: for a
+centered $X$, there are universal constants $c_0,C_0>0$ such that
+
+$$
+\E e^{\lambda X}
+\le
+\exp\!\left(C_0\lambda^2\norm{X}_{\psi_1}^2\right)
+\quad\text{when}\quad
+|\lambda|\le\frac{c_0}{\norm{X}_{\psi_1}}.
+$$ {#eq-c06-local-mgf}
+
+As in C05, tail, moment, exponential-moment, and local-MGF characterizations
+are equivalent up to universal constants. The new fact is that the admissible
+interval is finite.
+
+::: {#thm-c06-bernstein phenomenon_id="c06-square-two-regimes"}
+## Bernstein's two-regime inequality
+
+Let $X_1,\ldots,X_n$ be independent, centered, sub-exponential random
+variables. Write
+
+$$
+V=\sum_{i=1}^n\norm{X_i}_{\psi_1}^2,
+\qquad
+B=\max_i\norm{X_i}_{\psi_1}.
+$$
+
+There is a universal constant $c>0$ such that, for every $t\ge0$,
+
+$$
+\Pr\!\left(
+\left|\sum_{i=1}^n X_i\right|\ge t
+\right)
+\le
+2\exp\!\left[
+-c\min\!\left(
+\frac{t^2}{V},
+\frac{t}{B}
+\right)
+\right].
+$$ {#eq-c06-bernstein}
+:::
+
+### Proof
+
+For $\lambda>0$, exponential Markov and independence give
+
+$$
+\Pr\!\left(\sum_iX_i\ge t\right)
+\le
+\exp(-\lambda t)
+\prod_i\E e^{\lambda X_i}.
+$$
+
+When $\lambda\le c_0/B$, @eq-c06-local-mgf implies
+
+$$
+\Pr\!\left(\sum_iX_i\ge t\right)
+\le
+\exp\!\left(-\lambda t+C_0\lambda^2V\right).
+$$ {#eq-c06-constrained-chernoff}
+
+Without the constraint, the quadratic exponent is minimized at a constant
+multiple of $t/V$. Choose instead
+
+$$
+\lambda
+=
+\min\!\left(
+\frac{t}{4C_0V},
+\frac{c_0}{2B}
+\right).
+$$
+
+If the first argument is smaller, substitution into
+@eq-c06-constrained-chernoff gives an exponent at most
+$-c_1t^2/V$. If the second is smaller, the inequality defining that case lets
+the quadratic term absorb at most a fixed fraction of $\lambda t$, leaving an
+exponent at most $-c_2t/B$. Apply the same argument to $-X_i$, add the two
+tails, and take $c=\min(c_1,c_2)$. $\square$
+
+The transition occurs near $t=V/B$. If all $\psi_1$ scales are comparable to
+$K$, then $V/B\asymp nK$. Averaging has not failed: increasing $n$ extends the
+quadratic regime. What changes is the far tail, where the desired Chernoff
+parameter would lie outside the MGF's admissible interval.
+
+## Watch the optimizer hit its boundary {#sec-c06-two-regime-evidence}
+
+The next study uses
+
+$$
+S_{16}
+=
+\sum_{i=1}^{16}(Z_i^2-1)
+=
+\chi^2_{16}-16.
+$$
+
+Because the degrees of freedom are even, its exact upper tail is a finite
+series. That exact curve is the control. Monte Carlo is shown only where its
+500,000-trial denominator has resolution.
+
+For this particular distribution,
+
+$$
+\log\E e^{\lambda(Z_i^2-1)}
+\le
+\frac{\lambda^2}{1-2\lambda},
+\qquad
+0\le\lambda<\frac12.
+$$ {#eq-c06-chi-local-bound}
+
+Choosing $\lambda=t/[2(n+t)]$ for a sum of $n$ terms gives the explicit
+one-sided bound
+
+$$
+\Pr(S_n\ge t)
+\le
+\exp\!\left[-\frac{t^2}{4(n+t)}\right].
+$$ {#eq-c06-chi-bernstein}
+
+Its exponent is quadratic when $t\ll n$ and linear when $t\gg n$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Generate centered-square sums in one declared random stream.
+2. Count upper-tail exceedances at fixed thresholds.
+3. Compute exact even-degree chi-square tails.
+4. Compute distribution-specific Chernoff and Bernstein controls.
+5. Plot probabilities, uncertainty, and the transition scale.
+:::
+
+```{python}
+#| label: fig-c06-two-regimes
+#| fig-cap: "A centered chi-square sum retains two distinct deviation scales. At left, 500,000 seeded trials track the exact upper tail until only a few exceedances remain; exact probabilities continue beyond simulation resolution. Both analytic controls remain upper bounds. At right, the exact negative log tail bends from a quadratic toward a linear rate around the declared scale n equals 16. The experiment validates this distribution-specific witness, not every sub-exponential sum."
+#| fig-alt: "Two-panel plot for a sum of 16 centered Gaussian squares. The left log-scale panel shows empirical upper-tail probabilities with error bars close to an exact curve, with looser Chernoff and Bernstein upper-bound curves above it. A vertical line marks threshold 16. The right panel shows the exact negative log tail between quadratic and linear rate guides, bending near threshold 16."
+#| code-summary: "Code: compare finite-sample tail estimates with exact and two-regime controls"
+#| code-fold: false
+
+# [1]
+terms, trials, seed = 16, 500_000, 6219
+thresholds = np.array([2.0, 4.0, 6.0, 8.0, 12.0, 16.0, 20.0, 24.0, 32.0, 40.0])
+samples = centered_chi_square_sum_trials(
+    terms,
+    trials=trials,
+    seed=seed,
+)
+
+# [2]
+exceedances = np.array(
+    [np.count_nonzero(samples >= threshold) for threshold in thresholds]
+)
+empirical = exceedances / trials
+standard_errors = np.sqrt(empirical * (1.0 - empirical) / trials)
+
+# [3]
+exact = centered_chi_square_sum_upper_tail(terms, thresholds)
+exact_probabilities = np.array([exact[float(t)] for t in thresholds])
+assert np.all(
+    np.abs(empirical - exact_probabilities)
+    <= 4.0 * standard_errors + 1.0 / trials
+)
+
+# [4]
+exact_chernoff = (
+    np.exp(-thresholds / 2.0)
+    * (1.0 + thresholds / terms) ** (terms / 2.0)
+)
+explicit_bernstein = np.exp(
+    -(thresholds**2) / (4.0 * (terms + thresholds))
+)
+piecewise = bernstein_two_regime_rate(
+    thresholds,
+    quadratic_scale=4.0 * terms,
+    linear_scale=4.0,
+)
+piecewise_rates = np.array([piecewise[float(t)] for t in thresholds])
+assert np.all(exact_probabilities <= exact_chernoff)
+assert np.all(exact_probabilities <= explicit_bernstein)
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(8.2, 3.5))
+positive_lower = np.maximum(empirical - 1.96 * standard_errors, 0.5 / trials)
+positive_upper = empirical + 1.96 * standard_errors
+axes[0].errorbar(
+    thresholds,
+    empirical,
+    yerr=np.vstack([empirical - positive_lower, positive_upper - empirical]),
+    fmt="o",
+    capsize=3,
+    label="Monte Carlo estimate",
+)
+axes[0].plot(thresholds, exact_probabilities, linewidth=2.2, label="exact tail")
+axes[0].plot(thresholds, exact_chernoff, linestyle="--", label="exact-MGF Chernoff")
+axes[0].plot(thresholds, explicit_bernstein, linestyle=":", label="explicit Bernstein")
+axes[0].axhline(1.0 / trials, color="gray", linewidth=1, label="one-trial resolution")
+axes[0].set(xlabel=r"threshold $t$", ylabel=r"$\Pr(S_{16}\geq t)$", yscale="log")
+
+axes[1].plot(
+    thresholds,
+    -np.log(exact_probabilities),
+    linewidth=2.2,
+    label="exact tail rate",
+)
+axes[1].plot(thresholds, piecewise_rates, linestyle="--", label="two-regime guide")
+axes[1].axvline(terms, color="black", linestyle=":", label="declared scale n")
+axes[1].set(xlabel=r"threshold $t$", ylabel="negative log tail")
+for axis in axes:
+    axis.grid(alpha=0.25)
+    axis.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+for threshold in (16.0, 32.0, 40.0):
+    index = int(np.flatnonzero(thresholds == threshold)[0])
+    print(
+        f"t={threshold:g}: count={exceedances[index]}/{trials}, "
+        f"estimate={empirical[index]:.8g}, "
+        f"SE={standard_errors[index]:.3g}, "
+        f"exact={exact_probabilities[index]:.8g}"
+    )
+```
+::::
+
+At $t=40$, the simulation sees only two exceedances. The exact tail is about
+$2.43\times10^{-6}$, while the estimate is $4.00\times10^{-6}$ with standard
+error about $2.83\times10^{-6}$. Reporting only the empirical curve would make
+the most interesting region the least trustworthy one. The exact control
+prevents a plotting artifact from becoming a tail claim.
+
+## When no positive MGF exists {#sec-c06-heavy-boundary}
+
+Sub-exponential is not a synonym for every distribution heavier than a
+Gaussian. It is still an exponential-moment class. A Pareto variable with
+power-law survival has no finite positive MGF, so neither C05's global
+optimization nor Bernstein's local optimization begins.
+
+One possible intervention maps a scalar $x$ to a bounded interval:
+
+$$
+T_C(x)
+=
+\operatorname{sign}(x)\min(|x|,C).
+$$ {#eq-c06-scalar-clip}
+
+This operation is conventionally called **clipping**. It creates a new random
+variable. The distinction between new tail behavior and the old target is the
+whole contract.
+
+::: {#thm-c06-clipping-contract phenomenon_id="c06-square-two-regimes"}
+## Concentration and bias after clipping
+
+Let $X$ be integrable and $C>0$. Then
+
+$$
+\E\exp\!\left[
+\lambda\left(T_C(X)-\E T_C(X)\right)
+\right]
+\le
+\exp\!\left(\frac{\lambda^2C^2}{2}\right)
+$$ {#eq-c06-clipped-mgf}
+
+for every real $\lambda$. Thus the centered clipped variable is sub-Gaussian
+with proxy variance at most $C^2$. Its bias for the original mean is
+
+$$
+\operatorname{Bias}_C
+=
+\E T_C(X)-\E X.
+$$ {#eq-c06-clipping-bias}
+:::
+
+### Proof
+
+$T_C(X)$ lies in an interval of length $2C$. Hoeffding's lemma applied after
+centering gives @eq-c06-clipped-mgf. Equation @eq-c06-clipping-bias is the
+difference between the expectation of the transformed estimator and the
+original target. Boundedness imposes no reason for that difference to vanish.
+$\square$
+
+The tradeoff is exact for a simple control. Let $Y$ have Pareto shape $3/2$
+and scale $1$, so $\E Y=3$ but $\var(Y)=\infty$, and put $X=Y-3$. For every
+$C\ge2$,
+
+$$
+\E T_C(X)
+=
+-\frac{2}{\sqrt{C+3}}.
+$$ {#eq-c06-pareto-bias}
+
+Larger $C$ reduces bias while widening the bounded variable's sub-Gaussian
+proxy. There is no distribution-free choice that makes both costs vanish.
+
+:::: {.plan-code}
+::: {.plan}
+1. Declare a centered Pareto control with infinite variance.
+2. Evaluate its exact clipped-mean bias over fixed thresholds.
+3. Pair each threshold with its bounded-variable proxy scale.
+4. Plot the opposing concentration and target costs.
+:::
+
+```{python}
+#| label: fig-c06-clipping-tradeoff
+#| fig-cap: "Bounding a heavy-tailed variable creates opposing costs. Increasing the clipping threshold reduces the exact mean bias of the centered Pareto control, but the worst-case sub-Gaussian proxy scale of the centered clipped variable grows with that threshold. The curves establish a model tradeoff; they do not prescribe a training threshold."
+#| fig-alt: "Log-log plot over clipping thresholds from 2 to 128. One curve shows absolute mean bias decreasing slowly from about 0.89 to 0.17. A second dashed curve shows the bounded-variable proxy scale increasing from 2 to 128."
+#| code-summary: "Code: expose the estimator bias hidden inside a concentration repair"
+#| code-fold: false
+
+# [1]
+pareto_shape, pareto_scale = 1.5, 1.0
+clip_thresholds = np.array([2.0, 4.0, 8.0, 16.0, 32.0, 64.0, 128.0])
+
+# [2]
+bias = centered_pareto_clip_bias(
+    pareto_shape,
+    clip_thresholds,
+    scale=pareto_scale,
+)
+bias_values = np.array([bias[float(value)] for value in clip_thresholds])
+assert np.all(bias_values < 0)
+
+# [3]
+proxy_scales = clip_thresholds
+
+# [4]
+fig, axis = plt.subplots(figsize=(6.8, 3.6))
+axis.loglog(
+    clip_thresholds,
+    np.abs(bias_values),
+    "o-",
+    linewidth=2.2,
+    label="absolute target bias",
+)
+axis.loglog(
+    clip_thresholds,
+    proxy_scales,
+    "s--",
+    linewidth=2.0,
+    label="proxy-scale upper bound",
+)
+axis.set(xlabel=r"clipping threshold $C$", ylabel="magnitude")
+axis.grid(alpha=0.25, which="both")
+axis.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+
+for threshold in (2.0, 32.0, 128.0):
+    print(
+        f"C={threshold:g}: exact bias={bias[threshold]:.6f}, "
+        f"proxy-scale bound={threshold:g}"
+    )
+```
+::::
+
+::: {.callout-note title="Field note: the guardrail must itself be computable"}
+For vector norm clipping, the norm is usually formed from a reduction of
+squares. If that reduction overflows before the threshold comparison, clipping
+never gets a finite input. C03's precision ledger still applies: use a
+declared wider accumulator or a scaled sum-of-squares kernel. A post-overflow
+guardrail is not a guardrail.
+:::
+
+| Field | Clipping audit |
+|---|---|
+| Target | the original population mean or gradient |
+| Estimator | the mean of bounded transformed observations |
+| Reduction | over the declared sample or mini-batch |
+| Validity | concentrated for the transformed target; useful for the original target only with a bias argument |
+| Boundary | threshold choice, direction distortion, state dependence, and pre-clip numerical overflow remain |
+
+Empirical reports of heavy-tailed stochastic gradients are research evidence,
+not a universal law. Tail-index estimates depend on the model, data,
+mini-batch construction, training time, and estimator
+[@simsekli2019]. Convergence guarantees for clipped stochastic updates likewise
+depend on the threshold and noise assumptions [@koloskova2023]. C13 will turn
+those dependencies into a dynamic audit.
+
+::: {.callout-tip title="Check yourself"}
+Suppose independent centered variables have
+$\norm{X_i}_{\psi_1}\le3$ for $i=1,\ldots,100$. Up to universal constants,
+identify the transition scale $V/B$. Which Bernstein exponent controls at
+$t=30$ and at $t=3000$? Then state why finite variance alone would not justify
+either answer.
+:::
+
+## Okay, so —
+
+- **Inherited:** C05 supplied a global quadratic MGF envelope, a
+  $\psi_2$ scale, and the Chernoff optimizer.
+- **Changed:** one square restricts the MGF domain and replaces one global
+  quadratic tail regime with Bernstein's quadratic-to-linear pair.
+- **Instrumented:** the harness now evaluates exact centered-chi-square MGFs
+  and tails, seeded sum tails, Bernstein rates, and exact clipping bias.
+- **Established:** squares and products of sub-Gaussian variables are
+  sub-exponential; independent centered sub-exponential sums obey a
+  two-regime bound; bounded transforms concentrate around their own means.
+- **Unresolved:** a finite tail budget controls only declared variables or
+  directions. The next chapter must make an uncountable supremum finite enough
+  for that budget to pay.
+
+## Sources and further reading
+
+Vershynin develops sub-exponential equivalences, the square/product lemmas, and
+Bernstein's inequality [@vershynin2018]. Hoeffding's bounded-variable lemma
+supplies the clipped-variable guarantee [@hoeffding1963]. The canonical
+instructor derivation supplied the MGF-domain reveal and constrained-optimizer
+order; claims that repeated products occupy one universal tail class or that
+one threshold solves heavy-tailed training were rejected. Simsekli, Sagun, and
+Gurbuzbalaban provide a primary empirical tail-index study
+[@simsekli2019], while Koloskova, Hendrikx, and Stich analyze the stochastic
+bias and threshold dependence of gradient clipping [@koloskova2023].
+
+## Exercises
+
+1. **(Pencil.) The exact Orlicz scale.** Derive
+   $\norm{Z}_{\psi_2}^2=8/3$ directly from the Gaussian integral. Then use the
+   definitions, not a tail equivalence theorem, to obtain
+   $\norm{Z^2}_{\psi_1}=8/3$.
+
+2. **(Pencil.) Products without independence.** Rework the proof of
+   @eq-c06-product-orlicz and mark the exact line where Cauchy–Schwarz replaces
+   independence. Construct dependent $X,Y$ for which the conclusion remains
+   useful.
+
+3. **(Code.) Resolve the transition.** Repeat the centered-square sum study
+   for $n\in\{4,16,64\}$ under one predeclared total draw budget. Plot
+   thresholds as multiples of $n$ and report exceedances, denominators, and
+   binomial intervals. Separate failure to resolve a tail from evidence that
+   its probability is zero.
+
+4. **(Code.) A clipping target audit.** Compare symmetric clipping on a
+   symmetric Student distribution and the skewed Pareto control. Use matched
+   thresholds and sample counts. Predict the sign of the bias before running,
+   then report the transformed target and the original target separately.
+
+5. **(Audit.) The finite-sample certificate.** A report fits a straight line
+   to a log-survival plot over two decades and declares the population
+   sub-exponential. Name two heavier-tailed alternatives that can mimic that
+   window, state what the plot can falsify, and design a held-out threshold
+   audit.
+
+6. **(Audit.) Paper audit: a tail-index claim.** Read Simsekli, Sagun, and
+   Gurbuzbalaban [@simsekli2019]. Extract the random variable whose tail is
+   modeled, the estimator used for its index, the sampling unit, and the
+   architecture/data/training regimes tested. Identify which statements are
+   empirical observations, which invoke an $\alpha$-stable model, and which
+   would be invalid if transferred as a universal law to a new training run.

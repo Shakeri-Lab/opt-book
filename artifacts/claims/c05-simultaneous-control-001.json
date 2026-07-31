@@ -1,0 +1,52 @@
+{
+  "chapter": "c05",
+  "claim_id": "c05-simultaneous-control-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6214,
+    "seed_role": "independent named streams"
+  },
+  "hardware_claim_boundary": "Laptop-CPU probability witness; no accelerator throughput claim.",
+  "harness_ref": "ch-05",
+  "harness_wheel_sha256": "316959af60076c4c79cf740212c866a155fa78bf9b1cea0ba9a819b90b2d769a",
+  "hypothesis": "The largest magnitude among many standard-normal coordinates grows on the square-root-log scale captured by simultaneous sub-Gaussian control.",
+  "payload_sha256": "c504cbc0a18bead4f83524cb7509a8e30943b7bc6cd03c19b9182c40c62bdac0",
+  "phenomenon_id": "c05-simultaneous-safe-zone",
+  "provenance_class": "a",
+  "result": {
+    "billion_coordinate_model_threshold": 7.214094981838602,
+    "boundary": "The billion-coordinate value is a model calculation from the bound, not a generated billion-coordinate sample.",
+    "counts": [
+      100,
+      1000,
+      10000,
+      100000,
+      1000000
+    ],
+    "distribution": "independent standard normal coordinates",
+    "failure_probability": 0.01,
+    "seed": 6214,
+    "single_seeded_witness_maxima": {
+      "100": 2.4959289014701365,
+      "1000": 3.0185109051962633,
+      "10000": 4.064415717901967,
+      "100000": 4.406626454790697,
+      "1000000": 4.7068056962156914
+    },
+    "stream_policy": "one SeedSequence child per count",
+    "union_bound_thresholds": {
+      "100": 4.45050279239012,
+      "1000": 4.940864832300146,
+      "10000": 5.386772268905419,
+      "100000": 5.79848994679102,
+      "1000000": 6.182851756998919
+    }
+  },
+  "schema_version": 1
+}

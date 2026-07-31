@@ -1,0 +1,766 @@
+---
+subtitle: "Empirical spectra, asymptotic laws, and finite nulls"
+description: "Why a Marchenko--Pastur edge is a model baseline rather than a finite-sample verdict."
+number-offset: 8
+jupyter: python3
+harness-ref: ch-09
+harness-api: "0.9"
+harness-wheel-sha256: "0d4b6e953774005f928e74b4e0617e4451f0e82c64adc4d7a1b4c4ad4a504751"
+phenomenon_id: c09-bulk-not-verdict
+claim_ids:
+  - c09-bulk-shape-001
+  - c09-finite-null-001
+  - c09-spike-threshold-001
+threads:
+  random-matrix-spectra: callback
+  subgaussian-safe-zone: callback
+lenses:
+  geometric: primary
+  dynamic: quiet
+  algorithmic: supporting
+fulfills:
+  - promise-c08-c09-spectral-mass
+---
+
+# The Bulk Is Not a Verdict {#c09}
+
+<span class="thread">RS · Random-matrix spectra</span>
+<span class="thread">SG · The sub-Gaussian safe zone</span>
+<span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
+
+Generate $128$ observations with $64$ independent standard-normal
+coordinates. The population covariance is exactly
+$\matr{I}_{64}$. For the seeded realization below, the largest eigenvalue of
+the sample covariance is
+
+$$
+\lambda_{\max}(\widehat{\matr{\Sigma}})\approx 2.921.
+$$
+
+The Marchenko--Pastur upper edge at aspect ratio
+$\gamma=64/128=1/2$ is
+
+$$
+\lambda_+=(1+\sqrt{\gamma})^2\approx2.914.
+$$
+
+The sample crosses the edge even though there is no population signal to
+find.
+
+::: {.callout-important title="Prediction"}
+Does $\lambda_{\max}>\lambda_+$ reject the pure-noise model? If not, what
+must be calibrated before the word “signal” is justified?
+:::
+
+## The outlier is made of noise {#sec-c09-opening}
+
+The matrix convention matters. Let
+$\matr{X}\in\mathbb{R}^{m\times n}$ have observations in rows and
+coordinates in columns. Here the population mean is known to be zero, so the
+estimator is the sample second moment
+
+$$
+\widehat{\matr{\Sigma}}
+=
+\frac{1}{m}\matr{X}^{\mathsf T}\matr{X}.
+$$ {#eq-c09-second-moment}
+
+Its eigenvalues are the squared singular values of
+$\matr{X}/\sqrt m$. C08 located those edges; this chapter instruments the
+mass between them. To prevent a hidden seed search, the witness seed is the
+first 32 bits of the SHA-256 digest of the registered phenomenon ID
+`c09-bulk-not-verdict`.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate `harness@ch-09`.
+2. Generate the predeclared pure-noise witness.
+3. Form the known-zero-mean second-moment estimator and compute its exact eigenvalues.
+4. Evaluate the Marchenko--Pastur density under the matching aspect ratio.
+5. Plot the finite empirical spectrum and mark the limiting support edges.
+:::
+
+```{python}
+#| label: fig-c09-bulk-witness
+#| fig-cap: "A pure-noise finite spectrum can cross an asymptotic edge. The histogram is the exact eigenvalue spectrum of one seeded 64-coordinate sample covariance from 128 independent standard-normal observations. The curve is the Marchenko--Pastur limiting density for the matching aspect ratio. The top eigenvalue lies beyond the limiting upper edge; that crossing is the symptom, not yet a rejection rule."
+#| fig-alt: "Histogram of 64 sample-covariance eigenvalues overlaid by a smooth Marchenko--Pastur density. Most eigenvalues fill the predicted bulk between about 0.086 and 2.914, while one pure-noise eigenvalue at about 2.921 sits just beyond the upper edge."
+#| code-summary: "Code: construct a pure-noise edge crossing and overlay its asymptotic bulk"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-09/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    covariance_eigenvalues,
+    empirical_upper_threshold,
+    gaussian_covariance_trials,
+    marchenko_pastur_density,
+    marchenko_pastur_support,
+)
+
+# [2]
+sample_count, feature_count = 128, 64
+witness_seed = int(
+    sha256(b"c09-bulk-not-verdict").hexdigest()[:8],
+    16,
+)
+rng = np.random.default_rng(witness_seed)
+data = rng.standard_normal((sample_count, feature_count))
+
+# [3]
+eigenvalues = covariance_eigenvalues(data)
+aspect_ratio = feature_count / sample_count
+support = marchenko_pastur_support(aspect_ratio)
+assert eigenvalues[-1] > support.lambda_plus
+
+# [4]
+grid = np.linspace(support.lambda_minus, support.lambda_plus, 700)
+density = marchenko_pastur_density(grid, aspect_ratio)
+
+# [5]
+fig, axis = plt.subplots(figsize=(7.2, 3.8))
+axis.hist(
+    eigenvalues,
+    bins=np.linspace(0.0, 3.12, 17),
+    density=True,
+    alpha=0.55,
+    color="#4c78a8",
+    label="finite ESD histogram",
+)
+axis.plot(grid, density, color="#1f4e79", linewidth=2.2, label="MP density")
+axis.axvline(
+    support.lambda_minus,
+    color="#6b6b6b",
+    linestyle="--",
+    label=r"limiting edges $\lambda_\pm$",
+)
+axis.axvline(support.lambda_plus, color="#6b6b6b", linestyle="--")
+axis.axvline(
+    eigenvalues[-1],
+    color="#e45756",
+    linewidth=2.0,
+    label="pure-noise top eigenvalue",
+)
+axis.set(xlabel=r"eigenvalue $\lambda$", ylabel="spectral density")
+axis.grid(alpha=0.22)
+axis.legend(frameon=False, fontsize=8)
+plt.tight_layout()
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+print(
+    f"mean eigenvalue={np.mean(eigenvalues):.6f}; "
+    f"lambda_max={eigenvalues[-1]:.6f}"
+)
+print(
+    f"MP edges=[{support.lambda_minus:.6f}, "
+    f"{support.lambda_plus:.6f}]"
+)
+```
+::::
+
+The overlay is visually persuasive and logically insufficient. The
+Marchenko--Pastur curve is a limit under a declared generative model. The
+histogram is one finite random measure. Neither object says how often the
+largest finite eigenvalue crosses the limiting support.
+
+## Name the estimator before naming the law {#sec-c09-estimator}
+
+Three similar-looking matrices answer different questions:
+
+| Mean contract | Computation | Denominator meaning |
+|---|---|---|
+| population mean known to be zero | $\frac1m\sum_i\vect{x}_i\vect{x}_i^{\mathsf T}$ | unbiased second moment under the declared mean |
+| population mean unknown; maximum-likelihood Gaussian convention | $\frac1m\sum_i(\vect{x}_i-\bar{\vect{x}})(\vect{x}_i-\bar{\vect{x}})^{\mathsf T}$ | centered average |
+| population mean unknown; unbiased covariance convention | $\frac1{m-1}\sum_i(\vect{x}_i-\bar{\vect{x}})(\vect{x}_i-\bar{\vect{x}})^{\mathsf T}$ | degrees-of-freedom correction |
+
+Changing centering or denominator changes the finite null. The opening uses
+the first row of the table. A report that says only “we computed the
+covariance” has not specified its estimator.
+
+For a symmetric matrix $\matr{M}$ with eigenvalues
+$\lambda_1,\ldots,\lambda_n$, define its **empirical spectral
+distribution**
+
+$$
+\mu_{\matr{M}}
+=
+\frac1n\sum_{j=1}^n\delta_{\lambda_j}.
+$$ {#eq-c09-esd}
+
+This is not merely a histogram. It is the exact probability measure that
+places mass $1/n$ at each finite eigenvalue. A histogram adds a binning
+choice for visualization.
+
+::: {#thm-c09-esd-moments phenomenon_id="c09-bulk-not-verdict"}
+## Trace moments of an empirical spectrum
+
+For every nonnegative integer $k$,
+
+$$
+\int \lambda^k\,d\mu_{\matr{M}}(\lambda)
+=
+\frac1n\operatorname{tr}(\matr{M}^k).
+$$ {#eq-c09-trace-moments}
+:::
+
+### Proof
+
+Write
+$\matr{M}=\matr{Q}\operatorname{diag}(\lambda_1,\ldots,\lambda_n)
+\matr{Q}^{\mathsf T}$. Then
+
+$$
+\operatorname{tr}(\matr{M}^k)
+=
+\sum_{j=1}^n\lambda_j^k.
+$$
+
+Integrating against the point masses in @eq-c09-esd gives the same sum divided
+by $n$. For $k=0$, the identity says that the ESD has total mass one.
+$\square$
+
+The first moment is normalized trace. For the sample covariance,
+
+$$
+\int\lambda\,d\mu_{\widehat{\matr{\Sigma}}}(\lambda)
+=
+\frac{1}{mn}\norm{\matr{X}}_{\mathrm F}^2.
+$$
+
+The largest eigenvalue is a different functional. A correct mean does not pin
+the upper edge, just as C08's Frobenius average did not pin both singular
+edges.
+
+## The bulk law is asymptotic {#sec-c09-mp}
+
+::: {#thm-c09-marchenko-pastur phenomenon_id="c09-bulk-not-verdict"}
+## Marchenko--Pastur law
+
+Let $\matr{X}\in\mathbb{R}^{m\times n}$ have independent entries with mean
+zero, variance one, and finite fourth moment. Suppose
+$m,n\to\infty$ with
+
+$$
+\frac{n}{m}\longrightarrow\gamma\in(0,\infty).
+$$
+
+Then the ESD of
+$\widehat{\matr{\Sigma}}=\matr{X}^{\mathsf T}\matr{X}/m$
+converges almost surely, weakly, to the Marchenko--Pastur measure. Its
+continuous density is
+
+$$
+\rho_\gamma(\lambda)
+=
+\frac{
+\sqrt{(\lambda_+-\lambda)(\lambda-\lambda_-)}
+}{
+2\pi\gamma\lambda
+}
+\mathbf{1}_{[\lambda_-,\lambda_+]}(\lambda),
+$$ {#eq-c09-mp-density}
+
+where
+
+$$
+\lambda_\pm=(1\pm\sqrt{\gamma})^2.
+$$ {#eq-c09-mp-edges}
+
+When $\gamma>1$, the measure also has a point mass
+$1-1/\gamma$ at zero.
+:::
+
+### Proof with pointer
+
+One proof studies normalized traces of powers; another studies the Stieltjes
+transform
+
+$$
+s_n(z)
+=
+\frac1n\operatorname{tr}
+\left(
+\widehat{\matr{\Sigma}}-z\matr{I}
+\right)^{-1}.
+$$
+
+Independence and proportional growth produce a deterministic fixed-point
+equation for the limiting transform, whose inversion yields
+@eq-c09-mp-density. Establishing almost-sure convergence and controlling the
+resolvent error is the technical work. We use the theorem diagnostically and
+point to the original paper for the full argument [@marchenko1967].
+
+The scaling is part of the theorem. The entries of $\matr{X}$ have variance
+one and the Gram matrix is divided by $m$. Equivalently,
+$\matr{A}=\matr{X}/\sqrt m$ has entry variance $1/m$ and
+$\widehat{\matr{\Sigma}}=\matr{A}^{\mathsf T}\matr{A}$. Mixing variance
+$1/n$ with the edges in @eq-c09-mp-edges changes the mean spectral scale by
+a factor of $m/n$.
+
+C08's scaled Gaussian singular edges were
+$1\pm\sqrt{\gamma}$. The eigenvalue edges here are their squares. The
+Marchenko--Pastur law adds the missing mass between them.
+
+::: {.callout-warning title="Named wrong answer: 'Above the MP edge means signal'"}
+The support describes a limiting measure. It does not say that every
+eigenvalue of every finite null matrix lies inside the support. An edge
+crossing becomes evidence only after the finite statistic, calibration rule,
+false-positive budget, and alternative model are declared.
+:::
+
+## A deterministic bulk can still be a poor covariance estimate {#sec-c09-covariance}
+
+The sample spectrum can converge to a beautiful deterministic shape while the
+sample covariance remains far from the population covariance in operator
+norm. For the isotropic case,
+
+$$
+\norm{\widehat{\matr{\Sigma}}-\matr{I}}_{\mathrm{op}}
+=
+\max\left\{
+\lambda_{\max}(\widehat{\matr{\Sigma}})-1,\,
+1-\lambda_{\min}(\widehat{\matr{\Sigma}})
+\right\}.
+$$ {#eq-c09-isotropic-error}
+
+At fixed positive $\gamma$, the limiting edges do not collapse to one.
+
+::: {#thm-c09-covariance-error phenomenon_id="c09-bulk-not-verdict"}
+## Sub-Gaussian covariance-estimation error
+
+Let $\vect{X}\in\mathbb{R}^n$ be centered with covariance
+$\matr{\Sigma}$, and assume that for every $\vect{x}$,
+
+$$
+\norm{\langle\vect{X},\vect{x}\rangle}_{\psi_2}
+\le
+K\norm{\langle\vect{X},\vect{x}\rangle}_{L^2}.
+$$
+
+For $m$ independent copies and the estimator in @eq-c09-second-moment,
+
+$$
+\E\norm{
+\widehat{\matr{\Sigma}}-\matr{\Sigma}
+}_{\mathrm{op}}
+\le
+CK^2
+\left(
+\sqrt{\frac{n}{m}}+\frac{n}{m}
+\right)
+\norm{\matr{\Sigma}}_{\mathrm{op}}.
+$$ {#eq-c09-covariance-error}
+:::
+
+### Diagnostic proof sketch
+
+Whiten the data:
+$\vect{Z}=\matr{\Sigma}^{-1/2}\vect{X}$. The whitened rows are isotropic
+and sub-Gaussian, so C08 controls all singular values of their data matrix.
+Squaring those bounds controls
+$\norm{m^{-1}\matr{Z}^{\mathsf T}\matr{Z}-\matr{I}}_{\mathrm{op}}$.
+Conjugating by $\matr{\Sigma}^{1/2}$ contributes
+$\norm{\matr{\Sigma}}_{\mathrm{op}}$. Vershynin gives the full expectation
+and high-probability bookkeeping [@vershynin2018].
+
+The ambient-dimension rate says that $m$ must scale like
+$n/\varepsilon^2$ for relative operator error $\varepsilon$. C10 will
+replace $n$ with an effective dimension when the population spectrum is
+concentrated. That promise is now contractual, not rhetorical.
+
+## Calibrate the finite statistic {#sec-c09-finite-null}
+
+Return to the opening shape. The finite null must match:
+
+- $m=128$, $n=64$;
+- independent standard-normal entries;
+- known population mean zero, with no sample centering;
+- denominator $m$;
+- statistic $\lambda_{\max}$;
+- false-positive rate $\alpha=0.05$;
+- one predeclared look.
+
+The next study uses $2{,}000$ independent null matrices with a seed
+different from the opening witness. The 95th empirical percentile is a
+calibrated threshold for this contract—not a universal constant.
+
+:::: {.plan-code}
+::: {.plan}
+1. Reuse the declared shape and analytic Marchenko--Pastur edge.
+2. Generate an independently seeded finite Gaussian null ensemble.
+3. Compute the largest eigenvalue for every exact covariance matrix.
+4. Predeclare the upper five-percent empirical threshold.
+5. Compare the opening witness with both the asymptotic edge and finite threshold.
+:::
+
+```{python}
+#| label: fig-c09-finite-null
+#| fig-cap: "The limiting upper edge is not a finite five-percent threshold. In 2,000 independently seeded pure-noise covariance matrices of the opening shape, 13.85 percent of largest eigenvalues exceed the asymptotic edge. The opening witness crosses that edge but remains below the empirical 95th-percentile null threshold. The histogram is a distribution of one predeclared statistic, not an ESD."
+#| fig-alt: "Histogram of 2,000 largest eigenvalues under a matched Gaussian null. A dashed line at 2.914 marks the Marchenko--Pastur edge, a solid line at about 2.988 marks the empirical 95th percentile, and the opening witness at about 2.921 lies between them."
+#| code-summary: "Code: calibrate the largest eigenvalue under a matched finite null"
+#| code-fold: false
+
+# [1]
+asymptotic_edge = support.lambda_plus
+
+# [2]
+null_trials, null_seed = 2000, 6291
+null = gaussian_covariance_trials(
+    sample_count,
+    feature_count,
+    trials=null_trials,
+    seed=null_seed,
+)
+
+# [3]
+null_max = null["lambda_max"]
+crossing_rate = np.mean(null_max > asymptotic_edge)
+
+# [4]
+false_positive_rate = 0.05
+finite_threshold = empirical_upper_threshold(
+    null_max,
+    false_positive_rate=false_positive_rate,
+)
+
+# [5]
+witness_max = eigenvalues[-1]
+fig, axis = plt.subplots(figsize=(7.2, 3.7))
+axis.hist(
+    null_max,
+    bins=34,
+    density=True,
+    color="#72b7b2",
+    alpha=0.7,
+    label=r"finite null for $\lambda_{\max}$",
+)
+axis.axvline(
+    asymptotic_edge,
+    color="#6b6b6b",
+    linestyle="--",
+    linewidth=2.0,
+    label="asymptotic upper edge",
+)
+axis.axvline(
+    finite_threshold,
+    color="#1f4e79",
+    linewidth=2.0,
+    label="finite 95th percentile",
+)
+axis.axvline(
+    witness_max,
+    color="#e45756",
+    linewidth=2.0,
+    label="opening witness",
+)
+axis.set(xlabel=r"largest eigenvalue $\lambda_{\max}$", ylabel="density")
+axis.grid(alpha=0.22)
+axis.legend(frameon=False, fontsize=8)
+plt.tight_layout()
+plt.show()
+
+print(
+    f"null edge-crossing rate={crossing_rate:.4f}; "
+    f"finite threshold={finite_threshold:.6f}"
+)
+print(
+    f"witness={witness_max:.6f}; "
+    f"reject at alpha={false_positive_rate:.2f}: "
+    f"{witness_max > finite_threshold}"
+)
+```
+::::
+
+The result resolves the symptom. In this finite ensemble, $13.85\%$ of pure
+noise matrices cross the limiting edge. The opening value $2.921$ is above
+the edge but below the finite 95th percentile $2.988$. Under this
+predeclared test, it is not rejected.
+
+The threshold is only as portable as its null contract. Correlated rows,
+heavy-tailed coordinates, sample centering, a different aspect ratio, or a
+search across many layers all require recalibration.
+
+::: {#thm-c09-repeated-looks phenomenon_id="c09-bulk-not-verdict"}
+## Repeated-look false alarms
+
+If each of $K$ inspected spectra has a null event with probability at most
+$\alpha$, then
+
+$$
+\Pr\{\text{at least one false alarm}\}\le K\alpha.
+$$
+
+If the looks are independent and each event has probability exactly
+$\alpha$, then the probability is
+
+$$
+1-(1-\alpha)^K.
+$$ {#eq-c09-repeated-looks}
+:::
+
+### Proof
+
+The first statement is the union bound. Under independence, no false alarm
+occurs with probability $(1-\alpha)^K$; take the complement. $\square$
+
+At twenty independent looks, a nominal five-percent per-look rule has about a
+$64.2\%$ chance of at least one false alarm. If the asymptotic edge were
+mistaken for the threshold, the measured $13.85\%$ per-look crossing rate
+would produce about a $94.9\%$ chance of at least one crossing. Monitoring
+creates a multiple-comparison problem even before training dynamics enter.
+
+::: {.callout-note title="Field note: nulls are executable specifications"}
+Store the null generator beside the diagnostic. Record shape, orientation,
+centering, denominator, marginal distribution, dependence assumptions,
+statistic, seed, trial count, quantile method, false-positive level, and number
+of looks. “Compared with MP” is a picture caption; it is not a reproducible
+test.
+:::
+
+## Signal needs an alternative model {#sec-c09-spike}
+
+A finite null tells us which values are unusual under noise. It does not say
+which structured mechanism produced an unusual value. The smallest useful
+alternative is a rank-one population spike:
+
+$$
+\matr{\Sigma}_\beta
+=
+\operatorname{diag}(\beta,1,\ldots,1),
+\qquad \beta>1.
+$$ {#eq-c09-spiked-model}
+
+Even this genuine population structure need not create a separated sample
+eigenvalue.
+
+::: {#thm-c09-spike-separation phenomenon_id="c09-bulk-not-verdict"}
+## Rank-one spiked-covariance separation
+
+Under the model in @eq-c09-spiked-model, independent standardized entries
+with finite fourth moment, and
+$n/m\to\gamma\in(0,1)$, the largest sample eigenvalue converges almost
+surely to
+
+$$
+\lambda_{\max}
+\longrightarrow
+\begin{cases}
+(1+\sqrt{\gamma})^2,
+& \beta\le1+\sqrt{\gamma},\\[4pt]
+\displaystyle
+\beta\left(1+\frac{\gamma}{\beta-1}\right),
+& \beta>1+\sqrt{\gamma}.
+\end{cases}
+$$ {#eq-c09-spike-separation}
+:::
+
+### Proof with pointer
+
+Baik and Silverstein characterize the almost-sure limits of sample
+eigenvalues for finite-rank perturbations of the identity covariance
+[@baik2006]. The displayed rank-one formula is their specialization. The
+important diagnostic fact is the phase boundary: below
+$1+\sqrt{\gamma}$, a real population spike is asymptotically absorbed at
+the null edge.
+
+For $\gamma=1/2$, the population threshold is about $1.707$. The next
+finite study compares $\beta=1$, a subcritical spike $\beta=1.5$, and a
+supercritical spike $\beta=2.5$, each over $2{,}000$ independently seeded
+matrices. All three use the same five-percent finite null threshold from the
+previous study.
+
+:::: {.plan-code}
+::: {.plan}
+1. Declare null, subcritical, and supercritical population eigenvalues.
+2. Generate independent finite ensembles under the rank-one Gaussian model.
+3. Compute the exact largest sample eigenvalue in every trial.
+4. Compare each ensemble with the previously calibrated finite null threshold.
+5. Plot finite distributions and rejection fractions beside the asymptotic separation boundary.
+:::
+
+```{python}
+#| label: fig-c09-spike-threshold
+#| fig-cap: "A population spike is not the same as a separated sample eigenvalue. At aspect ratio one half, the subcritical population spike beta equals 1.5 remains close to the null largest-eigenvalue distribution and crosses the finite five-percent threshold in only 10.9 percent of trials. The supercritical spike beta equals 2.5 separates and crosses in 91.65 percent. Boxes span the interquartile range; whiskers show the fifth and ninety-fifth percentiles."
+#| fig-alt: "Two-panel figure comparing null, subcritical, and supercritical rank-one covariance models. The left panel shows largest-eigenvalue box plots: null and beta 1.5 overlap strongly, while beta 2.5 shifts upward. The right panel shows threshold-crossing rates of 5, 10.9, and 91.65 percent."
+#| code-summary: "Code: compare finite subcritical and supercritical covariance spikes"
+#| code-fold: false
+
+# [1]
+models = [
+    ("null", 1.0, null_seed),
+    ("subcritical", 1.5, 6292),
+    ("supercritical", 2.5, 6293),
+]
+
+# [2]
+ensembles = [
+    null
+    if beta == 1.0
+    else gaussian_covariance_trials(
+        sample_count,
+        feature_count,
+        trials=null_trials,
+        seed=seed,
+        population_spike=beta,
+    )
+    for _, beta, seed in models
+]
+
+# [3]
+maxima = [ensemble["lambda_max"] for ensemble in ensembles]
+
+# [4]
+rejection_rates = np.array(
+    [np.mean(values > finite_threshold) for values in maxima]
+)
+separation_threshold = 1.0 + np.sqrt(aspect_ratio)
+
+# [5]
+labels = [f"{label}\n" + rf"$\beta={beta:g}$" for label, beta, _ in models]
+fig, axes = plt.subplots(1, 2, figsize=(8.0, 3.8))
+axes[0].boxplot(
+    maxima,
+    tick_labels=labels,
+    whis=(5, 95),
+    showfliers=False,
+    patch_artist=True,
+    boxprops={"facecolor": "#a0cbe8"},
+    medianprops={"color": "#1f4e79", "linewidth": 2.0},
+)
+axes[0].axhline(
+    finite_threshold,
+    color="#e45756",
+    linestyle="--",
+    label="finite null threshold",
+)
+axes[0].set(ylabel=r"largest sample eigenvalue $\lambda_{\max}$")
+axes[0].grid(alpha=0.22, axis="y")
+axes[0].legend(frameon=False, fontsize=8)
+
+bars = axes[1].bar(
+    labels,
+    rejection_rates,
+    color=["#72b7b2", "#f2cf5b", "#e45756"],
+)
+axes[1].axhline(
+    false_positive_rate,
+    color="#1f4e79",
+    linestyle=":",
+    label="declared null rate",
+)
+axes[1].set(ylabel="fraction above finite threshold", ylim=(0.0, 1.0))
+axes[1].bar_label(bars, fmt="%.3f", padding=3)
+axes[1].grid(alpha=0.22, axis="y")
+axes[1].legend(frameon=False, fontsize=8)
+plt.tight_layout()
+plt.show()
+
+print(f"population separation threshold={separation_threshold:.6f}")
+for (label, beta, _), rate in zip(models, rejection_rates, strict=True):
+    print(f"{label}: beta={beta:.1f}; fraction above threshold={rate:.4f}")
+```
+::::
+
+The subcritical model contains genuine population structure, yet most finite
+sample spectra do not separate from the null. Conversely, an arbitrary
+outlier in a learned matrix does not inherit this theorem unless the spiked
+covariance model is defensible.
+
+The diagnostic hierarchy is now explicit:
+
+| Object | Question answered | Invalid shortcut |
+|---|---|---|
+| ESD | Where did this finite matrix place spectral mass? | a histogram proves the null |
+| Marchenko--Pastur law | What bulk emerges under an iid proportional-growth null? | the limiting edge is a finite test |
+| finite null | Is the predeclared statistic unusual at this exact shape and estimator? | unusual identifies the mechanism |
+| spiked alternative | When does one declared population perturbation separate? | every learned outlier is a spike |
+
+A Hessian, a parameter update, and a sample covariance are all symmetric
+matrices after suitable products, but symmetry does not give them the same
+generative law. C12 will build a curvature-specific null. C14 will ask how
+one-layer spectra compose through depth.
+
+::: {.callout-tip title="Check yourself"}
+Two teams inspect the same $50$ independently initialized layers. Team A
+flags every eigenvalue above the asymptotic Marchenko--Pastur edge. Team B
+calibrates the maximum across all $50$ layers under a matched joint null.
+Which team controls the experiment-level false-positive probability? List the
+metadata needed to reproduce Team B's threshold.
+:::
+
+## Okay, so —
+
+- **Inherited:** C08 supplied singular edges and the aspect-ratio geometry;
+  C05 supplied a sub-Gaussian null class, and C06 warned that covariance
+  entries are squared quantities.
+- **Changed:** two edges became a full empirical spectral measure, and the
+  asymptotic bulk became a baseline rather than a finite verdict.
+- **Instrumented:** the harness now declares covariance orientation,
+  centering, denominator, Marchenko--Pastur support and density, finite
+  extreme-eigenvalue trials, and an empirical upper threshold.
+- **Established:** Marchenko--Pastur explains the limiting null mass under its
+  assumptions; covariance estimation can still have order-one operator error;
+  repeated looks spend a false-positive budget; and a genuine subcritical
+  population spike can remain inside the sample bulk.
+- **Unresolved:** ambient dimension is too crude when spectral mass is
+  concentrated. C10 will turn trace divided by the upper edge into effective
+  rank and replace parameter counting with a geometric size.
+
+## Sources and further reading
+
+Marchenko and Pastur establish the limiting empirical spectral law
+[@marchenko1967]. Vershynin supplies the sub-Gaussian covariance-estimation
+theorem and its whitening argument [@vershynin2018]. Baik and Silverstein
+derive the almost-sure sample-eigenvalue limits for spiked population models
+[@baik2006]. The instructor's canonical RMT material supplied the ESD-to-bulk
+sequence and covariance-estimation question. Its finite-significance
+shortcut—“above the edge means signal”—was rejected and replaced with the
+matched-null contract demonstrated here.
+
+## Exercises
+
+1. **(Pencil.) Mass, mean, and edge.** Construct two probability measures on
+   four nonnegative points with the same first moment but different maxima.
+   Realize them as ESDs of diagonal matrices. Explain why normalized trace
+   cannot replace an upper-edge diagnostic.
+
+2. **(Pencil.) The zero atom.** Let $n>m$. Prove directly from rank that
+   $\matr{X}^{\mathsf T}\matr{X}$ has at least $n-m$ zero eigenvalues.
+   Show that their ESD mass tends to $1-1/\gamma$ when $n/m\to\gamma>1$.
+
+3. **(Code.) Estimator contract.** Under one fixed Gaussian data generator,
+   compare known-zero-mean division by $m$, sample centering with division
+   by $m$, and sample centering with division by $m-1$. Calibrate a
+   separate finite largest-eigenvalue threshold for each. Report seeds,
+   denominators, trial counts, and quantile method.
+
+4. **(Code.) Finite shape audit.** Hold $\gamma=1/2$ approximately fixed
+   while increasing $m,n$. Measure the probability that
+   $\lambda_{\max}$ crosses the limiting edge and the distance between the
+   edge and the empirical 95th percentile. Do not infer a convergence rate
+   from a log--log line without a theorem.
+
+5. **(Audit.) Null misspecification.** Replace independent Gaussian rows with
+   temporally correlated rows, then with heavy-tailed coordinates. Keep the
+   old threshold long enough to measure its false-positive rate. Identify
+   which Marchenko--Pastur and covariance-estimation assumptions were broken.
+
+6. **(Audit.) Paper audit: a model-specific outlier.** Read Baik and
+   Silverstein [@baik2006]. Extract the population model, aspect-ratio limit,
+   moment assumptions, separation condition, almost-sure conclusion, and the
+   quantity that remains asymptotic. Then review a spectral-outlier claim in
+   a current machine-learning paper: state whether its matrix has the same
+   generative model and propose a matched finite null if it does not.

@@ -1,0 +1,33 @@
+{
+  "chapter": "c03",
+  "claim_id": "c03-update-stagnation-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float16",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 0,
+    "seed_role": "not applicable"
+  },
+  "hardware_claim_boundary": "CPU simulation of a declared numerical contract; no accelerator timing or throughput conclusion.",
+  "harness_ref": "ch-03",
+  "harness_wheel_sha256": "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918",
+  "hypothesis": "Rounding an increment smaller than half the local FP16 spacing back to FP16 after each step will make the stored trajectory stall.",
+  "payload_sha256": "6e2c0edd7dbe52f3599a42dc1918b009a3716dccc3d0dd51f9d29f4bd8cc4c5a",
+  "phenomenon_id": "c03-vanishing-update",
+  "provenance_class": "b",
+  "result": {
+    "changed_steps": 0,
+    "exact_endpoint": 1124.0,
+    "half_spacing": 0.5,
+    "initial": 1024.0,
+    "local_spacing": 1.0,
+    "requested_increment": 0.25,
+    "steps": 400,
+    "stored_endpoint": 1024.0
+  },
+  "schema_version": 1
+}
