@@ -260,8 +260,10 @@ for name, contract in contracts.items():
 for name, contract in contracts.items():
     print(
         f"{name}: eps={contract['epsilon']:.8g}, "
-        f"u={contract['unit_roundoff']:.8g}, "
-        f"smallest normal={contract['smallest_normal']:.8g}, "
+        f"u={contract['unit_roundoff']:.8g}"
+    )
+    print(
+        f"  normal floor={contract['smallest_normal']:.8g}, "
         f"smallest subnormal={contract['smallest_subnormal']:.8g}, "
         f"largest finite={contract['largest_finite']:.8g}"
     )
@@ -416,8 +418,11 @@ blocked_grid = symmetric_quantize(values, bits=8, block_size=3)
 for name, result in (("global", global_grid), ("blocked", blocked_grid)):
     print(
         f"{name:>7}: scales={np.array2string(result.scales, precision=6)}, "
-        f"codes={result.integer_codes.tolist()}, "
-        f"reconstructed={np.array2string(result.dequantized, precision=6)}"
+        f"codes={result.integer_codes.tolist()}"
+    )
+    print(
+        " " * 9
+        + f"reconstructed={np.array2string(result.dequantized, precision=6)}"
     )
 
 # [4]
@@ -668,8 +673,10 @@ resolution allocation, and the rounding-rule audit.
    accumulation, output, rounding, exceptional-value, and scaling questions.
    For each question, name one rival explanation it could eliminate.
 
-6. **(Audit.) Paper audit: FP8 formats.** Read the primary FP8 format proposal
-   cited above. Extract one claim about a format, one about an execution path,
+6. **(Audit.) Paper audit: FP8 formats.** Complete the **Claim**,
+   **Mathematical object**, **Evidence culture and interface**, **Numerical and
+   hardware contract**, and **Transfer verdict** fields for the primary FP8
+   format proposal cited above. Extract one claim about a format, one about an execution path,
    and one empirical result. For each, record its assumptions and identify
    whether the paper's evidence is a proof, model calculation, simulation, or
    hardware measurement. Do not convert a paper-reported endpoint into a

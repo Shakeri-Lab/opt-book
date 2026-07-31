@@ -8,8 +8,8 @@
   content-addressed artifacts remain the rolling-draft identities.
 - Obtain explicit author ratification of provisional D29–D33. Their editorial
   policies are implemented, but implementation is not recorded as acceptance.
-- Decide the complete-book budget from the five measured chapters rather than
-  extrapolating from the C02 pilot alone.
+- Decide the complete-book budget from the committed C01–C17 metrics ledger
+  rather than extrapolating from the C02 pilot alone.
 
 ## Cross-book
 
@@ -79,6 +79,15 @@
 
 Add a paper to the public syllabus only after the book has introduced the
 object needed to audit it.
+
+## Named paper-audit exhibits
+
+- **C16 staircase exhibit:** register Kim–Mishkin–Pilanci's staircase of
+  connectivity as the width-indexed topology phase-transition target. Keep it
+  at Paper-audit/further-reading depth under D33; use the published result as
+  evidence and require the student to audit topology definition, width axis,
+  finite-sample endpoint, and transfer boundary before drawing an edge-of-
+  stability conclusion.
 
 ## Deferred by scope
 

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "claim_id": "c14-gated-product-001",
+  "phenomenon_id": "c14-average-criticality",
+  "chapter": "c14",
+  "provenance_class": "a",
+  "hypothesis": "ReLU gates bend the deep-linear isometry control by inserting data-dependent rank loss and anisotropy even at variance-critical weight scale.",
+  "hardware_claim_boundary": "One seeded finite-width CPU witness; not a distributional theorem for trained Jacobians.",
+  "harness_ref": "ch-14",
+  "harness_wheel_sha256": "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26",
+  "result": {
+    "seed": 3205341113,
+    "width": 24,
+    "depth": 12,
+    "weight_variance": 0.08333333333333333,
+    "active_coordinates_by_layer": [9, 15, 20, 14, 12, 10, 16, 10, 13, 8, 15, 13],
+    "jacobian_rank_tolerance_1e-10": 8,
+    "mean_squared_singular_value": 0.4636323484323055,
+    "maximum_singular_value": 2.630238109100288,
+    "minimum_singular_value": 1.0134132259267513e-65,
+    "singular_values": [2.630238109100288, 1.8525079430849052, 0.8027260703521774, 0.35994740573633266, 0.05388915244636431, 0.019534146412149525, 0.0043117411046127065, 0.0016367532031049776, 1.9660447482436329e-16, 1.7639569021100304e-16, 1.2856960632450984e-16, 9.508607480281397e-17, 6.307063837008031e-17, 5.3476183325717866e-17, 3.695265535673235e-17, 2.2891719148640957e-18, 1.851245033261997e-18, 1.5472681378981306e-32, 8.287231871777437e-33, 6.753339225530874e-33, 2.114502295207582e-33, 7.885619801938811e-49, 3.093798298026248e-49, 1.0134132259267513e-65]
+  },
+  "payload_sha256": "21e8c19f1872919f6fe5d718d96c3de90749dfa6f2b4e7041f7760180bce49ab"
+}

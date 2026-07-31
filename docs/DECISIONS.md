@@ -93,6 +93,18 @@ author correction supersedes any default.
     actually built from a recorded commit/tag pair; do not backfill false
     source identities onto C02–C12. Keep SHA-256 as the identity of those
     eleven rolling-draft wheels.
+35. **D35 — Published provenance register:** Consolidate repeated instructor-
+    source notes into one unnumbered Provenance and Acknowledgements note.
+    Chapter Sources remain bibliographic; local source audits retain the full
+    accept/reject record.
+36. **D36 — Check-yourself policy:** Pose questions everywhere. Worked answers
+    belong in instructor material under D16, not inside the self-check box.
+37. **D37 — Closing incident:** Close the core with an unnumbered Coda, not an
+    Act III seed. The Coda must use the C01–C17 instruments to diagnose one
+    pinned incident and complete the book's opening promise.
+38. **D38 — Figure palette:** Use the UVA-centered navy, wine, green, orange,
+    secondary-blue, and gray family recorded in `docs/STYLE-GUIDE.md`. A fast
+    audit rejects unapproved manuscript hex values.
 
 ## Acceptance status
 
@@ -100,3 +112,6 @@ author correction supersedes any default.
 - D29–D33 are implemented provisional policies and await explicit author
   ratification; “proceed with revision” is not silently recorded as acceptance.
 - D34 is open. No harness tags are created until the author chooses a scheme.
+- D35–D38 are adopted working decisions for this revision. They can be
+  superseded by an explicit author correction without changing D34 or chapter
+  acceptance status.

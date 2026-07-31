@@ -1,0 +1,268 @@
+---
+description: "How the book's numerical, stochastic, curvature, spectral, and state diagnostics separate one engineered loss spike from its rivals."
+jupyter: python3
+harness-ref: ch-17
+harness-api: "0.17"
+harness-wheel-sha256: "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60"
+phenomenon_id: coda-one-spike-four-suspects
+claim_ids: [coda-incident-001]
+---
+
+# One Spike, Four Suspects {.unnumbered #coda}
+
+The first page opened with an incident: one loss spike, at least four
+plausible causes. The intervening chapters built instruments one at a time.
+Now they must work together.
+
+A seeded $6\times4$ linear map is trained for 120 mini-batch steps on 256
+observations. The batch size is 32, the step is $0.12$, and the same eight
+input batches repeat in a fixed order. At step 60, the full-data loss jumps
+from about $0.00514$ to $0.310$, a factor of $60.2$. It then recovers toward
+its earlier level.
+
+Nothing about that scalar trace identifies the cause.
+
+::: {.callout-important title="Prediction"}
+Rank these four suspects before opening the panel: **precision**,
+**curvature**, **estimator/data**, and **implementation state**. The last
+suspect will be tested through both update geometry and normalization state.
+For your top choice, name one control that could acquit it.
+:::
+
+## Open the panel {#sec-coda-panel}
+
+The experiment is laptop-scale and paired. Its primary trajectory uses
+float64; a float32 execution uses the same data, batch order, and incident.
+The clean objective is matrix least squares,
+
+$$
+\mathcal L(\matr W)
+=
+\frac{1}{2m}\norm{\matr X\matr W-\matr Y}_{\mathrm F}^2,
+\qquad
+\nabla^2\mathcal L
+=
+\frac{1}{m}\matr X^{\mathsf T}\matr X\otimes\matr I_4.
+$$
+
+Every diagnostic uses the same step index. The claim record stores the
+estimator target, reduction, denominator, dtype pair, seed, and wheel digest.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate the final chapter-pinned harness.
+2. Read the content-addressed incident claim.
+3. Extract one control for each suspect.
+4. Plot the spike and the complete diagnostic panel.
+5. Check the incident step and the discriminating target-shift statistic.
+:::
+
+```{python}
+#| label: coda-incident-panel
+#| fig-alt: "Six-panel incident report. Loss jumps by a factor of about 60. Precision differences remain near one part per million. Gradient discrepancy is nearly one million times the full-gradient scale and almost entirely explained by a target shift. Step times top and directional curvature remain far below two. The incident update has one dominant singular value while the weight spectrum remains broad. Repeated-batch mean and variance differences are exactly zero."
+#| code-summary: "Code: inspect one loss spike through the book's full diagnostic panel"
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-17/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
+assert wheel_digest == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+# [2]
+incident = json.loads(
+    Path("artifacts/claims/coda-incident-001.json").read_text()
+)
+result = incident["result"]
+
+# [3]
+precision = result["precision_control"]
+regime = result["regime_control"]
+curvature = result["curvature_control"]
+spectrum = result["spectrum_control"]
+normalizer = result["normalization_state_control"]
+
+# [4]
+fig, axes = plt.subplots(2, 3, figsize=(10.0, 6.2))
+axes[0, 0].bar(
+    ["before", "after"],
+    [result["loss_before_incident"], result["loss_after_incident"]],
+    color=["#232D4B", "#9C2F2F"],
+)
+axes[0, 0].set(yscale="log", ylabel="full-data loss", title="symptom")
+axes[0, 1].bar(
+    ["loss deviation", "ulp / magnitude"],
+    [
+        precision["maximum_relative_loss_deviation_float32_vs_float64"],
+        precision["float32_spacing_at_that_scale"]
+        / precision["maximum_state_or_update_magnitude"],
+    ],
+    color=["#232D4B", "#2E7D32"],
+)
+axes[0, 1].set(yscale="log", title="precision control")
+axes[0, 2].bar(
+    ["gradient\ndiscrepancy", "target-shift\nfraction"],
+    [
+        regime["realized_gradient_discrepancy_ratio"],
+        regime["fraction_of_discrepancy_from_engineered_target_shift"],
+    ],
+    color=["#9C2F2F", "#E57200"],
+)
+axes[0, 2].set(yscale="log", title="estimator control")
+axes[1, 0].bar(
+    [r"$\alpha\lambda_{\max}$", "directional"],
+    [
+        curvature["step_times_top_curvature"],
+        curvature["step_times_directional_curvature"],
+    ],
+    color=["#232D4B", "#2E7D32"],
+)
+axes[1, 0].axhline(2, color="#9C2F2F", linestyle="--")
+axes[1, 0].set(ylim=(0, 2.2), title="curvature control")
+locations = np.arange(4)
+axes[1, 1].bar(
+    locations - 0.18,
+    spectrum["incident_update_singular_values"],
+    width=0.36,
+    color="#9C2F2F",
+    label="update",
+)
+axes[1, 1].bar(
+    locations + 0.18,
+    spectrum["incident_weight_singular_values"],
+    width=0.36,
+    color="#232D4B",
+    label="weights",
+)
+axes[1, 1].set(yscale="log", title="incident spectra")
+axes[1, 1].legend(frameon=False)
+axes[1, 2].bar(
+    ["mean", "variance"],
+    [
+        normalizer["maximum_mean_difference_from_same_batch_previous_cycle"],
+        normalizer[
+            "maximum_variance_difference_from_same_batch_previous_cycle"
+        ],
+    ],
+    color=["#232D4B", "#2E7D32"],
+)
+axes[1, 2].set(ylim=(0, 1), title="repeated input state")
+for axis in axes.flat:
+    axis.grid(axis="y", alpha=0.2)
+fig.tight_layout()
+
+# [5]
+assert result["incident_step"] == 60
+assert result["loss_spike_factor"] > 60
+assert regime["fraction_of_discrepancy_from_engineered_target_shift"] > 0.99
+print(f"step 60 loss spike: {result['loss_spike_factor']:.1f}x")
+print(
+    "target-shift share of gradient discrepancy: "
+    f"{100 * regime['fraction_of_discrepancy_from_engineered_target_shift']:.1f}%"
+)
+```
+::::
+
+*Diagnostic panel.* Precision, curvature, and repeated input-statistic
+controls remain benign. The update spectrum records the event but does not
+identify its cause. The gradient discrepancy is enormous, and $99.8\%$ of it
+is traced to a changed target in the incident batch.
+
+The panels are not five votes. They are a sequence of attempts to falsify a
+cause.
+
+## Suspect 1: precision {#sec-coda-precision}
+
+The largest state or update magnitude is $1.935$. The FP32 spacing at that
+scale is about $1.19\times10^{-7}$. Across the complete paired trajectories,
+the maximum relative difference between float32 and float64 losses is only
+$1.54\times10^{-6}$. Both runs exhibit the spike.
+
+That does not prove the computation is numerically exact. It acquits range and
+local-grid resolution as explanations for a sixty-fold event in this run. A
+precision diagnosis has to predict the observed scale of the failure; here it
+does not.
+
+## Suspect 2: curvature {#sec-coda-curvature}
+
+Because the displayed objective is linear least squares, its Hessian is constant.
+The top curvature is $1.155$, so
+$\alpha\lambda_{\max}=0.139$. The incident update's directional value is
+$\alpha\lambda_{\mathrm{dir}}=0.110$. Both remain far below the exact
+fixed-quadratic boundary at two.
+
+C16 taught us not to use one local eigenvalue as a global theorem. This case
+is stronger: the landscape really is quadratic and its curvature does not
+move. The control predicts no curvature crossing, and none occurred.
+
+## Suspect 3: implementation state {#sec-coda-implementation}
+
+### Normalization state {#sec-coda-state}
+
+The same eight input batches repeat every eight steps. The incident batch has
+the same coordinate means and variances as it had one cycle earlier: both
+maximum differences are exactly zero in the represented data. Any input
+normalizer using those declared statistics would receive the same state.
+
+This does not acquit every stateful implementation. It eliminates the named
+rival: a changed input-statistic state at the incident step.
+
+### Update geometry {#sec-coda-spectrum}
+
+The leading update singular value is 176 times its value at the preceding
+step, and the incident update is nearly rank one. The spectrum therefore
+detects the event. But detection is not diagnosis. The current weight
+singular values remain broad, and nothing in the spectrum alone says whether
+the large direction came from curvature, data, arithmetic, or a routing bug.
+
+C17's instrument is a locator. It identifies which matrix and directions
+changed; it must be paired with a mechanism-specific control.
+
+## Suspect 4: estimator and data {#sec-coda-estimator}
+
+At the incident step, the realized batch gradient differs from the clean
+full gradient by about $9.74\times10^5$ times the squared full-gradient norm.
+More decisively, $99.8\%$ of that discrepancy is reproduced by comparing the
+actual incident target with the clean target on the **same input batch**.
+
+The sealed intervention can now be opened: at step 60, the four target
+coordinates in one batch were shifted by a fixed signed amount of magnitude
+eight. Inputs, batch order, step size, curvature, dtype, and normalization
+statistics were unchanged. This is not merely a high-variance draw under the
+declared clean estimator. Its conditional mean targets a different objective
+for one step.
+
+Clipping the update could reduce the visible spike, but C13 already tells us
+what that repair would and would not do. It would bound the consequence while
+leaving the target violation unexplained. The correct incident response is to
+trace the batch target and its provenance.
+
+## Completed incident report {#sec-coda-report}
+
+| Field | Finding | Verdict |
+|---|---|---|
+| symptom | full loss increases by $60.2\times$ after step 60 | established |
+| precision | paired FP32/FP64 loss deviation at most $1.54\times10^{-6}$ | acquitted for this event |
+| curvature | $\alpha\lambda_{\max}=0.139$; directional value $0.110$ | acquitted |
+| normalization state | repeated input-batch mean and variance unchanged | acquitted |
+| update spectrum | leading update singular value jumps $176\times$ | detects, does not explain |
+| estimator target | $99.8\%$ of gradient discrepancy traced to target shift | cause identified |
+| corrective control | restore clean target; rerun same seed and batch order | spike removed by construction |
+
+The first page's question now has an answer and a method. A loss trace proposes
+an incident; it does not name one. Geometry supplies candidate directions,
+dynamics supplies time-indexed boundaries, and the machine supplies arithmetic
+and state contracts. The estimator discipline binds them to the quantity the
+code actually computed.
+
+That is what it means to make a training run diagnosable—and therefore, in the
+sense this book has developed, trainable.

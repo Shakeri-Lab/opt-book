@@ -410,10 +410,10 @@ dominant = dense_eigenvalues[np.argmax(np.abs(dense_eigenvalues))]
 assert np.isclose(estimate.eigenvalue, dominant, atol=1e-8, rtol=0.0)
 iterations = np.arange(1, len(estimate.rayleigh_trace) + 1)
 fig, axis = plt.subplots(figsize=(7.2, 3.6))
-axis.plot(iterations, estimate.rayleigh_trace, color="#4c78a8")
+axis.plot(iterations, estimate.rayleigh_trace, color="#232D4B")
 axis.axhline(
     dominant,
-    color="#e45756",
+    color="#9C2F2F",
     linestyle="--",
     label=f"dense control: {dominant:.4f}",
 )
@@ -558,7 +558,9 @@ intellectual seam, not the technical authority for these claims.
    and average observed-label score outer products. Show convergence toward
    the model Fisher, then repeat with labels from a misspecified distribution.
 5. **(Audit.) Paper audit:** Select a paper that reports a Fisher, GGN, or
-   Hessian spectrum. Complete the five-field curvature card. Identify the
+   Hessian spectrum. Complete the **Mathematical object**, **Estimator and
+   comparison contract**, **Evidence culture and interface**, **Assumption
+   stress test**, and **Transfer verdict** fields. Identify the
    expectation implemented by the code, whether the reported matrix is exact
    or approximated, and which conclusion would fail if the object were
    replaced by the empirical Fisher.

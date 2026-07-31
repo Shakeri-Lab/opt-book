@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "claim_id": "c17-weight-update-spectrum-001",
+  "phenomenon_id": "c17-norm-chooses-update",
+  "chapter": "c17",
+  "provenance_class": "a",
+  "hypothesis": "A polar update has an isometric update spectrum while the factor it changes retains a non-isometric, evolving weight spectrum.",
+  "hardware_claim_boundary": "Seeded twenty-step factorized least-squares CPU control with matched initialization and external step scale; not an optimizer ranking.",
+  "harness_ref": "ch-17",
+  "harness_wheel_sha256": "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60",
+  "result": {
+    "seed": 2222110718,
+    "step_size": 0.08,
+    "steps": 20,
+    "factor_shapes": {"A": [6, 4], "B": [4, 4]},
+    "routed_parameters": ["A", "B"],
+    "excluded_parameter_example": "bias vector",
+    "by_rule": {
+      "frobenius": {
+        "initial_loss": 0.5112470986140747,
+        "loss_after_20": 0.16450237589586114,
+        "update_singular_values_step_0": [0.06475998947496849, 0.04576261887629198, 0.010042495573939204, 0.003327876114374998],
+        "update_singular_values_step_19": [0.06702174306316463, 0.038210157058297216, 0.019898571938899868, 0.0072191889536033374],
+        "weight_singular_values_step_0": [0.822276565943276, 0.6174130466727231, 0.2912194063471594, 0.13185067800936168],
+        "weight_singular_values_step_19": [1.5796457534246608, 0.9918958558896352, 0.5077919541481072, 0.14883247883887932],
+        "maximum_update_singular_spread_over_trace": 0.07159257255432591,
+        "maximum_weight_singular_spread_over_trace": 1.4308132745857816
+      },
+      "polar": {
+        "initial_loss": 0.5112470986140747,
+        "loss_after_20": 0.020475549961972855,
+        "update_singular_values_step_0": [0.08000000000000002, 0.08, 0.07999999999999996, 0.07999999999999993],
+        "update_singular_values_step_19": [0.08000000000000007, 0.08000000000000006, 0.08000000000000006, 0.08000000000000003],
+        "weight_singular_values_step_0": [0.822276565943276, 0.6174130466727231, 0.2912194063471594, 0.13185067800936168],
+        "weight_singular_values_step_19": [1.7055828815601313, 1.5843751403448239, 0.9685944337981804, 0.6856442584605527],
+        "maximum_update_singular_spread_over_trace": 8.326672684688674e-17,
+        "maximum_weight_singular_spread_over_trace": 1.0199386230995786
+      }
+    }
+  },
+  "payload_sha256": "ef6c1b7b83ec9137dbf6da77ac3518b37a4a0e4d2cc1edcb55fb418f62723882"
+}

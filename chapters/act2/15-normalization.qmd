@@ -7,7 +7,7 @@ harness-ref: ch-15
 harness-api: "0.15"
 harness-wheel-sha256: "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f"
 phenomenon_id: c15-invariance-choice
-claim_ids: [c15-invariance-001]
+claim_ids: [c15-invariance-001, c15-running-state-001]
 threads:
   numerical-stability: callback
   landscape-update-geometry: callback
@@ -91,7 +91,7 @@ $\vect1$ because $\matr P\vect1=0$.
 1. Verify and activate <code>harness@ch-15</code>.
 2. Normalize one vector before and after a constant shift.
 3. Compute both exact zero-epsilon Jacobians.
-4. compare raw-moment and centered FP32 variance.
+4. Compare raw-moment and centered FP32 variance.
 5. Verify the registered invariance and rank claims.
 :::
 
@@ -117,9 +117,11 @@ assert wheel_digest == manifest["wheel_sha256"]
 sys.path.insert(0, str(wheel_path.resolve()))
 from trainable_harness import (
     centered_normalize,
+    merge_moments,
     normalization_jacobian,
     raw_and_centered_variance,
     rms_normalize,
+    stable_online_moments,
 )
 
 # [2]
@@ -169,6 +171,119 @@ Batch-coordinate normalization adds another state: running estimates used at
 evaluation. Those are streaming centered statistics of the kind built in
 C02, with the same estimator-denominator and reduction-order obligations.
 
+## Train state and evaluation state are different estimators {#sec-c15-running-state}
+
+The oldest forward promise in the book now becomes executable. Draw eight
+training batches and one evaluation batch from the same scalar Gaussian
+population. There is no distribution shift. Train mode normalizes the
+evaluation batch using its own 32 observations; evaluation mode uses the
+running state merged from 256 earlier observations. The two outputs can still
+differ because the estimators saw different finite samples.
+
+:::: {.plan-code}
+::: {.plan}
+1. Derive a claim-specific seed and draw train and evaluation batches.
+2. Build one centered state per training batch and merge the states.
+3. Build the evaluation batch state with the same denominator contract.
+4. Normalize the evaluation values under the two estimator states.
+5. Plot convergence and output discrepancy, then verify the claim.
+:::
+
+```{python}
+#| label: fig-c15-running-state
+#| fig-cap: "Training and evaluation modes can disagree without distribution shift. The running state merges eight centered batch states exactly up to rounding, while the held-out batch has different finite estimates; normalizing the same evaluation values under those two states changes the outputs."
+#| fig-alt: "Two panels. Running mean and variance approach but do not equal the population values over eight batches. A coordinate plot compares the same evaluation batch normalized by its own batch statistics and by the merged running statistics; the curves differ by as much as about 0.448."
+#| code-summary: "Code: merge training statistics and expose a train/evaluation estimator gap"
+
+# [1]
+running_seed = int(sha256(b"c15-running-state").hexdigest()[:8], 16)
+running_rng = np.random.default_rng(running_seed)
+training_batches = running_rng.normal(4, 2, size=(8, 32))
+evaluation_batch = running_rng.normal(4, 2, size=32)
+
+# [2]
+batch_states = [
+    stable_online_moments(batch, dtype=np.float64)
+    for batch in training_batches
+]
+running_state = batch_states[0]
+running_trace = [running_state]
+for batch_state in batch_states[1:]:
+    running_state = merge_moments(running_state, batch_state)
+    running_trace.append(running_state)
+direct_state = stable_online_moments(
+    training_batches.ravel(), dtype=np.float64
+)
+
+# [3]
+evaluation_state = stable_online_moments(
+    evaluation_batch, dtype=np.float64
+)
+epsilon = 1e-5
+
+# [4]
+train_mode_output = (
+    (evaluation_batch - evaluation_state.mean)
+    / np.sqrt(evaluation_state.population_variance + epsilon)
+)
+evaluation_mode_output = (
+    (evaluation_batch - running_state.mean)
+    / np.sqrt(running_state.population_variance + epsilon)
+)
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6))
+batch_axis = np.arange(1, len(running_trace) + 1)
+axes[0].plot(
+    batch_axis, [state.mean for state in running_trace],
+    "o-", color="#232D4B", label="running mean",
+)
+axes[0].plot(
+    batch_axis, [state.population_variance for state in running_trace],
+    "s-", color="#9C2F2F", label="running variance",
+)
+axes[0].axhline(4, color="#6B6B6B", linestyle=":", label="population value")
+axes[0].set(xlabel="merged batch count", ylabel="estimated statistic")
+axes[0].legend(frameon=False)
+axes[1].plot(train_mode_output, "o-", color="#232D4B", label="batch state")
+axes[1].plot(
+    evaluation_mode_output, "s--", color="#9C2F2F",
+    label="running state",
+)
+axes[1].set(xlabel="evaluation coordinate", ylabel="normalized value")
+axes[1].legend(frameon=False)
+for axis in axes:
+    axis.grid(alpha=0.2)
+fig.tight_layout()
+
+running_claim = json.loads(
+    Path("artifacts/claims/c15-running-state-001.json").read_text()
+)
+assert np.isclose(running_state.mean, direct_state.mean, atol=3e-15)
+assert running_state.m2 == direct_state.m2
+assert np.isclose(
+    np.max(np.abs(train_mode_output - evaluation_mode_output)),
+    running_claim["result"]["normalized_discrepancy"]["maximum_absolute"],
+)
+print(
+    "running/evaluation means: "
+    f"{running_state.mean:.3f}/{evaluation_state.mean:.3f}"
+)
+print(
+    "maximum normalized discrepancy: "
+    f"{np.max(np.abs(train_mode_output - evaluation_mode_output)):.3f}"
+)
+```
+::::
+
+The merged state agrees with a single pass over all 256 training values to
+rounding precision. The evaluation batch mean is about $3.766$, while the
+running mean is about $4.096$; the corresponding population-variance
+estimates are $3.063$ and $3.801$. Normalizing the same evaluation values
+under those two states changes one coordinate by as much as $0.448$. The
+discrepancy is neither a precision failure nor evidence of distribution
+shift. It is the finite-estimator gap that a train/evaluation policy must own.
+
 ## Placement changes the derivative path {#sec-c15-placement}
 
 For a residual map, pre-normalization has Jacobian
@@ -206,29 +321,28 @@ whether those directions should be irrelevant to the downstream computation.
 
 ## Check yourself {#sec-c15-check}
 
-For $d=4$, centered normalization generically removes the radial direction
-inside the three-dimensional mean-zero subspace, leaving rank two. RMS
-normalization removes only the radial direction, leaving rank three. Adding
-epsilon generally restores small radial sensitivity but does not make the two
-maps equivalent.
+For $d=4$, which directions lie in the generic nullspace of centered
+normalization, and which lie in the RMS-only nullspace? What ranks follow?
+When epsilon is added, which invariances remain exact and which become only
+approximate?
 
 ## Okay, so — {#sec-c15-recap}
 
 - **Inherited:** C02's centered state and C14's Jacobian spectrum now diagnose a training primitive.
 - **Changed:** normalization is specified by invariance, statistic, epsilon, and placement.
-- **Instrumented:** `c15-invariance-001` checks shift behavior, Jacobian rank, and FP32 cancellation.
+- **Instrumented:** one claim checks invariance, rank, and FP32 arithmetic; another merges running state and exposes a train/evaluation estimator gap.
 - **Established:** centered and RMS-only rules erase different directions.
 - **Unresolved:** even a locally controlled derivative map can approach a moving curvature boundary during training; C16 follows that boundary.
 
 ## Sources and further reading {#sec-c15-sources}
 
 See @ba2016 for the centered method, @zhang2019rms for its RMS-only variant,
-and @santurkar2018 for a loss-geometry investigation. The Spring 2026
-normalization materials supplied the myth-versus-mechanism order; broad
-landscape and generalization claims were kept outside the theorem spine.
+and @santurkar2018 for a loss-geometry investigation.
 
 ## Exercises {#sec-c15-exercises}
 
 1. **(Pencil.)** Differentiate both maps with nonzero epsilon and identify which nullspaces remain exact.
 2. **(Code.)** Sweep offset magnitude and dtype for the four-coordinate variance witness. Report the first raw-moment failure.
-3. **(Audit.) Paper audit:** For a normalization ablation, record the statistic, axes, epsilon, affine parameters, placement, accumulation format, and evaluation-state policy.
+3. **(Pencil.)** Derive the pairwise merge formula for two centered states and prove that the correction term is nonnegative. State the population and sample denominators separately.
+4. **(Code.)** Repeat the running-state witness across batch counts and distribution shifts. Keep the no-shift control, and decompose total output discrepancy into finite-estimator and shift components.
+5. **(Audit.) Paper audit:** For a normalization ablation, complete the **Mathematical object**, **Estimator and comparison contract**, **Numerical and hardware contract**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Record statistic, axes, epsilon, affine parameters, placement, accumulation format, and evaluation-state policy.

@@ -10,6 +10,14 @@
       "evidence": "artifacts/claims/c01-roofline-001.json"
     },
     {
+      "claim_id": "c01-local-measurement-001",
+      "phenomenon_id": "c01-count-not-cost",
+      "chapter": "c01",
+      "status": "device-scoped-local-timing-protocol-and-arithmetic-audit",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c01-local-measurement-001.json"
+    },
+    {
       "claim_id": "c02-variance-crash-001",
       "phenomenon_id": "c02-negative-variance",
       "chapter": "c02",
@@ -250,12 +258,28 @@
       "evidence": "artifacts/claims/c13-regime-001.json"
     },
     {
+      "claim_id": "c13-regime-controls-001",
+      "phenomenon_id": "c13-mean-not-regime",
+      "chapter": "c13",
+      "status": "seeded-regime-controls-against-exact-models",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c13-regime-controls-001.json"
+    },
+    {
       "claim_id": "c14-criticality-001",
       "phenomenon_id": "c14-average-criticality",
       "chapter": "c14",
       "status": "seeded-jacobian-product-control",
       "provenance_class": "a",
       "evidence": "artifacts/claims/c14-criticality-001.json"
+    },
+    {
+      "claim_id": "c14-gated-product-001",
+      "phenomenon_id": "c14-average-criticality",
+      "chapter": "c14",
+      "status": "seeded-gated-finite-width-jacobian-product",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c14-gated-product-001.json"
     },
     {
       "claim_id": "c15-invariance-001",
@@ -266,6 +290,14 @@
       "evidence": "artifacts/claims/c15-invariance-001.json"
     },
     {
+      "claim_id": "c15-running-state-001",
+      "phenomenon_id": "c15-invariance-choice",
+      "chapter": "c15",
+      "status": "seeded-running-state-and-evaluation-mismatch-witness",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c15-running-state-001.json"
+    },
+    {
       "claim_id": "c16-moving-boundary-001",
       "phenomenon_id": "c16-moving-boundary",
       "chapter": "c16",
@@ -274,12 +306,36 @@
       "evidence": "artifacts/claims/c16-moving-boundary-001.json"
     },
     {
+      "claim_id": "c16-stochastic-contrast-001",
+      "phenomenon_id": "c16-moving-boundary",
+      "chapter": "c16",
+      "status": "seeded-stochastic-trajectory-against-matched-deterministic-control",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c16-stochastic-contrast-001.json"
+    },
+    {
       "claim_id": "c17-update-norm-001",
       "phenomenon_id": "c17-norm-chooses-update",
       "chapter": "c17",
       "status": "deterministic-matrix-duality-and-polar-witness",
       "provenance_class": "a",
       "evidence": "artifacts/claims/c17-update-norm-001.json"
+    },
+    {
+      "claim_id": "c17-weight-update-spectrum-001",
+      "phenomenon_id": "c17-norm-chooses-update",
+      "chapter": "c17",
+      "status": "deterministic-factorized-weight-and-update-spectrum-trace",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c17-weight-update-spectrum-001.json"
+    },
+    {
+      "claim_id": "coda-incident-001",
+      "phenomenon_id": "coda-one-spike-four-suspects",
+      "chapter": "coda",
+      "status": "seeded-paired-precision-training-incident-audit",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/coda-incident-001.json"
     }
   ]
 }

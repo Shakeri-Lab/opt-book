@@ -22,7 +22,7 @@ instructional job, one primary representation, and one check.
 
 Every numbered chapter ends with:
 
-1. one Check yourself box;
+1. one Check yourself box containing questions, not worked answers;
 2. a five-slot “Okay, so —” recap: inherited, changed, instrumented,
    established, unresolved;
 3. Sources and further reading;
@@ -38,6 +38,10 @@ temporary renumbering.
 Below the public thread sigil, show a compact lens ledger in the fixed order
 `Geometric · Dynamic · Algorithmic`. Each lens is marked `primary`,
 `supporting`, or `quiet`. The chapter contract holds the rationale.
+
+A Prediction box must preserve a live choice. It offers at least two rival
+explanations or asks for a named discriminating control, and it never contains
+its own answer.
 
 ## Terminology
 
@@ -80,6 +84,13 @@ Every study declares seed, data role, device, dtype, software, estimator,
 reduction, denominator, controls, and uncertainty when relevant. Published
 numbers come from executed artifacts.
 
+New stochastic studies derive independent seeds from a stable claim or
+phenomenon identity using the first 32 bits of SHA-256. Legacy literal seeds
+remain immutable with their rolling-draft artifacts and are registered in
+`contracts/seeds.yml`; a repeated literal is allowed only when the registry
+marks the reuse deliberately. A seed coordinates a random stream, not a claim
+of robustness across streams.
+
 ## Evidence and claims
 
 Claim classes:
@@ -105,6 +116,26 @@ make a control inspectable, or summarize a state transition. Captions state:
 HTML figures require substantive alt text. Color is redundant with labels,
 line styles, or position.
 
+The canonical figure palette is the UVA-centered family:
+
+| Role | Hex |
+|---|---|
+| structural navy | `#232D4B` |
+| error or boundary wine | `#9C2F2F` |
+| control or accepted green | `#2E7D32` |
+| intervention orange | `#E57200` |
+| secondary blue | `#5379AA` |
+| neutral gray | `#6B6B6B` |
+
+Use alpha, line style, marker, and position before adding a new color. Public
+chapter source is checked against this whitelist.
+
+Rendered figure bytes use a deterministic environment: `SOURCE_DATE_EPOCH=0`,
+`PYTHONHASHSEED=0`, and a noninteractive Matplotlib backend. Explicit
+`savefig` calls must pass empty or fixed metadata rather than current times or
+machine identities. A changed frozen figure should therefore signal changed
+source, changed dependencies, or a deliberately changed rendering contract.
+
 ## Exercises
 
 - **(Pencil.)** derive, prove, predict, or reason.
@@ -118,6 +149,10 @@ Paper audits follow `docs/PAPER-AUTOPSY-PROTOCOL.md`. A chapter exercise uses
 only the four to six fields supported by the chapter's trunk; it does not
 become a miniature literature review. The full card is reserved for the
 capstone or a standalone handout.
+
+Every numbered chapter carries at least five exercises, with at least one
+Pencil, one Code, and one Audit item. A Paper audit names the selected fields
+from the Paper Autopsy Protocol explicitly.
 
 ## Public residue forbidden
 

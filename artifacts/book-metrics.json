@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "counting_contract": "source prose after front-matter and fenced-code removal, with Sources and further reading excluded; PDF physical spans end immediately before the next numbered chapter or Coda",
+  "pdf_total_pages": 236,
+  "chapters": [
+    {"unit": "C01", "title": "The Count Is Not the Cost", "source": "chapters/act0/01-count-not-cost.qmd", "source_noncode_words_excluding_sources": 1232, "pdf_physical_start": 15, "pdf_physical_end": 22, "pdf_span_pages": 8},
+    {"unit": "C02", "title": "One Pass, Two Failures", "source": "chapters/act0/02-streaming-state.qmd", "source_noncode_words_excluding_sources": 2746, "pdf_physical_start": 23, "pdf_physical_end": 38, "pdf_span_pages": 16},
+    {"unit": "C03", "title": "The Grid Under the Update", "source": "chapters/act0/03-precision-contract.qmd", "source_noncode_words_excluding_sources": 2588, "pdf_physical_start": 39, "pdf_physical_end": 52, "pdf_span_pages": 14},
+    {"unit": "C04", "title": "One Step, Many Clocks", "source": "chapters/act0/04-quadratic-modes.qmd", "source_noncode_words_excluding_sources": 2081, "pdf_physical_start": 53, "pdf_physical_end": 68, "pdf_span_pages": 16},
+    {"unit": "C05", "title": "The Safe Zone Is Logarithmic", "source": "chapters/act1/05-subgaussian-safe-zone.qmd", "source_noncode_words_excluding_sources": 2031, "pdf_physical_start": 69, "pdf_physical_end": 80, "pdf_span_pages": 12},
+    {"unit": "C06", "title": "One Square, Two Regimes", "source": "chapters/act1/06-products-squares.qmd", "source_noncode_words_excluding_sources": 2345, "pdf_physical_start": 81, "pdf_physical_end": 96, "pdf_span_pages": 16},
+    {"unit": "C07", "title": "The Sphere Has a Finite Price", "source": "chapters/act1/07-epsilon-nets.qmd", "source_noncode_words_excluding_sources": 2042, "pdf_physical_start": 97, "pdf_physical_end": 108, "pdf_span_pages": 12},
+    {"unit": "C08", "title": "One Average, Two Edges", "source": "chapters/act1/08-random-operators.qmd", "source_noncode_words_excluding_sources": 2219, "pdf_physical_start": 109, "pdf_physical_end": 122, "pdf_span_pages": 14},
+    {"unit": "C09", "title": "The Bulk Is Not a Verdict", "source": "chapters/act1/09-marchenko-pastur.qmd", "source_noncode_words_excluding_sources": 2544, "pdf_physical_start": 123, "pdf_physical_end": 138, "pdf_span_pages": 16},
+    {"unit": "C10", "title": "Full Rank, Few Directions", "source": "chapters/act1/10-effective-rank.qmd", "source_noncode_words_excluding_sources": 1994, "pdf_physical_start": 139, "pdf_physical_end": 150, "pdf_span_pages": 12},
+    {"unit": "C11", "title": "The Gradient Has a Memory", "source": "chapters/act2/11-reverse-accumulation.qmd", "source_noncode_words_excluding_sources": 1889, "pdf_physical_start": 151, "pdf_physical_end": 162, "pdf_span_pages": 12},
+    {"unit": "C12", "title": "Curvature Is Not One Matrix", "source": "chapters/act2/12-curvature.qmd", "source_noncode_words_excluding_sources": 2332, "pdf_physical_start": 163, "pdf_physical_end": 174, "pdf_span_pages": 12},
+    {"unit": "C13", "title": "The Mean Gradient Is Not the Regime", "source": "chapters/act2/13-stochastic-regimes.qmd", "source_noncode_words_excluding_sources": 1493, "pdf_physical_start": 175, "pdf_physical_end": 184, "pdf_span_pages": 10},
+    {"unit": "C14", "title": "Critical on Average, Broken by Direction", "source": "chapters/act2/14-criticality.qmd", "source_noncode_words_excluding_sources": 1016, "pdf_physical_start": 185, "pdf_physical_end": 190, "pdf_span_pages": 6},
+    {"unit": "C15", "title": "Normalization Chooses an Invariance", "source": "chapters/act2/15-normalization.qmd", "source_noncode_words_excluding_sources": 1151, "pdf_physical_start": 191, "pdf_physical_end": 200, "pdf_span_pages": 10},
+    {"unit": "C16", "title": "The Boundary Moves", "source": "chapters/act2/16-edge-of-stability.qmd", "source_noncode_words_excluding_sources": 1044, "pdf_physical_start": 201, "pdf_physical_end": 208, "pdf_span_pages": 8},
+    {"unit": "C17", "title": "The Norm Chooses the Update", "source": "chapters/act2/17-update-geometry.qmd", "source_noncode_words_excluding_sources": 1499, "pdf_physical_start": 209, "pdf_physical_end": 218, "pdf_span_pages": 10}
+  ],
+  "coda": {"pdf_physical_start": 219, "pdf_physical_end": 224, "pdf_span_pages": 6},
+  "provenance_note_pdf_physical_start": 225
+}

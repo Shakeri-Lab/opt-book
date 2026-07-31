@@ -143,14 +143,14 @@ axis.bar(
     correct[:2],
     width,
     label="add contributions",
-    color="#4c78a8",
+    color="#232D4B",
 )
 axis.bar(
     positions + width / 2,
     overwrite[:2],
     width,
     label="last writer wins",
-    color="#e45756",
+    color="#9C2F2F",
 )
 axis.set(
     xticks=positions,
@@ -385,12 +385,12 @@ assert chosen.recomputed_forward_evaluations == 56
 
 # [5]
 fig, axis = plt.subplots(figsize=(7.2, 3.8))
-axis.plot(block_lengths, peak_states, color="#4c78a8", label="peak states")
+axis.plot(block_lengths, peak_states, color="#232D4B", label="peak states")
 axis.plot(
     block_lengths, extra_forwards,
-    color="#f58518", label="extra forward evaluations",
+    color="#E57200", label="extra forward evaluations",
 )
-axis.scatter([8], [16], color="#e45756", zorder=3, label="$k=\sqrt{64}$")
+axis.scatter([8], [16], color="#9C2F2F", zorder=3, label="$k=\sqrt{64}$")
 axis.axhline(65, color="#6b6b6b", linestyle="--", label="store-all states")
 axis.set(xlabel="block length $k$", ylabel="count")
 axis.grid(alpha=0.22)
@@ -490,7 +490,14 @@ sublinear-memory schedules follow @chen2016.
 3. **(Code.)** For depths from $16$ to $4096$, find the best integer uniform
    block length under @eq-c11-checkpoint-memory. Compare it with
    $\sqrt L$ and report both peak states and replay counts.
-4. **(Audit.) Paper audit:** Take one memory-efficient training paper. Mark
-   which graph class it assumes, whether memory means saved activations or
-   measured device allocation, whether stochastic replay is specified, and
-   whether the arithmetic-count claim is confused with wall-clock speed.
+4. **(Audit.) Paper audit:** Complete the **Mathematical object**, **Evidence
+   culture and interface**, **Numerical and hardware contract**,
+   **Discriminating control**, and **Transfer verdict** fields of the Paper
+   Autopsy Protocol for one memory-efficient training paper. Mark which graph class it assumes,
+   whether memory means saved activations or measured device allocation,
+   whether stochastic replay is specified, and whether arithmetic count is
+   confused with wall-clock speed.
+5. **(Code.)** Implement replay for a chain containing one stateful random
+   operation. Compare saved-state and recomputed derivatives under matched and
+   unmatched random streams. Report arithmetic work, peak state, and the first
+   derivative mismatch separately.

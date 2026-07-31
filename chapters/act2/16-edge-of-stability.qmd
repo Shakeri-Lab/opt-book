@@ -7,7 +7,7 @@ harness-ref: ch-16
 harness-api: "0.16"
 harness-wheel-sha256: "dc27db104bfa9a48a500343d6475487b410ddb2e19ea56045d89c2cf89d80cfd"
 phenomenon_id: c16-moving-boundary
-claim_ids: [c16-moving-boundary-001]
+claim_ids: [c16-moving-boundary-001, c16-stochastic-contrast-001]
 threads:
   landscape-update-geometry: callback
   numerical-stability: callback
@@ -38,9 +38,9 @@ initialization gives the correct answer to the wrong time-indexed question.
 
 ::: {.callout-important title="Prediction"}
 If the top curvature crosses $2/\alpha$, must a nonlinear training run diverge
-immediately? No. That boundary is exact for a fixed quadratic mode. In a
-moving landscape, alignment, higher-order terms, and the history of the
-trajectory also matter.
+immediately? Choose between **immediate divergence**, **a diagnostic event
+whose consequence must be measured**, and **no information at all**. Which
+control would distinguish your choice from the other two?
 :::
 
 ## The fixed control {#sec-c16-fixed}
@@ -86,16 +86,16 @@ actually sees. C12 already warned that the matrix itself must be named.
 :::: {.plan-code}
 ::: {.plan}
 1. Verify and activate <code>harness@ch-16</code>.
-2. Run the deterministic two-parameter trajectory.
+2. Run matched deterministic and additive-noise trajectories.
 3. Record loss, top curvature, and gradient-direction curvature each step.
 4. Mark the fixed-quadratic threshold and first crossing.
-5. Verify the committed crossing and nonmonotonicity counts.
+5. Verify both committed crossing and nonmonotonicity claims.
 :::
 
 ```{python}
 #| label: fig-c16-moving-boundary
-#| fig-cap: "A trajectory can begin below the quadratic stability edge and later move the local top curvature across it. Loss becomes nonmonotone, while directional curvature need not equal the top eigenvalue."
-#| fig-alt: "Two aligned plots over 350 gradient steps. Loss falls, then oscillates with occasional increases. Top Hessian curvature rises from one and crosses the horizontal threshold ten near step 155; gradient-direction curvature follows a different path."
+#| fig-cap: "A trajectory can begin below the quadratic stability edge and later move the local top curvature across it. A small additive-noise contrast preserves the crossing but shifts its timing and loss increments; neither trace turns a local quadratic threshold into a global divergence theorem."
+#| fig-alt: "Two aligned plots over 350 gradient steps. Deterministic and small-noise losses fall and then oscillate. Their top Hessian curvatures cross the horizontal threshold ten near steps 155 and 156, while deterministic gradient-direction curvature follows a different path."
 #| code-summary: "Code: track a reproducible moving-curvature stability witness"
 
 from hashlib import sha256
@@ -112,31 +112,63 @@ wheel_path = manifest_path.parent / manifest["wheel"]
 wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
 assert wheel_digest == manifest["wheel_sha256"]
 sys.path.insert(0, str(wheel_path.resolve()))
-from trainable_harness import moving_curvature_trace
+from trainable_harness import (
+    moving_curvature_trace,
+    valley_loss_gradient_hessian,
+)
 
 # [2]
 step_size = 0.2
 trace = moving_curvature_trace(np.zeros(2), step_size, 350)
+stochastic_seed = int(
+    sha256(b"c16-stochastic-contrast").hexdigest()[:8], 16
+)
+stochastic_rng = np.random.default_rng(stochastic_seed)
+stochastic_state = np.zeros(2)
+stochastic_losses, stochastic_top = [], []
+for _ in range(351):
+    stochastic_loss, stochastic_gradient, stochastic_hessian = (
+        valley_loss_gradient_hessian(stochastic_state)
+    )
+    stochastic_losses.append(stochastic_loss)
+    stochastic_top.append(np.linalg.eigvalsh(stochastic_hessian)[-1])
+    stochastic_state -= step_size * (
+        stochastic_gradient + stochastic_rng.normal(scale=0.01, size=2)
+    )
+stochastic_losses = np.asarray(stochastic_losses)
+stochastic_top = np.asarray(stochastic_top)
 # [3]
 fig, axes = plt.subplots(2, 1, figsize=(8.0, 5.6), sharex=True)
-axes[0].plot(trace.losses, color="#5b4b8a")
+axes[0].plot(trace.losses, color="#232D4B", label="deterministic")
+axes[0].plot(
+    stochastic_losses, color="#E57200", linestyle="--",
+    label="additive-noise control",
+)
 axes[0].set(ylabel="loss")
+axes[0].legend(frameon=False)
 axes[1].plot(trace.top_curvatures, label="top Hessian curvature")
 axes[1].plot(
     trace.directional_curvatures,
     label="gradient-direction curvature",
     alpha=0.8,
 )
+axes[1].plot(
+    stochastic_top, color="#E57200", linestyle="--",
+    label="noisy top curvature",
+)
 # [4]
 threshold = 2 / step_size
 axes[1].axhline(
-    threshold, color="#b33a3a", linestyle="--", label=r"$2/\alpha$"
+    threshold, color="#9C2F2F", linestyle=":", label=r"$2/\alpha$"
 )
 axes[1].set(xlabel="step", ylabel="curvature")
 axes[1].legend(frameon=False, ncol=3, fontsize=8)
 fig.tight_layout()
 # [5]
 claim = json.loads(Path("artifacts/claims/c16-moving-boundary-001.json").read_text())
+stochastic_claim = json.loads(
+    Path("artifacts/claims/c16-stochastic-contrast-001.json").read_text()
+)
 assert claim["harness_wheel_sha256"] == wheel_digest
 assert int(np.argmax(trace.top_curvatures > threshold)) == claim["result"][
     "first_crossing_step"
@@ -144,14 +176,24 @@ assert int(np.argmax(trace.top_curvatures > threshold)) == claim["result"][
 assert int(np.sum(np.diff(trace.losses) > 0)) == claim["result"][
     "number_loss_increases"
 ]
+assert int(np.flatnonzero(stochastic_top > threshold)[0]) == stochastic_claim[
+    "result"
+]["first_crossing_step"]
+assert int(np.sum(np.diff(stochastic_losses) > 0)) == stochastic_claim[
+    "result"
+]["number_loss_increases"]
 print("claim c16-moving-boundary-001: verified")
+print("claim c16-stochastic-contrast-001: verified")
 ```
 ::::
 
-This is a class-(a) crown demonstration: minutes are not needed, no GPU is
-required, and every point is regenerated on a laptop CPU. It establishes the
-logical possibility of a moving boundary. It does not claim that a
-two-parameter valley reproduces every feature of a large training run.
+This is a laptop-exact demonstration: minutes are not needed, no GPU is
+required, and every point is regenerated on a CPU. It establishes the logical
+possibility of a moving boundary. The additive-noise trace crosses at step
+156 rather than 155 and contains 91 loss increases rather than 52. It shows
+that the crossing story survives this small perturbation while its timing and
+nonmonotonicity do not. Neither trace claims that a two-parameter valley
+reproduces mini-batch training or every feature of a large run.
 
 ## Local Taylor information is historical {#sec-c16-taylor}
 
@@ -201,17 +243,16 @@ threads have converged on a common diagnostic discipline.
 
 ## Check yourself {#sec-c16-check}
 
-For a fixed mode with $\lambda=12$ and $\alpha=0.2$, the multiplier is $-1.4$
-and magnitudes grow. For a nonlinear objective whose local top eigenvalue is
-12 at one point, the same arithmetic predicts the quadratic local model—not
-the entire future path. To strengthen the claim, measure curvature along the
-actual segment and subsequent iterates.
+For a fixed mode with $\lambda=12$ and $\alpha=0.2$, what is the multiplier
+and what does it imply? For a nonlinear objective whose local top eigenvalue
+is 12 at one point, which additional measurements would be needed before
+predicting the next several iterates?
 
 ## Okay, so — {#sec-c16-recap}
 
 - **Inherited:** C04 supplies the exact fixed-quadratic boundary and C12 supplies operator-specific curvature probes.
 - **Changed:** stability is treated as a trajectory diagnosis, not an initialization certificate.
-- **Instrumented:** `c16-moving-boundary-001` tracks top and directional curvature beside loss.
+- **Instrumented:** matched deterministic and additive-noise traces track top and directional curvature beside loss.
 - **Established:** a reproducible nonlinear path can cross $2/\alpha$ after beginning below it.
 - **Unresolved:** curvature says where a scalar step struggles; C17 asks which norm should shape a matrix-valued update.
 
@@ -219,12 +260,12 @@ actual segment and subsequent iterates.
 
 The edge-of-stability phenomenon and progressive sharpening measurements are
 documented by @cohen2021. The fixed control is elementary spectral gradient
-descent. The Spring 2026 stability materials supplied the training-run
-questions; broad claims about flat minima, generalization, and universal
-large-step acceleration were deliberately left outside this chapter.
+descent.
 
 ## Exercises {#sec-c16-exercises}
 
 1. **(Pencil.)** Derive the momentum stability polynomial for one positive quadratic mode, explicitly limiting the conclusion to that control.
 2. **(Code.)** Sweep step size in @eq-c16-valley and produce a phase diagram of first threshold crossing, loss increases, and boundedness.
-3. **(Audit.) Paper audit:** For an edge-of-stability result, record curvature operator, eigenvalue estimator, batch regime, sampling frequency, threshold convention, and whether crossing predicts or merely accompanies the reported behavior.
+3. **(Pencil.)** Use @eq-c16-segment-taylor to give a sufficient one-step descent condition in terms of the maximum directional curvature along the update segment. Explain why endpoint curvature alone is weaker.
+4. **(Code.)** Repeat the paired contrast over noise scales and seeds. Report crossing probability, crossing time, loss-increase count, and boundedness; keep the deterministic trace as a registered control.
+5. **(Audit.) Paper audit:** Complete the **Mathematical object**, **Resolution of the theory**, **Dynamic regime**, **Evidence culture and interface**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol for an edge-of-stability result. Record curvature operator, eigenvalue estimator, batch regime, sampling frequency, threshold convention, and whether crossing predicts or merely accompanies the reported behavior.

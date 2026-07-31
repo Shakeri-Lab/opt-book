@@ -27,6 +27,7 @@ state, or assumptions.
 | Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators | @sec-c15-epsilon |
 | Variance-preserving initialization | Xavier/Glorot; He/Kaiming | Variance convention; nonlinearity assumptions; @glorot2010; @he2015 | @sec-c14-recursion |
 | Diagonal moment preconditioning | Adam; AdamW | Moments; bias correction; decay; $\varepsilon$ placement | C13/C17 |
+| Gradient-dominated or noise-dominated regime | signal-to-noise regime; critical batch regime | $\chi_k=\sigma_k^2/\|\nabla f(w_k)\|^2$; conditional estimator, target, and finite-moment contract | @sec-c13-crossing |
 | Similarity-weighted aggregation | attention; self-attention | Scale; normalized axis; mask; materialization | Synthesis |
 | IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order | Synthesis |
 | Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state; @bernstein2024 | @sec-c17-duality |

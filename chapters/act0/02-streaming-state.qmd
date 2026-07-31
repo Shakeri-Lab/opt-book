@@ -800,8 +800,10 @@ diagnostic.
    the defect. Write the missing correction and explain why the tempting
    componentwise answer is wrong.
 
-7. **(Audit.) Paper audit: state versus belief.** Read Hennig's Gaussian
-   linear-solver construction [@hennig2015]. Compare its state
+7. **(Audit.) Paper audit: state versus belief.** Complete the **Mathematical
+   object**, **Evidence culture and interface**, **Estimator and comparison
+   contract**, **Assumption stress test**, and **Transfer verdict** fields for
+   Hennig's Gaussian linear-solver construction [@hennig2015]. Compare its state
    $(\vect{\mu}_i,\matr{\Sigma}_i)$ with Welford's
    $(n,\mu_n,M_{2,n})$: record the target, observation, prior, rank-one update,
    stopping output, and uncertainty claim. Identify the shared state-machine

@@ -4,7 +4,7 @@ description: "Why an operation count cannot identify the resource that sets elap
 number-offset: 0
 jupyter: python3
 phenomenon_id: c01-count-not-cost
-claim_ids: [c01-roofline-001]
+claim_ids: [c01-roofline-001, c01-local-measurement-001]
 threads: {}
 lenses:
   geometric: quiet
@@ -20,8 +20,8 @@ Consider two computations on $N$ stored FP32 values. A copy performs no
 floating-point arithmetic and moves at least $8N$ bytes: one read and one
 write. A fused affine transform $y_i=ax_i+b$ performs $2N$ floating-point
 operations and has the same dominant traffic when $a$ and $b$ remain in a
-fast store. Their operation counts differ infinitely as a ratio; their
-bandwidth ceilings are essentially the same.
+fast store. One count is zero; the ratio is not the point. Their bandwidth
+ceilings are essentially the same.
 
 Now compare a square matrix product of order $n=512$. The conventional count
 is $2n^3$ operations. Its compulsory traffic under an idealized one-read,
@@ -32,9 +32,10 @@ one falls below the balance point and the other lies above it. The larger
 operation count can be the computation with more opportunity to reuse data.
 
 ::: {.callout-important title="Prediction"}
-If a proposed method removes half the multiplications but doubles compulsory
-traffic, which change should improve elapsed time? The counts alone cannot
-answer. Name the machine balance and the achieved data reuse first.
+On one fixed machine, a proposed method halves the multiplications and doubles
+compulsory traffic. Choose a prediction before continuing: **faster**,
+**slower**, or **undetermined**. Which traffic boundary and machine balance
+would let you defend that choice?
 :::
 
 ## Two resource clocks {#sec-c01-two-clocks}
@@ -99,7 +100,7 @@ balance = claim["result"]["machine_balance_flop_per_byte"]
 intensity = np.logspace(-2, 3, 300)
 ceiling = np.minimum(intensity / balance, 1.0)
 fig, axis = plt.subplots(figsize=(7.2, 3.8))
-axis.loglog(intensity, ceiling, color="#5b4b8a", linewidth=2)
+axis.loglog(intensity, ceiling, color="#232D4B", linewidth=2)
 # [4]
 points = {
     "fused affine": claim["result"]["vector_affine_intensity"],
@@ -125,6 +126,84 @@ assert np.isclose(points["512×512 product"], 512 / 6)
 print("claim c01-roofline-001: verified")
 ```
 ::::
+
+## A zero-count kernel still consumes a clock {#sec-c01-local-witness}
+
+The model now needs a measured control. The committed observation times a
+64 MiB FP32 payload copy and an order-512 FP32 matrix product on one Apple M4
+Max CPU. It also sweeps nearby sizes to establish two **local empirical
+ceilings** in the same process. Those ceilings are not vendor peaks. They are
+reference rates that make the achieved fractions inspectable without claiming
+that a laptop CPU represents an accelerator.
+
+:::: {.plan-code}
+::: {.plan}
+1. Read the pinned local measurement and its protocol.
+2. Extract the selected copy and matrix-product rates.
+3. Normalize each rate by its own local empirical ceiling.
+4. Plot resource-specific fractions rather than a false common unit.
+5. Check that the displayed values match the committed observation.
+:::
+
+```{python}
+#| label: fig-c01-local-measurement
+#| fig-cap: "A zero-FLOP copy has a positive measured cost. Each bar is normalized by a separately measured local ceiling for its own resource, so the figure supports a resource diagnosis rather than a cross-kernel speed ranking."
+#| fig-alt: "Two horizontal bars. The 64 MiB copy reaches about 0.875 of the local empirical bandwidth ceiling, while the order-512 matrix product reaches the local empirical arithmetic ceiling."
+#| code-summary: "Code: inspect a pinned CPU copy and matrix-product measurement"
+
+# [1]
+measurement = json.loads(
+    Path("artifacts/claims/c01-local-measurement-001.json").read_text()
+)
+protocol = measurement["measurement_contract"]
+
+# [2]
+copy_result = measurement["result"]["copy_by_mib"]["64"]
+matmul_result = measurement["result"]["matmul_by_order"]["512"]
+
+# [3]
+fractions = np.array([
+    measurement["result"]["copy_64_fraction_of_local_bandwidth_ceiling"],
+    measurement["result"]["matmul_512_fraction_of_local_arithmetic_ceiling"],
+])
+
+# [4]
+fig, axis = plt.subplots(figsize=(7.2, 2.8))
+axis.barh(
+    ["64 MiB copy", "order-512 product"],
+    fractions,
+    color=["#9C2F2F", "#232D4B"],
+)
+axis.set(
+    xlim=(0, 1.08),
+    xlabel="fraction of the matching local empirical ceiling",
+)
+axis.grid(axis="x", alpha=0.22)
+fig.tight_layout()
+
+# [5]
+assert protocol["statistic"] == "median elapsed time"
+assert np.isclose(copy_result["median_seconds"], 0.000947375)
+assert np.isclose(matmul_result["median_seconds"], 0.0001039795)
+print(
+    f"copy: {1e3 * copy_result['median_seconds']:.3f} ms; "
+    f"{copy_result['achieved_gbyte_per_second']:.1f} GB/s"
+)
+print(
+    f"matmul: {1e3 * matmul_result['median_seconds']:.3f} ms; "
+    f"{matmul_result['achieved_gflop_per_second']:.1f} GFLOP/s"
+)
+```
+::::
+
+The copy moved a 64 MiB payload across the declared read-plus-write boundary,
+so the traffic count was 128 MiB. Its median time was about $0.947$ ms and its
+achieved bandwidth was $141.7$ GB/s, or $87.5\%$ of the best copy rate in the
+declared size sweep. The matrix product reached $2581.6$ GFLOP/s in the same
+software process. These observations do not say that one kernel is generally
+faster: they show that zero counted arithmetic does not mean zero elapsed
+time, and that each kernel must be compared with the roof for the resource it
+actually demands.
 
 ## The denominator is an algorithmic choice {#sec-c01-denominator}
 
@@ -157,32 +236,40 @@ not evidence of accelerator timing. Any measured claim later in this book
 must name the device, software stack, warmup, repetitions, statistic, and
 traffic boundary—or be labeled a model calculation or pinned artifact.
 
+::: {.callout-tip title="Field note: read a speedup claim in three passes"}
+First locate the mathematical work and the denominator behind its reported
+rate. Then locate the resource boundary: bytes, arithmetic, latency,
+communication, or some mixture. Only then compare measured elapsed time,
+including baseline, device, precision, warmup, repetitions, statistic, and
+failure accounting. A speedup is an observation about that full comparison,
+not a synonym for a smaller operation count.
+:::
+
 ## Check yourself {#sec-c01-check}
 
 A kernel performs $10^{10}$ operations and moves $10^9$ bytes. On a device
 with $P_{\max}=10^{13}$ operation/s and $B=5\times10^{11}$ byte/s, its
-intensity is 10 and the machine balance is 20. The model ceiling is therefore
-$BI=5\times10^{12}$ operation/s, the bandwidth branch. Halving $F$ while
-leaving $Q$ unchanged also halves intensity; it does not halve the traffic
-time lower bound.
+what are its intensity, machine balance, active roofline branch, and model
+ceiling? If $F$ is halved while $Q$ is unchanged, which lower bound changes
+and which one does not?
 
 ## Okay, so — {#sec-c01-recap}
 
 - **Inherited:** asymptotic operation counts remain indispensable scaling summaries.
 - **Changed:** elapsed-time reasoning now requires a declared traffic denominator and machine balance.
-- **Instrumented:** claim `c01-roofline-001` places two exact models on the same ceiling.
+- **Instrumented:** one exact roofline claim and one pinned laptop measurement separate modeled ceilings from achieved rates.
 - **Established:** $P\leq\min(P_{\max},BI)$ follows from two resource lower bounds.
 - **Unresolved:** real executions move more state through more levels; C02 asks which state an online computation must retain.
 
 ## Sources and further reading {#sec-c01-sources}
 
 The roofline formulation and its machine-balance interpretation follow
-@williams2009. The instructor source is the Spring 2026 memory-hierarchy and
-roofline deck; its hardware slogans were replaced here by an explicit claim
-boundary and an exact model calculation.
+@williams2009.
 
 ## Exercises {#sec-c01-exercises}
 
 1. **(Pencil.)** Recompute the matrix-product intensity if one input matrix is reread four times. State the traffic boundary.
 2. **(Code.)** For three hypothetical machine balances, redraw the figure and report which classifications change. Do not time the plotting code.
-3. **(Audit.)** Find one paper that reports a speedup. Separate its operation count, modeled traffic, measured elapsed time, hardware identity, and baseline. Which claim is actually supported?
+3. **(Pencil.)** A checkpointing rule adds $30\%$ arithmetic and removes half the retained-state traffic. Derive the intensities before and after, then state the machine-balance range in which the trade can improve the roofline bound.
+4. **(Code.)** Re-run the local protocol with three payload sizes and three matrix orders. Declare device, stack, warmup, repetitions, statistic, and traffic boundary. Compare medians and dispersion; do not call the best observed rate a vendor peak.
+5. **(Audit.) Paper audit:** Find one reported speedup and complete the **Claim**, **Mathematical object**, **Evidence culture and interface**, **Numerical and hardware contract**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Separate operation count, modeled traffic, measured elapsed time, hardware identity, and baseline. Which claim is actually supported?

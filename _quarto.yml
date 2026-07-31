@@ -47,6 +47,8 @@ book:
         - chapters/act2/15-normalization.qmd
         - chapters/act2/16-edge-of-stability.qmd
         - chapters/act2/17-update-geometry.qmd
+    - chapters/coda.qmd
+    - chapters/provenance.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd

@@ -82,3 +82,18 @@
   accounting.
 - Opened Act II with deterministic fan-out and checkpoint evidence and
   extended the independently executable harness through `harness@ch-11`.
+- Completed the C12–C17 core and deep-revised C01/C13–C17 to the pilot's
+  witness standard: local resource timing, online stochastic-regime controls,
+  gated Jacobian products, running normalization state, stochastic stability,
+  and update-versus-weight spectra.
+- Added the unnumbered Coda *One Spike, Four Suspects*, which closes the first
+  page's incident through paired precision, curvature, estimator, spectrum,
+  and normalization-state controls.
+- Consolidated course/tutorial provenance into one unnumbered note and added
+  proof-mode, act/lens, and reading-path guidance to the introduction.
+- Standardized the UVA-centered figure palette, question-only self-checks,
+  live Prediction boxes, five-exercise minimum, hash-derived seed policy, and
+  selected-field Paper-audit exercises under fast CI checks.
+- Added claim-backed promise fulfillment, a committed seed registry, a
+  92-character rendered-output limit, deterministic rendering environment,
+  and an audited C01–C17 word-count/PDF-span ledger.

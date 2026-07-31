@@ -52,6 +52,27 @@ settled before its assumptions are visible. We therefore build the primitive
 first and supply the conventional literature name when that name becomes
 useful for search, comparison, and primary sources.
 
+## Proof modes and reading paths
+
+Three proof labels carry different permissions. A **Proof** supplies the
+logical argument under the displayed assumptions. A **Diagnostic proof
+sketch** exposes the mechanism and the exact usable consequence while marking
+the technical steps it omits. A **Proof with pointer** states the theorem in
+the form used here and locates a complete external proof; the pointer is part
+of the contract, not permission to drop assumptions.
+
+The acts deliberately change the lens balance. Act 0 is algorithmic-primary:
+formulas meet representation, state, and traffic. Act I is
+geometric-primary by construction. Act II turns the dynamic lens forward and
+uses geometry and systems as controls. The three lenses therefore recur
+across the book without occupying equal space in every act.
+
+Read in chapter order for the full course argument. For practitioner triage,
+begin with C01, C03, C13, and C16 before returning to the supporting theory.
+For a theory-first route, read Act I after C04, then enter Act II through C12.
+All routes should end with C17 and the Coda, where the separate instruments
+must diagnose one event together.
+
 ## The computational harness
 
 One codebase grows with the argument. The first capability is deliberately

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "claim_id": "c13-regime-controls-001",
+  "phenomenon_id": "c13-mean-not-regime",
+  "chapter": "c13",
+  "provenance_class": "a",
+  "hypothesis": "A fixed stochastic quadratic crosses into a noise-dominated regime; batch averaging, momentum memory, and clipping change different parts of the estimator contract.",
+  "hardware_claim_boundary": "Seeded low-dimensional CPU controls under declared additive-noise and Pareto models; not a workload-level optimizer ranking.",
+  "harness_ref": "ch-13",
+  "harness_wheel_sha256": "3204162cec10360dc6beea83cd1fae19c790772b61a20004a496942ffbc9aacf",
+  "result": {
+    "online_crossing": {"seed": 1415369439, "step_size": 0.12, "per_example_noise_sd": 0.8, "batch_size": 16, "steps": 80, "first_chi_at_least_one": 11, "initial_chi_estimate": 0.07836040245521463, "loss_at_crossing": 0.021410251754372635, "final_state": 0.011771411385342795},
+    "batch_scaling": {
+      "trials": 20000,
+      "per_example_variance": 0.6400000000000001,
+      "by_batch_size": {
+        "1": {"observed_variance": 0.6472673667034314, "theory_variance": 0.6400000000000001},
+        "4": {"observed_variance": 0.15952941960998177, "theory_variance": 0.16000000000000003},
+        "16": {"observed_variance": 0.04019410849645711, "theory_variance": 0.04000000000000001},
+        "64": {"observed_variance": 0.010050895814278604, "theory_variance": 0.010000000000000002}
+      }
+    },
+    "momentum_control": {
+      "step_size": 0.5,
+      "curvatures": [0.01, 1.0],
+      "beta": 0.9,
+      "exact_stability_upper_step_for_top_mode": 3.8,
+      "characteristic_radius_by_mode": {"no_momentum": [0.995, 0.5], "momentum": [0.9486832980505138, 0.948683298050514]},
+      "deterministic_loss_after_80": {"no_momentum": 0.0022421410173048876, "momentum": 0.00012047158115303945},
+      "stochastic_mean_loss_after_500": {"no_momentum": 0.011734341774209093, "momentum": 0.10771676368479793}
+    },
+    "infinite_variance_clipping": {
+      "pareto_shape": 1.5,
+      "finite_mean": true,
+      "finite_variance": false,
+      "exact_bias_by_threshold": {"2.0": -0.8944271909999159, "4.0": -0.7559289460184545, "16.0": -0.45883146774112354, "64.0": -0.24433888871261045}
+    }
+  },
+  "payload_sha256": "3cfcf1c2116a93ed77345efcd8098608c04201f2b63f49a035e6ac3db1f24173"
+}

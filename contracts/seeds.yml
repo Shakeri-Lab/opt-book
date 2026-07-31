@@ -1,0 +1,48 @@
+version: 1
+policy:
+  new_studies: "first 32 bits of SHA-256 over a stable claim or phenomenon identity"
+  legacy_literals: "immutable with their rolling-draft artifacts"
+  reuse: "must be marked deliberate"
+literal_seeds:
+  - value: 0
+    status: deterministic-ledger-sentinel
+    uses: [c07-environment-ledger]
+  - value: 6210
+    status: legacy
+    uses: [c02-opening, c02-offset-sweep]
+    reuse: deliberate-within-chapter-control-family
+  - value: 6211
+    status: legacy
+    uses: [c02-reduction-order]
+  - value: 6212
+    status: legacy
+    uses: [c03-stochastic-rounding, c12-power-iteration]
+    reuse: deliberate-independent-chapter-contexts
+  - value: 6213
+    status: legacy
+    uses: [c04-noise-floor]
+  - value: 6214
+    status: legacy
+    uses: [c05-maxima, c14-linear-product]
+    reuse: deliberate-independent-chapter-contexts
+  - value: 6215
+    status: legacy
+    uses: [c05-projection-trials]
+  - value: 6219
+    status: legacy
+    uses: [c06-chi-square-sums]
+  - value: 6224
+    status: legacy
+    uses: [c08-opening-matrix]
+  - value: 6225
+    status: legacy-seed-family
+    uses: [c08-aspect-ratio]
+  - value: 6228
+    status: legacy
+    uses: [c08-power-iteration]
+  - value: 6291
+    status: legacy
+    uses: [c09-finite-null]
+  - value: 6292
+    status: legacy
+    uses: [c09-spiked-alternative]

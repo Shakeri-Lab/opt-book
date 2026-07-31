@@ -37,7 +37,9 @@ the leading direction.
 
 ::: {.callout-important title="Prediction"}
 If two covariance matrices have the same dimension, rank, and largest
-eigenvalue, what property could make one much easier to estimate?
+eigenvalue, which remaining rival would you inspect first: condition number,
+determinant, a truncation rank, or the full decay profile? Name the scalar
+summary you would want that rival to justify.
 :::
 
 ## Same rank, different sample demand {#sec-c10-opening}
@@ -154,7 +156,7 @@ axes[0].set(
 axes[0].grid(axis="y", alpha=0.22)
 
 # [6]
-colors = {"isotropic": "#e45756", "decaying": "#4c78a8"}
+colors = {"isotropic": "#9C2F2F", "decaying": "#232D4B"}
 for name in spectra:
     q = quantiles[name]
     axes[1].plot(
@@ -409,6 +411,39 @@ Vershynin's second-edition Theorem 9.2.2 [@vershynin2026] for a
 nonasymptotic derivation and @koltchinskii2017 for sharp effective-rank
 formulations.
 
+### Diagnostic proof sketch
+
+The pointer hides technical machinery, not the causal route. First,
+symmetrization replaces the centered empirical error by a signed quadratic
+process:
+
+$$
+\E\norm{\widehat{\matr\Sigma}-\matr\Sigma}_{\mathrm{op}}
+\le
+\frac{2}{m}
+\E\sup_{\norm{\vect u}=1}
+\left|
+\sum_{i=1}^m
+\varepsilon_i\langle\vect x_i,\vect u\rangle^2
+\right|,
+$$ {#eq-c10-symmetrized-process}
+
+where the signs $\varepsilon_i$ are independent of the observations. Second,
+C06's square warning identifies the fixed-$\vect u$ object as
+sub-exponential rather than sub-Gaussian. Third, C07's finite-cover move turns
+fixed directions into a uniform operator statement.
+
+A crude Euclidean net pays ambient dimension and loses the point of this
+chapter. The refined argument measures the ellipsoid
+$\matr\Sigma^{1/2}S^{n-1}$ in its covariance metric. Its squared average
+radius is $\operatorname{tr}(\matr\Sigma)$ and its largest squared radius is
+$\norm{\matr\Sigma}_{\mathrm{op}}$; their ratio is exactly
+$r_{\mathrm{eff}}$. Chaining or a matrix-deviation theorem carries that
+anisotropic geometry through the supremum and produces the
+$\sqrt{r_{\mathrm{eff}}/m}+r_{\mathrm{eff}}/m$ scale. The pointer supplies
+that final uniform-process step; the sketch explains why effective rank, and
+not algebraic rank alone, is the complexity that enters.
+
 The usable scaling is
 $m\gg r_{\mathrm{eff}}(\matr{\Sigma})$. Dimension has not been abolished;
 it has been replaced by a spectrum-sensitive complexity under explicit tail
@@ -489,6 +524,13 @@ generalization is consistent with the interpolation evidence of
 3. **(Audit.)** A paper reports “the representation is effectively
    ten-dimensional” from a scalar effective-rank estimate. List three claims
    that do not follow and name the missing evidence for each.
-4. **(Audit.) Paper audit:** Identify the matrix, centering and scaling
-   convention, effective-rank definition, and target conclusion in one
-   empirical paper. Does its cited theorem support that conclusion?
+4. **(Audit.) Paper audit:** Complete the **Mathematical object**,
+   **Evidence culture and interface**, **Assumption stress test**,
+   **Discriminating control**, and **Transfer verdict** fields of the Paper
+   Autopsy Protocol. Identify the matrix, centering and scaling convention,
+   effective-rank definition, and target conclusion. Does the cited theorem
+   support that conclusion?
+5. **(Pencil.)** Construct two six-dimensional spectra with the same operator
+   norm and effective rank but different truncation ranks at relative
+   tolerance $0.1$. State which covariance claim remains comparable and which
+   compression claim changes.

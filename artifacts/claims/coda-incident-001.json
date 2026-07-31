@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "claim_id": "coda-incident-001",
+  "phenomenon_id": "coda-one-spike-four-suspects",
+  "chapter": "coda",
+  "provenance_class": "a",
+  "hypothesis": "A full diagnostic panel can distinguish an engineered estimator-target failure from precision, curvature, and normalization-state rivals.",
+  "hardware_claim_boundary": "Seeded laptop-CPU linear-regression incident in float64 with a paired float32 control; no accelerator or large-model claim.",
+  "harness_ref": "ch-17",
+  "harness_wheel_sha256": "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60",
+  "result": {
+    "seed": 3287492823,
+    "steps": 120,
+    "incident_step": 60,
+    "batch_size": 32,
+    "step_size": 0.12,
+    "loss_before_incident": 0.00514399940462121,
+    "loss_after_incident": 0.3097261086657361,
+    "loss_spike_factor": 60.21114784490211,
+    "precision_control": {"maximum_relative_loss_deviation_float32_vs_float64": 1.5410501045125562e-06, "maximum_state_or_update_magnitude": 1.934834291162757, "float32_spacing_at_that_scale": 1.1920928955078125e-07},
+    "regime_control": {"realized_gradient_discrepancy_ratio": 973796.1693427069, "fraction_of_discrepancy_from_engineered_target_shift": 0.99800702815291},
+    "curvature_control": {"top_curvature": 1.1554837732160497, "step_times_top_curvature": 0.13865805278592597, "incident_directional_curvature": 0.9203835245757298, "step_times_directional_curvature": 0.11044602294908758},
+    "spectrum_control": {"leading_update_singular_value_ratio_to_previous_step": 176.24478968220706, "incident_update_singular_values": [0.8137367193419696, 0.003963565764453591, 0.0013210063505473717, 0.0005247451442991674], "incident_weight_singular_values": [4.288603742546791, 3.3037481318023767, 1.7711082345916165, 1.0778311341260027]},
+    "normalization_state_control": {"maximum_mean_difference_from_same_batch_previous_cycle": 0.0, "maximum_variance_difference_from_same_batch_previous_cycle": 0.0},
+    "final_loss": 0.005130912679134144
+  },
+  "payload_sha256": "cc38b9688aed526f0272573e6b0faa609e6fab83080a8e5a9e1535f013e13b31"
+}

@@ -604,10 +604,10 @@ current gradient direction, and a setting in which the curvature itself moves
 during training.
 
 ::: {.callout-tip title="Check yourself"}
-For eigenvalues $(2,20)$ and step $\alpha=0.075$, compute both mode factors.
-Classify their sign behavior, identify the slow mode, and decide whether
-reducing the step to $0.025$ removes oscillation, improves the slowest
-contraction, both, or neither.
+For eigenvalues $(2,20)$ and step $\alpha=0.075$, what are both mode factors?
+How do you classify their sign behavior, which is the slow mode, and does
+reducing the step to $0.025$ remove oscillation, improve the slowest
+contraction, both, or neither?
 :::
 
 ## Okay, so —
@@ -634,8 +634,6 @@ uses those sources as context, but derives its three exact recurrences on the
 page. Schmidt's ICML 2026 tutorial motivates the global, local, directional,
 and finite-horizon questions used to delimit “best” [@schmidt2026tutorial];
 it is an intellectual map, not the technical authority for the equations.
-The instructor's quadratic sequence supplied the phenomenon and reveal order;
-its hardware slogans and branded optimizer claims were not imported.
 
 \newpage
 
@@ -668,8 +666,10 @@ its hardware slogans and branded optimizer claims were not imported.
    that conclusion is admissible. Predict what each rival explanation would
    do under those controls.
 
-6. **(Audit.) Paper audit: stochastic approximation.** Read the assumptions
-   of Robbins and Monro's primary paper. Identify which step-size, noise, and
+6. **(Audit.) Paper audit: stochastic approximation.** Complete the **Claim**,
+   **Resolution of the theory**, **Dynamic regime**, **Evidence culture and
+   interface**, and **Assumption stress test** fields for Robbins and Monro's
+   primary paper. Identify which step-size, noise, and
    convergence claims differ from the constant-step finite recurrence in this
    chapter. Label each extracted result as theorem, asymptotic statement, or
    heuristic interpretation.

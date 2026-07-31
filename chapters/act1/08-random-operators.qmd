@@ -127,7 +127,7 @@ values = [
     summary.sigma_min,
 ]
 fig, axis = plt.subplots(figsize=(6.9, 3.7))
-bars = axis.bar(labels, values, color=["#4c78a8", "#72b7b2", "#f58518", "#e45756"])
+bars = axis.bar(labels, values, color=["#232D4B", "#2E7D32", "#E57200", "#9C2F2F"])
 axis.axhline(1.0, color="black", linestyle=":", label="isotropic center")
 axis.set(ylabel="directional stretch", yscale="log", ylim=(0.01, 3.0))
 axis.grid(alpha=0.25, axis="y")
@@ -633,10 +633,7 @@ average and upper edge but an arbitrarily small lower edge.
 
 Vershynin develops the singular-value identities, two-sided sub-Gaussian
 matrix theorem, and Gaussian comparison bounds used here
-[@vershynin2026]. The canonical instructor material supplied the random-map
-phenomenon and spectral instrumentation; claims equating small singular values
-with underflow, outliers with signal, or square Gaussian matrices with uniform
-conditioning were rejected. Miyato, Kataoka, Koyama, and Yoshida use power
+[@vershynin2026]. Miyato, Kataoka, Koyama, and Yoshida use power
 iteration inside an upper-edge intervention [@miyato2018]; the paper supplies
 a useful audit of what such an instrument controls and what it leaves
 unmeasured.
@@ -670,8 +667,10 @@ unmeasured.
    Design the smallest dtype-aware experiment that could support the narrower
    arithmetic claim.
 
-6. **(Audit.) Paper audit: an upper-edge intervention.** Read Miyato,
-   Kataoka, Koyama, and Yoshida [@miyato2018]. Extract the target singular
+6. **(Audit.) Paper audit: an upper-edge intervention.** Complete the
+   **Mathematical object**, **Evidence culture and interface**, **Numerical and
+   hardware contract**, **Discriminating control**, and **Transfer verdict**
+   fields for Miyato, Kataoka, Koyama, and Yoshida [@miyato2018]. Extract the target singular
    quantity, the power-iteration approximation, the persistence of its
    auxiliary vectors, and the empirical stability endpoint. State precisely
    what the method controls, then identify why that evidence does not imply a

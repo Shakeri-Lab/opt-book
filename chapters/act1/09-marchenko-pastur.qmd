@@ -136,10 +136,10 @@ axis.hist(
     bins=np.linspace(0.0, 3.12, 17),
     density=True,
     alpha=0.55,
-    color="#4c78a8",
+    color="#5379AA",
     label="finite ESD histogram",
 )
-axis.plot(grid, density, color="#1f4e79", linewidth=2.2, label="MP density")
+axis.plot(grid, density, color="#232D4B", linewidth=2.2, label="MP density")
 axis.axvline(
     support.lambda_minus,
     color="#6b6b6b",
@@ -149,7 +149,7 @@ axis.axvline(
 axis.axvline(support.lambda_plus, color="#6b6b6b", linestyle="--")
 axis.axvline(
     eigenvalues[-1],
-    color="#e45756",
+    color="#9C2F2F",
     linewidth=2.0,
     label="pure-noise top eigenvalue",
 )
@@ -443,7 +443,7 @@ axis.hist(
     null_max,
     bins=34,
     density=True,
-    color="#72b7b2",
+    color="#2E7D32",
     alpha=0.7,
     label=r"finite null for $\lambda_{\max}$",
 )
@@ -456,13 +456,13 @@ axis.axvline(
 )
 axis.axvline(
     finite_threshold,
-    color="#1f4e79",
+    color="#232D4B",
     linewidth=2.0,
     label="finite 95th percentile",
 )
 axis.axvline(
     witness_max,
-    color="#e45756",
+    color="#9C2F2F",
     linewidth=2.0,
     label="opening witness",
 )
@@ -637,12 +637,12 @@ axes[0].boxplot(
     whis=(5, 95),
     showfliers=False,
     patch_artist=True,
-    boxprops={"facecolor": "#a0cbe8"},
-    medianprops={"color": "#1f4e79", "linewidth": 2.0},
+    boxprops={"facecolor": "#5379AA"},
+    medianprops={"color": "#232D4B", "linewidth": 2.0},
 )
 axes[0].axhline(
     finite_threshold,
-    color="#e45756",
+    color="#9C2F2F",
     linestyle="--",
     label="finite null threshold",
 )
@@ -653,11 +653,11 @@ axes[0].legend(frameon=False, fontsize=8)
 bars = axes[1].bar(
     labels,
     rejection_rates,
-    color=["#72b7b2", "#f2cf5b", "#e45756"],
+    color=["#2E7D32", "#E57200", "#9C2F2F"],
 )
 axes[1].axhline(
     false_positive_rate,
-    color="#1f4e79",
+    color="#232D4B",
     linestyle=":",
     label="declared null rate",
 )
@@ -725,10 +725,7 @@ Marchenko and Pastur establish the limiting empirical spectral law
 [@marchenko1967]. Vershynin supplies the sub-Gaussian covariance-estimation
 theorem and its whitening argument [@vershynin2026]. Baik and Silverstein
 derive the almost-sure sample-eigenvalue limits for spiked population models
-[@baik2006]. The instructor's canonical RMT material supplied the ESD-to-bulk
-sequence and covariance-estimation question. Its finite-significance
-shortcut—“above the edge means signal”—was rejected and replaced with the
-matched-null contract demonstrated here.
+[@baik2006].
 
 ## Exercises
 
@@ -758,8 +755,10 @@ matched-null contract demonstrated here.
    old threshold long enough to measure its false-positive rate. Identify
    which Marchenko--Pastur and covariance-estimation assumptions were broken.
 
-6. **(Audit.) Paper audit: a model-specific outlier.** Read Baik and
-   Silverstein [@baik2006]. Extract the population model, aspect-ratio limit,
+6. **(Audit.) Paper audit: a model-specific outlier.** Complete the
+   **Mathematical object**, **Resolution of the theory**, **Dynamic regime**,
+   **Assumption stress test**, **Discriminating control**, and **Transfer
+   verdict** fields for Baik and Silverstein [@baik2006]. Extract the population model, aspect-ratio limit,
    moment assumptions, separation condition, almost-sure conclusion, and the
    quantity that remains asymptotic. Then review a spectral-outlier claim in
    a current machine-learning paper: state whether its matrix has the same

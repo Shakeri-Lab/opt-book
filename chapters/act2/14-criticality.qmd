@@ -7,7 +7,7 @@ harness-ref: ch-14
 harness-api: "0.14"
 harness-wheel-sha256: "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26"
 phenomenon_id: c14-average-criticality
-claim_ids: [c14-criticality-001]
+claim_ids: [c14-criticality-001, c14-gated-product-001]
 threads:
   random-matrix-spectra: callback
   subgaussian-safe-zone: callback
@@ -34,8 +34,9 @@ to one up to rounding. The average-moment story cannot distinguish them.
 
 ::: {.callout-important title="Prediction"}
 Two initializations preserve activation variance layer by layer. Must they
-propagate every gradient direction comparably? No. Variance is a trace-level
-diagnostic; trainability depends on spectral edges and mass as well.
+propagate every gradient direction comparably? Choose the control you would
+inspect next: another activation moment, the smallest and largest singular
+values, or only the parameter norm. What would falsify your choice?
 :::
 
 ## Criticality is a recursion with assumptions {#sec-c14-recursion}
@@ -84,14 +85,14 @@ well-conditioned input-output Jacobian.
 1. Verify and activate <code>harness@ch-14</code>.
 2. Plot the ReLU moment recursion at three scales.
 3. Recreate the registered Gaussian and orthogonal matrix products.
-4. Compare their complete singular spectra.
-5. Verify the committed spectral endpoints.
+4. Insert ReLU gates from one finite-width forward pass at critical scale.
+5. Compare all three spectra and verify both committed claims.
 :::
 
 ```{python}
 #| label: fig-c14-criticality
-#| fig-cap: "Left: a scalar critical point separates decay from growth. Right: average preservation does not imply directional preservation; Gaussian products spread while orthogonal products remain isometric in this linear control."
-#| fig-alt: "Two panels. The first shows activation second moment decaying for scale 1, constant for scale 2, and growing for scale 3. The second shows ordered singular values: an orthogonal product is flat at one while a Gaussian product ranges from about 3.6 to nearly zero."
+#| fig-cap: "Left: a scalar critical point separates decay from growth. Right: average preservation does not imply directional preservation; the orthogonal linear control stays isometric, while Gaussian products spread and a finite ReLU-gated product also loses rank."
+#| fig-alt: "Two panels. The first shows activation second moment decaying for scale 1, constant for scale 2, and growing for scale 3. The second shows ordered singular values: an orthogonal product is flat at one, a Gaussian linear product spreads, and a ReLU-gated product at critical variance has only eight singular values above one times ten to the minus ten."
 #| code-summary: "Code: separate a variance-critical recursion from a Jacobian-spectrum diagnostic"
 
 from hashlib import sha256
@@ -127,22 +128,54 @@ orthogonal = [
 # [4]
 sg = np.linalg.svd(deep_linear_product(gaussian), compute_uv=False)
 so = np.linalg.svd(deep_linear_product(orthogonal), compute_uv=False)
+gated_seed = int(sha256(b"c14-gated-product").hexdigest()[:8], 16)
+gated_rng = np.random.default_rng(gated_seed)
+gated_state = gated_rng.normal(size=n)
+gated_factors, active_counts = [], []
+for _ in range(depth):
+    weights = gated_rng.normal(size=(n, n)) * np.sqrt(2 / n)
+    preactivation = weights @ gated_state
+    gate = (preactivation > 0).astype(float)
+    active_counts.append(int(gate.sum()))
+    gated_factors.append(gate[:, None] * weights)
+    gated_state = np.maximum(preactivation, 0)
+sgated = np.linalg.svd(
+    deep_linear_product(gated_factors), compute_uv=False
+)
 axes[1].semilogy(sg, "o-", label="Gaussian factors")
 axes[1].semilogy(so, "o-", label="orthogonal factors")
+axes[1].semilogy(sgated, "o-", label="ReLU-gated factors")
 axes[1].set(xlabel="ordered direction", ylabel="singular value")
 axes[1].legend(frameon=False)
 fig.tight_layout()
 # [5]
 claim = json.loads(Path("artifacts/claims/c14-criticality-001.json").read_text())
+gated_claim = json.loads(
+    Path("artifacts/claims/c14-gated-product-001.json").read_text()
+)
 assert claim["harness_wheel_sha256"] == wheel_digest
 assert np.isclose(
     sg[0],
     claim["result"]["gaussian_product"]["maximum"],
     atol=1e-12,
 )
+assert active_counts == gated_claim["result"]["active_coordinates_by_layer"]
+assert int(np.sum(sgated > 1e-10)) == gated_claim["result"][
+    "jacobian_rank_tolerance_1e-10"
+]
 print("claim c14-criticality-001: verified")
+print("claim c14-gated-product-001: verified")
 ```
 ::::
+
+The gated product is not an independent random-matrix toy. Its diagonal gates
+come from one forward pass through the same finite-width compositional
+structure whose Jacobian is being measured. At the variance-critical scale
+$2/n$, the twelve layers retain between 8 and 20 active coordinates each, but
+the final Jacobian has only eight singular values above $10^{-10}$. Its
+largest singular value is about $2.63$ and its smallest is numerically zero.
+This one realization does not define a law for nonlinear Jacobians; it shows
+exactly where the deep-linear isometry control stops being the network itself.
 
 ## Trace control is not edge control {#sec-c14-trace}
 
@@ -188,11 +221,11 @@ edges, derivative correlations, or numerical range.
 
 ## Check yourself {#sec-c14-check}
 
-At zero bias with ReLU and weight scale $2(1+\varepsilon)$, the moment after
-$L$ layers is $q_0(1+\varepsilon)^L$. Even a small multiplicative mismatch
-accumulates with depth. At the exact scalar critical point, the two-by-two
-matrix $\operatorname{diag}(\sqrt2,0)$ still has mean squared singular value
-one and destroys one direction.
+At zero bias with ReLU and weight scale $2(1+\varepsilon)$, what is the moment
+after $L$ layers? At the exact scalar critical point, what do the mean squared
+singular value and lower spectral edge say for
+$\operatorname{diag}(\sqrt2,0)$? Which statement is relevant to a gradient
+component aligned with the second coordinate?
 
 ## Okay, so — {#sec-c14-recap}
 
@@ -207,12 +240,12 @@ one and destroys one direction.
 Mean-field signal propagation follows @schoenholz2017; dynamical-isometry
 diagnostics follow @pennington2017. Variance-preserving initialization was
 developed for saturating and rectified compositional structures by
-@glorot2010 and @he2015. The Spring 2026 initialization materials supplied the
-phenomena and derivation order; finite-width and Jacobian claims were narrowed
-to the assumptions stated here.
+@glorot2010 and @he2015.
 
 ## Exercises {#sec-c14-exercises}
 
 1. **(Pencil.)** Derive @eq-c14-variance-map for an odd saturating nonlinearity and identify its small-variance linearization.
 2. **(Code.)** Repeat the product experiment across 100 seeds. Plot distributions of trace, lower edge, and upper edge separately.
-3. **(Audit.) Paper audit:** Locate a paper that uses “critical.” Identify whether its object is activation variance, correlation, mean squared singular value, or a full spectral statement.
+3. **(Pencil.)** For $\matr J=\matr D_L\matr W_L\cdots\matr D_1\matr W_1$, show that $\operatorname{rank}(\matr J)$ cannot exceed the smallest gate rank. Explain why this bound can be loose.
+4. **(Code.)** Hold the critical variance fixed and vary width and input direction. Compare the active-count profile, numerical rank, mean squared singular value, and both edges under shared weight streams.
+5. **(Audit.) Paper audit:** Locate a paper that uses “critical” and complete the **Mathematical object**, **Dynamic regime**, **Assumption stress test**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Is its object activation variance, correlation, mean squared singular value, or a full spectral statement?

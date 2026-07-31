@@ -19,6 +19,8 @@ concurrency:
 
 env:
   SOURCE_DATE_EPOCH: "0"
+  PYTHONHASHSEED: "0"
+  MPLBACKEND: "Agg"
 
 jobs:
   fast:
@@ -43,7 +45,10 @@ jobs:
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
           uv run pytest -q harness/tests
           uv run python experiments/c17_update_geometry.py
+          uv run python experiments/c17_weight_update_spectrum.py
           uv run python experiments/c01_roofline.py
+          uv run python experiments/c01_local_measurement.py
+          uv run python experiments/coda_incident.py
       - run: uv run python scripts/run_fast_audits.py
 
   render:
@@ -83,6 +88,7 @@ jobs:
           TEXINPUTS=./_book//: "$lualatex_bin" -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
           cp tmp/pdfs/Deep-Learning--Making-It-Trainable.log tmp/pdfs/book-build.log
       - run: uv run python scripts/audit_rendered.py
+      - run: uv run python scripts/audit_book_metrics.py
       - uses: actions/upload-artifact@v4
         with:
           name: rendered-book
@@ -177,27 +183,34 @@ jobs:
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-13/trainable_harness-0.13.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_stochastic.py
           uv run python experiments/c13_stochastic_regimes.py
+          uv run python experiments/c13_regime_controls.py
       - name: Execute historical ch-14 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-14/trainable_harness-0.14.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_criticality.py
           uv run python experiments/c14_criticality.py
+          uv run python experiments/c14_gated_product.py
       - name: Execute historical ch-15 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-15/trainable_harness-0.15.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_normalization.py
           uv run python experiments/c15_normalization.py
+          uv run python experiments/c15_running_state.py
       - name: Execute historical ch-16 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-16/trainable_harness-0.16.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_stability.py
           uv run python experiments/c16_edge_of_stability.py
+          uv run python experiments/c16_stochastic_contrast.py
       - name: Execute current ch-17 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_update_geometry.py
           uv run python experiments/c17_update_geometry.py
+          uv run python experiments/c17_weight_update_spectrum.py
           uv run python experiments/c01_roofline.py
+          uv run python experiments/c01_local_measurement.py
+          uv run python experiments/coda_incident.py
       - name: Verify sibling public anchors
         run: uv run python scripts/audit_sibling_anchors.py --network
       - run: git diff --exit-code -- artifacts/claims

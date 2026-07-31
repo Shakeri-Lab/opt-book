@@ -532,9 +532,7 @@ Chernoff's exponential method supplies the optimization view of tail bounds
 [@chernoff1952]. Hoeffding develops probability inequalities for sums of
 bounded independent variables [@hoeffding1963]. Vershynin gives the modern
 sub-Gaussian equivalence, Orlicz norm, and high-dimensional toolkit used here
-[@vershynin2026]. The canonical instructor slides supplied the simultaneous-
-control phenomenon and safe-zone thread; claims that Gaussian behavior is
-universal or automatically preserved by depth were rejected.
+[@vershynin2026].
 
 ## Exercises
 
@@ -563,8 +561,9 @@ universal or automatically preserved by depth were rejected.
    population sub-Gaussian. Predict a contamination distribution that is
    likely to evade the sample, then state a defensible empirical conclusion.
 
-6. **(Audit.) Paper audit: Hoeffding's bounded-sum inequality.** Read the
-   primary paper and extract the independence assumption, the bounded-range
+6. **(Audit.) Paper audit: Hoeffding's bounded-sum inequality.** Complete the
+   **Mathematical object**, **Evidence culture and interface**, **Assumption
+   stress test**, and **Transfer verdict** fields for the primary paper and extract the independence assumption, the bounded-range
    quantity, and the tail exponent for a weighted sum. Map each object to the
    MGF proxy language of this chapter and identify any constant or scope that
    cannot be transferred verbatim.

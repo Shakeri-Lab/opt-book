@@ -730,10 +730,7 @@ either answer.
 
 Vershynin develops sub-exponential equivalences, the square/product lemmas, and
 Bernstein's inequality [@vershynin2026]. Hoeffding's bounded-variable lemma
-supplies the clipped-variable guarantee [@hoeffding1963]. The canonical
-instructor derivation supplied the MGF-domain reveal and constrained-optimizer
-order; claims that repeated products occupy one universal tail class or that
-one threshold solves heavy-tailed training were rejected. Simsekli, Sagun, and
+supplies the clipped-variable guarantee [@hoeffding1963]. Simsekli, Sagun, and
 Gurbuzbalaban provide a primary empirical tail-index study
 [@simsekli2019], while Koloskova, Hendrikx, and Stich analyze the stochastic
 bias and threshold dependence of gradient clipping [@koloskova2023].
@@ -767,8 +764,10 @@ bias and threshold dependence of gradient clipping [@koloskova2023].
    window, state what the plot can falsify, and design a held-out threshold
    audit.
 
-6. **(Audit.) Paper audit: a tail-index claim.** Read Simsekli, Sagun, and
-   Gurbuzbalaban [@simsekli2019]. Extract the random variable whose tail is
+6. **(Audit.) Paper audit: a tail-index claim.** Complete the **Mathematical
+   object**, **Dynamic regime**, **Estimator and comparison contract**,
+   **Assumption stress test**, and **Transfer verdict** fields for Simsekli,
+   Sagun, and Gurbuzbalaban [@simsekli2019]. Extract the random variable whose tail is
    modeled, the estimator used for its index, the sampling unit, and the
    architecture/data/training regimes tested. Identify which statements are
    empirical observations, which invoke an $\alpha$-stable model, and which

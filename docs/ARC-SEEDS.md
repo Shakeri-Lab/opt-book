@@ -4,7 +4,7 @@
 
 | Unit | Working transformation | Status |
 |---|---|---|
-| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Locally complete; author review pending |
+| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Deep-revision witness complete; author review pending |
 | C02 | Repair a one-pass variance computation by preserving centered, mergeable state | Pilot accepted; C03 handoff harvested |
 | C03 | Predict floating-point failures from a precision contract | Locally complete; author review pending |
 | C04 | Read gradient descent mode by mode | Locally complete; machine acceptance audit passed; author review pending |
@@ -16,7 +16,8 @@
 | C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; machine acceptance audit passed; author review pending |
 | C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; machine acceptance audit passed; author review pending |
 | C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
-| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Locally complete; author review pending |
+| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Deep-revision witnesses complete; author review pending |
+| Coda | Diagnose the opening loss-spike incident with the complete instrument panel | Locally complete; author review pending |
 | Act III | Synthesis through modern primitives | Gated after core budget evidence |
 
 ## Public threads
@@ -31,6 +32,11 @@
 Acts before a registered seed are exempt from the silence audit. The seed
 chapter itself must declare the `seed` role. From the seed onward, one whole
 act may not pass without a meaningful callback.
+
+The Coda harvests all four threads in one incident report: it rules out a
+precision-scale explanation, evaluates the local curvature boundary, audits
+the estimator target, compares update and weight spectra, and checks repeated
+normalization state before assigning cause.
 
 ## Internal cross-cutting ledgers
 
@@ -56,9 +62,9 @@ chapter obligations:
 | Unit | Added diagnostic obligation |
 |---|---|
 | C12 | Harvested: the Hessian/GGN/model-Fisher/empirical-Fisher disagreement witness, action-only probe, bounded CG two-lens seam, and structured-approximation boundary are now on the page. |
-| C13 | Harvested: conditional estimator, noise-to-signal transition, batch assumptions, second-moment boundary, and clipping bias are on the page. |
-| C16 | Harvested: fixed control, local top curvature, gradient-direction curvature, and finite-horizon history are compared in a class-(a) witness. |
-| C17 | Harvested: dual-norm geometry, polar approximation, update spectrum, parameter routing boundary, and the literature bridge are on the page. |
+| C13 | Harvested with executable controls: online regime crossing, batch variance scaling, exact quadratic momentum, stochastic noise amplification, and infinite-variance clipping bias are on the page. |
+| C16 | Harvested: fixed control, local top curvature, gradient-direction curvature, finite-horizon history, and a matched stochastic trajectory are compared in laptop-reproducible witnesses. |
+| C17 | Harvested: dual-norm geometry, polar approximation, update and weight spectra, parameter routing/scale boundaries, and the literature bridge are on the page. |
 
 C04 now plants the distinction between its best fixed minimax step and the
 best one-step move in the current gradient direction. C08 now plants the
@@ -130,6 +136,8 @@ The public book promises:
 - the HTML edition is canonical and the PDF content-equivalent.
 
 Machine ownership of these promises lives in `contracts/promises.yml`.
+Cross-chapter fulfillments must now cite executable claim evidence or an
+explicit prose-fulfillment flag; an owner declaration alone is insufficient.
 
 ## C04 and C05 obligations
 

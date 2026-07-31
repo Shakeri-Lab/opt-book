@@ -1,0 +1,31 @@
+---
+description: "How course materials, external tutorials, primary sources, and executable evidence contribute to this book."
+---
+
+# Provenance and Acknowledgements {.unnumbered #provenance-note}
+
+This book grows from DS 6210 materials developed and taught at the University
+of Virginia in Spring 2026: lecture derivations, assignments, optimizer cards,
+journal-club prompts, numerical studies, and the patterns revealed by student
+work. Those materials supplied many opening phenomena and much of the reveal
+order. Book prose was rewritten to stand without the classroom, and every
+load-bearing mathematical or empirical claim was independently derived,
+executed, or routed to a primary source.
+
+External tutorials are credited as intellectual maps rather than silent
+technical authorities. In particular, the 2026 ICML optimization-theory and
+probabilistic-numerics tutorials helped locate useful seams across chapters.
+The book's combined phenomenon-first sequence, diagnostic ledgers, and Paper
+Autopsy Protocol are editorial syntheses; the technical claims inside them
+remain attributed to their primary literature.
+
+Executable observations carry claim IDs, provenance classes, pinned harness
+wheels, and content digests. Negative results and rejected explanations are
+retained when they delimit a claim. Student work remains private editorial
+evidence unless permission and attribution are recorded explicitly.
+
+The project also owes its production discipline to defects discovered while
+building the sibling volume, *Deep Learning: Making It Learnable*. Stable
+anchors, content-equivalent editions, estimator declarations, source audits,
+and mechanical promise checks are not ornamental infrastructure; they are the
+conditions under which a technical book can remain inspectable as it evolves.

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "claim_id": "c15-running-state-001",
+  "phenomenon_id": "c15-invariance-choice",
+  "chapter": "c15",
+  "provenance_class": "a",
+  "hypothesis": "Train-mode batch statistics and evaluation-mode running statistics can disagree under one unchanged population because they are different finite estimators.",
+  "hardware_claim_boundary": "Seeded float64 CPU estimator witness with one scalar coordinate; not a claim about distribution shift or a particular library update rule.",
+  "harness_ref": "ch-15",
+  "harness_wheel_sha256": "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f",
+  "result": {
+    "seed": 316832669,
+    "batch_count": 8,
+    "batch_size": 32,
+    "population_mean": 4.0,
+    "population_sd": 2.0,
+    "epsilon": 1e-05,
+    "running_state": {"count": 256, "mean": 4.096165651657989, "m2": 972.967047695029, "dtype": "float64", "method": "merged", "population_variance": 3.800652530058707, "sample_variance": 3.8155570497844273},
+    "evaluation_batch_state": {"count": 32, "mean": 3.7658874645360183, "m2": 98.00351204565331, "dtype": "float64", "method": "welford", "population_variance": 3.062609751426666, "sample_variance": 3.161403614375913},
+    "merge_vs_single_pass": {"mean_difference": -2.6645352591003757e-15, "m2_difference": 0.0},
+    "normalized_discrepancy": {"maximum_absolute": 0.44808541735389973, "train_mode_mean": -3.3306690738754696e-16, "train_mode_variance": 0.9999967348215542, "eval_mode_mean": -0.169414367021457, "eval_mode_variance": 0.8058094416973557},
+    "running_mean_by_batch": [4.215514259143657, 4.322160117366249, 4.281143704064219, 4.248702008614311, 4.1720093943662295, 4.225456137237651, 4.142857061105455, 4.096165651657989],
+    "running_variance_by_batch": [3.348588874301323, 3.973597731888178, 3.524197479340092, 3.5335946377974334, 3.4680715498883017, 3.7340073318774696, 3.8237459445648803, 3.800652530058707]
+  },
+  "payload_sha256": "dcff885a7f0587e49e6c617a0598ce49de6da572e4518f485b9be98dc0478104"
+}

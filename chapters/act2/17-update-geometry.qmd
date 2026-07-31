@@ -7,7 +7,7 @@ harness-ref: ch-17
 harness-api: "0.17"
 harness-wheel-sha256: "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60"
 phenomenon_id: c17-norm-chooses-update
-claim_ids: [c17-update-norm-001]
+claim_ids: [c17-update-norm-001, c17-weight-update-spectrum-001]
 threads:
   random-matrix-spectra: callback
   landscape-update-geometry: callback
@@ -129,7 +129,7 @@ axes[0].set(xlabel="singular direction", ylabel="singular value")
 axes[0].legend(frameon=False, fontsize=8)
 # [4]
 approximation, residuals = newton_schulz_polar(gradient, 12)
-axes[1].semilogy(residuals, "o-", color="#5b4b8a")
+axes[1].semilogy(residuals, "o-", color="#232D4B")
 axes[1].set(xlabel="Newton–Schulz step", ylabel=r"$\|X^T X-I\|_F$")
 fig.tight_layout()
 # [5]
@@ -170,6 +170,137 @@ $\operatorname{polar}(\matr Q\matr G\matr R)=
 $\matr Q,\matr R$, and it is invariant to positive scalar rescaling. Those
 properties explain what coordinate transformations the update respects.
 
+## The update spectrum is not the weight spectrum {#sec-c17-weight-update-trace}
+
+The opening compares candidate updates at one gradient. The promise from C08
+is stronger: show the update spectrum and the weight spectrum side by side
+while a model changes. Use a factorized least-squares control
+
+$$
+\min_{\matr A\in\mathbb R^{6\times4},\,
+\matr B\in\mathbb R^{4\times4}}
+\frac{1}{2\cdot24}\norm{\matr A\matr B-\matr T}_{\mathrm F}^2,
+$$ {#eq-c17-factorized-control}
+
+with matched initialization and twenty steps. One run normalizes each factor
+gradient in Frobenius norm. The other replaces it by the rectangular polar
+factor. Both then restore an external step scale $alpha=0.08$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Derive the claim seed and construct one target and matched factorization.
+2. Run twenty Frobenius-normalized and polar steps.
+3. Record the singular values of each update to factor A.
+4. Record the singular values of factor A before each update.
+5. Plot both spectra over time and verify the committed endpoints.
+:::
+
+```{python}
+#| label: fig-c17-weight-update-trace
+#| fig-cap: "Update and weight spectra are different objects. Polar steps give all four update singular directions the external scale 0.08 at every iteration, while the factor being updated remains anisotropic and evolves. Frobenius-normalized updates retain unequal singular values."
+#| fig-alt: "Four panels arranged by update rule and matrix object. Under Frobenius normalization, the four update singular values differ and the weight singular values spread over time. Under polar updates, all four update singular values remain flat at 0.08 while the four weight singular values remain unequal and evolve."
+#| code-summary: "Code: trace update and weight spectra under two matrix geometries"
+
+# [1]
+trace_seed = int(sha256(b"c17-weight-update-spectrum").hexdigest()[:8], 16)
+trace_rng = np.random.default_rng(trace_seed)
+target = trace_rng.normal(size=(6, 4))
+initial_a = 0.2 * trace_rng.normal(size=(6, 4))
+initial_b = 0.2 * trace_rng.normal(size=(4, 4))
+trace_step, trace_steps = 0.08, 20
+
+# [2]
+spectral_traces = {}
+for rule in ("frobenius", "polar"):
+    factor_a, factor_b = initial_a.copy(), initial_b.copy()
+    update_spectra, weight_spectra = [], []
+    for _ in range(trace_steps):
+        residual = factor_a @ factor_b - target
+        gradient_a = residual @ factor_b.T / residual.size
+        gradient_b = factor_a.T @ residual / residual.size
+        if rule == "frobenius":
+            direction_a = -gradient_a / np.linalg.norm(gradient_a, "fro")
+            direction_b = -gradient_b / np.linalg.norm(gradient_b, "fro")
+        else:
+            direction_a = -polar_factor(gradient_a)
+            direction_b = -polar_factor(gradient_b)
+        # [3]
+        update_spectra.append(
+            np.linalg.svd(trace_step * direction_a, compute_uv=False)
+        )
+        # [4]
+        weight_spectra.append(
+            np.linalg.svd(factor_a, compute_uv=False)
+        )
+        factor_a += trace_step * direction_a
+        factor_b += trace_step * direction_b
+    spectral_traces[rule] = {
+        "update": np.asarray(update_spectra),
+        "weight": np.asarray(weight_spectra),
+    }
+
+# [5]
+fig, axes = plt.subplots(2, 2, figsize=(9.2, 6.0), sharex=True)
+for row, rule in enumerate(("frobenius", "polar")):
+    for singular_index in range(4):
+        axes[row, 0].plot(
+            spectral_traces[rule]["update"][:, singular_index],
+            label=fr"$\sigma_{singular_index + 1}$",
+        )
+        axes[row, 1].plot(
+            spectral_traces[rule]["weight"][:, singular_index]
+        )
+    axes[row, 0].set(ylabel=f"{rule}\nupdate singular value")
+    axes[row, 1].set(ylabel=f"{rule}\nweight singular value")
+for axis in axes[-1, :]:
+    axis.set(xlabel="step")
+axes[0, 0].legend(frameon=False, ncol=2, fontsize=8)
+for axis in axes.flat:
+    axis.grid(alpha=0.2)
+fig.tight_layout()
+
+trace_claim = json.loads(
+    Path("artifacts/claims/c17-weight-update-spectrum-001.json").read_text()
+)
+assert np.allclose(
+    spectral_traces["polar"]["update"][-1],
+    trace_claim["result"]["by_rule"]["polar"][
+        "update_singular_values_step_19"
+    ],
+)
+assert np.allclose(
+    spectral_traces["frobenius"]["weight"][-1],
+    trace_claim["result"]["by_rule"]["frobenius"][
+        "weight_singular_values_step_19"
+    ],
+)
+print("polar update spread: "
+      f"{np.ptp(spectral_traces['polar']['update']).max():.2e}")
+print("polar final weight spectrum: " + "/".join(
+    f"{value:.3f}" for value in spectral_traces["polar"]["weight"][-1]
+))
+```
+::::
+
+The polar update is an isometry on the four-dimensional input space at every
+step: its four singular values are all $0.08$ up to rounding. Factor
+$\matr A$ is not. Its final singular values are approximately
+$(1.706,1.584,0.969,0.686)$. “Orthogonalized update” therefore describes the
+step matrix, not the parameter matrix after the step and not the represented
+function $\matr A\matr B$.
+
+The control also makes routing and scale explicit:
+
+| Parameter block | Routed transformation | Where magnitude re-enters | Audit boundary |
+|---|---|---|---|
+| matrix factor $\matr A$ | Frobenius or polar direction | external $alpha=0.08$ | width and layer scaling omitted |
+| matrix factor $\matr B$ | same declared rule | external $alpha=0.08$ | square and rectangular blocks share no automatic scale law |
+| a hypothetical bias vector | excluded | requires a separate vector rule | cannot be silently reshaped into a matrix |
+
+This is not an implementation footnote. A method that transforms selected
+matrices but routes embeddings, biases, scales, or output heads differently
+is a family of update rules. The paper autopsy must identify all of them.
+
 ## Brand bridge {#sec-c17-bridge}
 
 ::: {.brand-bridge}
@@ -195,16 +326,20 @@ Audit the entire update, not one transformation.
 
 ## The terminal capability: autopsy before adoption {#sec-c17-autopsy}
 
-The course ends with a procedure rather than a winner. For a current paper,
-write a one-page autopsy:
+The numbered core closes with a procedure rather than a winner. The Coda then
+uses the same discipline on a training incident. For a current paper, write a
+one-page autopsy:
 
-1. **Phenomenon:** What breaks, relative to which control?
-2. **Object:** Which matrix, estimator, norm, precision format, and traffic boundary are measured?
-3. **Assumptions:** Do finite variance, smoothness, interpolation, independence, or fixed curvature survive the workload?
-4. **Resolution and regime:** Is the theory global, local, direction-aware, or finite-horizon? Are experiments gradient- or noise-dominated?
-5. **Evidence culture:** Which claims are theorem-led, measurement-led, or only routed by analogy?
-6. **Counterfactual:** Which ablation distinguishes the proposed mechanism from an adjacent explanation?
-7. **Provenance:** Can every headline number be regenerated, simulated under a declared model, or traced to a pinned artifact?
+1. **Claim:** What is proved, measured, interpreted, or merely proposed?
+2. **Mathematical object:** Which matrix, estimator, norm, and population or sample quantity is named?
+3. **Resolution of the theory:** Is the statement global, local, direction-aware, or finite-horizon?
+4. **Dynamic regime:** Are the argument and experiments gradient- or noise-dominated, light- or heavy-tailed, fixed- or moving-curvature?
+5. **Evidence culture and interface:** Which measured quantity corresponds to which assumption or conclusion?
+6. **Estimator and comparison contract:** What are the target, reduction, denominator, sampling scheme, seeds, and baseline budget?
+7. **Numerical and hardware contract:** Which dtype, scaling, state, bytes, device, and wall-clock protocol carry the endpoint?
+8. **Assumption stress test:** Which conclusion survives when the most fragile assumption is changed?
+9. **Discriminating control:** Which smallest control separates the proposed mechanism from its strongest rival?
+10. **Transfer verdict:** State what is supported, what is not, and the cheapest next test.
 
 This combines the course's Spring 2026 optimizer card with the theory-resolution
 and two-cultures maps. Credit the tutorial for its intellectual map and the
@@ -213,17 +348,16 @@ to either source.
 
 ## Check yourself {#sec-c17-check}
 
-For singular values $(9,3,1,0.2)$, the operator-ball minimum is the negative
-nuclear norm, $-13.2$; the nuclear-ball minimum is the negative operator norm,
-$-9$. Swapping those answers is the characteristic dual-norm mistake. If a
-Newton--Schulz approximation has residual $10^{-3}$, that reports approximate
-orthogonality—not optimizer convergence or measured speed.
+For singular values $(9,3,1,0.2)$, what are the operator-ball and nuclear-ball
+minimum values, and which dual norms produce them? If a Newton--Schulz
+approximation has residual $10^{-3}$, which claim does that support, and which
+two tempting optimizer claims remain unsupported?
 
 ## Okay, so — {#sec-c17-recap}
 
 - **Inherited:** C01 supplies traffic provenance, C03 precision, C08 spectra, C12 curvature objects, and C13 regimes.
 - **Changed:** an optimizer is read as a normed update contract plus approximation, routing, state, and evidence.
-- **Instrumented:** `c17-update-norm-001` compares three dual geometries and a polynomial polar approximation.
+- **Instrumented:** one claim compares three dual geometries and a polynomial approximation; another separates update spectra from evolving weight spectra.
 - **Established:** the norm chooses the steepest direction; the method name does not.
 - **Unresolved:** no optimizer wins outside a declared workload and evidence contract—the open research question is now legible rather than branded.
 
@@ -231,13 +365,12 @@ orthogonality—not optimizer convergence or measured speed.
 
 Matrix-norm steepest descent and recent optimizer connections are developed by
 @bernstein2024. The original Muon technical account is @jordan2024muon, with
-large-scale implementation evidence in @liu2025muon. The Spring 2026 Muon and
-QJL journal-club decks supplied candidate phenomena; load-bearing claims were
-routed to primary sources and unreplicated efficiency claims were left as
-paper evidence.
+large-scale implementation evidence in @liu2025muon.
 
 ## Exercises {#sec-c17-exercises}
 
 1. **(Pencil.)** Prove the operator/nuclear duality rows of @eq-c17-steepest-table using von Neumann's trace inequality.
 2. **(Code.)** Test Newton--Schulz across condition numbers, ranks, and dtypes. Separate polar error, orthogonality residual, and elapsed time.
-3. **(Audit.) Paper audit:** Apply the seven-part protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.
+3. **(Pencil.)** For the factorized control, derive both factor gradients and show why an isometric update to each factor does not imply an isometric update to their product.
+4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and compare update spectra, weight spectra, state bytes, and final loss under matched randomness.
+5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.

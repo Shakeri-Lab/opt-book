@@ -31,6 +31,22 @@ def main() -> None:
     ):
         errors.append("index.qmd must use an explicitly unnumbered main heading")
 
+    unnumbered_units = {
+        ROOT / "chapters" / "coda.qmd": "coda",
+        ROOT / "chapters" / "provenance.qmd": "provenance-note",
+    }
+    for path, stable_id in unnumbered_units.items():
+        text = path.read_text()
+        if re.search(r"(?m)^title:", text):
+            errors.append(
+                f"{path}: unnumbered unit must not create a second YAML title"
+            )
+        if not re.search(
+            rf"(?m)^# .+ \{{\.unnumbered #{re.escape(stable_id)}\}}\s*$",
+            text,
+        ):
+            errors.append(f"{path}: missing stable unnumbered unit heading")
+
     theorem_contract = read_yaml(ROOT / "contracts" / "theorems.yml")
     required_theorem_fields = theorem_contract["required_fields"]
     registered_theorems = {
@@ -130,9 +146,30 @@ def main() -> None:
         owner = ROOT / promise["owner"]
         if not owner.exists():
             continue
-        fulfilled = front_matter(owner.read_text()).get("fulfills", [])
+        owner_text = owner.read_text()
+        owner_metadata = front_matter(owner_text)
+        fulfilled = owner_metadata.get("fulfills", [])
         if promise["id"] not in fulfilled:
             errors.append(f"{promise['id']}: owner does not declare fulfillment")
+        evidence = promise.get("fulfillment_evidence", {})
+        evidence_claims = evidence.get("claim_ids", [])
+        prose_flag = evidence.get("prose_flag")
+        if not evidence_claims and not prose_flag:
+            errors.append(
+                f"{promise['id']}: fulfillment has neither claim evidence "
+                "nor a declared prose flag"
+            )
+        owner_claims = set(owner_metadata.get("claim_ids", []))
+        missing_claims = set(evidence_claims) - owner_claims
+        if missing_claims:
+            errors.append(
+                f"{promise['id']}: evidence claims are absent from owner "
+                f"metadata: {sorted(missing_claims)}"
+            )
+        if prose_flag and f"#{prose_flag}" not in owner_text:
+            errors.append(
+                f"{promise['id']}: missing prose fulfillment flag {prose_flag}"
+            )
 
     fail_if(errors)
     print("book structure and promises: pass")

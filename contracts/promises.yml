@@ -56,6 +56,7 @@
       "scope": "c02-to-c03",
       "source": "chapters/act0/02-streaming-state.qmd",
       "owner": "chapters/act0/03-precision-contract.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c03-update-stagnation-001"]},
       "status": "active"
     },
     {
@@ -64,6 +65,7 @@
       "scope": "c02-to-c03",
       "source": "chapters/act0/02-streaming-state.qmd",
       "owner": "chapters/act0/03-precision-contract.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c03-format-envelope-001"]},
       "status": "active"
     },
     {
@@ -72,6 +74,7 @@
       "scope": "c02-to-c12",
       "source": "chapters/act0/02-streaming-state.qmd",
       "owner": "chapters/act2/12-curvature.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c12-hvp-001"]},
       "status": "active"
     },
     {
@@ -80,6 +83,7 @@
       "scope": "c04-to-c13",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c13-regime-controls-001"]},
       "status": "active"
     },
     {
@@ -88,6 +92,7 @@
       "scope": "c04-to-c13",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c13-regime-controls-001"]},
       "status": "active"
     },
     {
@@ -96,6 +101,7 @@
       "scope": "c04-to-c16",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/16-edge-of-stability.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c16-moving-boundary-001", "c16-stochastic-contrast-001"]},
       "status": "active"
     },
     {
@@ -104,6 +110,7 @@
       "scope": "c05-to-c06",
       "source": "chapters/act1/05-subgaussian-safe-zone.qmd",
       "owner": "chapters/act1/06-products-squares.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c06-square-break-001", "c06-two-regimes-001"]},
       "status": "active"
     },
     {
@@ -112,6 +119,7 @@
       "scope": "c06-to-c13",
       "source": "chapters/act1/06-products-squares.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c13-regime-controls-001"]},
       "status": "active"
     },
     {
@@ -120,6 +128,7 @@
       "scope": "c06-to-c07",
       "source": "chapters/act1/06-products-squares.qmd",
       "owner": "chapters/act1/07-epsilon-nets.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c07-tail-budget-001"]},
       "status": "active"
     },
     {
@@ -128,6 +137,7 @@
       "scope": "c07-to-c08",
       "source": "chapters/act1/07-epsilon-nets.qmd",
       "owner": "chapters/act1/08-random-operators.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c08-average-edges-001", "c08-aspect-ratio-001"]},
       "status": "active"
     },
     {
@@ -136,6 +146,7 @@
       "scope": "c08-to-c17",
       "source": "chapters/act1/08-random-operators.qmd",
       "owner": "chapters/act2/17-update-geometry.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c17-weight-update-spectrum-001"]},
       "status": "active"
     },
     {
@@ -144,6 +155,7 @@
       "scope": "c08-to-c09",
       "source": "chapters/act1/08-random-operators.qmd",
       "owner": "chapters/act1/09-marchenko-pastur.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c09-bulk-shape-001", "c09-finite-null-001"]},
       "status": "active"
     },
     {
@@ -152,6 +164,7 @@
       "scope": "c09-to-c10",
       "source": "chapters/act1/09-marchenko-pastur.qmd",
       "owner": "chapters/act1/10-effective-rank.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c10-effective-samples-001"]},
       "status": "active"
     },
     {
@@ -160,6 +173,7 @@
       "scope": "c11-to-c12",
       "source": "chapters/act2/11-reverse-accumulation.qmd",
       "owner": "chapters/act2/12-curvature.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c12-hvp-001"]},
       "status": "active"
     },
     {
@@ -168,6 +182,7 @@
       "scope": "c11-to-c14",
       "source": "chapters/act2/11-reverse-accumulation.qmd",
       "owner": "chapters/act2/14-criticality.qmd",
+      "fulfillment_evidence": {"claim_ids": ["c14-criticality-001", "c14-gated-product-001"]},
       "status": "active"
     }
   ]

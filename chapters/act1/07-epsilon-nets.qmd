@@ -134,7 +134,7 @@ polar.scatter(
     display_angles,
     display_stretches,
     s=24,
-    color="#d95f02",
+    color="#E57200",
     label=r"$\epsilon=0.25$ anchors",
     zorder=3,
 )
@@ -505,9 +505,11 @@ for dimension, log_cover, sg, cheb_log in zip(
     strict=True,
 ):
     print(
-        f"d={dimension}: log-cover<={log_cover:.3f}, "
-        f"sub-Gaussian threshold={sg:.3f}, "
-        f"log10 second-moment threshold={cheb_log:.3f}"
+        f"d={dimension}: log-cover<={log_cover:.3f}; "
+        f"sub-Gaussian={sg:.3f}"
+    )
+    print(
+        f"  log10 second-moment threshold={cheb_log:.3f}"
     )
 ```
 ::::
@@ -534,9 +536,9 @@ and interpolation rule must all be named.
 ::: {.callout-tip title="Check yourself"}
 An epsilon-net has $N$ anchors. Each fixed anchor obeys
 $\Pr(f(y)>a+t)\le2e^{-t^2/(2\sigma^2)}$, and every sample path is
-$L$-Lipschitz. Write the smallest union-bound threshold that gives failure
-probability delta. Then identify which term changes if the cover is refined
-from epsilon to epsilon over two, and which term does not.
+$L$-Lipschitz. What is the smallest union-bound threshold that gives failure
+probability delta? Which term changes if the cover is refined from epsilon to
+epsilon over two, and which term does not?
 :::
 
 ## Okay, so —
@@ -558,10 +560,8 @@ from epsilon to epsilon over two, and which term does not.
 ## Sources and further reading
 
 Vershynin develops covering and packing numbers, the volumetric upper bound,
-and epsilon-net arguments for random operators [@vershynin2026]. The canonical
-instructor slides supplied the phenomenon-first order; analogies equating
-floating-point grids with sphere covers and concentration with population
-generalization were rejected. Baraniuk, Davenport, DeVore, and Wakin combine
+and epsilon-net arguments for random operators [@vershynin2026]. Baraniuk,
+Davenport, DeVore, and Wakin combine
 fixed-vector concentration with finite-dimensional covering numbers in a
 restricted-isometry proof [@baraniuk2008].
 
@@ -600,8 +600,10 @@ restricted-isometry proof [@baraniuk2008].
    actually supports. Then list two distinct regularity statements that could
    repair the continuum step.
 
-6. **(Audit.) Paper audit: where the cover enters.** Read Baraniuk,
-   Davenport, DeVore, and Wakin [@baraniuk2008]. Identify the fixed-vector
+6. **(Audit.) Paper audit: where the cover enters.** Complete the **Mathematical
+   object**, **Evidence culture and interface**, **Assumption stress test**,
+   and **Discriminating control** fields for Baraniuk, Davenport, DeVore, and
+   Wakin [@baraniuk2008]. Identify the fixed-vector
    concentration statement, the set being covered, the covering-number cost,
    and the deterministic step extending anchor control. Separate those
    ingredients from the paper's additional union over supports.

@@ -64,6 +64,15 @@ def main() -> None:
         text = soup.get_text(" ")
         if "??" in text or re.search(r"@(?:fig|eq|thm|exr)-", text):
             errors.append(f"{path}: unresolved cross-reference marker")
+        for output in soup.select(".cell-output pre"):
+            for line_number, line in enumerate(
+                output.get_text().splitlines(), start=1
+            ):
+                if len(line) > 92:
+                    errors.append(
+                        f"{path}: code output line {line_number} is "
+                        f"{len(line)} characters (limit 92)"
+                    )
     for reference in sorted(source_refs - rendered_fragment_links):
         errors.append(f"rendered HTML has no link for source reference @{reference}")
 
@@ -93,6 +102,17 @@ def main() -> None:
         ]
         if any(link.select_one(".chapter-number") for link in home_links):
             errors.append("introduction is numbered in rendered HTML navigation")
+
+    for relative in ("chapters/coda.html", "chapters/provenance.html"):
+        path = ROOT / "_book" / relative
+        if not path.exists():
+            errors.append(f"missing unnumbered unit HTML {path}")
+            continue
+        soup = BeautifulSoup(path.read_text(), "html.parser")
+        if soup.select_one("h1.title .chapter-number, .breadcrumb .chapter-number"):
+            errors.append(f"{path}: unnumbered unit acquired a chapter number")
+        if soup.select_one(".header-section-number"):
+            errors.append(f"{path}: unnumbered unit acquired section numbering")
 
     search_path = ROOT / "_book" / "search.json"
     if search_path.exists():
@@ -125,6 +145,10 @@ def main() -> None:
             errors.append(f"PDF stable chapter numbering missing {expected!r}")
     if "1. One Pass, Two Failures" in extracted:
         errors.append("PDF renumbered C02 into the reserved C01 slot")
+    if "18. One Spike, Four Suspects" in extracted:
+        errors.append("PDF numbered the Coda as Chapter 18")
+    if "19. Provenance and Acknowledgements" in extracted:
+        errors.append("PDF numbered the provenance note as Chapter 19")
 
     vocabulary = source_vocabulary()
     for page_number, page in enumerate(extracted.split("\f"), start=1):

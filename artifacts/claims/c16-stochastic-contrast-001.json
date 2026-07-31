@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "claim_id": "c16-stochastic-contrast-001",
+  "phenomenon_id": "c16-moving-boundary",
+  "chapter": "c16",
+  "provenance_class": "a",
+  "hypothesis": "Small additive gradient noise preserves the moving-curvature crossing in the toy valley while shifting its timing and increasing loss nonmonotonicity.",
+  "hardware_claim_boundary": "One seeded additive-noise CPU contrast; not a theorem about mini-batch edge-of-stability behavior.",
+  "harness_ref": "ch-16",
+  "harness_wheel_sha256": "dc27db104bfa9a48a500343d6475487b410ddb2e19ea56045d89c2cf89d80cfd",
+  "result": {"seed": 2541872870, "step_size": 0.2, "gradient_noise_sd_per_coordinate": 0.01, "steps": 350, "first_crossing_step": 156, "number_loss_increases": 91, "final_loss": 0.23521070272434827, "maximum_top_curvature": 14.881819522462294, "final_state": [1.3291825058239697, 2.3096905026862173]},
+  "payload_sha256": "ae2fb3fe374cd351acc2edceff7d9c281cbd7b825e41a1c17769689f0e6f161f"
+}

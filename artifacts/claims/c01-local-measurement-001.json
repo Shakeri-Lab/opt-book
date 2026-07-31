@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "claim_id": "c01-local-measurement-001",
+  "phenomenon_id": "c01-count-not-cost",
+  "chapter": "c01",
+  "provenance_class": "a",
+  "hypothesis": "A zero-FLOP copy can consume measurable time because bytes, not arithmetic count, set its local resource demand.",
+  "hardware_claim_boundary": "One Apple M4 Max CPU observation through NumPy 2.5.1 and Accelerate; empirical local ceilings are controls from the same process, not vendor peaks or accelerator claims.",
+  "measurement_contract": {
+    "device": "Apple M4 Max CPU",
+    "software": "Python 3.12.13; NumPy 2.5.1; Accelerate BLAS",
+    "dtype": "float32",
+    "timer": "time.perf_counter_ns",
+    "warmups": {"copy": 5, "matmul": 3},
+    "repetitions": {"copy": 15, "matmul": 10},
+    "statistic": "median elapsed time",
+    "copy_traffic_boundary": "one array read plus one array write",
+    "matmul_operation_count": "2n^3",
+    "local_reference_ceiling": "best achieved rate over the declared size sweep in the same process"
+  },
+  "result": {
+    "copy_by_mib": {
+      "16": {"median_seconds": 0.000207125, "achieved_gbyte_per_second": 162.00087869643934},
+      "64": {"median_seconds": 0.0009473750000000001, "achieved_gbyte_per_second": 141.67328460219025},
+      "128": {"median_seconds": 0.002092333, "achieved_gbyte_per_second": 128.2948058459146}
+    },
+    "matmul_by_order": {
+      "256": {"median_seconds": 2.5458000000000003e-05, "achieved_gflop_per_second": 1318.0309529421006},
+      "512": {"median_seconds": 0.00010397950000000001, "achieved_gflop_per_second": 2581.6190306743156},
+      "1024": {"median_seconds": 0.0010025415000000002, "achieved_gflop_per_second": 2142.0396542188023}
+    },
+    "copy_64_fraction_of_local_bandwidth_ceiling": 0.8745217047103839,
+    "matmul_512_fraction_of_local_arithmetic_ceiling": 1.0,
+    "local_empirical_bandwidth_ceiling_gbyte_per_second": 162.00087869643934,
+    "local_empirical_arithmetic_ceiling_gflop_per_second": 2581.6190306743156
+  },
+  "payload_sha256": "9603bfead211b511a9926132317cd936bb4d6000f5259c961b1fead5bbf4e888"
+}
