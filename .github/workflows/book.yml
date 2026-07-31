@@ -67,8 +67,19 @@ jobs:
       - name: Recompile retained TeX and preserve the LuaLaTeX log
         run: |
           mkdir -p tmp/pdfs
-          TEXINPUTS=./_book//: lualatex -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
-          TEXINPUTS=./_book//: lualatex -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
+          if command -v lualatex >/dev/null 2>&1; then
+            lualatex_bin="$(command -v lualatex)"
+          else
+            shopt -s nullglob
+            tinytex_bins=(
+              "$HOME"/.TinyTeX/bin/*/lualatex
+              "$HOME"/Library/TinyTeX/bin/*/lualatex
+            )
+            test "${#tinytex_bins[@]}" -gt 0
+            lualatex_bin="${tinytex_bins[0]}"
+          fi
+          TEXINPUTS=./_book//: "$lualatex_bin" -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
+          TEXINPUTS=./_book//: "$lualatex_bin" -interaction=batchmode -halt-on-error -output-directory=tmp/pdfs Deep-Learning--Making-It-Trainable.tex
           cp tmp/pdfs/Deep-Learning--Making-It-Trainable.log tmp/pdfs/book-build.log
       - run: uv run python scripts/audit_rendered.py
       - uses: actions/upload-artifact@v4
