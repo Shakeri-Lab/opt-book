@@ -114,6 +114,11 @@ line styles, or position.
 Use `(Code.) Profile:` and `(Audit.) Paper audit:` as named subtypes. Split
 mixed work into separately tagged subparts.
 
+Paper audits follow `docs/PAPER-AUTOPSY-PROTOCOL.md`. A chapter exercise uses
+only the four to six fields supported by the chapter's trunk; it does not
+become a miniature literature review. The full card is reserved for the
+capstone or a standalone handout.
+
 ## Public residue forbidden
 
 The public manuscript must not contain slide or classroom residue such as:

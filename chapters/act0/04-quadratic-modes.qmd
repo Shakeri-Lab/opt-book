@@ -318,6 +318,42 @@ $$
 When $\kappa$ is large, $\rho^\star$ is close to one. A scalar step cannot
 simultaneously erase a flat mode and remain stable in a sharp mode.
 
+The word *best* needs an object. The step above is minimax over every
+eigenvalue in the interval and remains fixed for every iteration. If the
+question is instead “which step minimizes the objective along the current
+negative-gradient direction?”, the answer changes. With
+$\vect{g}_t=\matr{Q}\vect{e}_t$,
+
+$$
+\loss(\vect{w}_t-\alpha\vect{g}_t)
+=
+\loss(\vect{w}_t)
+-\alpha\|\vect{g}_t\|_2^2
++\frac{\alpha^2}{2}
+\vect{g}_t^{\mathsf T}\matr{Q}\vect{g}_t.
+$$
+
+The one-step line minimizer is therefore
+
+$$
+\alpha_t^{\mathrm{line}}
+=
+\frac{\|\vect{g}_t\|_2^2}
+{\vect{g}_t^{\mathsf T}\matr{Q}\vect{g}_t}.
+$$ {#eq-c04-directional-step}
+
+Its denominator is curvature in the direction the update actually uses, not
+the largest curvature available anywhere. The value lies between
+$1/\lambda_{\max}$ and $1/\lambda_{\min}$ and can exceed
+$2/\lambda_{\max}$ while still decreasing this quadratic on the current
+step. That does not repeal @eq-c04-stability-interval: it answers a different
+question with a state-dependent step.
+
+We now have three distinct optimization targets: a worst-direction fixed
+step, a current-direction one-step choice, and a sequence chosen for progress
+over a horizon. C16 will add the missing complication that the curvature and
+the active directions can move with the trajectory.
+
 ## Change the geometry seen by the update {#sec-c04-precondition}
 
 Consider a positive-definite matrix $\matr{P}$ and the update
@@ -556,9 +592,16 @@ near one. These diagnoses require different controls:
 | requested change is below a local midpoint | local ULP audit | finite-grid stagnation |
 | measured time remains large after iteration count falls | bytes/work profile | implementation cost |
 
+The scalar model keeps $\tau^2$ and the curvature fixed, so it cannot diagnose
+when a stochastic run changes regime. C13 is obligated to replace
+$\xi_t$ by a declared conditional gradient estimator, compare gradient signal
+with estimator variation, and test what happens when the second moment is not
+finite.
+
 The fixed boundary in @eq-c04-stability-interval is now a registered control.
-C16 is obligated to compare it with a setting in which the curvature itself
-moves during training.
+C16 is obligated to compare it with local top curvature, curvature in the
+current gradient direction, and a setting in which the curvature itself moves
+during training.
 
 ::: {.callout-tip title="Check yourself"}
 For eigenvalues $(2,20)$ and step $\alpha=0.075$, compute both mode factors.
@@ -578,8 +621,9 @@ contraction, both, or neither.
 - **Established:** The stability interval, optimal constant-step contraction,
   and additive-noise floor follow exactly under their stated models.
 - **Unresolved:** Real curvature moves, stochastic gradients need not be
-  additive or light-tailed, and a cheaper iteration count need not mean a
-  faster machine execution.
+  additive or light-tailed, one-step and finite-horizon choices need not
+  agree, and a cheaper iteration count need not mean a faster machine
+  execution.
 
 ## Sources and further reading
 
@@ -587,8 +631,13 @@ Nesterov develops gradient methods for smooth, strongly convex objectives and
 the role of conditioning [@nesterov2004]. Robbins and Monro supply the
 foundational stochastic-approximation setting [@robbins1951]. This chapter
 uses those sources as context, but derives its three exact recurrences on the
-page. The instructor's quadratic sequence supplied the phenomenon and reveal
-order; its hardware slogans and branded optimizer claims were not imported.
+page. Schmidt's ICML 2026 tutorial motivates the global, local, directional,
+and finite-horizon questions used to delimit “best” [@schmidt2026tutorial];
+it is an intellectual map, not the technical authority for the equations.
+The instructor's quadratic sequence supplied the phenomenon and reveal order;
+its hardware slogans and branded optimizer claims were not imported.
+
+\newpage
 
 ## Exercises
 

@@ -34,7 +34,13 @@
     {"id": "empirical-spectral-distribution", "latex": "\\mu_{\\matr{M}}", "meaning": "empirical spectral distribution of the declared symmetric matrix", "new_in_volume": true},
     {"id": "aspect-ratio", "latex": "\\gamma=n/m", "meaning": "number of coordinates divided by number of observations unless locally redeclared", "new_in_volume": true},
     {"id": "marchenko-pastur-edges", "latex": "\\lambda_-,\\lambda_+", "meaning": "lower and upper Marchenko--Pastur support edges under the declared variance scale", "new_in_volume": true},
-    {"id": "population-spike", "latex": "\\beta", "meaning": "non-unit population covariance eigenvalue in a locally declared spiked model", "new_in_volume": true}
+    {"id": "population-spike", "latex": "\\beta", "meaning": "non-unit population covariance eigenvalue in a locally declared spiked model", "new_in_volume": true},
+    {"id": "effective-rank", "latex": "r_{\\mathrm{eff}}(\\matr{\\Sigma})", "meaning": "trace divided by operator norm for a nonzero positive-semidefinite operator", "new_in_volume": true},
+    {"id": "stable-rank", "latex": "\\operatorname{sr}(\\matr{A})", "meaning": "squared Frobenius norm divided by squared operator norm for a nonzero matrix", "new_in_volume": true},
+    {"id": "jacobian", "latex": "\\matr{J}_F(\\vect{x})", "meaning": "Jacobian of F at x with output coordinates in rows and input coordinates in columns", "new_in_volume": true},
+    {"id": "jvp", "latex": "\\matr{J}_F(\\vect{x})\\vect{v}", "meaning": "Jacobian-vector product or forward tangent action", "new_in_volume": true},
+    {"id": "vjp", "latex": "\\vect{u}^{\\mathsf T}\\matr{J}_F(\\vect{x})", "meaning": "vector-Jacobian product or reverse cotangent action", "new_in_volume": true},
+    {"id": "cotangent", "latex": "\\bar z_v", "meaning": "derivative of the scalar output with respect to the value at node v", "new_in_volume": true}
   ],
   "global_rules": {
     "paper_vectors": "column",

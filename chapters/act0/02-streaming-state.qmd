@@ -755,6 +755,12 @@ The corrected online update traces to Welford's short note
 [@welford1962]. Chan, Golub, and LeVeque compare variance algorithms, analyze
 roundoff, and develop pairwise computation [@chan1983].
 
+Hennig, Pförtner, and Weiland frame limited computation as limited
+information [@hennig2026tutorial]. Hennig makes one version exact for
+iterative linear solvers under a declared Gaussian model [@hennig2015].
+That work motivates Exercise 7; it does not make the centered-moment
+recurrence a Bayesian update.
+
 For floating-point format anatomy, mixed-precision roles, and introductory
 rounding examples, see the sibling volume's
 [precision and hardware appendix](https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance).
@@ -793,3 +799,11 @@ diagnostic.
    $(n,\mu,M_2)$ by componentwise sum. Use two constant blocks to identify
    the defect. Write the missing correction and explain why the tempting
    componentwise answer is wrong.
+
+7. **(Audit.) Paper audit: state versus belief.** Read Hennig's Gaussian
+   linear-solver construction [@hennig2015]. Compare its state
+   $(\vect{\mu}_i,\matr{\Sigma}_i)$ with Welford's
+   $(n,\mu_n,M_{2,n})$: record the target, observation, prior, rank-one update,
+   stopping output, and uncertainty claim. Identify the shared state-machine
+   pattern, then explain why Welford is not Bayesian conditioning without an
+   additional probability model.

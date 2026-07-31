@@ -35,6 +35,10 @@ book:
         - chapters/act1/07-epsilon-nets.qmd
         - chapters/act1/08-random-operators.qmd
         - chapters/act1/09-marchenko-pastur.qmd
+        - chapters/act1/10-effective-rank.qmd
+    - part: "Act II — Dynamics of optimization"
+      chapters:
+        - chapters/act2/11-reverse-accumulation.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd

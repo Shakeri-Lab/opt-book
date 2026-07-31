@@ -1,0 +1,48 @@
+version: 1
+chapter: c11
+sources:
+  - id: src-c11-instructor-backprop
+    class: instructor-canonical
+    path: ../my_lectures/Act II/meet12-Backpropagation.tex
+    sha256: eed9949d8f019534190d01e4ed79d957d0ace8a94a68562073235f0c7f55a229
+    reuse: DAG, JVP/VJP, retained-state, checkpointing, and precision phenomena; mechanics compressed to respect sibling ownership
+  - id: src-c11-instructor-notes
+    class: instructor-canonical
+    path: ../my_lectures/Act II/meet12_notes.tex
+    sha256: 611d61827112e2eedbfe5f2ea06ba58bb29669cbec94b0d9f2d8fb49ced2eb50
+    reuse: shape conventions and memory-compute discussion; historical timing and hardware slogans rejected
+  - id: src-c11-instructor-adjoint
+    class: instructor-supplemental
+    path: ../my_lectures/Act II/more/W8X_Backprop_Adjoint.tex
+    sha256: 71455c0a0f2b96fabc025d95bcb7f70e24383475950e39578db1113b0bb89fa2
+    reuse: adjoint-state interpretation as an optional conceptual bridge, not a second derivation spine
+  - id: src-c11-core-syllabus
+    class: instructor-canonical
+    path: ../my_lectures/Syllabus_simple.tex
+    sha256: 2671dc810f8069731f15b740e7ca427eb5a665ecdc6078faf3a19bd3abe44249
+    reuse: reverse-mode and checkpointing ownership before curvature and initialization
+  - id: src-c11-sibling-backprop
+    class: sibling-public-interface
+    url: https://shakeri-lab.github.io/dl-book/chapters/part1/05-backpropagation.html#sec-05-backpropagation
+    sibling_commit: bd4e06f
+    reuse: chain-rule, layer-wise backpropagation, and tiny autodiff-engine mechanics imported by pointer
+  - id: baydin2018
+    class: primary-scholarly
+    url: https://www.jmlr.org/papers/v18/17-468.html
+    reuse: automatic-differentiation taxonomy, JVP/VJP orientation, and implementation boundaries
+  - id: baur1983
+    class: primary-scholarly
+    url: https://doi.org/10.1016/0304-3975(83)90110-X
+    reuse: constant-factor arithmetic-circuit gradient result, cited with its rational straight-line-program scope
+  - id: chen2016
+    class: primary-scholarly
+    url: https://arxiv.org/abs/1604.06174
+    reuse: sublinear-memory checkpointing and extra-forward-pass tradeoff
+rejected_or_scoped_claims:
+  - Numerical differentiation is not called exact and no current-model parameter count or GPU-year anecdote is imported.
+  - Symbolic differentiation is not called inherently exponential; expression swell is separated from DAG reuse and common-subexpression elimination.
+  - The Baur--Strassen constant is not generalized from rational straight-line programs to arbitrary framework operations.
+  - Reverse mode is not described as memory-free or universally cheaper than forward mode.
+  - The uniform square-root checkpoint schedule is not called globally optimal for arbitrary computation graphs.
+  - CPU operation counts are not presented as accelerator runtime or roofline measurements.
+  - Hessians, initialization criticality, activation-family comparisons, mixed-precision recipes, and IO-aware all-pairs kernels remain outside C11.

@@ -1,0 +1,33 @@
+{
+  "chapter": "c11",
+  "claim_id": "c11-checkpoint-001",
+  "environment": {"device": "cpu", "dtype": "float64", "numpy": "2.5.1", "platform": "macOS-15.7.7-arm64-arm-64bit", "python": "3.12.13", "python_implementation": "CPython", "seed": null, "seed_role": "deterministic model calculation"},
+  "hardware_claim_boundary": "Laptop-CPU deterministic bookkeeping; operation counts are an abstract equal-cost chain model, not wall-clock or accelerator measurements.",
+  "harness_ref": "ch-11",
+  "harness_wheel_sha256": "c9e645efbb2e604f517465d25fafffdd68f7a21d7803633edc0653d5421ff182",
+  "hypothesis": "For the declared uniform block-checkpoint schedule on a length-64 chain, retaining fewer boundary states trades memory for recomputation and the square-root block minimizes this schedule’s peak-state formula.",
+  "payload_sha256": "a88d6e9b6ab67bd13cff803bdd78504bf4afbf4b68dc02bc7cbf6d30291d8908",
+  "phenomenon_id": "c11-gradient-memory",
+  "provenance_class": "a",
+  "result": {
+    "boundary": "These are exact counts in an equal-cost linear-chain model. Branching graphs, heterogeneous tensor sizes, communication, allocator behavior, and optimal recursive schedules require different accounting.",
+    "depth": 64,
+    "minimizing_block_size_among_all_integer_choices": 8,
+    "minimum_peak_state_units": 16,
+    "records": [
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 1, "checkpoint_count": 65, "peak_state_units": 65, "recomputed_forward_evaluations": 0, "total_local_evaluations": 128},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 2, "checkpoint_count": 33, "peak_state_units": 34, "recomputed_forward_evaluations": 32, "total_local_evaluations": 160},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 4, "checkpoint_count": 17, "peak_state_units": 20, "recomputed_forward_evaluations": 48, "total_local_evaluations": 176},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 8, "checkpoint_count": 9, "peak_state_units": 16, "recomputed_forward_evaluations": 56, "total_local_evaluations": 184},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 16, "checkpoint_count": 5, "peak_state_units": 20, "recomputed_forward_evaluations": 60, "total_local_evaluations": 188},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 32, "checkpoint_count": 3, "peak_state_units": 34, "recomputed_forward_evaluations": 62, "total_local_evaluations": 190},
+      {"backward_evaluations": 64, "base_forward_evaluations": 64, "block_size": 64, "checkpoint_count": 2, "peak_state_units": 65, "recomputed_forward_evaluations": 63, "total_local_evaluations": 191}
+    ],
+    "schedule": "retain block boundaries; during backward, reconstruct and retain one block’s missing interior states",
+    "sqrt_schedule_recomputed_forward_evaluations": 56,
+    "sqrt_schedule_total_local_evaluations": 184,
+    "store_all_peak_state_units": 65,
+    "store_all_total_local_evaluations": 128
+  },
+  "schema_version": 1
+}

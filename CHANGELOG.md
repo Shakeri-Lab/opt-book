@@ -52,3 +52,33 @@
   `harness@ch-09` with explicit covariance estimators, analytic
   Marchenko--Pastur support and density, covariance ensembles, and empirical
   upper-tail thresholds.
+- Audited all 211 slides of Mark Schmidt's ICML 2026 optimization-theory
+  tutorial as an external routing source and recorded chapter-level adoption,
+  refusal, and primary-source obligations.
+- Refined C04 to distinguish the best fixed minimax step from the exact
+  current-direction line minimizer, and registered the resulting C13 and C16
+  callbacks.
+- Planted C08's update-spectrum versus weight-spectrum distinction for C17
+  and strengthened the introduction's contract that a repair can move a
+  failure rather than eliminate it.
+- Adjudicated the tutorial-derived PL, acceleration, glocal-smoothness, WSD,
+  Adam-surrogate, and implicit-bias suggestions under a trunk/branch/shelf
+  displacement rule.
+- Added the Paper Autopsy Protocol, preserving credit to Bertsekas and
+  Schmidt while integrating theory resolution, dynamic regime, estimators,
+  hardware, and falsifying controls into the course's existing optimizer
+  cards.
+- Audited all 131 slides of the ICML 2026 Probabilistic Numerics tutorial and
+  added bounded C02/C03 branches on retained state, acquired information, and
+  computational uncertainty without claiming that Welford is Bayesian
+  conditioning.
+- Completed C10 on effective rank, stable rank, Gaussian covariance variance,
+  and spectrum-sensitive covariance sample complexity while refusing
+  compression and generalization overclaims.
+- Closed Act I with a matched full-rank covariance witness and extended the
+  independently executable harness through `harness@ch-10`.
+- Completed C11 on JVP/VJP orientation, additive reverse accumulation on
+  directed acyclic graphs, retained primal state, and checkpoint/recomputation
+  accounting.
+- Opened Act II with deterministic fan-out and checkpoint evidence and
+  extended the independently executable harness through `harness@ch-11`.

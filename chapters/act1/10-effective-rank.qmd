@@ -1,0 +1,492 @@
+---
+subtitle: "Effective dimension, covariance complexity, and the limits of one scalar"
+description: "Why two full-rank populations can require radically different sample sizes to estimate."
+number-offset: 9
+jupyter: python3
+harness-ref: ch-10
+harness-api: "0.10"
+harness-wheel-sha256: "bc9dbad6f5e147bbf4bcafa0a747415e05a7d06d4d36f52196f0287974bad7d7"
+phenomenon_id: c10-full-rank-few-directions
+claim_ids:
+  - c10-effective-samples-001
+threads:
+  random-matrix-spectra: callback
+  subgaussian-safe-zone: callback
+lenses:
+  geometric: primary
+  dynamic: quiet
+  algorithmic: supporting
+fulfills:
+  - promise-c09-c10-effective-dimension
+---
+
+# Full Rank, Few Directions {#c10}
+
+<span class="thread">RS · Random-matrix spectra</span>
+<span class="thread">SG · The sub-Gaussian safe zone</span>
+<span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
+
+Consider two Gaussian populations in $\mathbb{R}^{96}$. Both covariance
+matrices have algebraic rank $96$. Both have operator norm one. Yet with only
+$64$ observations, the median relative operator-norm error of the sample
+covariance is about $3.71$ for one population and $0.42$ for the other.
+
+Nothing about rank or largest eigenvalue alone predicts this nine-fold
+difference. The missing quantity measures how much spectral mass sits below
+the leading direction.
+
+::: {.callout-important title="Prediction"}
+If two covariance matrices have the same dimension, rank, and largest
+eigenvalue, what property could make one much easier to estimate?
+:::
+
+## Same rank, different sample demand {#sec-c10-opening}
+
+Let
+
+$$
+\widehat{\matr{\Sigma}}
+=
+\frac1m\sum_{i=1}^m \vect{x}_i\vect{x}_i^{\mathsf T}
+$$ {#eq-c10-sample-covariance}
+
+for independent, mean-zero observations. We compare
+
+$$
+\matr{\Sigma}_{\mathrm{iso}}=\matr{I}_{96},
+\qquad
+\matr{\Sigma}_{\mathrm{dec}}
+=
+\operatorname{diag}(1,0.82,0.82^2,\ldots,0.82^{95}).
+$$ {#eq-c10-two-covariances}
+
+Every diagonal entry in the second matrix is positive, so both matrices are
+full rank. Their leading eigenvalues are both one. The experiment below uses
+the same standard-normal draws for the two populations at every sample count;
+only the spectral coloring changes.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate <code>harness@ch-10</code>.
+2. Construct the two full-rank population spectra.
+3. Run the predeclared matched Gaussian covariance trials.
+4. Compute relative operator-norm error quantiles.
+5. Compare the $m=64$ error distributions.
+6. Trace the median and 10--90 percent bands across sample counts.
+:::
+
+```{python}
+#| label: fig-c10-effective-samples
+#| fig-cap: "Rank and top eigenvalue do not determine covariance-estimation difficulty. Both 96-dimensional populations are full rank with operator norm one. Their effective ranks are 96 and about 5.56. Across 300 matched Gaussian trials, the decaying-spectrum covariance has far smaller relative operator-norm error."
+#| fig-alt: "Two-panel plot. At 64 samples, a box plot shows relative covariance errors centered near 3.71 for the isotropic population and 0.42 for the decaying-spectrum population. Across sample counts from 24 to 384, both median errors fall, but the decaying-spectrum curve remains much lower."
+#| code-summary: "Code: compare covariance-estimation error for two full-rank spectra"
+#| code-fold: false
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-10/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+
+from trainable_harness import (
+    effective_rank_psd,
+    gaussian_covariance_error_trials,
+)
+
+# [2]
+dimension = 96
+spectra = {
+    "isotropic": np.ones(dimension),
+    "decaying": 0.82 ** np.arange(dimension),
+}
+effective_ranks = {
+    name: effective_rank_psd(np.diag(eigenvalues)).effective_rank
+    for name, eigenvalues in spectra.items()
+}
+
+# [3]
+sample_counts = np.array([24, 48, 64, 96, 192, 384])
+trial_count = 300
+base_seed = int(
+    sha256(b"c10-full-rank-few-directions").hexdigest()[:8],
+    16,
+)
+errors = {name: {} for name in spectra}
+for sample_count in sample_counts:
+    seed = (base_seed + int(sample_count)) % (2**32)
+    for name, eigenvalues in spectra.items():
+        errors[name][sample_count] = gaussian_covariance_error_trials(
+            eigenvalues,
+            int(sample_count),
+            trials=trial_count,
+            seed=seed,
+        )["relative_operator_error"]
+
+# [4]
+quantiles = {
+    name: np.array([
+        np.quantile(errors[name][sample_count], [0.1, 0.5, 0.9])
+        for sample_count in sample_counts
+    ])
+    for name in spectra
+}
+
+# [5]
+fig, axes = plt.subplots(1, 2, figsize=(9.4, 3.8))
+axes[0].boxplot(
+    [errors["isotropic"][64], errors["decaying"][64]],
+    tick_labels=["isotropic", "decaying"],
+    showfliers=False,
+)
+axes[0].set(
+    title="$m=64$ matched trials",
+    ylabel=r"$\|\widehat{\Sigma}-\Sigma\|_{\mathrm{op}}/\|\Sigma\|_{\mathrm{op}}$",
+)
+axes[0].grid(axis="y", alpha=0.22)
+
+# [6]
+colors = {"isotropic": "#e45756", "decaying": "#4c78a8"}
+for name in spectra:
+    q = quantiles[name]
+    axes[1].plot(
+        sample_counts, q[:, 1], marker="o", color=colors[name],
+        label=rf"{name}: $r_{{\rm eff}}={effective_ranks[name]:.2f}$",
+    )
+    axes[1].fill_between(
+        sample_counts, q[:, 0], q[:, 2],
+        color=colors[name], alpha=0.16,
+    )
+axes[1].set(
+    xscale="log", yscale="log",
+    xlabel="sample count $m$", ylabel="relative operator error",
+)
+shown_counts = [24, 64, 192, 384]
+axes[1].set_xticks(shown_counts, labels=[str(value) for value in shown_counts])
+axes[1].minorticks_off()
+axes[1].grid(alpha=0.22)
+axes[1].legend(frameon=False, fontsize=8)
+plt.tight_layout()
+plt.show()
+
+print(f"harness={manifest['harness_ref']} wheel={manifest['wheel_sha256'][:12]}")
+for name in spectra:
+    print(
+        f"{name}: rank={np.linalg.matrix_rank(np.diag(spectra[name]))}, "
+        f"operator_norm={spectra[name][0]:.1f}, "
+        f"effective_rank={effective_ranks[name]:.6f}, "
+        f"median_error_m64={np.median(errors[name][64]):.6f}"
+    )
+```
+::::
+
+The comparison does not say that decay makes every statistical problem easy.
+It isolates one claim: for operator-norm covariance estimation under this
+model, the spectral mass below the top eigenvalue changes the relevant
+dimension.
+
+## Replace the coordinate count by spectral mass {#sec-c10-effective-rank}
+
+For a positive-semidefinite matrix $\matr{\Sigma}\ne\matr{0}$, define its
+**effective rank**
+
+$$
+r_{\mathrm{eff}}(\matr{\Sigma})
+=
+\frac{\operatorname{tr}(\matr{\Sigma})}
+{\norm{\matr{\Sigma}}_{\mathrm{op}}}.
+$$ {#eq-c10-effective-rank}
+
+If the eigenvalues satisfy
+$\lambda_1\ge\cdots\ge\lambda_n\ge0$, then
+
+$$
+r_{\mathrm{eff}}(\matr{\Sigma})
+=
+\frac{\sum_{j=1}^n\lambda_j}{\lambda_1}.
+$$
+
+It is the total spectral mass measured in units of the largest eigenvalue.
+The isotropic covariance spends one full unit in every direction, giving
+$r_{\mathrm{eff}}=96$. The decaying spectrum spends
+$\sum_{j=0}^{95}0.82^j\approx5.56$ such units.
+
+::: {#thm-c10-effective-rank phenomenon_id="c10-full-rank-few-directions"}
+## Range and invariances of effective rank
+
+For every nonzero positive-semidefinite
+$\matr{\Sigma}\in\mathbb{R}^{n\times n}$,
+
+$$
+1
+\le
+r_{\mathrm{eff}}(\matr{\Sigma})
+\le
+\operatorname{rank}(\matr{\Sigma})
+\le n.
+$$ {#eq-c10-effective-rank-range}
+
+Moreover, effective rank is unchanged by positive scalar rescaling and by
+orthogonal change of coordinates.
+:::
+
+### Proof
+
+Let the positive eigenvalues be
+$\lambda_1\ge\cdots\ge\lambda_r>0$. Because the trace includes
+$\lambda_1$,
+
+$$
+\frac{\sum_{j=1}^r\lambda_j}{\lambda_1}\ge1.
+$$
+
+Because every positive eigenvalue is at most $\lambda_1$,
+
+$$
+\frac{\sum_{j=1}^r\lambda_j}{\lambda_1}\le r.
+$$
+
+Multiplying $\matr{\Sigma}$ by $c>0$ multiplies numerator and denominator by
+$c$. Orthogonal similarity preserves the eigenvalues, hence both trace and
+operator norm. $\square$
+
+Algebraic rank changes only when an eigenvalue becomes exactly zero.
+Effective rank changes continuously as spectral mass moves.
+
+::: {.callout-warning title="Named wrong answer: effective rank is stable rank"}
+The notions are related, but they apply to different objects. For a general
+matrix $\matr{A}$, stable rank is
+$\norm{\matr{A}}_{\mathrm F}^2/\norm{\matr{A}}_{\mathrm{op}}^2$.
+For a covariance $\matr{\Sigma}$, that expression is
+$\sum_j\lambda_j^2/\lambda_1^2$, not
+$\sum_j\lambda_j/\lambda_1$.
+:::
+
+::: {#thm-c10-stable-rank phenomenon_id="c10-full-rank-few-directions"}
+## Stable rank is effective rank after squaring
+
+For every nonzero real matrix $\matr{A}$,
+
+$$
+\operatorname{sr}(\matr{A})
+:=
+\frac{\norm{\matr{A}}_{\mathrm F}^2}
+{\norm{\matr{A}}_{\mathrm{op}}^2}
+=
+r_{\mathrm{eff}}(\matr{A}^{\mathsf T}\matr{A}).
+$$ {#eq-c10-stable-rank}
+:::
+
+### Proof
+
+The trace of $\matr{A}^{\mathsf T}\matr{A}$ is
+$\norm{\matr{A}}_{\mathrm F}^2$, while its operator norm is
+$\norm{\matr{A}}_{\mathrm{op}}^2$. Substitute these identities into
+@eq-c10-effective-rank. $\square$
+
+This identity is the safe bridge between the terms. It does not license
+swapping them on the same matrix.
+
+## Why this quantity enters covariance error {#sec-c10-variance-proxy}
+
+Write the estimation error as an average of centered random matrices:
+
+$$
+\widehat{\matr{\Sigma}}-\matr{\Sigma}
+=
+\frac1m\sum_{i=1}^m
+\left(\vect{x}_i\vect{x}_i^{\mathsf T}-\matr{\Sigma}\right).
+$$ {#eq-c10-centered-summands}
+
+C06 warned that squaring a sub-Gaussian quantity changes the concentration
+class. Covariance estimation is exactly that operation, simultaneously over
+all directions. C07 supplied the finite approximation of the sphere, and C08
+identified the operator norm as the worst directional error. Effective rank
+records the matrix variance scale left after those steps.
+
+::: {#thm-c10-gaussian-variance phenomenon_id="c10-full-rank-few-directions"}
+## Gaussian covariance summand
+
+If $\vect{x}\sim\mathcal{N}(\vect{0},\matr{\Sigma})$, then
+
+$$
+\mathbb{E}
+\left[
+\left(\vect{x}\vect{x}^{\mathsf T}-\matr{\Sigma}\right)^2
+\right]
+=
+\operatorname{tr}(\matr{\Sigma})\matr{\Sigma}
++\matr{\Sigma}^2.
+$$ {#eq-c10-gaussian-fourth}
+:::
+
+### Proof
+
+Work in an eigenbasis and write
+$x_j=\sqrt{\lambda_j}g_j$ with independent standard-normal $g_j$.
+The $(j,k)$ entry of
+$\mathbb{E}[\vect{x}\vect{x}^{\mathsf T}\vect{x}\vect{x}^{\mathsf T}]$
+is $\mathbb{E}[x_jx_k\sum_\ell x_\ell^2]$. For $j\ne k$, symmetry makes
+this zero. For $j=k$, Gaussian fourth moments give
+
+$$
+\mathbb{E}\!\left[x_j^2\sum_{\ell}x_\ell^2\right]
+=
+3\lambda_j^2+\sum_{\ell\ne j}\lambda_j\lambda_\ell
+=
+\lambda_j\operatorname{tr}(\matr{\Sigma})+2\lambda_j^2.
+$$
+
+Thus
+$\mathbb{E}[(\vect{x}\vect{x}^{\mathsf T})^2]
+=\operatorname{tr}(\matr{\Sigma})\matr{\Sigma}
++2\matr{\Sigma}^2$.
+Expanding the centered square subtracts one copy of
+$\matr{\Sigma}^2$. $\square$
+
+Consequently,
+
+$$
+\left\|
+\mathbb{E}
+\left[
+(\vect{x}\vect{x}^{\mathsf T}-\matr{\Sigma})^2
+\right]
+\right\|_{\mathrm{op}}
+=
+\norm{\matr{\Sigma}}_{\mathrm{op}}^2
+\left(r_{\mathrm{eff}}(\matr{\Sigma})+1\right).
+$$
+
+The coordinate dimension has disappeared from this variance expression. It
+re-enters when the spectrum actually distributes mass across that many
+directions.
+
+## A usable covariance theorem {#sec-c10-covariance-theorem}
+
+::: {#thm-c10-covariance-error phenomenon_id="c10-full-rank-few-directions"}
+## Effective-rank covariance bound
+
+Let $\vect{x}_1,\ldots,\vect{x}_m$ be independent copies of a mean-zero
+random vector with covariance $\matr{\Sigma}$. Assume that for every
+$\vect{u}$,
+
+$$
+\norm{\langle\vect{x},\vect{u}\rangle}_{\psi_2}
+\le
+K\sqrt{\vect{u}^{\mathsf T}\matr{\Sigma}\vect{u}}.
+$$ {#eq-c10-relative-subgaussian}
+
+Then a universal constant $C$ exists such that
+
+$$
+\mathbb{E}
+\norm{\widehat{\matr{\Sigma}}-\matr{\Sigma}}_{\mathrm{op}}
+\le
+C K^4\norm{\matr{\Sigma}}_{\mathrm{op}}
+\left[
+\sqrt{\frac{r_{\mathrm{eff}}(\matr{\Sigma})}{m}}
++
+\frac{r_{\mathrm{eff}}(\matr{\Sigma})}{m}
+\right].
+$$ {#eq-c10-covariance-bound}
+:::
+
+### Proof with pointer
+
+The proof symmetrizes the empirical process, controls a quadratic process
+indexed by the sphere, and converts its complexity to effective rank. That
+chain requires machinery beyond this chapter's diagnostic target. See
+@vershynin2018 for a nonasymptotic derivation and @koltchinskii2017 for sharp
+effective-rank formulations.
+
+The usable scaling is
+$m\gg r_{\mathrm{eff}}(\matr{\Sigma})$. Dimension has not been abolished;
+it has been replaced by a spectrum-sensitive complexity under explicit tail
+assumptions.
+
+::: {.callout-tip title="Field note: one scalar is not a compression budget"}
+Effective rank does not say how many coordinates may be deleted at a chosen
+error tolerance. It does not identify important eigenvectors, certify a
+low-rank approximation, or explain why a trained model generalizes. Those
+questions require information this scalar discards.
+:::
+
+## Five dimensions that must not be conflated {#sec-c10-dimensions}
+
+| Quantity | Definition or question | What it diagnoses |
+|---|---|---|
+| parameter count | how many stored scalar coordinates? | storage and nominal model size |
+| algebraic rank | how many singular values are nonzero? | exact image dimension |
+| effective rank | $\operatorname{tr}(\Sigma)/\|\Sigma\|_{\mathrm{op}}$ | covariance complexity relative to its top scale |
+| stable rank | $\|A\|_{\mathrm F}^2/\|A\|_{\mathrm{op}}^2$ | squared singular mass relative to the top singular value |
+| truncation rank | how many directions meet a declared tolerance? | task-dependent compression |
+
+The table prevents a rhetorical slide: observing a small effective rank and
+then speaking as though a compression guarantee or generalization theorem
+had been proved.
+
+## The Act I handoff {#sec-c10-handoff}
+
+Act I began with a safe zone for one random projection. It followed squares
+into a two-regime tail, paid for a finite cover, measured both singular edges,
+calibrated an empirical spectral bulk, and replaced nominal dimension by a
+spectrum-sensitive complexity.
+
+The next act changes the moving object. Instead of asking what a random matrix
+looks like, we ask how derivatives move backward through a computation and
+what state the machine must retain to make that motion possible.
+
+::: {.callout-note title="Check yourself"}
+A covariance has eigenvalues $(1,1/2,1/4,1/8)$. Compute its algebraic rank,
+effective rank, and stable rank when the covariance itself is treated as the
+matrix. Then compute the stable rank of a square root
+$\matr{A}$ satisfying
+$\matr{A}^{\mathsf T}\matr{A}=\matr{\Sigma}$. Which two quantities agree?
+:::
+
+## Okay, so — {#sec-c10-recap}
+
+- **Inherited:** operator norm asks for the worst direction; empirical spectra
+  require a finite null; squares leave the sub-Gaussian safe zone.
+- **Changed:** nominal coordinate count became total spectral mass measured
+  in top-eigenvalue units.
+- **Instrumented:** matched Gaussian trials separated two full-rank
+  covariances with the same operator norm.
+- **Established:** effective rank controls the diagnostic sample scale for
+  covariance estimation under a relative sub-Gaussian contract.
+- **Unresolved:** a scalar spectrum summary does not identify which
+  directions matter to an optimizer or how derivative information traverses
+  a computation.
+
+## Sources and further reading {#sec-c10-sources}
+
+The effective-rank covariance theorem follows @vershynin2018. Sharp
+expectation and high-probability bounds are developed by
+@koltchinskii2017. The warning that effective dimension alone does not imply
+generalization is consistent with the interpolation evidence of
+@zhang2017.
+
+## Exercises {#sec-c10-exercises}
+
+1. **(Pencil.)** Prove that
+   $r_{\mathrm{eff}}(\matr{\Sigma})=n$ for a nonzero
+   $n\times n$ positive-semidefinite matrix if and only if all eigenvalues
+   are equal.
+2. **(Code.)** Replace $0.82$ in @eq-c10-two-covariances by values from
+   $0.5$ to $0.99$. Plot median relative operator error against effective
+   rank at a fixed sample count. Keep the matched-randomness contract.
+3. **(Audit.)** A paper reports “the representation is effectively
+   ten-dimensional” from a scalar effective-rank estimate. List three claims
+   that do not follow and name the missing evidence for each.
+4. **(Audit.) Paper audit:** Identify the matrix, centering and scaling
+   convention, effective-rank definition, and target conclusion in one
+   empirical paper. Does its cited theorem support that conclusion?

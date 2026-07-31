@@ -26,18 +26,28 @@ from .geometry import (
     uniform_subgaussian_threshold,
 )
 from .spectra import (
+    EffectiveRankSummary,
     MarchenkoPasturSupport,
     PowerIterationResult,
     SpectrumSummary,
     covariance_eigenvalues,
+    effective_rank_psd,
     empirical_upper_threshold,
     gaussian_covariance_trials,
+    gaussian_covariance_error_trials,
     gaussian_singular_value_trials,
     marchenko_pastur_density,
     marchenko_pastur_support,
     matrix_spectrum_summary,
     power_iteration_spectral_norm,
     sample_covariance,
+    stable_rank,
+)
+from .autodiff import (
+    CheckpointCost,
+    TapeNode,
+    reverse_accumulate,
+    uniform_checkpoint_cost,
 )
 from .probability import (
     bernstein_two_regime_rate,
@@ -63,12 +73,15 @@ from .streaming import (
 
 __all__ = [
     "MomentState",
+    "CheckpointCost",
+    "EffectiveRankSummary",
     "MarchenkoPasturSupport",
     "NoisyQuadraticSummary",
     "PowerIterationResult",
     "QuantizationResult",
     "QuadraticTrace",
     "SpectrumSummary",
+    "TapeNode",
     "UpdateTrace",
     "bernstein_two_regime_rate",
     "centered_chi_square_log_mgf",
@@ -83,8 +96,10 @@ __all__ = [
     "classify_mode_factors",
     "empirical_tail_profile",
     "empirical_upper_threshold",
+    "effective_rank_psd",
     "float_contract",
     "gaussian_covariance_trials",
+    "gaussian_covariance_error_trials",
     "gaussian_singular_value_trials",
     "local_spacing",
     "merge_moments",
@@ -101,15 +116,18 @@ __all__ = [
     "quadratic_trace",
     "rademacher_projection_trials",
     "repeated_update",
+    "reverse_accumulate",
     "stable_online_moments",
     "scalar_noisy_quadratic_trials",
     "sample_covariance",
+    "stable_rank",
     "sphere_cover_log_upper",
     "standard_normal_maxima",
     "stochastic_update_trials",
     "symmetric_quantize",
     "uniform_subgaussian_threshold",
+    "uniform_checkpoint_cost",
     "subgaussian_max_threshold",
 ]
 
-__version__ = "0.9.0"
+__version__ = "0.11.0"

@@ -41,6 +41,17 @@ class MarchenkoPasturSupport:
     zero_atom: float
 
 
+@dataclass(frozen=True)
+class EffectiveRankSummary:
+    """Spectral mass relative to the largest eigenvalue of a PSD matrix."""
+
+    dimension: int
+    algebraic_rank: int
+    trace: float
+    operator_norm: float
+    effective_rank: float
+
+
 def _matrix(values: Iterable[Iterable[float]]) -> np.ndarray:
     resolved = np.asarray(tuple(tuple(row) for row in values), dtype=np.float64)
     if resolved.ndim != 2 or min(resolved.shape) < 1:
@@ -297,3 +308,88 @@ def empirical_upper_threshold(
     if not 0.0 < alpha < 1.0:
         raise ValueError("false_positive_rate must lie strictly between zero and one")
     return float(np.quantile(resolved, 1.0 - alpha, method="linear"))
+
+
+def effective_rank_psd(
+    matrix: Iterable[Iterable[float]],
+) -> EffectiveRankSummary:
+    """Return effective-rank diagnostics for a nonzero symmetric PSD matrix."""
+
+    resolved = np.asarray(tuple(tuple(row) for row in matrix), dtype=np.float64)
+    if (
+        resolved.ndim != 2
+        or resolved.shape[0] != resolved.shape[1]
+        or resolved.shape[0] < 1
+    ):
+        raise ValueError("matrix must be nonempty and square")
+    if not np.all(np.isfinite(resolved)):
+        raise ValueError("matrix must be finite")
+    if not np.allclose(resolved, resolved.T, rtol=1e-12, atol=1e-12):
+        raise ValueError("matrix must be symmetric")
+
+    eigenvalues = np.linalg.eigvalsh(resolved)
+    scale = max(1.0, float(np.max(np.abs(eigenvalues))))
+    tolerance = resolved.shape[0] * np.finfo(np.float64).eps * scale
+    if float(eigenvalues[0]) < -tolerance:
+        raise ValueError("matrix must be positive semidefinite")
+    eigenvalues = np.maximum(eigenvalues, 0.0)
+    largest = float(eigenvalues[-1])
+    if largest <= tolerance:
+        raise ValueError("effective rank is undefined for the zero matrix")
+    trace = float(np.sum(eigenvalues))
+    return EffectiveRankSummary(
+        dimension=int(resolved.shape[0]),
+        algebraic_rank=int(np.count_nonzero(eigenvalues > tolerance)),
+        trace=trace,
+        operator_norm=largest,
+        effective_rank=trace / largest,
+    )
+
+
+def stable_rank(matrix: Iterable[Iterable[float]]) -> float:
+    """Return Frobenius energy divided by squared operator norm."""
+
+    resolved = np.asarray(tuple(tuple(row) for row in matrix), dtype=np.float64)
+    if resolved.ndim != 2 or min(resolved.shape) < 1:
+        raise ValueError("matrix must be nonempty and two-dimensional")
+    if not np.all(np.isfinite(resolved)):
+        raise ValueError("matrix must be finite")
+    largest = float(np.linalg.norm(resolved, ord=2))
+    if largest == 0.0:
+        raise ValueError("stable rank is undefined for the zero matrix")
+    frobenius = float(np.linalg.norm(resolved, ord="fro"))
+    return frobenius**2 / largest**2
+
+
+def gaussian_covariance_error_trials(
+    population_eigenvalues: Iterable[float],
+    samples: int,
+    *,
+    trials: int,
+    seed: int,
+) -> dict[str, np.ndarray]:
+    """Measure relative operator error for a diagonal Gaussian covariance."""
+
+    eigenvalues = np.asarray(tuple(population_eigenvalues), dtype=np.float64)
+    if eigenvalues.ndim != 1 or eigenvalues.size < 1:
+        raise ValueError("population_eigenvalues must be nonempty and one-dimensional")
+    if not np.all(np.isfinite(eigenvalues)) or np.any(eigenvalues <= 0.0):
+        raise ValueError("population_eigenvalues must be finite and positive")
+    if samples < 1 or trials < 1:
+        raise ValueError("samples and trials must be positive")
+
+    population = np.diag(eigenvalues)
+    population_norm = float(np.max(eigenvalues))
+    root_eigenvalues = np.sqrt(eigenvalues)
+    rng = np.random.default_rng(seed)
+    errors = np.empty(trials, dtype=np.float64)
+    sample_effective_ranks = np.empty(trials, dtype=np.float64)
+    for index in range(trials):
+        data = rng.standard_normal((samples, eigenvalues.size)) * root_eigenvalues
+        estimate = sample_covariance(data)
+        errors[index] = np.linalg.norm(estimate - population, ord=2) / population_norm
+        sample_effective_ranks[index] = effective_rank_psd(estimate).effective_rank
+    return {
+        "relative_operator_error": errors,
+        "sample_effective_rank": sample_effective_ranks,
+    }

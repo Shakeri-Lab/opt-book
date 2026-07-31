@@ -12,9 +12,10 @@
 | C06 | Diagnose the two-regime tail created by squares and products | Locally complete; acceptance audit passed |
 | C07 | Turn a fixed-direction tail budget into a uniform finite-cover certificate | Locally complete; acceptance audit passed |
 | C08 | Separate fixed-direction isotropy from adaptive singular edges | Locally complete; acceptance audit passed |
-| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Locally complete; acceptance audit pending |
-| C10 | Replace ambient dimension and parameter count with effective dimension | Arc approved; contract pending |
-| C11–C17 | Diagnose optimization dynamics and modern update claims | Arc approved; contracts pending |
+| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Locally complete; acceptance audit passed |
+| C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; acceptance audit passed |
+| C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; acceptance audit passed |
+| C12–C17 | Diagnose curvature, stochastic regimes, criticality, normalization, stability, and update geometry | Arc approved; contracts pending |
 | Act III | Synthesis through modern primitives | Gated after core budget evidence |
 
 ## Public threads
@@ -36,6 +37,59 @@ act may not pass without a meaningful callback.
 |---|---|---|
 | Memory wall and retained state | C01 bytes; C02 state \((n,\mu,M_2)\) | C11 checkpointing, all-pairs tiling, online normalizers, scan |
 | Orthogonality and scale | C04 eigendirections; C08 singular values | C14 isometry, C16 curvature filtering, C17 update geometry |
+| Gradient signal versus estimator noise | C04 additive-noise control; C06 moment boundary | C13 regime diagnosis, C16 schedule/stability audit, C17 optimizer paper autopsy |
+| Information retained and acquired | C02 state machine and branch exercise | C12 linear/curvature information policy, C17 state and approximation audit |
+
+The last two rows remain internal. Gradient/noise balance is too concentrated
+in Act II to justify a fifth public sigil, and “computation is inference” is
+only exact under an explicit probabilistic model. The internal ledgers retain
+the useful callbacks without increasing the reader-visible thread vocabulary.
+
+## ICML 2026 optimization-theory integration
+
+The complete source audit is
+`docs/source-audits/2026-icml-optimization-theory-tutorial.md`. The tutorial
+is an external routing source, not primary evidence. It sharpens four future
+chapter obligations:
+
+| Unit | Added diagnostic obligation |
+|---|---|
+| C12 | Distinguish Hessian, generalized Gauss–Newton, model Fisher, empirical Fisher, and structured approximations before comparing “second-order” methods. |
+| C13 | Make the gradient-dominated/noise-dominated transition the causal spine; declare the conditional gradient estimator, batch sampling, second-moment boundary, and clipping bias. |
+| C16 | Compare fixed global curvature, local top curvature, gradient-direction curvature, and finite-horizon history rather than treating \(2/\alpha\) as a self-explanatory threshold. |
+| C17 | Test rotation, scale, matrix shape, polar-factor approximation, update spectrum, parameter routing, state, and hardware cost before the Muon literature bridge. |
+
+C04 now plants the distinction between its best fixed minimax step and the
+best one-step move in the current gradient direction. C08 now plants the
+update-spectrum versus weight-spectrum distinction. The machine-readable
+obligations live in `contracts/promises.yml`.
+
+The course-design critique adds a trunk/branch distinction:
+
+- the four optimization questions and the C13 regime diagnosis stay on the
+  trunk;
+- PL assumptions, acceleration families, WSD, glocal implicit bias, and
+  Adam-surrogate details become exercises, field notes, or further reading;
+- PEP constants, silver-step schedules, coin-betting internals, and optimizer
+  rankings remain off the critical path.
+
+The exact adjudication, including corrections to the proposed PL chain and
+quadratic-only acceleration interval, lives in the source audit.
+
+## ICML 2026 Probabilistic Numerics seam
+
+The complete source audit is
+`docs/source-audits/2026-icml-probabilistic-numerics-tutorial.md`.
+Probabilistic Numerics is not a new chapter or public thread. It contributes
+one internal question:
+
+> What information has this computation acquired, what state records it, and
+> what uncertainty remains when it stops?
+
+C02 and C03 carry bounded Audit exercises. C12 harvests the seam through
+conjugate gradients under two lenses and a quasi-Newton paper audit. Welford
+is not described as Bayesian conditioning, and probabilistic uncertainty is
+not inferred from local unbiasedness alone.
 
 ## C02 seed obligations
 
@@ -100,6 +154,14 @@ edges and a finite-size null before an outlier is called signal.
 C09 harvests that obligation with an empirical spectral measure, the
 Marchenko--Pastur bulk under a consistent scaling convention, an independently
 seeded finite largest-eigenvalue null, and a model-specific spiked alternative.
-C10 must now replace C09's ambient dimension in covariance estimation with
-effective rank and explain why trace mass can be much smaller than parameter
-count.
+C10 harvests C09's ambient-dimension debt with effective rank, keeps stable
+rank distinct, exposes the Gaussian fourth-moment mechanism, and refuses to
+turn one spectral scalar into a compression or generalization theorem.
+
+C11 opens Act II by importing chain-rule mechanics from the sibling and owning
+the systems consequence: cotangents add at fan-out, local pullbacks require
+retained primal state, and uniform checkpointing makes the memory/replay trade
+explicit. Its numerical-stability callback returns C02's reduction-order
+lesson inside the gradient engine. C12 must compose forward and reverse
+products into curvature probes without materializing a dense Hessian; C14 must
+return to the product of local Jacobians across depth.

@@ -192,6 +192,30 @@
       "status": "seeded-spiked-covariance-ensemble",
       "provenance_class": "a",
       "evidence": "artifacts/claims/c09-spike-threshold-001.json"
+    },
+    {
+      "claim_id": "c10-effective-samples-001",
+      "phenomenon_id": "c10-full-rank-few-directions",
+      "chapter": "c10",
+      "status": "matched-gaussian-covariance-ensembles",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c10-effective-samples-001.json"
+    },
+    {
+      "claim_id": "c11-fanout-001",
+      "phenomenon_id": "c11-gradient-memory",
+      "chapter": "c11",
+      "status": "deterministic-dag-reverse-accumulation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c11-fanout-001.json"
+    },
+    {
+      "claim_id": "c11-checkpoint-001",
+      "phenomenon_id": "c11-gradient-memory",
+      "chapter": "c11",
+      "status": "exact-uniform-chain-checkpoint-model",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c11-checkpoint-001.json"
     }
   ]
 }

@@ -17,6 +17,13 @@
       "reuse": "quadratic phenomenon, reveal order, condition-number thread, stochastic-floor question, and later callbacks; all claims rederived"
     },
     {
+      "id": "schmidt2026-icml-tutorial",
+      "class": "external-reference-only",
+      "url": "https://www.cs.ubc.ca/~schmidtm/Documents/2026_ICML_Tutorial.pdf",
+      "sha256": "1d9c0507434d76e9206443837513d00e0a628db9b4bbbc937b5e9afa4908008e",
+      "reuse": "prompted the explicit separation of a fixed minimax step, a current-direction line minimizer, and later local or finite-horizon questions; no benchmark, anecdote, or optimizer recommendation is imported"
+    },
+    {
       "id": "nesterov2004-local",
       "class": "primary-monograph-local",
       "path": "../Resources/Nesterov_Introductory-Lectures-on-Convex-Programming-Yurii-Nesterov-2004.pdf",

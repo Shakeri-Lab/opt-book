@@ -23,6 +23,13 @@ This book develops those instruments through three lenses:
 - **algorithms and systems**, which describe the arithmetic, state, and data
   movement that make the update physically executable.
 
+The lenses are coupled. A repair can move the failure instead of removing it:
+a larger step can accelerate a flat direction while destabilizing a sharp
+one; clipping can bound an extreme update while biasing the estimator;
+normalizing scale can change both the Jacobian and the curvature. The book
+therefore audits what each repair changes, what it preserves, and which new
+boundary it creates.
+
 The governing question is:
 
 > What mathematical and physical conditions make a modern learning system

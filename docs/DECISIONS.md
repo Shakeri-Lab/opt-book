@@ -69,3 +69,22 @@ author correction supersedes any default.
 28. **D28 — C02 handoff:** Register both promises to C03: separate arithmetic
     cancellation from input-representation loss, and make the precision
     contract quantitative.
+29. **D29 — Tutorial integration:** Treat both ICML 2026 tutorials as
+    external routing sources. Credit their intellectual maps, route
+    load-bearing claims to primary papers, and claim only the book's
+    phenomenon-first integration as original pedagogy.
+30. **D30 — Gradient/noise status:** Keep gradient-dominated versus
+    noise-dominated behavior as an internal diagnostic ledger centered on
+    C13, not a fifth public thread sigil.
+31. **D31 — Probabilistic Numerics status:** Use acquired information and
+    computational uncertainty as a light internal seam from C02/C03 to C12.
+    Do not call Welford Bayesian conditioning or equate a numerical error with
+    a calibrated posterior without an explicit probabilistic model.
+32. **D32 — Paper Autopsy Protocol:** Extend the Spring 2026 optimizer card
+    with evidence culture, theory resolution, dynamic regime, assumption
+    stress, and transfer verdict. Chapter exercises use selected fields; C17
+    uses the full card.
+33. **D33 — Branch budget:** PL, acceleration variants, glocal implicit bias,
+    WSD, Adam-surrogate details, and Probabilistic Numerics examples remain
+    exercises, field notes, or further reading unless one becomes necessary
+    to resolve a chapter's opening phenomenon.

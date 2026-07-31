@@ -1,0 +1,23 @@
+{
+  "chapter": "c11",
+  "claim_id": "c11-fanout-001",
+  "environment": {"device": "cpu", "dtype": "float64", "numpy": "2.5.1", "platform": "macOS-15.7.7-arm64-arm-64bit", "python": "3.12.13", "python_implementation": "CPython", "seed": null, "seed_role": "deterministic model calculation"},
+  "hardware_claim_boundary": "Laptop-CPU deterministic bookkeeping; operation counts are an abstract equal-cost chain model, not wall-clock or accelerator measurements.",
+  "harness_ref": "ch-11",
+  "harness_wheel_sha256": "c9e645efbb2e604f517465d25fafffdd68f7a21d7803633edc0653d5421ff182",
+  "hypothesis": "A reverse traversal must add all downstream cotangent contributions at a shared node; overwriting one contribution gives the wrong leaf gradients.",
+  "payload_sha256": "155a73ca23998d3c04d609dc2c2e9335e6daaca79bbfeb17ea80d26f0b78cd70",
+  "phenomenon_id": "c11-gradient-memory",
+  "provenance_class": "a",
+  "result": {
+    "a_path_contributions": {"sum": 42.0, "through_b": 18.0, "through_c": 24.0},
+    "boundary": "The scalar tape exposes accumulation and topological order; it is not a second framework tutorial or a performance benchmark.",
+    "correct_leaf_gradients": {"x": 144.0, "y": 132.0},
+    "cotangents": [144.0, 132.0, 42.0, 18.0, 8.0, 1.0],
+    "expression": "a=x*y; b=a+x; c=a*y; loss=b*c",
+    "inputs": {"x": 2.0, "y": 3.0},
+    "last-writer-overwrite_leaf_gradients": {"x": 90.0, "y": 96.0},
+    "node_values": [2.0, 3.0, 6.0, 8.0, 18.0, 144.0]
+  },
+  "schema_version": 1
+}

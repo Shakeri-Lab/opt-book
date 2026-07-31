@@ -53,6 +53,13 @@
       "class": "primary-scholarly",
       "url": "https://arxiv.org/abs/2209.05433",
       "reuse": "modern low-precision format context only; no universal convergence or throughput claim"
+    },
+    {
+      "id": "hennig2026-icml-tutorial",
+      "class": "external-reference-only",
+      "path": "../Resources/2026-ICML-Probabilistic Numerics — Computation is Machine Learning.pdf",
+      "sha256": "8fc05b6b45fe938ee49ebb25ec995f338cd452abc1adff05f6bce45a2dbf3265",
+      "reuse": "Audit exercise distinguishing deterministic error, randomized arithmetic, and probabilistic numerical uncertainty; no calibration claim"
     }
   ],
   "rejected_or_scoped_claims": [

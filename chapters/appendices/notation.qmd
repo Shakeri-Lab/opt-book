@@ -50,6 +50,12 @@ names its axes.
 | Aspect ratio | $\gamma=n/m$ | Spectral nulls |
 | Marchenko--Pastur edges | $\lambda_-,\lambda_+$ | Spectral nulls |
 | Population spike | $\beta$ | Spectral nulls |
+| Effective rank | $r_{\mathrm{eff}}(\matr{\Sigma})$ | Effective dimension |
+| Stable rank | $\operatorname{sr}(\matr{A})$ | Effective dimension |
+| Jacobian | $\matr{J}_F(\vect{x})$ | Reverse accumulation |
+| Jacobian--vector product | $\matr{J}_F(\vect{x})\vect{v}$ | Reverse accumulation |
+| Vector--Jacobian product | $\vect{u}^{\mathsf T}\matr{J}_F(\vect{x})$ | Reverse accumulation |
+| Node cotangent | $\bar z_v$ | Reverse accumulation |
 
 The machine-readable source is `contracts/notation-covenant.yml`. A notation
 change is incomplete until that covenant, the HTML macros, the PDF macros, and

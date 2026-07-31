@@ -81,6 +81,19 @@
         "random-matrix-spectra": "callback",
         "subgaussian-safe-zone": "callback"
       }
+    },
+    "c10": {
+      "act": "act-1",
+      "threads": {
+        "random-matrix-spectra": "callback",
+        "subgaussian-safe-zone": "callback"
+      }
+    },
+    "c11": {
+      "act": "act-2",
+      "threads": {
+        "numerical-stability": "callback"
+      }
     }
   }
 }

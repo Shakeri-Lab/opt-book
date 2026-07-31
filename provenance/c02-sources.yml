@@ -38,6 +38,19 @@
       "reuse": "roundoff analysis, recommendations, pairwise algorithm"
     },
     {
+      "id": "hennig2026-icml-tutorial",
+      "class": "external-reference-only",
+      "path": "../Resources/2026-ICML-Probabilistic Numerics — Computation is Machine Learning.pdf",
+      "sha256": "8fc05b6b45fe938ee49ebb25ec995f338cd452abc1adff05f6bce45a2dbf3265",
+      "reuse": "computation-as-information branch and primary-source routing; no claim that Welford is Bayesian conditioning"
+    },
+    {
+      "id": "hennig2015",
+      "class": "primary-scholarly",
+      "doi": "10.1137/140955501",
+      "reuse": "Audit exercise on Gaussian iterative linear solvers and the boundary between retained state and posterior belief"
+    },
+    {
       "id": "src-pytorch-moment-main",
       "class": "primary-official-code",
       "url": "https://github.com/pytorch/pytorch/blob/main/aten/src/ATen/native/cuda/ReduceMomentKernel.cu",

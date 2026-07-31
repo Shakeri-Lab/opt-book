@@ -84,7 +84,7 @@
       "conclusion": "The minimax scalar step is 2/(lambda_max+lambda_min), with worst-mode contraction (kappa-1)/(kappa+1).",
       "proof_mode": "full-proof",
       "diagnostic_corollary": "The best scalar step still pays for spectral spread, so a wide spectrum creates many clocks.",
-      "boundary": "Nonstationary, accelerated, or preconditioned updates use a different polynomial or effective operator.",
+      "boundary": "Nonstationary, accelerated, or preconditioned updates use a different polynomial or effective operator; the current-direction line minimizer answers a different one-step question.",
       "source": "nesterov2004"
     },
     {
@@ -295,6 +295,83 @@
       "diagnostic_corollary": "Even a real population spike can be absorbed by the null bulk below the model-specific separation threshold.",
       "boundary": "This asymptotic spiked-Wishart result is not a generic model for trained parameter matrices or Hessians.",
       "source": "baik2006"
+    },
+    {
+      "id": "thm-c10-effective-rank",
+      "chapter": "c10",
+      "phenomenon_explained": "c10-full-rank-few-directions",
+      "assumptions": "A nonzero finite-dimensional symmetric positive-semidefinite matrix.",
+      "conclusion": "Effective rank is trace divided by operator norm and lies between one and algebraic rank; it is invariant under positive scalar rescaling and orthogonal similarity.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A full-rank covariance can have effective rank arbitrarily close to one.",
+      "boundary": "Effective rank does not locate a truncation threshold or retain the full spectral tail.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c10-stable-rank",
+      "chapter": "c10",
+      "phenomenon_explained": "c10-full-rank-few-directions",
+      "assumptions": "A nonzero finite-dimensional real matrix.",
+      "conclusion": "Stable rank equals the effective rank of the matrix's Gram operator.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Stable rank is a soft singular-direction count for a rectangular map; effective rank applies to its positive-semidefinite Gram operator.",
+      "boundary": "Stable rank and effective rank generally differ when evaluated on the same positive-semidefinite matrix.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c10-gaussian-variance",
+      "chapter": "c10",
+      "phenomenon_explained": "c10-full-rank-few-directions",
+      "assumptions": "A centered Gaussian vector with finite-dimensional positive-semidefinite covariance.",
+      "conclusion": "The second matrix moment of the centered rank-one covariance summand equals tr(Sigma) Sigma plus Sigma squared.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Trace mass enters the matrix variance proxy before any ambient-dimension upper bound is imposed.",
+      "boundary": "The Gaussian fourth-moment calculation alone does not prove the covariance theorem for arbitrary sub-Gaussian or heavy-tailed vectors.",
+      "source": "gaussian-fourth-moment"
+    },
+    {
+      "id": "thm-c10-covariance-error",
+      "chapter": "c10",
+      "phenomenon_explained": "c10-full-rank-few-directions",
+      "assumptions": "Independent centered vectors satisfying a relative sub-Gaussian projection bound with covariance Sigma.",
+      "conclusion": "Expected operator-norm covariance error is at most a universal constant times K^4, the population operator norm, and sqrt(r_eff/m)+r_eff/m.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "The diagnostic sample scale is effective rank rather than automatically ambient dimension.",
+      "boundary": "The expectation bound is not a finite confidence threshold, a distribution-free result, or a generalization theorem.",
+      "source": "vershynin2018"
+    },
+    {
+      "id": "thm-c11-jvp-vjp",
+      "chapter": "c11",
+      "phenomenon_explained": "c11-gradient-memory",
+      "assumptions": "A differentiable finite-dimensional map at a fixed point and access to one JVP or VJP per directional sweep.",
+      "conclusion": "A full Jacobian requires one forward sweep per input basis vector or one reverse sweep per output basis vector; scalar output needs one reverse sweep for its full gradient.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Reverse mode is arithmetically attractive for scalar objectives because of Jacobian orientation.",
+      "boundary": "Sparsity, batching, higher derivatives, local operation costs, retained state, and parallel execution can change the best implementation.",
+      "source": "baydin2018"
+    },
+    {
+      "id": "thm-c11-reverse-dag",
+      "chapter": "c11",
+      "phenomenon_explained": "c11-gradient-memory",
+      "assumptions": "A finite scalar-output directed acyclic graph in topological order with differentiable local scalar operations and evaluated local derivatives.",
+      "conclusion": "Reverse topological traversal with additive edge contributions computes the derivative of the output with respect to every node.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Every fan-out node must sum all downstream cotangent contributions before propagating farther backward.",
+      "boundary": "Nondifferentiable primitives require a declared generalized rule, and floating-point cotangent sums need not be order invariant.",
+      "source": "baydin2018"
+    },
+    {
+      "id": "thm-c11-uniform-checkpoint",
+      "chapter": "c11",
+      "phenomenon_explained": "c11-gradient-memory",
+      "assumptions": "A depth-L chain of equal-size states and equal-cost transitions, with block length k dividing L and every kth boundary retained.",
+      "conclusion": "Peak retained state is L/k+k, extra forward work is L-L/k, and the continuous state minimum occurs at k=sqrt(L).",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "For L=64 and k=8, the count-model peak is 16 states with 56 replayed forward transitions.",
+      "boundary": "The schedule is not globally optimal for arbitrary DAGs, heterogeneous tensors, communication, or measured runtime.",
+      "source": "chen2016"
     }
   ]
 }

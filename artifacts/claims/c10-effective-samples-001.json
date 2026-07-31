@@ -1,0 +1,56 @@
+{
+  "chapter": "c10",
+  "claim_id": "c10-effective-samples-001",
+  "environment": {
+    "device": "cpu",
+    "dtype": "float64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 2496126130,
+    "seed_role": "base for matched Gaussian covariance trials"
+  },
+  "hardware_claim_boundary": "Laptop-CPU float64 covariance and eigendecomposition study; no timing or accelerator-performance claim.",
+  "harness_ref": "ch-10",
+  "harness_wheel_sha256": "bc9dbad6f5e147bbf4bcafa0a747415e05a7d06d4d36f52196f0287974bad7d7",
+  "hypothesis": "Two full-rank population covariances with the same ambient dimension and operator norm can require very different sample budgets when their spectral mass, and therefore effective rank, differs.",
+  "payload_sha256": "28a23d6e905550d4b82fdbe04279e37e8ec3e674fec7802a967c2900b1a1da35",
+  "phenomenon_id": "c10-full-rank-few-directions",
+  "provenance_class": "a",
+  "result": {
+    "boundary": "The Gaussian experiment diagnoses covariance estimation under two declared spectra; it does not show that effective rank alone predicts generalization or identifies a learned representation.",
+    "dimension": 96,
+    "error": "operator norm of sample covariance minus population covariance, divided by population operator norm",
+    "estimator": "X.T @ X / sample_count with known zero mean",
+    "population_models": {
+      "decaying": {
+        "algebraic_rank": 96,
+        "effective_rank": 5.555555525985145,
+        "eigenvalue_rule": "0.82**arange(96)",
+        "operator_norm": 1.0,
+        "trace": 5.555555525985145
+      },
+      "isotropic": {
+        "algebraic_rank": 96,
+        "effective_rank": 96.0,
+        "eigenvalue_rule": "all ones",
+        "operator_norm": 1.0,
+        "trace": 96.0
+      }
+    },
+    "quantiles": {
+      "24": {"seed": 2496126154, "isotropic": {"q10": 6.8848036334298826, "median": 7.426709530705361, "q90": 8.077280923043356}, "decaying": {"q10": 0.5384774218493219, "median": 0.7086683999897985, "q90": 0.9750919192588675}},
+      "48": {"seed": 2496126178, "isotropic": {"q10": 4.209241166770153, "median": 4.517835617253958, "q90": 4.921424522930801}, "decaying": {"q10": 0.3825461291253719, "median": 0.5050754327724268, "q90": 0.6987603711418645}},
+      "64": {"seed": 2496126194, "isotropic": {"q10": 3.4652681318211553, "median": 3.706283712641566, "q90": 4.006320256527232}, "decaying": {"q10": 0.33101785674768175, "median": 0.4178199571719552, "q90": 0.5592809086861713}},
+      "96": {"seed": 2496126226, "isotropic": {"q10": 2.6676450616796212, "median": 2.8414152675514046, "q90": 3.0426408768279565}, "decaying": {"q10": 0.2683916197820187, "median": 0.3393679177195192, "q90": 0.45166936862787493}},
+      "192": {"seed": 2496126322, "isotropic": {"q10": 1.7188954551470998, "median": 1.820315369303029, "q90": 1.9282854652476245}, "decaying": {"q10": 0.18701484440530558, "median": 0.2347249520056432, "q90": 0.2949589280065118}},
+      "384": {"seed": 2496126514, "isotropic": {"q10": 1.1328161102753864, "median": 1.1896988843013316, "q90": 1.2626068490205833}, "decaying": {"q10": 0.1370339683177634, "median": 0.1735265283447811, "q90": 0.22072855257397997}}
+    },
+    "sample_counts": [24, 48, 64, 96, 192, 384],
+    "seed_rule": "first 32 bits of SHA-256(phenomenon_id), plus sample count modulo 2^32",
+    "shared_randomness": "within each sample count, both covariance models use the same standard-normal draws",
+    "trials_per_model_per_sample_count": 300
+  },
+  "schema_version": 1
+}

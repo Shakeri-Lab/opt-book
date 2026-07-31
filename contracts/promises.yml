@@ -67,8 +67,32 @@
       "status": "active"
     },
     {
+      "id": "promise-c02-c12-information-policy",
+      "text": "C12 returns to C02's retained-state question by asking what information an iterative linear or curvature method acquires, while distinguishing an algebraic iterate from a calibrated probabilistic belief.",
+      "scope": "c02-to-c12",
+      "source": "chapters/act0/02-streaming-state.qmd",
+      "owner": "chapters/act2/12-curvature.qmd",
+      "status": "pending-owner"
+    },
+    {
+      "id": "promise-c04-c13-regime-diagnostic",
+      "text": "C13 replaces C04's fixed additive-noise model with a declared conditional gradient estimator and diagnoses gradient-dominated versus noise-dominated behavior.",
+      "scope": "c04-to-c13",
+      "source": "chapters/act0/04-quadratic-modes.qmd",
+      "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "status": "pending-owner"
+    },
+    {
+      "id": "promise-c04-c13-acceleration-boundary",
+      "text": "C13 uses one exact positive-definite quadratic momentum control and one stochastic noise-amplification control, keeping Chebyshev and conjugate-gradient details as branches rather than a method survey.",
+      "scope": "c04-to-c13",
+      "source": "chapters/act0/04-quadratic-modes.qmd",
+      "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "status": "pending-owner"
+    },
+    {
       "id": "promise-c04-c16-fixed-boundary",
-      "text": "C16 compares moving-curvature edge-of-stability behavior with C04's fixed quadratic boundary.",
+      "text": "C16 compares moving-curvature edge-of-stability behavior with C04's fixed quadratic boundary, local top curvature, gradient-direction curvature, and finite-horizon history.",
       "scope": "c04-to-c16",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/16-edge-of-stability.qmd",
@@ -81,6 +105,14 @@
       "source": "chapters/act1/05-subgaussian-safe-zone.qmd",
       "owner": "chapters/act1/06-products-squares.qmd",
       "status": "active"
+    },
+    {
+      "id": "promise-c06-c13-heavy-tail-noise",
+      "text": "C13 tests the finite-second-moment assumption behind variance-only gradient-noise diagnostics and measures the bias introduced by clipping when that assumption fails.",
+      "scope": "c06-to-c13",
+      "source": "chapters/act1/06-products-squares.qmd",
+      "owner": "chapters/act2/13-stochastic-regimes.qmd",
+      "status": "pending-owner"
     },
     {
       "id": "promise-c06-c07-tail-budget",
@@ -99,6 +131,14 @@
       "status": "active"
     },
     {
+      "id": "promise-c08-c17-update-spectrum",
+      "text": "C17 reuses C08's singular-value geometry for matrix-valued updates and distinguishes an update's spectrum from the spectrum of the weights it changes.",
+      "scope": "c08-to-c17",
+      "source": "chapters/act1/08-random-operators.qmd",
+      "owner": "chapters/act2/17-update-geometry.qmd",
+      "status": "pending-owner"
+    },
+    {
       "id": "promise-c08-c09-spectral-mass",
       "text": "C09 explains how empirical spectral distributions and Marchenko--Pastur describe the mass between C08's singular edges, with a finite-size null before any outlier is called signal.",
       "scope": "c08-to-c09",
@@ -112,6 +152,22 @@
       "scope": "c09-to-c10",
       "source": "chapters/act1/09-marchenko-pastur.qmd",
       "owner": "chapters/act1/10-effective-rank.qmd",
+      "status": "active"
+    },
+    {
+      "id": "promise-c11-c12-hvp",
+      "text": "C12 composes forward and reverse products to probe Hessian action without materializing a dense Hessian, while naming the curvature operator before interpreting its spectrum.",
+      "scope": "c11-to-c12",
+      "source": "chapters/act2/11-reverse-accumulation.qmd",
+      "owner": "chapters/act2/12-curvature.qmd",
+      "status": "pending-owner"
+    },
+    {
+      "id": "promise-c11-c14-depth-products",
+      "text": "C14 returns to C11's product of local Jacobians to diagnose signal preservation, shrinkage, and amplification across depth.",
+      "scope": "c11-to-c14",
+      "source": "chapters/act2/11-reverse-accumulation.qmd",
+      "owner": "chapters/act2/14-criticality.qmd",
       "status": "pending-owner"
     }
   ]

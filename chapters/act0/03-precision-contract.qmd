@@ -629,6 +629,12 @@ behavior [@connolly2021]. The FP8 proposal by Micikevicius and collaborators
 is useful modern format context, but it does not make a format name a complete
 execution contract [@micikevicius2022].
 
+The Probabilistic Numerics tutorial contrasts uncertainty from limited
+computation with uncertainty from limited data [@hennig2026tutorial].
+Exercise 7 uses that analogy as an audit boundary: neither a deterministic
+rounding bound nor local unbiasedness is automatically a calibrated posterior
+over an unfinished computation.
+
 For introductory format anatomy, mixed-precision roles, and the hardware
 motivation, see the sibling volume's
 [precision and hardware appendix](https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance).
@@ -668,3 +674,12 @@ resolution allocation, and the rounding-rule audit.
    whether the paper's evidence is a proof, model calculation, simulation, or
    hardware measurement. Do not convert a paper-reported endpoint into a
    reproduced book claim.
+
+7. **(Audit.) Computational uncertainty.** Compare three objects: a
+   deterministic roundoff bound, stochastic adjacent rounding under the model
+   in this chapter, and a probabilistic numerical posterior
+   [@hennig2026tutorial]. For each, record the source of randomness, what is
+   conditioned on, what event the uncertainty statement covers, and what
+   calibration evidence would be needed. Explain why local unbiasedness of a
+   rounding error does not by itself quantify uncertainty in the exact
+   computation.

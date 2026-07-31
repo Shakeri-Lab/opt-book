@@ -101,6 +101,9 @@ ledgers until evidence shows that six public sigils remain readable.
 - Exercise tags remain exactly **(Pencil.)**, **(Code.)**, and **(Audit.)**.
   Profiling is Code; paper reading is Audit.
 - Every research-facing act includes a paper-audit exercise.
+- Paper audits use the compact fields in
+  `docs/PAPER-AUTOPSY-PROTOCOL.md`. Chapter exercises select only the fields
+  activated by the chapter; the C17 capstone uses the full card.
 
 ## Refusals
 

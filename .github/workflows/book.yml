@@ -32,21 +32,14 @@ jobs:
       - run: uv build harness --wheel --out-dir /tmp/harness-build
       - name: Test immediately previous harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-08/trainable_harness-0.8.0-py3-none-any.whl
-          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py
-          uv run python - <<'PY'
-          import numpy as np
-          from trainable_harness import matrix_spectrum_summary, power_iteration_spectral_norm
-          matrix = np.diag([5.0, 2.0, 0.5])
-          summary = matrix_spectrum_summary(matrix)
-          assert summary.singular_values == (5.0, 2.0, 0.5)
-          result = power_iteration_spectral_norm(matrix, iterations=12, seed=6223)
-          assert abs(result.estimates[-1] - 5.0) < 1e-8
-          PY
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-10/trainable_harness-0.10.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py harness/tests/test_spectra.py harness/tests/test_effective_rank.py
+          uv run python experiments/c10_effective_rank.py
       - name: Test current harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-09/trainable_harness-0.9.0-py3-none-any.whl
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-11/trainable_harness-0.11.0-py3-none-any.whl
           uv run pytest -q harness/tests
+          uv run python experiments/c11_reverse_accumulation.py
       - run: uv run python scripts/run_fast_audits.py
 
   render:
@@ -155,11 +148,21 @@ jobs:
           assert abs(result.estimates[-1] - 5.0) < 1e-8
           PY
           uv run python experiments/c08_random_operators.py
-      - name: Execute current ch-09 pin and evidence
+      - name: Execute historical ch-09 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-09/trainable_harness-0.9.0-py3-none-any.whl
-          uv run pytest -q harness/tests
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py harness/tests/test_spectra.py
           uv run python experiments/c09_spectral_null.py
+      - name: Execute historical ch-10 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-10/trainable_harness-0.10.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py harness/tests/test_spectra.py harness/tests/test_effective_rank.py
+          uv run python experiments/c10_effective_rank.py
+      - name: Execute current ch-11 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-11/trainable_harness-0.11.0-py3-none-any.whl
+          uv run pytest -q harness/tests
+          uv run python experiments/c11_reverse_accumulation.py
       - run: git diff --exit-code -- artifacts/claims
 
   deploy:

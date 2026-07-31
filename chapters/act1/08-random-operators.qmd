@@ -625,7 +625,9 @@ average and upper edge but an arbitrarily small lower edge.
   Gaussian lower benchmark has positive margin.
 - **Unresolved:** two edges do not reveal the spectral mass between them. C09
   will introduce empirical spectral distributions and
-  Marchenko--Pastur before any finite-size outlier is called signal.
+  Marchenko--Pastur before any finite-size outlier is called signal. C17 will
+  reuse singular-value geometry for matrix-valued updates and must distinguish
+  the spectrum of an update from the spectrum of the weights it changes.
 
 ## Sources and further reading
 

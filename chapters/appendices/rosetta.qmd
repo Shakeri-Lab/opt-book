@@ -31,6 +31,7 @@ state, or assumptions.
 | IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order | Synthesis |
 | Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state | C17 |
 | Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint | C17 |
+| Reverse accumulation on a computation graph | reverse-mode automatic differentiation; backpropagation | JVP/VJP orientation; fan-out sums; retained primal state | C11 |
 
 :::
 
