@@ -20,6 +20,7 @@ def _compare(
     *,
     path: str,
     absolute_tolerance: float,
+    relative_tolerance: float,
     deviations: list[tuple[float, str]],
 ) -> None:
     if isinstance(expected, dict):
@@ -41,6 +42,7 @@ def _compare(
                 expected[key],
                 path=f"{path}.{key}",
                 absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
                 deviations=deviations,
             )
         return
@@ -60,6 +62,7 @@ def _compare(
                 expected_item,
                 path=f"{path}[{index}]",
                 absolute_tolerance=absolute_tolerance,
+                relative_tolerance=relative_tolerance,
                 deviations=deviations,
             )
         return
@@ -77,10 +80,12 @@ def _compare(
             return
         deviation = abs(observed_float - expected_float)
         deviations.append((deviation, path))
-        if deviation > absolute_tolerance:
+        allowed = absolute_tolerance + relative_tolerance * abs(expected_float)
+        if deviation > allowed:
             raise AssertionError(
                 f"{path}: absolute deviation {deviation:.17g} exceeds "
-                f"declared tolerance {absolute_tolerance:.17g}; "
+                f"allowed {allowed:.17g} from abs={absolute_tolerance:.17g}, "
+                f"rel={relative_tolerance:.17g}; "
                 f"observed={observed_float:.17g}, expected={expected_float:.17g}"
             )
         return
@@ -94,6 +99,7 @@ def verify_claim(
     observed: dict[str, Any],
     *,
     absolute_tolerance: float,
+    relative_tolerance: float = 0.0,
 ) -> None:
     """Verify a regenerated payload; environment metadata is informational."""
     expected = json.loads((CLAIMS / filename).read_text())
@@ -103,6 +109,7 @@ def verify_claim(
         expected,
         path="$",
         absolute_tolerance=absolute_tolerance,
+        relative_tolerance=relative_tolerance,
         deviations=deviations,
     )
     maximum, maximum_path = max(deviations, default=(0.0, "$"))
@@ -111,5 +118,6 @@ def verify_claim(
     else:
         print(
             f"{filename}: max_abs_deviation={maximum:.3e} "
-            f"at {maximum_path} (gate={absolute_tolerance:.1e})"
+            f"at {maximum_path} (abs_gate={absolute_tolerance:.1e}, "
+            f"rel_gate={relative_tolerance:.1e})"
         )
