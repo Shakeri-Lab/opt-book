@@ -63,6 +63,10 @@ jobs:
         with:
           tinytex: true
       - run: uv sync --locked
+      - name: Install PDF text-layer audit tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes poppler-utils
       - run: QUARTO_PYTHON=.venv/bin/python quarto render
       - name: Recompile retained TeX and preserve the LuaLaTeX log
         run: |
