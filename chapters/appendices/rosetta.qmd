@@ -23,14 +23,14 @@ state, or assumptions.
 
 | Primitive in this book | Standard name or aliases | Notation and diagnostic contract | Unit |
 |:--------------------------|:-----------------------|:---------------------------------|:---------|
-| Coordinate-wise or token-wise normalization | LayerNorm; RMSNorm | Axes; centering; scale; $\varepsilon$ placement | C15 |
-| Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators | C15 |
-| Variance-preserving initialization | Xavier/Glorot; He/Kaiming | Variance convention; nonlinearity assumptions | C14 |
+| Coordinate-wise or token-wise normalization | LayerNorm; RMSNorm | Axes; centering; scale; $\varepsilon$ placement; @ba2016; @zhang2019rms | @sec-c15-maps |
+| Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators | @sec-c15-epsilon |
+| Variance-preserving initialization | Xavier/Glorot; He/Kaiming | Variance convention; nonlinearity assumptions; @glorot2010; @he2015 | @sec-c14-recursion |
 | Diagonal moment preconditioning | Adam; AdamW | Moments; bias correction; decay; $\varepsilon$ placement | C13/C17 |
 | Similarity-weighted aggregation | attention; self-attention | Scale; normalized axis; mask; materialization | Synthesis |
 | IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order | Synthesis |
-| Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state | C17 |
-| Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint | C17 |
+| Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state; @bernstein2024 | @sec-c17-duality |
+| Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint | @sec-c17-bridge |
 | Reverse accumulation on a computation graph | reverse-mode automatic differentiation; backpropagation | JVP/VJP orientation; fan-out sums; retained primal state | C11 |
 
 :::

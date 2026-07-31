@@ -1,0 +1,4 @@
+{
+  "chapter": "c15", "claim_id": "c15-invariance-001", "hardware_claim_boundary": "Deterministic small-vector calculation; epsilon-zero Jacobian excludes degenerate states.", "harness_ref": "ch-15", "harness_wheel_sha256": "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f", "hypothesis": "Centering and RMS-only normalization impose different invariances, and centered arithmetic avoids raw-moment cancellation.", "payload_sha256": "2f212a8ce4fb3b26370f775743f005c050133beb21770be6866ffe70087b57b7", "phenomenon_id": "c15-invariance-choice", "provenance_class": "a", "schema_version": 1,
+  "result": {"centered_jacobian_rank": 2, "centered_shift_deviation": 0.0, "float32_centered_variance": 2.5, "float32_raw_variance": 0.0, "rms_jacobian_rank": 3, "rms_shift_deviation": 2.0550947413870233}
+}

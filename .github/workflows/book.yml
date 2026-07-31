@@ -35,14 +35,15 @@ jobs:
       - run: uv build harness --wheel --out-dir /tmp/harness-build
       - name: Test immediately previous harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-11/trainable_harness-0.11.0-py3-none-any.whl
-          uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py harness/tests/test_spectra.py harness/tests/test_effective_rank.py harness/tests/test_autodiff.py
-          uv run python experiments/c11_reverse_accumulation.py
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-16/trainable_harness-0.16.0-py3-none-any.whl
+          uv run pytest -q harness/tests --ignore=harness/tests/test_update_geometry.py
+          uv run python experiments/c16_edge_of_stability.py
       - name: Test current harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-12/trainable_harness-0.12.0-py3-none-any.whl
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
           uv run pytest -q harness/tests
-          uv run python experiments/c12_curvature.py
+          uv run python experiments/c17_update_geometry.py
+          uv run python experiments/c01_roofline.py
       - run: uv run python scripts/run_fast_audits.py
 
   render:
@@ -166,11 +167,37 @@ jobs:
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-11/trainable_harness-0.11.0-py3-none-any.whl
           uv run pytest -q harness/tests/test_streaming.py harness/tests/test_precision.py harness/tests/test_optimization.py harness/tests/test_probability.py harness/tests/test_subexponential.py harness/tests/test_geometry.py harness/tests/test_spectra.py harness/tests/test_effective_rank.py harness/tests/test_autodiff.py
           uv run python experiments/c11_reverse_accumulation.py
-      - name: Execute current ch-12 pin and evidence
+      - name: Execute historical ch-12 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-12/trainable_harness-0.12.0-py3-none-any.whl
           uv run pytest -q harness/tests
           uv run python experiments/c12_curvature.py
+      - name: Execute historical ch-13 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-13/trainable_harness-0.13.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_stochastic.py
+          uv run python experiments/c13_stochastic_regimes.py
+      - name: Execute historical ch-14 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-14/trainable_harness-0.14.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_criticality.py
+          uv run python experiments/c14_criticality.py
+      - name: Execute historical ch-15 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-15/trainable_harness-0.15.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_normalization.py
+          uv run python experiments/c15_normalization.py
+      - name: Execute historical ch-16 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-16/trainable_harness-0.16.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_stability.py
+          uv run python experiments/c16_edge_of_stability.py
+      - name: Execute current ch-17 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_update_geometry.py
+          uv run python experiments/c17_update_geometry.py
+          uv run python experiments/c01_roofline.py
       - name: Verify sibling public anchors
         run: uv run python scripts/audit_sibling_anchors.py --network
       - run: git diff --exit-code -- artifacts/claims

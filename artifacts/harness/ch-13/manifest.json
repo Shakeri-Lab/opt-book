@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "chapter": "c13",
+  "harness_ref": "ch-13",
+  "package": "trainable-harness",
+  "version": "0.13.0",
+  "api": "0.13",
+  "wheel": "trainable_harness-0.13.0-py3-none-any.whl",
+  "wheel_sha256": "3204162cec10360dc6beea83cd1fae19c790772b61a20004a496942ffbc9aacf",
+  "python": "3.12.13",
+  "dependencies": {"numpy": "2.5.1"},
+  "source": {
+    "status": "pre-release-uncommitted",
+    "commit": null,
+    "annotated_tag": null,
+    "tag_required_before_publication": "harness-ch-13-v1",
+    "pyproject_sha256": "6d69103d61b7e49e40fdae0549ca83d3f60d271f238f6eb14ba8fafed3bf3b2b",
+    "init_sha256": "8518cac2235a10382d42d1943b8be530f263b629aad46b4a225e9e25c27e7906",
+    "stochastic_sha256": "7da65b6d5ac4d7c1cdacea95449e1ecdab16fcb31bace4f0537295839e61b3ed"
+  },
+  "public_operations": ["QuadraticRegime", "scalar_quadratic_regime", "conditional_safe_step", "two_point_clipping_audit"]
+}

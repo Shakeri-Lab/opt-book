@@ -1,0 +1,5 @@
+{
+  "chapter": "c01", "claim_id": "c01-roofline-001", "hardware_claim_boundary": "Exact byte/flop model only; no wall-clock or accelerator claim.",
+  "hypothesis": "Operation count alone does not determine a resource ceiling.", "payload_sha256": "270147764d7e7ac61c1f1f7a9e81c8ec978581e3b45d05539802cf0dfd4d27e9", "phenomenon_id": "c01-count-not-cost", "provenance_class": "a", "schema_version": 1,
+  "result": {"gemm_compute_bound_under_model": true, "gemm_intensity": 85.33333333333333, "gemm_n": 512, "machine_balance_flop_per_byte": 20.0, "vector_affine_intensity": 0.25, "vector_ceiling_fraction": 0.0125}
+}

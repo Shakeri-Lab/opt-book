@@ -46,7 +46,7 @@ def strip_fenced_code(text: str) -> str:
 
 def strip_sources(text: str) -> str:
     return re.sub(
-        r"(?ms)^## Sources and further reading\s*$.*?(?=^## |\Z)",
+        r"(?ms)^## Sources and further reading(?:\s+\{[^\n]+\})?\s*$.*?(?=^## |\Z)",
         "",
         text,
     )

@@ -2,6 +2,14 @@
   "version": 1,
   "claims": [
     {
+      "claim_id": "c01-roofline-001",
+      "phenomenon_id": "c01-count-not-cost",
+      "chapter": "c01",
+      "status": "exact-resource-model-calculation",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c01-roofline-001.json"
+    },
+    {
       "claim_id": "c02-variance-crash-001",
       "phenomenon_id": "c02-negative-variance",
       "chapter": "c02",
@@ -232,6 +240,46 @@
       "status": "matrix-free-action-against-dense-control",
       "provenance_class": "a",
       "evidence": "artifacts/claims/c12-hvp-001.json"
+    },
+    {
+      "claim_id": "c13-regime-001",
+      "phenomenon_id": "c13-mean-not-regime",
+      "chapter": "c13",
+      "status": "exact-conditional-expectation-and-clipping-witness",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c13-regime-001.json"
+    },
+    {
+      "claim_id": "c14-criticality-001",
+      "phenomenon_id": "c14-average-criticality",
+      "chapter": "c14",
+      "status": "seeded-jacobian-product-control",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c14-criticality-001.json"
+    },
+    {
+      "claim_id": "c15-invariance-001",
+      "phenomenon_id": "c15-invariance-choice",
+      "chapter": "c15",
+      "status": "deterministic-invariance-and-arithmetic-witness",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c15-invariance-001.json"
+    },
+    {
+      "claim_id": "c16-moving-boundary-001",
+      "phenomenon_id": "c16-moving-boundary",
+      "chapter": "c16",
+      "status": "deterministic-moving-curvature-trajectory",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c16-moving-boundary-001.json"
+    },
+    {
+      "claim_id": "c17-update-norm-001",
+      "phenomenon_id": "c17-norm-chooses-update",
+      "chapter": "c17",
+      "status": "deterministic-matrix-duality-and-polar-witness",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c17-update-norm-001.json"
     }
   ]
 }

@@ -32,6 +32,10 @@
     }
   ],
   "chapters": {
+    "c01": {
+      "act": "act-0",
+      "threads": {}
+    },
     "c02": {
       "act": "act-0",
       "threads": {
@@ -100,6 +104,43 @@
       "threads": {
         "random-matrix-spectra": "callback",
         "landscape-update-geometry": "callback"
+      }
+    },
+    "c13": {
+      "act": "act-2",
+      "threads": {
+        "subgaussian-safe-zone": "callback",
+        "landscape-update-geometry": "callback"
+      }
+    },
+    "c14": {
+      "act": "act-2",
+      "threads": {
+        "random-matrix-spectra": "callback",
+        "subgaussian-safe-zone": "callback",
+        "landscape-update-geometry": "callback"
+      }
+    },
+    "c15": {
+      "act": "act-2",
+      "threads": {
+        "numerical-stability": "callback",
+        "landscape-update-geometry": "callback"
+      }
+    },
+    "c16": {
+      "act": "act-2",
+      "threads": {
+        "landscape-update-geometry": "callback",
+        "numerical-stability": "callback"
+      }
+    },
+    "c17": {
+      "act": "act-2",
+      "threads": {
+        "random-matrix-spectra": "callback",
+        "landscape-update-geometry": "callback",
+        "numerical-stability": "callback"
       }
     }
   }

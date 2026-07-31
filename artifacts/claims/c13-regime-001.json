@@ -1,0 +1,4 @@
+{
+  "chapter": "c13", "claim_id": "c13-regime-001", "hardware_claim_boundary": "Exact scalar expectation; no claim about a particular workload.", "harness_ref": "ch-13", "harness_wheel_sha256": "3204162cec10360dc6beea83cd1fae19c790772b61a20004a496942ffbc9aacf", "hypothesis": "Unbiased estimators with the same conditional mean can imply opposite one-step behavior.", "payload_sha256": "0306788bd5128264fedaba70c3e0ff68ae8b242aa39b6b3e8d7266d042017f72", "phenomenon_id": "c13-mean-not-regime", "provenance_class": "a", "schema_version": 1,
+  "result": {"clip": {"bias": 0.6000000000000001, "clipped_mean": 1.6, "clipped_variance": 1.4400000000000002, "mean": 1.0, "variance": 11.11111111111111}, "high_noise": {"deterministic_next_loss": 0.125, "expected_next_loss": 0.625, "noise_penalty": 0.5, "noise_to_signal": 4.0}, "low_noise": {"deterministic_next_loss": 0.125, "expected_next_loss": 0.15625, "noise_penalty": 0.03125, "noise_to_signal": 0.25}}
+}

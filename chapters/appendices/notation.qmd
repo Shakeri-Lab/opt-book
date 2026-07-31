@@ -61,6 +61,12 @@ names its axes.
 | Model Fisher information | $\matr{F}$ | Curvature objects |
 | Empirical Fisher | $\widetilde{\matr{F}}$ | Curvature objects |
 | Model-curvature residual | $\matr{R}$ | Curvature objects |
+| Arithmetic intensity | $I=F/Q$ | Runtime model |
+| Machine balance | $I_*=P_{\max}/B$ | Runtime model |
+| Conditional noise-to-signal ratio | $\chi_k$ | Stochastic regimes |
+| Centering projector | $\matr{P}$ | Coordinate-wise normalization |
+| Nuclear norm | $\norm{\matr{A}}_*$ | Matrix update geometry |
+| Polar factor | $\operatorname{polar}(\matr{A})$ | Matrix update geometry |
 
 The machine-readable source is `contracts/notation-covenant.yml`. A notation
 change is incomplete until that covenant, the HTML macros, the PDF macros, and

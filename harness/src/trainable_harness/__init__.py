@@ -77,6 +77,33 @@ from .streaming import (
     observation_ledger,
     stable_online_moments,
 )
+from .stochastic import (
+    QuadraticRegime,
+    conditional_safe_step,
+    scalar_quadratic_regime,
+    two_point_clipping_audit,
+)
+from .criticality import (
+    deep_linear_product,
+    mean_squared_singular_value,
+    relu_variance_trace,
+)
+from .normalization import (
+    centered_normalize,
+    normalization_jacobian,
+    raw_and_centered_variance,
+    rms_normalize,
+)
+from .stability import (
+    StabilityTrace,
+    moving_curvature_trace,
+    valley_loss_gradient_hessian,
+)
+from .update_geometry import (
+    newton_schulz_polar,
+    norm_steepest_directions,
+    polar_factor,
+)
 
 __all__ = [
     "MomentState",
@@ -89,7 +116,9 @@ __all__ = [
     "PowerIterationResult",
     "QuantizationResult",
     "QuadraticTrace",
+    "QuadraticRegime",
     "SpectrumSummary",
+    "StabilityTrace",
     "TapeNode",
     "UpdateTrace",
     "bernstein_two_regime_rate",
@@ -99,16 +128,19 @@ __all__ = [
     "centered_chi_square_sum_trials",
     "centered_chi_square_sum_upper_tail",
     "centered_chi_square_upper_tail",
+    "centered_normalize",
     "centered_pareto_clip_bias",
     "circle_covering_radius",
     "circle_epsilon_net",
     "comparison_audit",
+    "conditional_safe_step",
     "covariance_eigenvalues",
     "classify_mode_factors",
     "empirical_tail_profile",
     "empirical_upper_threshold",
     "effective_rank_psd",
     "dominant_symmetric_eigenpair",
+    "deep_linear_product",
     "float_contract",
     "gaussian_covariance_trials",
     "gaussian_covariance_error_trials",
@@ -119,18 +151,28 @@ __all__ = [
     "marchenko_pastur_support",
     "matrix_spectrum_summary",
     "moment_growth_profile",
+    "moving_curvature_trace",
+    "mean_squared_singular_value",
     "naive_moments",
+    "newton_schulz_polar",
+    "norm_steepest_directions",
+    "normalization_jacobian",
     "observation_ledger",
     "operator_net_certificate",
     "operator_net_estimate",
+    "polar_factor",
     "power_iteration_spectral_norm",
     "quadratic_spectrum",
     "quadratic_trace",
     "rademacher_projection_trials",
+    "raw_and_centered_variance",
     "repeated_update",
+    "relu_variance_trace",
     "reverse_accumulate",
+    "rms_normalize",
     "stable_online_moments",
     "scalar_noisy_quadratic_trials",
+    "scalar_quadratic_regime",
     "sample_covariance",
     "stable_rank",
     "sphere_cover_log_upper",
@@ -139,7 +181,9 @@ __all__ = [
     "symmetric_quantize",
     "uniform_subgaussian_threshold",
     "uniform_checkpoint_cost",
+    "valley_loss_gradient_hessian",
     "subgaussian_max_threshold",
+    "two_point_clipping_audit",
 ]
 
-__version__ = "0.12.0"
+__version__ = "0.17.0"

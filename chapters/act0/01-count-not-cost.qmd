@@ -1,0 +1,188 @@
+---
+subtitle: "Arithmetic intensity, the memory hierarchy, and honest performance claims"
+description: "Why an operation count cannot identify the resource that sets elapsed time."
+number-offset: 0
+jupyter: python3
+phenomenon_id: c01-count-not-cost
+claim_ids: [c01-roofline-001]
+threads: {}
+lenses:
+  geometric: quiet
+  dynamic: supporting
+  algorithmic: primary
+---
+
+# The Count Is Not the Cost {#c01}
+
+<span class="lens-ledger">Geometric quiet · Dynamic supporting · Algorithmic primary</span>
+
+Consider two computations on $N$ stored FP32 values. A copy performs no
+floating-point arithmetic and moves at least $8N$ bytes: one read and one
+write. A fused affine transform $y_i=ax_i+b$ performs $2N$ floating-point
+operations and has the same dominant traffic when $a$ and $b$ remain in a
+fast store. Their operation counts differ infinitely as a ratio; their
+bandwidth ceilings are essentially the same.
+
+Now compare a square matrix product of order $n=512$. The conventional count
+is $2n^3$ operations. Its compulsory traffic under an idealized one-read,
+one-write model is $12n^2$ bytes, so its arithmetic intensity is
+$n/6=85.33$ operations per byte. The affine transform has intensity $2/8=0.25$.
+On a hypothetical machine whose peak arithmetic-to-bandwidth ratio is 20,
+one falls below the balance point and the other lies above it. The larger
+operation count can be the computation with more opportunity to reuse data.
+
+::: {.callout-important title="Prediction"}
+If a proposed method removes half the multiplications but doubles compulsory
+traffic, which change should improve elapsed time? The counts alone cannot
+answer. Name the machine balance and the achieved data reuse first.
+:::
+
+## Two resource clocks {#sec-c01-two-clocks}
+
+Let $F$ be the required operations, $Q$ the bytes transferred through a
+declared boundary, $P_{\max}$ peak arithmetic rate, and $B$ peak bandwidth.
+The two unavoidable time lower bounds are
+
+$$
+T\geq \frac{F}{P_{\max}},\qquad T\geq\frac{Q}{B}.
+$$ {#eq-c01-resource-times}
+
+With arithmetic intensity $I=F/Q$, achieved performance $P=F/T$ obeys the
+following deliberately small theorem.
+
+::: {#thm-c01-roofline phenomenon_id="c01-count-not-cost"}
+### Two-resource performance ceiling
+
+Under the declared operation count, traffic boundary, peak arithmetic rate,
+and peak bandwidth,
+
+$$
+P\leq \min(P_{\max},BI).
+$$ {#eq-c01-roofline}
+:::
+
+### Proof
+
+Invert each inequality in @eq-c01-resource-times and multiply by $F$. The
+arithmetic bound gives $P\leq P_{\max}$; the traffic bound gives
+$P\leq BF/Q=BI$. Both must hold.
+
+The bend occurs at the **machine balance** $I_*=P_{\max}/B$. This diagram is
+the roofline model [@williams2009]. It is an upper envelope, not a prediction
+that a kernel reaches either roof.
+
+:::: {.plan-code}
+::: {.plan}
+1. Read the committed C01 model calculation.
+2. Declare one hypothetical machine balance.
+3. Plot the bandwidth and arithmetic ceilings.
+4. Place the vector transform and matrix product on the same axes.
+5. Check the registered arithmetic intensities before interpretation.
+:::
+
+```{python}
+#| label: fig-c01-roofline
+#| fig-cap: "One operation count is not one cost. Under the declared two-resource model, the vector transform lies below the balance point while the reused matrix product lies above it."
+#| fig-alt: "Log-log roofline chart with a sloped bandwidth ceiling meeting a flat arithmetic ceiling at intensity 20. The vector transform is at intensity 0.25 on the sloped branch; the order-512 matrix product is at intensity about 85 on the flat branch."
+#| code-summary: "Code: place two exact traffic models on a declared roofline"
+
+import json
+from pathlib import Path
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+claim = json.loads(Path("artifacts/claims/c01-roofline-001.json").read_text())
+# [2]
+balance = claim["result"]["machine_balance_flop_per_byte"]
+# [3]
+intensity = np.logspace(-2, 3, 300)
+ceiling = np.minimum(intensity / balance, 1.0)
+fig, axis = plt.subplots(figsize=(7.2, 3.8))
+axis.loglog(intensity, ceiling, color="#5b4b8a", linewidth=2)
+# [4]
+points = {
+    "fused affine": claim["result"]["vector_affine_intensity"],
+    "512×512 product": claim["result"]["gemm_intensity"],
+}
+for label, value in points.items():
+    axis.scatter(value, min(value / balance, 1.0), s=55)
+    axis.annotate(
+        label,
+        (value, min(value / balance, 1.0)),
+        xytext=(5, 8),
+        textcoords="offset points",
+    )
+axis.set(
+    xlabel="arithmetic intensity (operation/byte)",
+    ylabel="fraction of arithmetic peak",
+)
+axis.grid(True, which="both", alpha=0.25)
+fig.tight_layout()
+# [5]
+assert np.isclose(points["fused affine"], 0.25)
+assert np.isclose(points["512×512 product"], 512 / 6)
+print("claim c01-roofline-001: verified")
+```
+::::
+
+## The denominator is an algorithmic choice {#sec-c01-denominator}
+
+Traffic has no meaning until its boundary is named. Bytes between registers
+and a first-level cache, between cache and main memory, and between host and
+accelerator are different denominators. Tiling changes $Q$ by retaining a
+working set near arithmetic units. Fusion changes $Q$ by keeping an
+intermediate value from making a round trip. Recompute can deliberately
+increase $F$ to reduce $Q$. C11 will return to exactly that trade when it
+checkpoints derivative state.
+
+This also foreshadows the numerical-stability thread that C02 seeds. A fused operation can change
+both traffic and rounding: eliminating an intermediate store may eliminate
+one rounding step. A performance transformation is therefore part of the
+numerical contract, not merely a scheduling detail.
+
+::: {.callout-warning title="Named wrong answer: fewer operations means faster"}
+Fewer operations is evidence only after the limiting resource is identified.
+It may improve a compute-limited kernel, do nothing to a bandwidth-limited
+kernel, or make the kernel slower by destroying reuse or fusion.
+:::
+
+## Hardware-claim boundary {#sec-c01-boundary}
+
+The roofline is useful because it makes omissions visible. Peak values may be
+unreachable; compulsory traffic can underestimate actual traffic; latency,
+launch overhead, synchronization, occupancy, instruction mix, and access
+regularity remain outside @eq-c01-roofline. CPU simulation of FP16 behavior is
+not evidence of accelerator timing. Any measured claim later in this book
+must name the device, software stack, warmup, repetitions, statistic, and
+traffic boundary—or be labeled a model calculation or pinned artifact.
+
+## Check yourself {#sec-c01-check}
+
+A kernel performs $10^{10}$ operations and moves $10^9$ bytes. On a device
+with $P_{\max}=10^{13}$ operation/s and $B=5\times10^{11}$ byte/s, its
+intensity is 10 and the machine balance is 20. The model ceiling is therefore
+$BI=5\times10^{12}$ operation/s, the bandwidth branch. Halving $F$ while
+leaving $Q$ unchanged also halves intensity; it does not halve the traffic
+time lower bound.
+
+## Okay, so — {#sec-c01-recap}
+
+- **Inherited:** asymptotic operation counts remain indispensable scaling summaries.
+- **Changed:** elapsed-time reasoning now requires a declared traffic denominator and machine balance.
+- **Instrumented:** claim `c01-roofline-001` places two exact models on the same ceiling.
+- **Established:** $P\leq\min(P_{\max},BI)$ follows from two resource lower bounds.
+- **Unresolved:** real executions move more state through more levels; C02 asks which state an online computation must retain.
+
+## Sources and further reading {#sec-c01-sources}
+
+The roofline formulation and its machine-balance interpretation follow
+@williams2009. The instructor source is the Spring 2026 memory-hierarchy and
+roofline deck; its hardware slogans were replaced here by an explicit claim
+boundary and an exact model calculation.
+
+## Exercises {#sec-c01-exercises}
+
+1. **(Pencil.)** Recompute the matrix-product intensity if one input matrix is reread four times. State the traffic boundary.
+2. **(Code.)** For three hypothetical machine balances, redraw the figure and report which classifications change. Do not time the plotting code.
+3. **(Audit.)** Find one paper that reports a speedup. Separate its operation count, modeled traffic, measured elapsed time, hardware identity, and baseline. Which claim is actually supported?

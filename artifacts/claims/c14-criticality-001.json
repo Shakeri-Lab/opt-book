@@ -1,0 +1,4 @@
+{
+  "chapter": "c14", "claim_id": "c14-criticality-001", "hardware_claim_boundary": "Seeded CPU linear-algebra witness; not a theorem about finite nonlinear networks.", "harness_ref": "ch-14", "harness_wheel_sha256": "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26", "hypothesis": "Average variance preservation does not control every singular direction.", "payload_sha256": "a061537eba81eb65b596af57972ad3ef033fc0228ce2f810429330a1da6cb53d", "phenomenon_id": "c14-average-criticality", "provenance_class": "a", "schema_version": 1,
+  "result": {"depth": 12, "gaussian_product": {"maximum": 3.6189944276507533, "mean_squared_singular_value": 0.7953239432480909, "minimum": 9.594754363770836e-13}, "orthogonal_product": {"maximum": 1.0000000000000004, "mean_squared_singular_value": 0.9999999999999997, "minimum": 0.9999999999999992}, "relu_final_variance": {"1.0": 9.5367431640625e-07, "2.0": 1.0, "3.0": 3325.256730079651}, "seed": 6214, "width": 24}
+}

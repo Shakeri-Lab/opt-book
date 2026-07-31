@@ -4,7 +4,7 @@
 
 | Unit | Working transformation | Status |
 |---|---|---|
-| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Contract pending |
+| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Locally complete; author review pending |
 | C02 | Repair a one-pass variance computation by preserving centered, mergeable state | Pilot accepted; C03 handoff harvested |
 | C03 | Predict floating-point failures from a precision contract | Locally complete; author review pending |
 | C04 | Read gradient descent mode by mode | Locally complete; machine acceptance audit passed; author review pending |
@@ -16,17 +16,17 @@
 | C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; machine acceptance audit passed; author review pending |
 | C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; machine acceptance audit passed; author review pending |
 | C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
-| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Arc approved; contracts pending |
+| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Locally complete; author review pending |
 | Act III | Synthesis through modern primitives | Gated after core budget evidence |
 
 ## Public threads
 
 | Thread | Registered seed | Required callbacks | Intended harvest |
 |---|---|---|---|
-| Numerical stability | C02 | C03, C11, C14, C15 | Stable reductions and normalization arithmetic |
-| Random-matrix spectra | C08 | C09, C10, C12, C14 | C16–C17 curvature and update geometry |
-| Landscape and update geometry | C04 | C12, C13, C14 | C16–C17 stability and matrix-aware updates |
-| Sub-Gaussian safe zone | C05 | C06, C08, C09, C13 | C14 initialization and its heavy-tail boundary |
+| Numerical stability | C02 | C03, C11, C15, C16, C17 | Stable reductions, normalization arithmetic, and update approximation |
+| Random-matrix spectra | C08 | C09, C10, C12, C14, C17 | Jacobian and update spectra |
+| Landscape and update geometry | C04 | C12, C13, C14, C15, C16, C17 | Stability and matrix-aware updates |
+| Sub-Gaussian safe zone | C05 | C06, C08, C09, C13, C14 | Criticality and its heavy-tail boundary |
 
 Acts before a registered seed are exempt from the silence audit. The seed
 chapter itself must declare the `seed` role. From the seed onward, one whole
@@ -56,9 +56,9 @@ chapter obligations:
 | Unit | Added diagnostic obligation |
 |---|---|
 | C12 | Harvested: the Hessian/GGN/model-Fisher/empirical-Fisher disagreement witness, action-only probe, bounded CG two-lens seam, and structured-approximation boundary are now on the page. |
-| C13 | Make the gradient-dominated/noise-dominated transition the causal spine; declare the conditional gradient estimator, batch sampling, second-moment boundary, and clipping bias. |
-| C16 | Compare fixed global curvature, local top curvature, gradient-direction curvature, and finite-horizon history rather than treating \(2/\alpha\) as a self-explanatory threshold. |
-| C17 | Test rotation, scale, matrix shape, polar-factor approximation, update spectrum, parameter routing, state, and hardware cost before the Muon literature bridge. |
+| C13 | Harvested: conditional estimator, noise-to-signal transition, batch assumptions, second-moment boundary, and clipping bias are on the page. |
+| C16 | Harvested: fixed control, local top curvature, gradient-direction curvature, and finite-horizon history are compared in a class-(a) witness. |
+| C17 | Harvested: dual-norm geometry, polar approximation, update spectrum, parameter routing boundary, and the literature bridge are on the page. |
 
 C04 now plants the distinction between its best fixed minimax step and the
 best one-step move in the current gradient direction. C08 now plants the

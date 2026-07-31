@@ -80,7 +80,7 @@
       "scope": "c04-to-c13",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
-      "status": "pending-owner"
+      "status": "active"
     },
     {
       "id": "promise-c04-c13-acceleration-boundary",
@@ -88,7 +88,7 @@
       "scope": "c04-to-c13",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
-      "status": "pending-owner"
+      "status": "active"
     },
     {
       "id": "promise-c04-c16-fixed-boundary",
@@ -96,7 +96,7 @@
       "scope": "c04-to-c16",
       "source": "chapters/act0/04-quadratic-modes.qmd",
       "owner": "chapters/act2/16-edge-of-stability.qmd",
-      "status": "pending-owner"
+      "status": "active"
     },
     {
       "id": "promise-c05-c06-squared-boundary",
@@ -112,7 +112,7 @@
       "scope": "c06-to-c13",
       "source": "chapters/act1/06-products-squares.qmd",
       "owner": "chapters/act2/13-stochastic-regimes.qmd",
-      "status": "pending-owner"
+      "status": "active"
     },
     {
       "id": "promise-c06-c07-tail-budget",
@@ -136,7 +136,7 @@
       "scope": "c08-to-c17",
       "source": "chapters/act1/08-random-operators.qmd",
       "owner": "chapters/act2/17-update-geometry.qmd",
-      "status": "pending-owner"
+      "status": "active"
     },
     {
       "id": "promise-c08-c09-spectral-mass",
@@ -168,7 +168,7 @@
       "scope": "c11-to-c14",
       "source": "chapters/act2/11-reverse-accumulation.qmd",
       "owner": "chapters/act2/14-criticality.qmd",
-      "status": "pending-owner"
+      "status": "active"
     }
   ]
 }

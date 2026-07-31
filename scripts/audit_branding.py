@@ -45,6 +45,12 @@ def main() -> None:
         if path.name == "rosetta.qmd":
             continue
         prose = prose_only(path.read_text())
+        for scope in ("brand-bridge", "paper-audit", "search-aliases"):
+            prose = re.sub(
+                rf"(?ms)^::: \{{\.{scope}\}}\s*$.*?^:::\s*$",
+                "",
+                prose,
+            )
         for term, occurrence in violations(prose):
             errors.append(f"{path}: unsanctioned branded context {occurrence!r} ({term})")
     fail_if(errors)

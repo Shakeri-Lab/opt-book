@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "chapter": "c14",
+  "harness_ref": "ch-14",
+  "package": "trainable-harness",
+  "version": "0.14.0",
+  "api": "0.14",
+  "wheel": "trainable_harness-0.14.0-py3-none-any.whl",
+  "wheel_sha256": "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26",
+  "python": "3.12.13",
+  "dependencies": {"numpy": "2.5.1"},
+  "source": {"status": "pre-release-uncommitted", "commit": null, "annotated_tag": null, "tag_required_before_publication": "harness-ch-14-v1", "pyproject_sha256": "f4f0bea7d4988446466fe3607142f63ab3328cefa7678bd4f4384c2fb2103425", "init_sha256": "fb1c5a3514b3fb7abe25cefaf63468e68b33a6755dbc20b633cf7b316bd92cce", "criticality_sha256": "df4bf13738c2ac2431871ca18e4b1cf30a7d07aa854c1f09f9dbee6cfd7d46fe"},
+  "public_operations": ["relu_variance_trace", "deep_linear_product", "mean_squared_singular_value"]
+}

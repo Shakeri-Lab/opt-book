@@ -1,0 +1,218 @@
+---
+subtitle: "Variance propagation, Jacobian products, and dynamical isometry"
+description: "Why criticality in an average moment can coexist with unusable derivative directions."
+number-offset: 13
+jupyter: python3
+harness-ref: ch-14
+harness-api: "0.14"
+harness-wheel-sha256: "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26"
+phenomenon_id: c14-average-criticality
+claim_ids: [c14-criticality-001]
+threads:
+  random-matrix-spectra: callback
+  subgaussian-safe-zone: callback
+  landscape-update-geometry: callback
+lenses:
+  geometric: primary
+  dynamic: supporting
+  algorithmic: supporting
+fulfills: [promise-c11-c14-depth-products]
+---
+
+# Critical on Average, Broken by Direction {#c14}
+
+<span class="thread">RS · Random-matrix spectra · SG · Sub-Gaussian safe zone · LG · Landscape and update geometry</span>
+
+<span class="lens-ledger">Geometric primary · Dynamic supporting · Algorithmic supporting</span>
+
+Build twelve independent $24\times24$ Gaussian matrices with entry variance
+$1/24$. Each layer preserves squared norm **in expectation**. Their product in
+the registered witness has mean squared singular value $0.795$, yet its
+largest singular value is $3.62$ and its smallest is $9.6\times10^{-13}$.
+An equally deep product of orthogonal factors has every singular value equal
+to one up to rounding. The average-moment story cannot distinguish them.
+
+::: {.callout-important title="Prediction"}
+Two initializations preserve activation variance layer by layer. Must they
+propagate every gradient direction comparably? No. Variance is a trace-level
+diagnostic; trainability depends on spectral edges and mass as well.
+:::
+
+## Criticality is a recursion with assumptions {#sec-c14-recursion}
+
+Consider a wide coordinate
+
+$$
+h_i^{(\ell+1)}=\phi\!\left(\sum_{j=1}^{n}
+W_{ij}^{(\ell+1)}h_j^{(\ell)}+b_i^{(\ell+1)}\right),
+$$ {#eq-c14-layer}
+
+with independent mean-zero weights of variance $\sigma_w^2/n$. Under the
+usual wide, exchangeable, self-averaging approximation, a typical preactivation
+is approximately Gaussian and the second moment follows a scalar map.
+
+::: {#thm-c14-variance-recursion phenomenon_id="c14-average-criticality"}
+### Wide-model second-moment recursion
+
+Under the independence and Gaussian-limit assumptions above,
+
+$$
+q_{\ell+1}=\sigma_w^2\,
+\E\!\left[\phi(\sqrt{q_\ell}Z)^2\right]+\sigma_b^2,
+\qquad Z\sim\mathcal N(0,1).
+$$ {#eq-c14-variance-map}
+
+For zero-bias ReLU coordinates, $q_{\ell+1}=\sigma_w^2q_\ell/2$; the
+variance-critical scale is $\sigma_w^2=2$.
+:::
+
+### Diagnostic proof
+
+Condition on the previous coordinates. Independence and the $1/n$ scaling
+make the preactivation variance the empirical second moment times
+$\sigma_w^2$, plus bias variance. The wide limit replaces that empirical
+moment by $q_\ell$. Symmetry gives
+$\E[\max(0,\sqrt q Z)^2]=q/2$.
+
+The theorem identifies a boundary: scale one decays by $2^{-\ell}$, scale two
+is fixed, and scale three grows by $(3/2)^\ell$. It does **not** say that a
+finite network exactly follows the recursion, nor that scale two has a
+well-conditioned input-output Jacobian.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate <code>harness@ch-14</code>.
+2. Plot the ReLU moment recursion at three scales.
+3. Recreate the registered Gaussian and orthogonal matrix products.
+4. Compare their complete singular spectra.
+5. Verify the committed spectral endpoints.
+:::
+
+```{python}
+#| label: fig-c14-criticality
+#| fig-cap: "Left: a scalar critical point separates decay from growth. Right: average preservation does not imply directional preservation; Gaussian products spread while orthogonal products remain isometric in this linear control."
+#| fig-alt: "Two panels. The first shows activation second moment decaying for scale 1, constant for scale 2, and growing for scale 3. The second shows ordered singular values: an orthogonal product is flat at one while a Gaussian product ranges from about 3.6 to nearly zero."
+#| code-summary: "Code: separate a variance-critical recursion from a Jacobian-spectrum diagnostic"
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-14/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
+assert wheel_digest == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+from trainable_harness import deep_linear_product, relu_variance_trace
+
+# [2]
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6))
+for scale in (1.0, 2.0, 3.0):
+    axes[0].semilogy(relu_variance_trace(1.0, scale, 20), label=fr"$\sigma_w^2={scale:g}$")
+axes[0].set(xlabel="depth", ylabel="second moment")
+axes[0].legend(frameon=False)
+# [3]
+rng = np.random.default_rng(6214); n = 24; depth = 12
+gaussian = [
+    rng.normal(size=(n, n)) / np.sqrt(n) for _ in range(depth)
+]
+orthogonal = [
+    np.linalg.qr(rng.normal(size=(n, n)))[0] for _ in range(depth)
+]
+# [4]
+sg = np.linalg.svd(deep_linear_product(gaussian), compute_uv=False)
+so = np.linalg.svd(deep_linear_product(orthogonal), compute_uv=False)
+axes[1].semilogy(sg, "o-", label="Gaussian factors")
+axes[1].semilogy(so, "o-", label="orthogonal factors")
+axes[1].set(xlabel="ordered direction", ylabel="singular value")
+axes[1].legend(frameon=False)
+fig.tight_layout()
+# [5]
+claim = json.loads(Path("artifacts/claims/c14-criticality-001.json").read_text())
+assert claim["harness_wheel_sha256"] == wheel_digest
+assert np.isclose(
+    sg[0],
+    claim["result"]["gaussian_product"]["maximum"],
+    atol=1e-12,
+)
+print("claim c14-criticality-001: verified")
+```
+::::
+
+## Trace control is not edge control {#sec-c14-trace}
+
+For an input-output Jacobian $\matr J\in\mathbb R^{m\times n}$,
+
+$$
+\frac1n\operatorname{tr}(\matr J^{\mathsf T}\matr J)
+=\frac1n\sum_i\sigma_i(\matr J)^2.
+$$ {#eq-c14-mean-squared-singular}
+
+::: {#thm-c14-average-spectrum phenomenon_id="c14-average-criticality"}
+### Mean-square preservation does not imply isometry
+
+The quantity in @eq-c14-mean-squared-singular is the mean squared stretch over
+an orthonormal input basis. It can equal one while the smallest singular value
+is zero and the largest is $\sqrt n$.
+:::
+
+### Proof
+
+The trace identity follows from the SVD. The diagonal matrix
+$\operatorname{diag}(\sqrt n,0,\ldots,0)$ has mean squared singular value one
+and the stated edges.
+
+**Dynamical isometry** asks for substantially more: the singular values of the
+relevant Jacobian should cluster near one [@pennington2017]. Orthogonal factors
+solve the deep-linear control exactly. Nonlinear gates, finite width,
+correlations, biases, normalization, and trained weights change the product;
+orthogonality at initialization is an instrument, not a universal cure.
+
+## The de-branded object first {#sec-c14-brand-bridge}
+
+We have derived **variance-preserving initialization** from a moment recursion.
+The Rosetta appendix carries the conventional aliases for search and ties
+each to its fan-in/fan-out and nonlinearity assumptions. The mathematics
+decides which moment a name actually covers.
+
+::: {.callout-warning title="Named wrong answer: critical means trainable"}
+A fixed point of a scalar moment map controls one average statistic under its
+model assumptions. It does not control finite-width fluctuations, spectral
+edges, derivative correlations, or numerical range.
+:::
+
+## Check yourself {#sec-c14-check}
+
+At zero bias with ReLU and weight scale $2(1+\varepsilon)$, the moment after
+$L$ layers is $q_0(1+\varepsilon)^L$. Even a small multiplicative mismatch
+accumulates with depth. At the exact scalar critical point, the two-by-two
+matrix $\operatorname{diag}(\sqrt2,0)$ still has mean squared singular value
+one and destroys one direction.
+
+## Okay, so — {#sec-c14-recap}
+
+- **Inherited:** C11's reverse product and C08's two spectral edges now describe signal propagation.
+- **Changed:** “variance preserved” is treated as a trace claim, not a synonym for trainable.
+- **Instrumented:** `c14-criticality-001` compares moment recursion with complete product spectra.
+- **Established:** scalar criticality and dynamical isometry are distinct contracts.
+- **Unresolved:** coordinate-wise normalization can reset scale, but every reset chooses invariances and null directions; C15 makes those choices explicit.
+
+## Sources and further reading {#sec-c14-sources}
+
+Mean-field signal propagation follows @schoenholz2017; dynamical-isometry
+diagnostics follow @pennington2017. Variance-preserving initialization was
+developed for saturating and rectified compositional structures by
+@glorot2010 and @he2015. The Spring 2026 initialization materials supplied the
+phenomena and derivation order; finite-width and Jacobian claims were narrowed
+to the assumptions stated here.
+
+## Exercises {#sec-c14-exercises}
+
+1. **(Pencil.)** Derive @eq-c14-variance-map for an odd saturating nonlinearity and identify its small-variance linearization.
+2. **(Code.)** Repeat the product experiment across 100 seeds. Plot distributions of trace, lower edge, and upper edge separately.
+3. **(Audit.) Paper audit:** Locate a paper that uses “critical.” Identify whether its object is activation variance, correlation, mean squared singular value, or a full spectral statement.

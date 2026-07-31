@@ -1,0 +1,243 @@
+---
+subtitle: "Matrix-norm steepest descent, polar factors, and the paper-autopsy endpoint"
+description: "Why a matrix update is not fully specified until its norm, approximation, scaling, and parameter routing are named."
+number-offset: 16
+jupyter: python3
+harness-ref: ch-17
+harness-api: "0.17"
+harness-wheel-sha256: "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60"
+phenomenon_id: c17-norm-chooses-update
+claim_ids: [c17-update-norm-001]
+threads:
+  random-matrix-spectra: callback
+  landscape-update-geometry: callback
+  numerical-stability: callback
+lenses:
+  geometric: primary
+  dynamic: supporting
+  algorithmic: supporting
+fulfills: [promise-c08-c17-update-spectrum]
+---
+
+# The Norm Chooses the Update {#c17}
+
+<span class="thread">RS · Random-matrix spectra · LG · Landscape and update geometry · NS · Numerical stability</span>
+
+<span class="lens-ledger">Geometric primary · Dynamic supporting · Algorithmic supporting</span>
+
+Let a $6\times4$ gradient matrix have singular values $(9,3,1,0.2)$. Three
+unit-size update problems return three different answers. A Frobenius-unit
+step follows the normalized gradient. A nuclear-unit step spends its entire
+budget on the leading singular pair. An operator-unit step uses the polar
+factor and gives all four singular directions unit magnitude. Their inner
+products with the gradient are respectively $-9.54$, $-9$, and $-13.2$.
+“Steepest” was never a property of the gradient alone; it was a property of a
+normed geometry.
+
+::: {.callout-important title="Prediction"}
+A paper replaces a coordinate-wise update by a matrix transformation. Before
+asking whether it wins, ask: steepest under which norm, for which parameter
+blocks, with what approximation error, scaling rule, state traffic, and
+evidence regime?
+:::
+
+## One linearization, three unit balls {#sec-c17-duality}
+
+For a small update $\matr D$, the first-order change is
+$\langle\matr G,\matr D\rangle_F$. Choosing a step means minimizing this
+linear functional over a declared unit ball.
+
+::: {#thm-c17-matrix-steepest phenomenon_id="c17-norm-chooses-update"}
+### Matrix-norm steepest directions
+
+Let $\matr G=\matr U\operatorname{diag}(\vect\sigma)\matr V^{\mathsf T}$.
+Then
+
+$$
+\begin{array}{c|c|c}
+\text{constraint} & \text{one minimizer} & \text{minimum}\\\hline
+\|\matr D\|_F\leq1 & -\matr G/\|\matr G\|_F & -\|\matr G\|_F\\
+\|\matr D\|_{\mathrm{op}}\leq1 & -\matr U\matr V^{\mathsf T} & -\|\matr G\|_*\\
+\|\matr D\|_*\leq1 & -\vect u_1\vect v_1^{\mathsf T} & -\|\matr G\|_{\mathrm{op}}.
+\end{array}
+$$ {#eq-c17-steepest-table}
+:::
+
+### Proof
+
+The Frobenius row is Cauchy--Schwarz. The other rows are duality between the
+operator and nuclear norms, with equality at the displayed SVD-aligned
+matrices. Notice the reversal: an operator-norm constraint yields the polar
+factor; a nuclear-norm constraint yields a rank-one direction.
+
+This is the de-branded trunk beneath recent matrix-aware optimizers. It also
+returns to C08: singular values of the **update** are not singular values of
+the weights, Hessian, or data matrix. Every spectral plot must name its
+matrix.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate <code>harness@ch-17</code>.
+2. Construct the registered rectangular gradient.
+3. Compute the three norm-steepest directions.
+4. Approximate the polar factor by Newton--Schulz iteration.
+5. Verify the singular values, inner products, and residual trace.
+:::
+
+```{python}
+#| label: fig-c17-update-geometry
+#| fig-cap: "The norm changes the update spectrum. The operator-ball solution replaces every nonzero gradient singular value by one; a short polynomial iteration approaches that polar factor without an SVD."
+#| fig-alt: "Two panels. The first compares singular values of the original gradient, normalized Frobenius direction, operator-ball polar direction, and nuclear-ball rank-one direction. The second shows the Newton-Schulz orthogonality residual decreasing over iterations."
+#| code-summary: "Code: compare exact matrix-norm directions with an iterative polar approximation"
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-17/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
+assert wheel_digest == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+from trainable_harness import (
+    newton_schulz_polar,
+    norm_steepest_directions,
+    polar_factor,
+)
+
+# [2]
+gradient = np.zeros((6, 4))
+gradient[:4, :] = np.diag([9.0, 3.0, 1.0, 0.2])
+# [3]
+directions = norm_steepest_directions(gradient)
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 3.6))
+axes[0].plot(
+    np.linalg.svd(gradient, compute_uv=False),
+    "o-",
+    label="gradient",
+)
+for name, direction in directions.items():
+    axes[0].plot(
+        np.linalg.svd(direction, compute_uv=False), "o-", label=name
+    )
+axes[0].set(xlabel="singular direction", ylabel="singular value")
+axes[0].legend(frameon=False, fontsize=8)
+# [4]
+approximation, residuals = newton_schulz_polar(gradient, 12)
+axes[1].semilogy(residuals, "o-", color="#5b4b8a")
+axes[1].set(xlabel="Newton–Schulz step", ylabel=r"$\|X^T X-I\|_F$")
+fig.tight_layout()
+# [5]
+claim = json.loads(Path("artifacts/claims/c17-update-norm-001.json").read_text())
+assert claim["harness_wheel_sha256"] == wheel_digest
+assert np.allclose(
+    np.linalg.svd(polar_factor(gradient), compute_uv=False),
+    claim["result"]["polar_singular_values"],
+)
+assert np.isclose(
+    residuals[-1],
+    claim["result"]["newton_schulz_residuals"][-1],
+    atol=1e-12,
+)
+print("claim c17-update-norm-001: verified")
+```
+::::
+
+## A polynomial is an approximation contract {#sec-c17-newton-schulz}
+
+After scaling $\matr X_0=\matr G/\|\matr G\|_F$, the iteration
+
+$$
+\matr X_{t+1}=\frac32\matr X_t-
+\frac12\matr X_t(\matr X_t^{\mathsf T}\matr X_t)
+$$ {#eq-c17-newton-schulz}
+
+acts on each singular value as $s\mapsto 1.5s-0.5s^3$. For
+$0<s<\sqrt3$, repeated steps move toward one; zero singular values remain
+zero. A finite iteration therefore needs a scaling rule, step count, residual
+metric, dtype, and rank-deficiency policy. In narrow arithmetic, forming the
+Gram factor and repeated matrix products also reopens C03's accumulation
+contract.
+
+The exact polar factor is equivariant:
+$\operatorname{polar}(\matr Q\matr G\matr R)=
+\matr Q\operatorname{polar}(\matr G)\matr R$ for orthogonal
+$\matr Q,\matr R$, and it is invariant to positive scalar rescaling. Those
+properties explain what coordinate transformations the update respects.
+
+## Brand bridge {#sec-c17-bridge}
+
+::: {.brand-bridge}
+Muon applies momentum and then an approximate polar transformation to selected
+two-dimensional hidden-weight blocks [@jordan2024muon; @liu2025muon]. A useful
+shorthand is “sign descent on singular values,” but it is a geometric
+surrogate, not a complete anatomy theorem: parameter routing, external scale,
+momentum, polynomial coefficients, dtype, and excluded parameters remain part
+of the method. Published compute-efficiency numbers are paper evidence tied to
+their hardware and baselines; this chapter does not reproduce them.
+
+QJL/TurboQuant belongs beside this discussion as a paper-audit branch about
+communication, quantization, and random projections—not as a second method
+tutorial. Its claims should be routed through C01's traffic boundary, C03's
+quantizer contract, and C07's uniformization question.
+:::
+
+::: {.callout-warning title="Named wrong answer: orthogonalized updates are scale free"}
+The polar map removes positive scalar magnitude from a full-rank matrix. A
+practical optimizer restores scale elsewhere and carries momentum and state.
+Audit the entire update, not one transformation.
+:::
+
+## The terminal capability: autopsy before adoption {#sec-c17-autopsy}
+
+The course ends with a procedure rather than a winner. For a current paper,
+write a one-page autopsy:
+
+1. **Phenomenon:** What breaks, relative to which control?
+2. **Object:** Which matrix, estimator, norm, precision format, and traffic boundary are measured?
+3. **Assumptions:** Do finite variance, smoothness, interpolation, independence, or fixed curvature survive the workload?
+4. **Resolution and regime:** Is the theory global, local, direction-aware, or finite-horizon? Are experiments gradient- or noise-dominated?
+5. **Evidence culture:** Which claims are theorem-led, measurement-led, or only routed by analogy?
+6. **Counterfactual:** Which ablation distinguishes the proposed mechanism from an adjacent explanation?
+7. **Provenance:** Can every headline number be regenerated, simulated under a declared model, or traced to a pinned artifact?
+
+This combines the course's Spring 2026 optimizer card with the theory-resolution
+and two-cultures maps. Credit the tutorial for its intellectual map and the
+primary paper for technical claims. Do not attribute the combined checklist
+to either source.
+
+## Check yourself {#sec-c17-check}
+
+For singular values $(9,3,1,0.2)$, the operator-ball minimum is the negative
+nuclear norm, $-13.2$; the nuclear-ball minimum is the negative operator norm,
+$-9$. Swapping those answers is the characteristic dual-norm mistake. If a
+Newton--Schulz approximation has residual $10^{-3}$, that reports approximate
+orthogonality—not optimizer convergence or measured speed.
+
+## Okay, so — {#sec-c17-recap}
+
+- **Inherited:** C01 supplies traffic provenance, C03 precision, C08 spectra, C12 curvature objects, and C13 regimes.
+- **Changed:** an optimizer is read as a normed update contract plus approximation, routing, state, and evidence.
+- **Instrumented:** `c17-update-norm-001` compares three dual geometries and a polynomial polar approximation.
+- **Established:** the norm chooses the steepest direction; the method name does not.
+- **Unresolved:** no optimizer wins outside a declared workload and evidence contract—the open research question is now legible rather than branded.
+
+## Sources and further reading {#sec-c17-sources}
+
+Matrix-norm steepest descent and recent optimizer connections are developed by
+@bernstein2024. The original Muon technical account is @jordan2024muon, with
+large-scale implementation evidence in @liu2025muon. The Spring 2026 Muon and
+QJL journal-club decks supplied candidate phenomena; load-bearing claims were
+routed to primary sources and unreplicated efficiency claims were left as
+paper evidence.
+
+## Exercises {#sec-c17-exercises}
+
+1. **(Pencil.)** Prove the operator/nuclear duality rows of @eq-c17-steepest-table using von Neumann's trace inequality.
+2. **(Code.)** Test Newton--Schulz across condition numbers, ranks, and dtypes. Separate polar error, orthogonality residual, and elapsed time.
+3. **(Audit.) Paper audit:** Apply the seven-part protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.

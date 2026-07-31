@@ -1,0 +1,234 @@
+---
+subtitle: "Chosen invariances, null directions, and stable coordinate statistics"
+description: "Why coordinate-wise normalization is not one operation and not a free stability guarantee."
+number-offset: 14
+jupyter: python3
+harness-ref: ch-15
+harness-api: "0.15"
+harness-wheel-sha256: "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f"
+phenomenon_id: c15-invariance-choice
+claim_ids: [c15-invariance-001]
+threads:
+  numerical-stability: callback
+  landscape-update-geometry: callback
+lenses:
+  geometric: primary
+  dynamic: supporting
+  algorithmic: supporting
+---
+
+# Normalization Chooses an Invariance {#c15}
+
+<span class="thread">NS · Numerical stability · LG · Landscape and update geometry</span>
+
+<span class="lens-ledger">Geometric primary · Dynamic supporting · Algorithmic supporting</span>
+
+Take $\vect x=(-2,-1,1,2)$ and shift every coordinate by ten. Centering and
+scaling sends both vectors to the same output. Scaling by the uncentered root
+mean square does not: the maximum coordinate-wise change is $2.055$. The two
+maps are often offered as nearly interchangeable stabilizers, but they erase
+different information.
+
+The arithmetic also matters. For FP32 values
+$(9998,9999,10001,10002)$, the raw-moment expression
+$\operatorname{mean}(x^2)-\operatorname{mean}(x)^2$ evaluates to zero in the
+registered runtime, while centering first gives $2.5$. C02's cancellation has
+returned inside a standard training primitive.
+
+::: {.callout-important title="Prediction"}
+If a normalization rule is removed or replaced, what behavior should change?
+Answer by naming its invariance, Jacobian nullspace, statistic, placement, and
+precision contract—not by invoking the method name.
+:::
+
+## Two maps, two quotients {#sec-c15-maps}
+
+Ignoring learned affine parameters and an implementation epsilon, define
+
+$$
+\mathcal N_C(\vect x)=\sqrt d\,
+\frac{\matr P\vect x}{\|\matr P\vect x\|_2},\quad
+\matr P=\matr I-\frac1d\vect 1\vect 1^{\mathsf T},
+$$ {#eq-c15-centered}
+
+and
+
+$$
+\mathcal N_R(\vect x)=\sqrt d\,\frac{\vect x}{\|\vect x\|_2}.
+$$ {#eq-c15-rms}
+
+The centered map is invariant to positive scaling and constant-coordinate
+translation. The RMS map is invariant to positive scaling but retains the
+constant component. Neither contract is universally superior; the choice is
+architectural information.
+
+::: {#thm-c15-normalization-jacobians phenomenon_id="c15-invariance-choice"}
+### Jacobians expose the erased directions
+
+Away from degenerate states and with zero epsilon, let
+$\vect u=\vect x/\|\vect x\|$ and
+$\vect v=\matr P\vect x/\|\matr P\vect x\|$. Then
+
+$$
+\matr J_R=\frac{\sqrt d}{\|\vect x\|}(\matr I-\vect u\vect u^{\mathsf T}),
+\qquad
+\matr J_C=\frac{\sqrt d}{\|\matr P\vect x\|}(\matr P-\vect v\vect v^{\mathsf T}).
+$$ {#eq-c15-jacobians}
+
+Generically, $\matr J_R$ has rank $d-1$ and $\matr J_C$ rank $d-2$.
+:::
+
+### Proof
+
+Differentiate $\vect z/\|\vect z\|$ to obtain
+$(\matr I-\widehat{\vect z}\widehat{\vect z}^{\mathsf T})/\|\vect z\|$.
+For @eq-c15-centered, compose with the fixed projector $\matr P$. The RMS map
+annihilates its radial direction. The centered map additionally annihilates
+$\vect1$ because $\matr P\vect1=0$.
+
+:::: {.plan-code}
+::: {.plan}
+1. Verify and activate <code>harness@ch-15</code>.
+2. Normalize one vector before and after a constant shift.
+3. Compute both exact zero-epsilon Jacobians.
+4. compare raw-moment and centered FP32 variance.
+5. Verify the registered invariance and rank claims.
+:::
+
+```{python}
+#| label: fig-c15-invariances
+#| fig-cap: "Centering and RMS-only scaling choose different equivalence classes. Centered normalization removes a constant shift; RMS normalization preserves evidence of it."
+#| fig-alt: "Grouped coordinate plot for a vector and its constant-shifted copy. The two centered-normalized curves overlap exactly, while the two RMS-normalized curves differ."
+#| code-summary: "Code: expose the invariances, null directions, and arithmetic of two coordinate-wise normalizers"
+
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+import matplotlib.pyplot as plt
+import numpy as np
+
+# [1]
+manifest_path = Path("artifacts/harness/ch-15/manifest.json")
+manifest = json.loads(manifest_path.read_text())
+wheel_path = manifest_path.parent / manifest["wheel"]
+wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
+assert wheel_digest == manifest["wheel_sha256"]
+sys.path.insert(0, str(wheel_path.resolve()))
+from trainable_harness import (
+    centered_normalize,
+    normalization_jacobian,
+    raw_and_centered_variance,
+    rms_normalize,
+)
+
+# [2]
+x = np.array([-2.0, -1.0, 1.0, 2.0])
+shifted = x + 10.0
+outputs = {
+    "centered x": centered_normalize(x),
+    "centered x+10": centered_normalize(shifted),
+    "RMS x": rms_normalize(x),
+    "RMS x+10": rms_normalize(shifted),
+}
+fig, axis = plt.subplots(figsize=(7.4, 3.7))
+for label, values in outputs.items():
+    axis.plot(values, "o-", label=label)
+axis.set(xlabel="coordinate", ylabel="normalized value")
+axis.legend(frameon=False, ncol=2)
+fig.tight_layout()
+# [3]
+assert np.linalg.matrix_rank(
+    normalization_jacobian(x, centered=True), tol=1e-10
+) == 2
+assert np.linalg.matrix_rank(
+    normalization_jacobian(x, centered=False), tol=1e-10
+) == 3
+# [4]
+assert raw_and_centered_variance(
+    np.array([9998, 9999, 10001, 10002])
+) == (0.0, 2.5)
+# [5]
+claim = json.loads(Path("artifacts/claims/c15-invariance-001.json").read_text())
+assert claim["harness_wheel_sha256"] == wheel_digest
+assert claim["result"]["centered_shift_deviation"] == 0.0
+print("claim c15-invariance-001: verified")
+```
+::::
+
+## Epsilon changes the map {#sec-c15-epsilon}
+
+Production rules use a denominator such as $\sqrt{m_2+\varepsilon}$. Epsilon
+prevents division by zero and caps local amplification, but it breaks exact
+scale invariance when $m_2$ is comparable to epsilon. Its value and placement
+are therefore part of the algorithm. Accumulating $m_2$ in a wider format can
+matter even when stored activations are narrow. Raw moments should not be
+used when a centered statistic is intended.
+
+Batch-coordinate normalization adds another state: running estimates used at
+evaluation. Those are streaming centered statistics of the kind built in
+C02, with the same estimator-denominator and reduction-order obligations.
+
+## Placement changes the derivative path {#sec-c15-placement}
+
+For a residual map, pre-normalization has Jacobian
+
+$$
+\matr J_{\mathrm{pre}}=\matr I+\matr J_F\matr J_N,
+$$
+
+whereas post-normalization has
+
+$$
+\matr J_{\mathrm{post}}=\matr J_N(\matr I+\matr J_F).
+$$
+
+The first contains an explicit identity summand; the second filters every
+path through $\matr J_N$. This algebra explains a diagnostic difference. It
+does not prove that every pre-normalized architecture trains better, because
+the learned function, scale, finite epsilon, and update dynamics also change.
+
+## Brand bridge and claim boundary {#sec-c15-bridge}
+
+::: {.brand-bridge}
+The centered coordinate-wise rule is conventionally called LayerNorm
+[@ba2016]; the uncentered rule is RMSNorm [@zhang2019rms]. These aliases appear
+here only after the mathematical objects are separated. Claims that
+normalization “smooths the landscape” require a named slice, metric, and
+experimental setting; @santurkar2018 provides influential evidence, not a
+universal theorem about all normalized models.
+:::
+
+::: {.callout-warning title="Named wrong answer: normalization preserves information"}
+Every invariant map deliberately discards directions. The right question is
+whether those directions should be irrelevant to the downstream computation.
+:::
+
+## Check yourself {#sec-c15-check}
+
+For $d=4$, centered normalization generically removes the radial direction
+inside the three-dimensional mean-zero subspace, leaving rank two. RMS
+normalization removes only the radial direction, leaving rank three. Adding
+epsilon generally restores small radial sensitivity but does not make the two
+maps equivalent.
+
+## Okay, so — {#sec-c15-recap}
+
+- **Inherited:** C02's centered state and C14's Jacobian spectrum now diagnose a training primitive.
+- **Changed:** normalization is specified by invariance, statistic, epsilon, and placement.
+- **Instrumented:** `c15-invariance-001` checks shift behavior, Jacobian rank, and FP32 cancellation.
+- **Established:** centered and RMS-only rules erase different directions.
+- **Unresolved:** even a locally controlled derivative map can approach a moving curvature boundary during training; C16 follows that boundary.
+
+## Sources and further reading {#sec-c15-sources}
+
+See @ba2016 for the centered method, @zhang2019rms for its RMS-only variant,
+and @santurkar2018 for a loss-geometry investigation. The Spring 2026
+normalization materials supplied the myth-versus-mechanism order; broad
+landscape and generalization claims were kept outside the theorem spine.
+
+## Exercises {#sec-c15-exercises}
+
+1. **(Pencil.)** Differentiate both maps with nonzero epsilon and identify which nullspaces remain exact.
+2. **(Code.)** Sweep offset magnitude and dtype for the four-coordinate variance witness. Report the first raw-moment failure.
+3. **(Audit.) Paper audit:** For a normalization ablation, record the statistic, axes, epsilon, affine parameters, placement, accumulation format, and evaluation-state policy.

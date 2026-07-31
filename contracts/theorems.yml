@@ -11,6 +11,17 @@
   ],
   "theorems": [
     {
+      "id": "thm-c01-roofline",
+      "chapter": "c01",
+      "phenomenon_explained": "c01-count-not-cost",
+      "assumptions": "A declared operation count, traffic boundary, peak arithmetic rate, and peak bandwidth.",
+      "conclusion": "Achieved arithmetic performance is bounded by the minimum of arithmetic peak and bandwidth times arithmetic intensity.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Operation count cannot identify the limiting resource without traffic and machine balance.",
+      "boundary": "The ceiling omits latency, occupancy, synchronization, access regularity, and excess traffic, and is not a wall-clock prediction.",
+      "source": "williams2009"
+    },
+    {
       "id": "thm-c02-welford",
       "chapter": "c02",
       "phenomenon_explained": "c02-negative-variance",
@@ -405,6 +416,72 @@
       "diagnostic_corollary": "Extremal-curvature diagnostics can query Hessian actions without materializing a dense p-by-p matrix.",
       "boundary": "The identity does not imply a universal runtime factor or remove derivative-graph storage, replay, and reduction costs.",
       "source": "pearlmutter1994"
+    },
+    {
+      "id": "thm-c13-conditional-descent",
+      "chapter": "c13",
+      "phenomenon_explained": "c13-mean-not-regime",
+      "assumptions": "An L-smooth objective and a conditionally unbiased gradient estimator with finite conditional second moment.",
+      "conclusion": "One-step conditional expected loss contains a deterministic descent term and an additive variance penalty.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The safe-step diagnostic depends on noise-to-signal ratio, not the mean gradient alone.",
+      "boundary": "Clipping, bias, dependence, infinite variance, and nonuniform smoothness require modified contracts.",
+      "source": "bottou2018"
+    },
+    {
+      "id": "thm-c14-variance-recursion",
+      "chapter": "c14",
+      "phenomenon_explained": "c14-average-criticality",
+      "assumptions": "Wide exchangeable coordinates, independent fan-in-scaled weights, and the Gaussian self-averaging approximation.",
+      "conclusion": "The typical coordinate second moment follows a scalar Gaussian expectation map; for zero-bias ReLU the critical weight variance is two.",
+      "proof_mode": "diagnostic-proof-sketch",
+      "diagnostic_corollary": "A multiplicative scale error compounds exponentially with depth.",
+      "boundary": "Finite width, correlations, biases, and Jacobian spectral edges are not controlled by the scalar recursion.",
+      "source": "schoenholz2017"
+    },
+    {
+      "id": "thm-c14-average-spectrum",
+      "chapter": "c14",
+      "phenomenon_explained": "c14-average-criticality",
+      "assumptions": "A finite real matrix with nonempty input dimension.",
+      "conclusion": "Mean squared singular value equals normalized Gram trace and can equal one while the lower singular edge is zero.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Variance preservation is a trace claim, not dynamical isometry.",
+      "boundary": "The example does not prescribe an initialization or describe nonlinear finite-width products.",
+      "source": "elementary-linear-algebra"
+    },
+    {
+      "id": "thm-c15-normalization-jacobians",
+      "chapter": "c15",
+      "phenomenon_explained": "c15-invariance-choice",
+      "assumptions": "Nondegenerate coordinate vectors and zero implementation epsilon.",
+      "conclusion": "RMS normalization removes the radial direction; centered normalization also removes the constant-coordinate direction.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "The two rules choose different invariances and generic Jacobian ranks.",
+      "boundary": "Nonzero epsilon, learned affine parameters, finite precision, and degenerate states alter the Jacobian.",
+      "source": "ba2016;zhang2019rms"
+    },
+    {
+      "id": "thm-c16-quadratic-stability",
+      "chapter": "c16",
+      "phenomenon_explained": "c16-moving-boundary",
+      "assumptions": "A fixed positive scalar quadratic mode and constant positive step size.",
+      "conclusion": "Gradient descent converges exactly when the product of step size and curvature lies strictly between zero and two.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Two over curvature is an exact fixed-mode control for interpreting a moving nonlinear trajectory.",
+      "boundary": "A local nonlinear Hessian eigenvalue does not determine the future trajectory after curvature rotates or changes.",
+      "source": "elementary-spectral-gradient-descent"
+    },
+    {
+      "id": "thm-c17-matrix-steepest",
+      "chapter": "c17",
+      "phenomenon_explained": "c17-norm-chooses-update",
+      "assumptions": "A finite real matrix and first-order objective linearization over Frobenius, operator, or nuclear unit balls.",
+      "conclusion": "The three unit balls yield normalized-gradient, polar-factor, and leading-rank-one steepest directions respectively.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A matrix optimizer is not geometrically specified until its update norm is named.",
+      "boundary": "First-order steepest direction does not choose scale, momentum, routing, approximation, or hardware implementation.",
+      "source": "bernstein2024"
     }
   ]
 }

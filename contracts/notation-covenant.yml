@@ -45,7 +45,13 @@
     {"id": "generalized-gauss-newton", "latex": "\\matr{G}", "meaning": "generalized Gauss--Newton matrix under the locally declared model/output-loss split", "new_in_volume": true},
     {"id": "model-fisher", "latex": "\\matr{F}", "meaning": "model Fisher information with its model-label expectation declared", "new_in_volume": true},
     {"id": "empirical-fisher", "latex": "\\widetilde{\\matr{F}}", "meaning": "observed-label score outer-product average, not the model Fisher by default", "new_in_volume": true},
-    {"id": "model-curvature", "latex": "\\matr{R}", "meaning": "residual Hessian term omitted by the generalized Gauss--Newton matrix", "new_in_volume": true}
+    {"id": "model-curvature", "latex": "\\matr{R}", "meaning": "residual Hessian term omitted by the generalized Gauss--Newton matrix", "new_in_volume": true},
+    {"id": "arithmetic-intensity", "latex": "I=F/Q", "meaning": "declared operation count divided by bytes crossing a declared traffic boundary", "new_in_volume": true},
+    {"id": "machine-balance", "latex": "I_*=P_{\\max}/B", "meaning": "peak arithmetic rate divided by peak bandwidth", "new_in_volume": true},
+    {"id": "noise-signal-ratio", "latex": "\\chi_k", "meaning": "conditional gradient-estimator variance divided by squared gradient norm", "new_in_volume": true},
+    {"id": "centering-projector", "latex": "\\matr{P}", "meaning": "orthogonal projector off the constant-coordinate direction", "new_in_volume": true},
+    {"id": "nuclear-norm", "latex": "\\norm{\\matr{A}}_*", "meaning": "sum of singular values", "new_in_volume": true},
+    {"id": "polar-factor", "latex": "\\operatorname{polar}(\\matr{A})", "meaning": "rectangular partial-isometry factor from the declared thin SVD", "new_in_volume": true}
   ],
   "global_rules": {
     "paper_vectors": "column",

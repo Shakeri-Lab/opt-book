@@ -26,6 +26,7 @@ book:
     - index.qmd
     - part: "Act 0 — The computational arena"
       chapters:
+        - chapters/act0/01-count-not-cost.qmd
         - chapters/act0/02-streaming-state.qmd
         - chapters/act0/03-precision-contract.qmd
         - chapters/act0/04-quadratic-modes.qmd
@@ -41,6 +42,11 @@ book:
       chapters:
         - chapters/act2/11-reverse-accumulation.qmd
         - chapters/act2/12-curvature.qmd
+        - chapters/act2/13-stochastic-regimes.qmd
+        - chapters/act2/14-criticality.qmd
+        - chapters/act2/15-normalization.qmd
+        - chapters/act2/16-edge-of-stability.qmd
+        - chapters/act2/17-update-geometry.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd

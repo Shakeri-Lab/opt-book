@@ -1,0 +1,7 @@
+{
+  "schema_version": 1, "chapter": "c15", "harness_ref": "ch-15", "package": "trainable-harness", "version": "0.15.0", "api": "0.15",
+  "wheel": "trainable_harness-0.15.0-py3-none-any.whl", "wheel_sha256": "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f", "python": "3.12.13",
+  "dependencies": {"numpy": "2.5.1"},
+  "source": {"status": "pre-release-uncommitted", "commit": null, "annotated_tag": null, "tag_required_before_publication": "harness-ch-15-v1", "pyproject_sha256": "fa97e03a3595be78481f579dd81c77e366158e8b7a362edd27a64e04b0b34c87", "init_sha256": "f625f1a125a2661b12818bdbd50cba6fd852a57ca0013e4b0bf27f2e9a0aa1c9", "normalization_sha256": "8f65e15759b43dc3c10fb06e3c559b076db70b4f2b438769a712a45420865628"},
+  "public_operations": ["centered_normalize", "rms_normalize", "normalization_jacobian", "raw_and_centered_variance"]
+}

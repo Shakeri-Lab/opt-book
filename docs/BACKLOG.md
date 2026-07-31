@@ -2,9 +2,9 @@
 
 ## Build-blocking
 
-- Obtain author acceptance of the locally complete C03–C12 chapters.
-- Resolve D34 before the next harness wheel is built. Do not backfill false
-  commit/tag identities onto the eleven C02–C12 wheels already built; their
+- Obtain author acceptance of the locally complete C03–C17 chapters.
+- Resolve D34 before release identity is frozen. Do not backfill false
+  commit/tag identities onto the sixteen C02–C17 wheels already built; their
   content-addressed artifacts remain the rolling-draft identities.
 - Obtain explicit author ratification of provisional D29–D33. Their editorial
   policies are implemented, but implementation is not recorded as acceptance.
@@ -47,26 +47,18 @@
   promote the tutorial's general information-operator framework into the
   core arc.
 
-## Future chapter gates from the ICML 2026 source audit
+## Completed chapter gates from the ICML 2026 source audit
 
 - **C12 complete locally:** the disagreement witness, matrix-free action,
   bounded CG two-lens comparison, and quasi-Newton inference branch are
   implemented with explicit expectation and calibration boundaries.
-- **C13:** independently derive the conditional expected-descent inequality;
-  measure gradient signal, estimator variation, batch scaling, heavy-tail
-  failure, and clipping bias. Use one exact quadratic momentum control and
-  one noise-amplification control; keep WSD, critical batch size, Chebyshev
-  schedules, and CG details in exercises/further reading.
-- **C16:** track both top-Hessian and gradient-direction curvature in the
-  required CPU edge-of-stability study. Use glocal smoothness only as a
-  control or paper-audit branch; verify the separate implicit-bias sources
-  before making a max-margin connection. Name and adjudicate the KMP
-  staircase in the C16/C17 contracts so the tutorial-review lead is not lost.
-- **C17:** test rotation and scale transformations, rectangular polar
-  factors, Newton–Schulz residuals, parameter routing, state bytes, and
-  hardware work. Treat momentum-plus-sign descent as an Adam surrogate, not
-  a complete AdamW explanation. Keep QJL/TurboQuant as a paper audit unless
-  they fit the matrix-geometry spine without displacement.
+- **C13 complete locally:** conditional descent, noise-to-signal ratio, batch
+  assumptions, heavy-tail boundary, and clipping bias are on the page.
+- **C16 complete locally:** the required CPU witness tracks top and
+  gradient-direction curvature; glocal and staircase results remain branches.
+- **C17 complete locally:** dual-norm geometry, rectangular polar factors,
+  Newton–Schulz residuals, and the paper-autopsy endpoint are present;
+  QJL/TurboQuant remains an Audit branch.
 
 ## Release identity decision
 
@@ -90,7 +82,6 @@ object needed to audit it.
 
 ## Deferred by scope
 
-- C01 and C13–C17 contracts.
 - Act III decision after core budget evidence.
 - Full Rosetta alias redirects beyond terms actually introduced.
 - Full historical harness matrix until immutable publication tags exist; the

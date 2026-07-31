@@ -4,7 +4,7 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `94635b8` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `3eb57b8` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
@@ -14,20 +14,16 @@
 
 ## Current build
 
-Build Plan v2 is the approved implementation baseline. C02, “One Pass, Two
-Failures,” is the accepted pilot. C03, “The Grid Under the Update,” C04, “One
-Step, Many Clocks,” C05, “The Safe Zone Is Logarithmic,” C06, “One Square,
-Two Regimes,” C07, “The Sphere Has a Finite Price,” and C08, “One Average, Two
-Edges,” are locally complete. C09, “The Bulk Is Not a Verdict,” replaces the
-asymptotic-edge significance shortcut in the source material with a matched
-finite-null contract. C10, “Full Rank, Few Directions,” closes Act I with an
-effective-rank covariance diagnostic. C11, “The Gradient Has a Memory,” opens
-Act II with fan-out accumulation and checkpoint/recomputation contracts. C12,
-“Curvature Is Not One Matrix,” separates the realized Hessian, generalized
-Gauss--Newton matrix, model Fisher, and empirical Fisher before exposing them
-through a matrix-free action. Both local HTML and the derived PDF render
-successfully; source, contract, HTML, and PDF audits pass subject to the
-documented untagged-PDF fallback.
+Build Plan v2 is the approved implementation baseline. The complete approved
+C01–C17 core now has locally complete drafts. C01 installs the resource model;
+C02–C10 build numerical stability and high-dimensional geometry; C11–C17
+carry reverse accumulation, curvature objects, stochastic regimes,
+criticality, coordinate-wise normalization, edge of stability, and
+matrix-update geometry through the terminal Paper Autopsy Protocol. C02 is
+the accepted pilot; C03–C17 remain author-review drafts. Act III is still
+gated by D02 and was not silently created. Both local HTML and the derived PDF
+render successfully; source, contract, HTML, and PDF audits pass subject to
+the documented untagged-PDF fallback.
 
 The 211-slide ICML 2026 tutorial *Is numerical optimization theory irrelevant
 to machine learning practice in 2026?* has been reviewed completely as an
@@ -47,18 +43,11 @@ The shared paper-reading interface is
 
 Current forced dual-edition build:
 
-- 168 total PDF pages;
-- C02 spans 14 physical pages (pages 13–26);
-- C03 spans 14 physical pages (pages 27–40);
-- C04 spans 14 physical pages (pages 41–54);
-- C05 spans 12 physical pages (pages 55–66);
-- C06 spans 15 physical pages (pages 69–83);
-- C07 spans 12 physical pages (pages 85–96);
-- C08 spans 14 physical pages (pages 97–110);
-- C09 spans 16 physical pages (pages 111–126);
-- C10 spans 12 physical pages (pages 127–138);
-- C11 spans 12 physical pages (pages 139–150);
-- C12 spans 12 physical pages (pages 151–162);
+- 210 total PDF pages;
+- physical chapter openers for C01–C17 are pages 15, 21, 35, 49, 65, 77,
+  93, 105, 119, 135, 147, 159, 171, 177, 183, 189, and 195;
+- C01 and C13–C17 each use six physical pages through the next recto chapter
+  opening; printed starts are 7, 163, 169, 175, 181, and 187;
 - C02 contains 2,745 rendered non-code words, excluding the bibliography;
 - C03 contains 2,756 rendered non-code words, excluding the bibliography;
 - C04 contains 2,233 rendered non-code words, excluding the bibliography;
@@ -71,9 +60,10 @@ Current forced dual-edition build:
   series: the current reproducible HTML parser reports 1,801 and 1,924
   non-code words, respectively, but does not reproduce the earlier counting
   convention. The same source-side parser counts 2,344 prose-like words in
-  C12. Replace the entire manual series with one CI-emitted metrics ledger
-  before using chapter counts comparatively;
-- 45 passing harness tests and 2 passing repository fixture tests;
+  C12. The same source-side approximation reports 848, 940, 814, 861, 935,
+  and 1,042 words for C01 and C13–C17. Replace the entire manual series with
+  one CI-emitted metrics ledger before using chapter counts comparatively;
+- 55 passing harness tests and 2 passing repository fixture tests;
 - all fast contract audits and the rendered HTML/PDF audit pass.
 
 The harness is being born book-first. No course-wide package was found in the
@@ -100,18 +90,17 @@ Fast audits:
 
 ## Current chapters
 
-- Most recent contract: `docs/chapter-contracts/C12.md`
-- Most recent manuscript: `chapters/act2/12-curvature.qmd`
+- Most recent contract: `docs/chapter-contracts/C17.md`
+- Most recent manuscript: `chapters/act2/17-update-geometry.qmd`
 - Most recent harness increment:
-  `harness/src/trainable_harness/curvature.py`
-- Evidence: `artifacts/claims/c12-curvature-choice-001.json` and
-  `artifacts/claims/c12-hvp-001.json`
-- Current harness pin: `artifacts/harness/ch-12/manifest.json`
+  `harness/src/trainable_harness/update_geometry.py`
+- Evidence: `artifacts/claims/c17-update-norm-001.json`
+- Current harness pin: `artifacts/harness/ch-17/manifest.json`
 - Current source integrations: the ICML tutorial audits,
-  `docs/source-audits/c12-curvature-primary-sources.md`, and
+  `docs/source-audits/remaining-core-chapters.md`, and
   `docs/PAPER-AUTOPSY-PROTOCOL.md`
 
-The C02–C12 wheels are built, vendored, and content-addressed. Their annotated
+The C02–C17 wheels are built, vendored, and content-addressed. Their annotated
 harness tags and manifest source identities remain intentionally absent; do
 not backfill them with a commit that did not produce the wheel.
 
@@ -132,8 +121,7 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 ## Next safe action
 
-Gate the C13 stochastic-regimes contract. Re-derive its conditional
-expected-descent inequality from primary sources, declare the estimator and
-sampling filtration, and preserve the registered C04/C06 promises. Annotated
-harness tags remain a separate release task under open decision D34. Do not
-create placeholder chapter files for C01 or C13–C17.
+Perform author review of C03–C17 as diff-based chapter acceptances, then decide
+whether D02 opens any Act III synthesis. Annotated harness tags remain a
+separate release task under open decision D34; do not invent source identities
+for the rolling-draft wheels.
