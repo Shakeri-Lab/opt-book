@@ -26,7 +26,7 @@ sources:
     path: ../old/DS6210_Book/chapters/ch07_sgd.tex
     sha256: ae88c222b51a7e992757d89efbc02fd41bb91e69cd84330d3105fa69720f01a3
     reuse: source discovery and exercise audit only; unverified training-compresses-rank and LoRA-mechanism claims rejected
-  - id: vershynin2018-local
+  - id: vershynin2025-2e-local
     class: primary-monograph-local
     path: ../Resources/3-Vershynin_High-Dimensional Probability.pdf
     sha256: 6e47428cdbaa76419c9975f8d16fbb17defbc6ced11ada49657f9e56124da6b4

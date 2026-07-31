@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-04" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -28,18 +34,6 @@ from trainable_harness import (  # noqa: E402
     quadratic_trace,
     scalar_noisy_quadratic_trials,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -114,7 +108,7 @@ def main() -> None:
         },
         seed=None,
     )
-    write_claim("c04-mode-dynamics-001.json", mode_claim)
+    verify_generated_claim("c04-mode-dynamics-001.json", mode_claim)
 
     compressed_preconditioner = np.diag([1.0, 1 / 25])
     raw = quadratic_trace(
@@ -161,7 +155,7 @@ def main() -> None:
         },
         seed=None,
     )
-    write_claim("c04-preconditioner-001.json", preconditioner_claim)
+    verify_generated_claim("c04-preconditioner-001.json", preconditioner_claim)
 
     noisy = scalar_noisy_quadratic_trials(
         curvature=1.0,
@@ -211,14 +205,14 @@ def main() -> None:
         },
         seed=noisy.seed,
     )
-    write_claim("c04-noise-floor-001.json", noise_claim)
+    verify_generated_claim("c04-noise-floor-001.json", noise_claim)
 
     for claim_id in (
         "c04-mode-dynamics-001",
         "c04-preconditioner-001",
         "c04-noise-floor-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

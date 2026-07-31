@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-05" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -29,18 +35,6 @@ from trainable_harness import (  # noqa: E402
     standard_normal_maxima,
     subgaussian_max_threshold,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -108,7 +102,7 @@ def main() -> None:
         },
         seed=seed,
     )
-    write_claim("c05-simultaneous-control-001.json", simultaneous)
+    verify_generated_claim("c05-simultaneous-control-001.json", simultaneous)
 
     widths = (16, 64, 256, 1024)
     trials = 20_000
@@ -173,13 +167,13 @@ def main() -> None:
         },
         seed=base_seed,
     )
-    write_claim("c05-projection-scale-001.json", projections)
+    verify_generated_claim("c05-projection-scale-001.json", projections)
 
     for claim_id in (
         "c05-simultaneous-control-001",
         "c05-projection-scale-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

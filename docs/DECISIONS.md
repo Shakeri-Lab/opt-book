@@ -88,3 +88,15 @@ author correction supersedes any default.
     WSD, Adam-surrogate details, and Probabilistic Numerics examples remain
     exercises, field notes, or further reading unless one becomes necessary
     to resolve a chapter's opening phenomenon.
+34. **D34 — Harness publication tags (pending author decision):** Recommended
+    forward-only scheme: start annotated source tags with the first wheel
+    actually built from a recorded commit/tag pair; do not backfill false
+    source identities onto C02–C12. Keep SHA-256 as the identity of those
+    eleven rolling-draft wheels.
+
+## Acceptance status
+
+- D01–D28 remain the approved implementation baseline.
+- D29–D33 are implemented provisional policies and await explicit author
+  ratification; “proceed with revision” is not silently recorded as acceptance.
+- D34 is open. No harness tags are created until the author chooses a scheme.

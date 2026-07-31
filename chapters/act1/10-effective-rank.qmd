@@ -405,8 +405,9 @@ $$ {#eq-c10-covariance-bound}
 The proof symmetrizes the empirical process, controls a quadratic process
 indexed by the sphere, and converts its complexity to effective rank. That
 chain requires machinery beyond this chapter's diagnostic target. See
-@vershynin2018 for a nonasymptotic derivation and @koltchinskii2017 for sharp
-effective-rank formulations.
+Vershynin's second-edition Theorem 9.2.2 [@vershynin2026] for a
+nonasymptotic derivation and @koltchinskii2017 for sharp effective-rank
+formulations.
 
 The usable scaling is
 $m\gg r_{\mathrm{eff}}(\matr{\Sigma})$. Dimension has not been abolished;
@@ -469,8 +470,9 @@ $\matr{A}^{\mathsf T}\matr{A}=\matr{\Sigma}$. Which two quantities agree?
 
 ## Sources and further reading {#sec-c10-sources}
 
-The effective-rank covariance theorem follows @vershynin2018. Sharp
-expectation and high-probability bounds are developed by
+The effective/stable-rank identity is recorded in Vershynin's second-edition
+Remark 5.6.4, and the covariance theorem is Theorem 9.2.2
+[@vershynin2026]. Sharp expectation and high-probability bounds are developed by
 @koltchinskii2017. The warning that effective dimension alone does not imply
 generalization is consistent with the interpolation evidence of
 @zhang2017.

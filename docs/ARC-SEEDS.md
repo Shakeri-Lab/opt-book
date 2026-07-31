@@ -7,15 +7,16 @@
 | C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Contract pending |
 | C02 | Repair a one-pass variance computation by preserving centered, mergeable state | Pilot accepted; C03 handoff harvested |
 | C03 | Predict floating-point failures from a precision contract | Locally complete; author review pending |
-| C04 | Read gradient descent mode by mode | Locally complete; acceptance audit passed |
-| C05 | Turn exponential tails into simultaneous control | Locally complete; acceptance audit passed |
-| C06 | Diagnose the two-regime tail created by squares and products | Locally complete; acceptance audit passed |
-| C07 | Turn a fixed-direction tail budget into a uniform finite-cover certificate | Locally complete; acceptance audit passed |
-| C08 | Separate fixed-direction isotropy from adaptive singular edges | Locally complete; acceptance audit passed |
-| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Locally complete; acceptance audit passed |
-| C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; acceptance audit passed |
-| C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; acceptance audit passed |
-| C12–C17 | Diagnose curvature, stochastic regimes, criticality, normalization, stability, and update geometry | Arc approved; contracts pending |
+| C04 | Read gradient descent mode by mode | Locally complete; machine acceptance audit passed; author review pending |
+| C05 | Turn exponential tails into simultaneous control | Locally complete; machine acceptance audit passed; author review pending |
+| C06 | Diagnose the two-regime tail created by squares and products | Locally complete; machine acceptance audit passed; author review pending |
+| C07 | Turn a fixed-direction tail budget into a uniform finite-cover certificate | Locally complete; machine acceptance audit passed; author review pending |
+| C08 | Separate fixed-direction isotropy from adaptive singular edges | Locally complete; machine acceptance audit passed; author review pending |
+| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Locally complete; machine acceptance audit passed; author review pending |
+| C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; machine acceptance audit passed; author review pending |
+| C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; machine acceptance audit passed; author review pending |
+| C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
+| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Arc approved; contracts pending |
 | Act III | Synthesis through modern primitives | Gated after core budget evidence |
 
 ## Public threads
@@ -54,7 +55,7 @@ chapter obligations:
 
 | Unit | Added diagnostic obligation |
 |---|---|
-| C12 | Distinguish Hessian, generalized Gauss–Newton, model Fisher, empirical Fisher, and structured approximations before comparing “second-order” methods. |
+| C12 | Harvested: the Hessian/GGN/model-Fisher/empirical-Fisher disagreement witness, action-only probe, bounded CG two-lens seam, and structured-approximation boundary are now on the page. |
 | C13 | Make the gradient-dominated/noise-dominated transition the causal spine; declare the conditional gradient estimator, batch sampling, second-moment boundary, and clipping bias. |
 | C16 | Compare fixed global curvature, local top curvature, gradient-direction curvature, and finite-horizon history rather than treating \(2/\alpha\) as a self-explanatory threshold. |
 | C17 | Test rotation, scale, matrix shape, polar-factor approximation, update spectrum, parameter routing, state, and hardware cost before the Muon literature bridge. |
@@ -64,7 +65,9 @@ best one-step move in the current gradient direction. C08 now plants the
 update-spectrum versus weight-spectrum distinction. The machine-readable
 obligations live in `contracts/promises.yml`.
 
-The course-design critique adds a trunk/branch distinction:
+The author-supplied peer critique recorded in
+`docs/source-audits/2026-icml-course-design-critique.md` adds a trunk/branch
+distinction:
 
 - the four optimization questions and the C13 regime diagnosis stay on the
   trunk;

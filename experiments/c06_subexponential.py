@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-06" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -30,18 +36,6 @@ from trainable_harness import (  # noqa: E402
     centered_pareto_clip_bias,
     observation_ledger,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -119,7 +113,7 @@ def main() -> None:
         },
         seed=None,
     )
-    write_claim("c06-square-break-001.json", square_break)
+    verify_generated_claim("c06-square-break-001.json", square_break)
 
     terms = 16
     trials = 500_000
@@ -201,7 +195,7 @@ def main() -> None:
         },
         seed=seed,
     )
-    write_claim("c06-two-regimes-001.json", two_regimes)
+    verify_generated_claim("c06-two-regimes-001.json", two_regimes)
 
     pareto_shape = 1.5
     pareto_scale = 1.0
@@ -242,14 +236,14 @@ def main() -> None:
         },
         seed=None,
     )
-    write_claim("c06-clipping-bias-001.json", clipping)
+    verify_generated_claim("c06-clipping-bias-001.json", clipping)
 
     for claim_id in (
         "c06-square-break-001",
         "c06-two-regimes-001",
         "c06-clipping-bias-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

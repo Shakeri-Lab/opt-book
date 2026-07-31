@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-08" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -27,18 +33,6 @@ from trainable_harness import (  # noqa: E402
     observation_ledger,
     power_iteration_spectral_norm,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -116,7 +110,7 @@ def main() -> None:
         },
         seed=matrix_seed,
     )
-    write_claim("c08-average-edges-001.json", average_edges)
+    verify_generated_claim("c08-average-edges-001.json", average_edges)
 
     columns = 64
     trials = 160
@@ -173,7 +167,7 @@ def main() -> None:
         },
         seed=6225,
     )
-    write_claim("c08-aspect-ratio-001.json", aspect_ratio)
+    verify_generated_claim("c08-aspect-ratio-001.json", aspect_ratio)
 
     iterations = 25
     iteration_seed = 6228
@@ -205,14 +199,14 @@ def main() -> None:
         },
         seed=iteration_seed,
     )
-    write_claim("c08-power-iteration-001.json", power_iteration)
+    verify_generated_claim("c08-power-iteration-001.json", power_iteration)
 
     for claim_id in (
         "c08-average-edges-001",
         "c08-aspect-ratio-001",
         "c08-power-iteration-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

@@ -10,6 +10,8 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 from trainable_harness import (
     comparison_audit,
     merge_moments,
@@ -23,16 +25,8 @@ CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-02" / "manifest.json"
 
 
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=0.0)
 
 
 def left_fold(states):
@@ -119,7 +113,7 @@ def main() -> None:
             },
         },
     }
-    write_claim("c02-variance-crash-001.json", crash)
+    verify_generated_claim("c02-variance-crash-001.json", crash)
 
     order_seed = 6211
     order_rng = np.random.default_rng(order_seed)
@@ -172,10 +166,10 @@ def main() -> None:
             },
         },
     }
-    write_claim("c02-reduction-order-001.json", reduction)
+    verify_generated_claim("c02-reduction-order-001.json", reduction)
 
-    print("wrote c02-variance-crash-001.json")
-    print("wrote c02-reduction-order-001.json")
+    print("verified c02-variance-crash-001.json")
+    print("verified c02-reduction-order-001.json")
 
 
 if __name__ == "__main__":

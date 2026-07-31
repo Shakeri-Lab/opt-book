@@ -94,6 +94,13 @@
       "threads": {
         "numerical-stability": "callback"
       }
+    },
+    "c12": {
+      "act": "act-2",
+      "threads": {
+        "random-matrix-spectra": "callback",
+        "landscape-update-geometry": "callback"
+      }
     }
   }
 }

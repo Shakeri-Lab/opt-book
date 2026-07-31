@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "owner_repository": "Shakeri-Lab/dl-book",
+  "status": "consumer-side mirror pending sibling-repository enforcement",
+  "anchors": [
+    {
+      "id": "sibling-backpropagation-mechanics",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part1/05-backpropagation.html#sec-05-backpropagation"
+    },
+    {
+      "id": "sibling-experiment-discipline",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/interludes/learning-by-experiment.html#sec-learning-by-experiment"
+    },
+    {
+      "id": "sibling-kernel-regression",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part4/12-kernel-regression.html#sec-12-kernel-regression"
+    },
+    {
+      "id": "sibling-attention-mechanics",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part4/13-attention.html#sec-13-attention"
+    },
+    {
+      "id": "sibling-transformer-assembly",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part4/14-self-attention-transformer.html#sec-14-self-attention-transformer"
+    },
+    {
+      "id": "sibling-modern-cnns-normalization-seed",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part2/09-modern-cnns-transfer.html#sec-09-modern-cnns-transfer"
+    },
+    {
+      "id": "sibling-precision-hardware",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance"
+    }
+  ]
+}

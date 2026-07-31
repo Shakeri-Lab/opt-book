@@ -46,6 +46,11 @@ phenomenon-first contract stated in optimization language.
 
 ## Editorial adjudication after the course-design critique
 
+The critique is an author-supplied peer response received in the project chat
+on 2026-07-31. Its identity and disposition are committed at
+`docs/source-audits/2026-icml-course-design-critique.md`; it is design input,
+not technical evidence.
+
 The critique correctly identifies several gaps, but the book should use a
 **trunk / branch / shelf** rule rather than expanding every gap into a
 section:

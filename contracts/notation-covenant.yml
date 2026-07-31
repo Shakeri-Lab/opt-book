@@ -40,7 +40,12 @@
     {"id": "jacobian", "latex": "\\matr{J}_F(\\vect{x})", "meaning": "Jacobian of F at x with output coordinates in rows and input coordinates in columns", "new_in_volume": true},
     {"id": "jvp", "latex": "\\matr{J}_F(\\vect{x})\\vect{v}", "meaning": "Jacobian-vector product or forward tangent action", "new_in_volume": true},
     {"id": "vjp", "latex": "\\vect{u}^{\\mathsf T}\\matr{J}_F(\\vect{x})", "meaning": "vector-Jacobian product or reverse cotangent action", "new_in_volume": true},
-    {"id": "cotangent", "latex": "\\bar z_v", "meaning": "derivative of the scalar output with respect to the value at node v", "new_in_volume": true}
+    {"id": "cotangent", "latex": "\\bar z_v", "meaning": "derivative of the scalar output with respect to the value at node v", "new_in_volume": true},
+    {"id": "hessian", "latex": "\\matr{H}", "meaning": "realized objective Hessian with respect to the locally declared parameter vector", "new_in_volume": true},
+    {"id": "generalized-gauss-newton", "latex": "\\matr{G}", "meaning": "generalized Gauss--Newton matrix under the locally declared model/output-loss split", "new_in_volume": true},
+    {"id": "model-fisher", "latex": "\\matr{F}", "meaning": "model Fisher information with its model-label expectation declared", "new_in_volume": true},
+    {"id": "empirical-fisher", "latex": "\\widetilde{\\matr{F}}", "meaning": "observed-label score outer-product average, not the model Fisher by default", "new_in_volume": true},
+    {"id": "model-curvature", "latex": "\\matr{R}", "meaning": "residual Hessian term omitted by the generalized Gauss--Newton matrix", "new_in_volume": true}
   ],
   "global_rules": {
     "paper_vectors": "column",

@@ -2,10 +2,12 @@
 
 ## Build-blocking
 
-- Obtain author acceptance of the locally complete C03–C11 chapters.
-- Pin the C02–C11 harness wheels to real source commits and annotated tags
-  after commit authority is granted. Their content-addressed wheels are
-  already vendored; only publication identities are intentionally absent.
+- Obtain author acceptance of the locally complete C03–C12 chapters.
+- Resolve D34 before the next harness wheel is built. Do not backfill false
+  commit/tag identities onto the eleven C02–C12 wheels already built; their
+  content-addressed artifacts remain the rolling-draft identities.
+- Obtain explicit author ratification of provisional D29–D33. Their editorial
+  policies are implemented, but implementation is not recorded as acceptance.
 - Decide the complete-book budget from the five measured chapters rather than
   extrapolating from the C02 pilot alone.
 
@@ -37,20 +39,19 @@
 - Confirm canonical Spring 2026 source variants.
 - Complete shelf fingerprinting and exercise deduplication.
 - Record student-work permissions before public reuse.
-- Route the ICML 2026 optimization-theory tutorial's load-bearing claims to
-  primary papers at C12, C13, C16, and C17 contract time; do not cite the
+- Route the ICML 2026 optimization-theory tutorial's remaining load-bearing
+  claims to primary papers at C13, C16, and C17 contract time; do not cite the
   tutorial as sole technical authority.
-- Route the ICML 2026 Probabilistic Numerics tutorial to Hennig (2015),
-  Hennig–Kiefel (2013), and any later primary calibration source used in C12.
-  Do not promote the tutorial's general information-operator framework into
-  the core arc.
+- C12 has routed the Probabilistic Numerics seam to Hennig (2015) and
+  Hennig–Kiefel (2013), with its primary-source audit committed. Do not
+  promote the tutorial's general information-operator framework into the
+  core arc.
 
 ## Future chapter gates from the ICML 2026 source audit
 
-- **C12:** design a small disagreement witness for Hessian, generalized
-  Gauss–Newton, model Fisher, and empirical Fisher. Add one bounded CG
-  two-lens comparison and a quasi-Newton-as-inference Audit branch with
-  explicit prior and calibration boundaries.
+- **C12 complete locally:** the disagreement witness, matrix-free action,
+  bounded CG two-lens comparison, and quasi-Newton inference branch are
+  implemented with explicit expectation and calibration boundaries.
 - **C13:** independently derive the conditional expected-descent inequality;
   measure gradient signal, estimator variation, batch scaling, heavy-tail
   failure, and clipping bias. Use one exact quadratic momentum control and
@@ -59,12 +60,20 @@
 - **C16:** track both top-Hessian and gradient-direction curvature in the
   required CPU edge-of-stability study. Use glocal smoothness only as a
   control or paper-audit branch; verify the separate implicit-bias sources
-  before making a max-margin connection.
+  before making a max-margin connection. Name and adjudicate the KMP
+  staircase in the C16/C17 contracts so the tutorial-review lead is not lost.
 - **C17:** test rotation and scale transformations, rectangular polar
   factors, Newton–Schulz residuals, parameter routing, state bytes, and
   hardware work. Treat momentum-plus-sign descent as an Adam surrogate, not
   a complete AdamW explanation. Keep QJL/TurboQuant as a paper audit unless
   they fit the matrix-geometry spine without displacement.
+
+## Release identity decision
+
+- **D34 pending:** choose a forward-only annotated tagging scheme for harness
+  artifacts. Recommended: begin with the first wheel built from a recorded
+  commit and tag (`harness-ch-12-v1` or later), never invent identities for the
+  ten existing public draft wheels, and retain their SHA-256 identities.
 
 ## Paper-presentation menu after source verification
 
@@ -81,7 +90,7 @@ object needed to audit it.
 
 ## Deferred by scope
 
-- C01 and C12–C17 contracts.
+- C01 and C13–C17 contracts.
 - Act III decision after core budget evidence.
 - Full Rosetta alias redirects beyond terms actually introduced.
 - Full historical harness matrix until immutable publication tags exist; the

@@ -1,0 +1,46 @@
+version: 1
+chapter: c12
+sources:
+  - id: src-c12-instructor-curvature
+    class: instructor-canonical
+    path: ../my_lectures/Act II/more/WW8.tex
+    sha256: 2f49cd79955a9259035911ac7b2c5287bc98b24602aa86ad8b34fa78c169f925
+    reuse: squared-loss covariance bridge, curvature-object phenomenon, and HVP need; all prose rewritten and broad spectral/generalization claims rejected
+  - id: src-c12-instructor-notes
+    class: instructor-canonical
+    path: ../my_lectures/Act II/more/WW8_notes.tex
+    sha256: f228275127f73fb4f6135194d408549124c57db4c2d2a2bab7b1abee51a57cf2
+    reuse: derivation order and candidate exercises only
+  - id: pearlmutter1994
+    class: primary-scholarly
+    url: https://www.bcl.hamilton.ie/~barak/papers/nc-hessian.pdf
+    sha256: 18e381e20d4ea7c3858ead0cc9e390053ea858655c65085834d6628fc506f4cb
+    reuse: exact Hessian-vector product identity and arithmetic boundary
+  - id: martens2020
+    class: primary-scholarly
+    url: https://www.jmlr.org/papers/v21/17-678.html
+    sha256: b6ac7f19dbc3b8bb8a44708e7fac5cc8d2a270ee0f6468eca09f8796b55aaaf0
+    reuse: Hessian/GGN decomposition and qualified GGN/model-Fisher equivalence
+  - id: kunstner2019
+    class: primary-scholarly
+    url: https://proceedings.neurips.cc/paper/2019/hash/46a558d97954d0692411c861cf78ef79-Abstract.html
+    sha256: 24794d33b6845c9dbe5802551949119d00565eb2e6a7607d8c29701ce796a8ca
+    reuse: empirical-Fisher naming and approximation boundaries
+  - id: hennig2015
+    class: primary-scholarly
+    url: https://epubs.siam.org/doi/10.1137/140955501
+    sha256: 0ab3db1c6bd8d15c456b532415aada8be0ca5b8415fca0c00ed52c9850fd7131
+    reuse: probabilistic CG interpretation under explicit SPD, line-search, prior, and calibration contracts
+  - id: hennigkiefel2013
+    class: primary-scholarly
+    url: https://www.jmlr.org/papers/v14/hennig13a.html
+    sha256: 2e5832dca7e4b07b762592043c8242c0613638298dee1b4cae68dfa7d14fe481
+    reuse: quasi-Newton updates as approximate Bayesian regressors under varying prior assumptions
+rejected_or_scoped_claims:
+  - Second order is not treated as one operator or one algorithm family.
+  - GGN, model Fisher, and empirical Fisher are not called interchangeable.
+  - A positive-semidefinite surrogate is not called the realized Hessian.
+  - A diagonal, block, or Kronecker approximation inherits no approximation guarantee without an error and state contract.
+  - HVP arithmetic counts are not reported as measured accelerator performance.
+  - Algebraic CG/BFGS correspondence is not used as evidence of calibrated posterior uncertainty.
+  - Trained Hessians receive no Wishart or Marchenko--Pastur null without a declared generative model.

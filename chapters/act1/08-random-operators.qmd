@@ -316,7 +316,7 @@ $$
 The resulting operator-norm control bounds every eigenvalue of the Gram
 matrix, hence every squared singular value. Careful conversion from squared
 edges to singular edges gives @eq-c08-subgaussian-edges. Vershynin supplies
-the constant bookkeeping [@vershynin2018].
+the constant bookkeeping [@vershynin2026].
 
 This proof anatomy is more important diagnostically than the unnamed
 universal constant:
@@ -373,7 +373,7 @@ edge is the corresponding min--max process. Gaussian comparison bounds them
 by sums and differences of Gaussian-vector norms; Gaussian concentration
 then supplies deviations. This chapter uses the result as a diagnostic
 benchmark. The comparison proof is given in Vershynin
-[@vershynin2018].
+[@vershynin2026].
 
 For $m=n$, the lower benchmark is zero. It does not say that every finite
 square Gaussian matrix is singular. It says that this theorem supplies no
@@ -633,7 +633,7 @@ average and upper edge but an arbitrarily small lower edge.
 
 Vershynin develops the singular-value identities, two-sided sub-Gaussian
 matrix theorem, and Gaussian comparison bounds used here
-[@vershynin2018]. The canonical instructor material supplied the random-map
+[@vershynin2026]. The canonical instructor material supplied the random-map
 phenomenon and spectral instrumentation; claims equating small singular values
 with underflow, outliers with signal, or square Gaussian matrices with uniform
 conditioning were rejected. Miyato, Kataoka, Koyama, and Yoshida use power

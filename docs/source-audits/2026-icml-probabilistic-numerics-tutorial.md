@@ -6,6 +6,9 @@
 - **Title:** *Probabilistic Numerics — Computation is Machine Learning*
 - **Venue:** ICML 2026 tutorial
 - **Artifact:** 131-slide PDF
+- **Instructor-shelf path:**
+  `../Resources/2026-ICML-Probabilistic Numerics — Computation is Machine Learning.pdf`
+- **Artifact size:** 11,607,920 bytes
 - **SHA-256:**
   `8fc05b6b45fe938ee49ebb25ec995f338cd452abc1adff05f6bce45a2dbf3265`
 - **Review completed:** 2026-07-31
@@ -15,6 +18,10 @@ sheets. The deck is **external reference-only**. It supplies a useful
 interpretive seam and routes the book to primary papers. It is not the sole
 support for a probabilistic numerical guarantee, calibration claim, or
 historical statement.
+
+The PDF is not copied into this public repository because its redistribution
+license has not been established. The path, byte size, and digest close the
+local project-knowledge provenance chain without republishing the deck.
 
 ## What the tutorial contributes
 

@@ -99,8 +99,9 @@ Data Science at the University of Virginia. It is the advanced companion to
 [*Deep Learning: Making It
 Learnable*](https://shakeri-lab.github.io/dl-book/).
 
-This is a working `v0.x` edition. The C02 pilot is complete only when its
-mathematics, code, provenance, HTML, and PDF pass the repository audits.
+This is a working `v0.x` edition. A numbered chapter enters the public draft
+only after its mathematics, code, provenance, HTML, and PDF pass the
+repository audits; author acceptance is recorded separately.
 
 ## Suggested citation
 

@@ -1,0 +1,58 @@
+{
+  "chapter": "c12",
+  "claim_id": "c12-curvature-choice-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "machine": "arm64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6212
+  },
+  "hardware_claim_boundary": "Deterministic laptop-CPU float64 calculation; no timing or accelerator-performance conclusion.",
+  "harness_ref": "ch-12",
+  "harness_wheel_sha256": "6a1c864096870887526ffc4a9e9ffc177ff9ac668c05372046f1686b4ad07907",
+  "hypothesis": "An affine Bernoulli logit makes the realized Hessian equal GGN, while composing the same loss with a curved parameter map can make the Hessian indefinite; observed-label score outer products need not equal the model Fisher in either case.",
+  "payload_sha256": "52f14364fbe88e0a2b44f96f8999ff19e5059c3da522af09fde818d11c4e3a0b",
+  "phenomenon_id": "c12-curvature-choice",
+  "provenance_class": "a",
+  "result": {
+    "affine_logit": {
+      "empirical_fisher": [[0.215927454555302, -1.075525461864197e-17], [-1.075525461864197e-17, 0.1074332223625321]],
+      "empirical_fisher_eigenvalues": [0.1074332223625321, 0.215927454555302],
+      "generalized_gauss_newton": [[0.5107257225837609, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.21580782272153817]],
+      "ggn_eigenvalues": [0.21580782272153817, 0.5107257225837609],
+      "hessian": [[0.5107257225837609, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.21580782272153817]],
+      "hessian_eigenvalues": [0.21580782272153817, 0.5107257225837609],
+      "model_curvature": [[0.0, 0.0], [0.0, 0.0]],
+      "model_fisher": [[0.5107257225837609, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.21580782272153817]]
+    },
+    "composed_logit": {
+      "empirical_fisher": [[0.38091862138140364, -7.619945321290146e-18], [-7.619945321290146e-18, 0.16711318648657725]],
+      "empirical_fisher_eigenvalues": [0.16711318648657725, 0.38091862138140364],
+      "generalized_gauss_newton": [[0.5930744657719882, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.24056889746959642]],
+      "ggn_eigenvalues": [0.24056889746959642, 0.5930744657719882],
+      "hessian": [[-0.5998303709385047, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.24056889746959642]],
+      "hessian_eigenvalues": [-0.5998303709385047, 0.24056889746959642],
+      "model_curvature": [[-1.1929048367104929, 0.0], [0.0, 0.0]],
+      "model_fisher": [[0.5930744657719882, 1.3877787807814457e-17], [1.3877787807814457e-17, 0.24056889746959642]]
+    },
+    "inputs": [-2.0, -1.0, 1.0, 2.0],
+    "labels": [0.0, 0.0, 1.0, 1.0],
+    "opening_single_observation": {
+      "empirical_fisher_parameter_coordinate": 0.19168941637660358,
+      "generalized_gauss_newton_parameter_coordinate": 0.24613408273759835,
+      "hessian_parameter_coordinate": -0.6295129154908055,
+      "input": 1.0,
+      "label": 1.0,
+      "model_curvature_parameter_coordinate": -0.8756469982284039,
+      "model_fisher_parameter_coordinate": 0.24613408273759835,
+      "probability": 0.5621765008857981
+    },
+    "parameters": [0.5, 0.0]
+  },
+  "schema_version": 1
+}

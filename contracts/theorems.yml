@@ -129,7 +129,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "Simultaneous control pays a square-root-logarithmic threshold in the number of quantities.",
       "boundary": "The union bound can be loose and does not describe the detailed joint law.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c05-equivalent-diagnostics",
@@ -140,7 +140,7 @@
       "proof_mode": "proof-with-pointer",
       "diagnostic_corollary": "Use the characterization matched to the available algebra or evidence while retaining one common tail class.",
       "boundary": "Finite empirical samples cannot certify a population tail class.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c06-square-subexponential",
@@ -151,7 +151,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "Norms, energies, and diagonal covariance terms require a psi1 rather than psi2 tail contract.",
       "boundary": "The two-factor product result permits dependence, but repeated products and arbitrary nonlinear transforms need separate analysis.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c06-bernstein",
@@ -162,7 +162,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "The unconstrained Chernoff optimizer controls moderate deviations; the local MGF boundary controls large deviations.",
       "boundary": "Dependence breaks MGF factorization, and variables without a finite positive MGF are outside the theorem.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c06-clipping-contract",
@@ -184,7 +184,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "An exponential cover costs only d log(1+2/epsilon) in a logarithmic tail budget.",
       "boundary": "This upper bound is not an exact covering count, and the compactness argument is finite-dimensional.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c07-operator-net",
@@ -195,7 +195,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "A finite sampled maximum becomes a continuum certificate only after paying an interpolation factor.",
       "boundary": "Unverified random probes are not automatically an epsilon-net.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c07-uniformization",
@@ -206,7 +206,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "Uniform control has three separately auditable costs: the fixed-point tail, metric entropy, and interpolation.",
       "boundary": "Random or local Lipschitz constants need an additional event, and the theorem does not establish its own fixed-point tail.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c08-svd-stretch",
@@ -217,7 +217,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "Uniform near-isometry requires both singular edges rather than an average squared stretch or the upper edge alone.",
       "boundary": "Rank-deficient and wide maps have a zero lower edge on the full input space.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c08-subgaussian-edges",
@@ -228,7 +228,7 @@
       "proof_mode": "diagnostic-proof-sketch",
       "diagnostic_corollary": "Isotropy supplies the center while uniformization over adaptive directions supplies the dimensional width.",
       "boundary": "The universal constant is not a calibrated confidence interval, and the lower statement is informative only when positive.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c08-gaussian-edges",
@@ -239,7 +239,7 @@
       "proof_mode": "proof-with-pointer",
       "diagnostic_corollary": "After reciprocal-sqrt(m) scaling, aspect ratio supplies the benchmark interval 1 plus or minus sqrt(n/m).",
       "boundary": "The square lower benchmark is zero and supplies neither a positive condition-number guarantee nor an underflow conclusion.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c09-esd-moments",
@@ -272,7 +272,7 @@
       "proof_mode": "diagnostic-proof-sketch",
       "diagnostic_corollary": "A deterministic bulk shape can coexist with order-one population-covariance error when dimension and sample size are comparable.",
       "boundary": "The ambient-dimension rate is refined by effective rank in C10.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c09-repeated-looks",
@@ -305,7 +305,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "A full-rank covariance can have effective rank arbitrarily close to one.",
       "boundary": "Effective rank does not locate a truncation threshold or retain the full spectral tail.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c10-stable-rank",
@@ -316,7 +316,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "Stable rank is a soft singular-direction count for a rectangular map; effective rank applies to its positive-semidefinite Gram operator.",
       "boundary": "Stable rank and effective rank generally differ when evaluated on the same positive-semidefinite matrix.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c10-gaussian-variance",
@@ -338,7 +338,7 @@
       "proof_mode": "proof-with-pointer",
       "diagnostic_corollary": "The diagnostic sample scale is effective rank rather than automatically ambient dimension.",
       "boundary": "The expectation bound is not a finite confidence threshold, a distribution-free result, or a generalization theorem.",
-      "source": "vershynin2018"
+      "source": "vershynin2026"
     },
     {
       "id": "thm-c11-jvp-vjp",
@@ -372,6 +372,39 @@
       "diagnostic_corollary": "For L=64 and k=8, the count-model peak is 16 states with 56 replayed forward transitions.",
       "boundary": "The schedule is not globally optimal for arbitrary DAGs, heterogeneous tensors, communication, or measured runtime.",
       "source": "chen2016"
+    },
+    {
+      "id": "thm-c12-composite-hessian",
+      "chapter": "c12",
+      "phenomenon_explained": "c12-curvature-choice",
+      "assumptions": "A twice-differentiable parameter-to-output map composed with a twice-differentiable local loss.",
+      "conclusion": "The realized Hessian equals a generalized Gauss--Newton term plus a residual that weights the parameter Hessians of model outputs by output-loss gradients.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "A positive-semidefinite generalized Gauss--Newton matrix can coexist with an indefinite realized Hessian because it omits signed model curvature.",
+      "boundary": "The split depends on the declared model/output-loss boundary, and GGN is not obtained by clipping negative Hessian eigenvalues.",
+      "source": "martens2020"
+    },
+    {
+      "id": "thm-c12-fisher-identity",
+      "chapter": "c12",
+      "phenomenon_explained": "c12-curvature-choice",
+      "assumptions": "A regular conditional statistical model with parameter-independent support and differentiation permitted through the normalization integral or sum.",
+      "conclusion": "The model score has mean zero and its second moment equals the negative expected log-likelihood Hessian; for a compatible natural output parameter, model Fisher equals GGN.",
+      "proof_mode": "full-proof-with-pointer-for-qualified-equivalence",
+      "diagnostic_corollary": "A model-label expectation can equal GGN while the observed-label empirical Fisher remains different.",
+      "boundary": "The identity need not hold at irregular support boundaries, and observed-label outer products are not interchangeable with the model expectation.",
+      "source": "martens2020;kunstner2019"
+    },
+    {
+      "id": "thm-c12-hvp",
+      "chapter": "c12",
+      "phenomenon_explained": "c12-curvature-choice",
+      "assumptions": "A twice-differentiable scalar objective and a direction independent of the differentiation variable.",
+      "conclusion": "The Hessian action on a direction equals the gradient of the directional derivative of the objective.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Extremal-curvature diagnostics can query Hessian actions without materializing a dense p-by-p matrix.",
+      "boundary": "The identity does not imply a universal runtime factor or remove derivative-graph storage, replay, and reduction costs.",
+      "source": "pearlmutter1994"
     }
   ]
 }

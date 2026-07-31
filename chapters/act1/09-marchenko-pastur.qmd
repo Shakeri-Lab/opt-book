@@ -374,7 +374,7 @@ Squaring those bounds controls
 $\norm{m^{-1}\matr{Z}^{\mathsf T}\matr{Z}-\matr{I}}_{\mathrm{op}}$.
 Conjugating by $\matr{\Sigma}^{1/2}$ contributes
 $\norm{\matr{\Sigma}}_{\mathrm{op}}$. Vershynin gives the full expectation
-and high-probability bookkeeping [@vershynin2018].
+and high-probability bookkeeping [@vershynin2026].
 
 The ambient-dimension rate says that $m$ must scale like
 $n/\varepsilon^2$ for relative operator error $\varepsilon$. C10 will
@@ -723,7 +723,7 @@ metadata needed to reproduce Team B's threshold.
 
 Marchenko and Pastur establish the limiting empirical spectral law
 [@marchenko1967]. Vershynin supplies the sub-Gaussian covariance-estimation
-theorem and its whitening argument [@vershynin2018]. Baik and Silverstein
+theorem and its whitening argument [@vershynin2026]. Baik and Silverstein
 derive the almost-sure sample-eigenvalue limits for spiked population models
 [@baik2006]. The instructor's canonical RMT material supplied the ESD-to-bulk
 sequence and covariance-estimation question. Its finite-significance

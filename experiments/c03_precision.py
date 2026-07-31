@@ -9,6 +9,8 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 from trainable_harness import (
     float_contract,
     local_spacing,
@@ -24,16 +26,8 @@ CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-03" / "manifest.json"
 
 
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=0.0)
 
 
 def base_record(
@@ -99,7 +93,7 @@ def main() -> None:
         wheel_digest=wheel_digest,
         seed=None,
     )
-    write_claim("c03-update-stagnation-001.json", stagnation)
+    verify_generated_claim("c03-update-stagnation-001.json", stagnation)
 
     envelopes = {
         name: float_contract(dtype)
@@ -117,7 +111,7 @@ def main() -> None:
         wheel_digest=wheel_digest,
         seed=None,
     )
-    write_claim("c03-format-envelope-001.json", envelope)
+    verify_generated_claim("c03-format-envelope-001.json", envelope)
 
     values = np.array([0.1, 0.2, 0.3, 100.0])
     global_result = symmetric_quantize(values, bits=8)
@@ -149,7 +143,7 @@ def main() -> None:
         wheel_digest=wheel_digest,
         seed=None,
     )
-    write_claim("c03-grid-collapse-001.json", grid)
+    verify_generated_claim("c03-grid-collapse-001.json", grid)
 
     seed, trials = 6212, 20_000
     endpoints = stochastic_update_trials(
@@ -191,7 +185,7 @@ def main() -> None:
         wheel_digest=wheel_digest,
         seed=seed,
     )
-    write_claim("c03-stochastic-rounding-001.json", stochastic)
+    verify_generated_claim("c03-stochastic-rounding-001.json", stochastic)
 
     for claim_id in (
         "c03-update-stagnation-001",
@@ -199,7 +193,7 @@ def main() -> None:
         "c03-grid-collapse-001",
         "c03-stochastic-rounding-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-07" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -30,18 +36,6 @@ from trainable_harness import (  # noqa: E402
     sphere_cover_log_upper,
     uniform_subgaussian_threshold,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -117,7 +111,7 @@ def main() -> None:
             "certificate_formula": "sampled_maximum / (1 - epsilon)",
         },
     )
-    write_claim("c07-hidden-direction-001.json", hidden_direction)
+    verify_generated_claim("c07-hidden-direction-001.json", hidden_direction)
 
     dimensions = (8, 32, 128, 512)
     epsilon = 0.25
@@ -161,10 +155,10 @@ def main() -> None:
             ),
         },
     )
-    write_claim("c07-tail-budget-001.json", tail_budget)
+    verify_generated_claim("c07-tail-budget-001.json", tail_budget)
 
     for claim_id in ("c07-hidden-direction-001", "c07-tail-budget-001"):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

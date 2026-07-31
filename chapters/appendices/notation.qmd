@@ -56,6 +56,11 @@ names its axes.
 | Jacobian--vector product | $\matr{J}_F(\vect{x})\vect{v}$ | Reverse accumulation |
 | Vector--Jacobian product | $\vect{u}^{\mathsf T}\matr{J}_F(\vect{x})$ | Reverse accumulation |
 | Node cotangent | $\bar z_v$ | Reverse accumulation |
+| Realized Hessian | $\matr{H}$ | Curvature objects |
+| Generalized Gauss--Newton matrix | $\matr{G}$ | Curvature objects |
+| Model Fisher information | $\matr{F}$ | Curvature objects |
+| Empirical Fisher | $\widetilde{\matr{F}}$ | Curvature objects |
+| Model-curvature residual | $\matr{R}$ | Curvature objects |
 
 The machine-readable source is `contracts/notation-covenant.yml`. A notation
 change is incomplete until that covenant, the HTML macros, the PDF macros, and

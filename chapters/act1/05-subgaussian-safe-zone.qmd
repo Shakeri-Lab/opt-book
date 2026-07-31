@@ -324,8 +324,8 @@ The best admissible constants $K_1,\ldots,K_4$ are comparable up to universal
 factors.
 :::
 
-The full equivalence is proved in Vershynin's Proposition 2.5.2
-[@vershynin2018]. One direction is immediate here: property 3 and Markov's
+The full equivalence is proved in Vershynin's second-edition Proposition 2.6.1
+[@vershynin2026]. One direction is immediate here: property 3 and Markov's
 inequality give
 
 $$
@@ -532,7 +532,7 @@ Chernoff's exponential method supplies the optimization view of tail bounds
 [@chernoff1952]. Hoeffding develops probability inequalities for sums of
 bounded independent variables [@hoeffding1963]. Vershynin gives the modern
 sub-Gaussian equivalence, Orlicz norm, and high-dimensional toolkit used here
-[@vershynin2018]. The canonical instructor slides supplied the simultaneous-
+[@vershynin2026]. The canonical instructor slides supplied the simultaneous-
 control phenomenon and safe-zone thread; claims that Gaussian behavior is
 universal or automatically preserved by depth were rejected.
 

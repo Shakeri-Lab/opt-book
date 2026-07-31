@@ -10,10 +10,16 @@ from typing import Any
 
 import numpy as np
 
+from _evidence_verify import verify_claim
+
 
 ROOT = Path(__file__).resolve().parents[1]
 CLAIMS = ROOT / "artifacts" / "claims"
 MANIFEST = ROOT / "artifacts" / "harness" / "ch-09" / "manifest.json"
+
+
+def verify_generated_claim(filename: str, payload: dict[str, Any]) -> None:
+    verify_claim(filename, payload, absolute_tolerance=1e-12)
 
 manifest = json.loads(MANIFEST.read_text())
 wheel = MANIFEST.parent / manifest["wheel"]
@@ -28,18 +34,6 @@ from trainable_harness import (  # noqa: E402
     marchenko_pastur_support,
     observation_ledger,
 )
-
-
-def payload_digest(payload: dict[str, Any]) -> str:
-    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()
-    return sha256(encoded).hexdigest()
-
-
-def write_claim(filename: str, payload: dict[str, Any]) -> None:
-    payload["payload_sha256"] = payload_digest(payload)
-    target = CLAIMS / filename
-    target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n")
 
 
 def base_record(
@@ -130,7 +124,7 @@ def main() -> None:
         },
         seed=witness_seed,
     )
-    write_claim("c09-bulk-shape-001.json", bulk_shape)
+    verify_generated_claim("c09-bulk-shape-001.json", bulk_shape)
 
     null_trials = 2000
     null_seed = 6291
@@ -202,7 +196,7 @@ def main() -> None:
         },
         seed=null_seed,
     )
-    write_claim("c09-finite-null-001.json", finite_null)
+    verify_generated_claim("c09-finite-null-001.json", finite_null)
 
     spike_models = (
         ("null", 1.0, null_seed),
@@ -269,14 +263,14 @@ def main() -> None:
         },
         seed=6292,
     )
-    write_claim("c09-spike-threshold-001.json", spike_threshold)
+    verify_generated_claim("c09-spike-threshold-001.json", spike_threshold)
 
     for claim_id in (
         "c09-bulk-shape-001",
         "c09-finite-null-001",
         "c09-spike-threshold-001",
     ):
-        print(f"wrote {claim_id}.json")
+        print(f"verified {claim_id}.json")
 
 
 if __name__ == "__main__":

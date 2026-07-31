@@ -40,6 +40,14 @@ def main() -> None:
         if artifact.get("payload_sha256") != payload_sha256(artifact):
             errors.append(f"{claim_id}: payload digest mismatch")
 
+    for path in sorted((ROOT / "experiments").glob("c[0-9][0-9]_*.py")):
+        text = path.read_text()
+        if ".write_text(" in text or "[\"payload_sha256\"] =" in text:
+            errors.append(
+                f"{path}: evidence executables must verify committed claims, "
+                "not rewrite them"
+            )
+
     fail_if(errors)
     print("claims: pass")
 

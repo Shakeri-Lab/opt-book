@@ -1,0 +1,35 @@
+{
+  "chapter": "c12",
+  "claim_id": "c12-hvp-001",
+  "environment": {
+    "byteorder": "little",
+    "device": "cpu",
+    "dtype": "float64",
+    "machine": "arm64",
+    "numpy": "2.5.1",
+    "platform": "macOS-15.7.7-arm64-arm-64bit",
+    "python": "3.12.13",
+    "python_implementation": "CPython",
+    "seed": 6212
+  },
+  "hardware_claim_boundary": "Two-dimensional operator witness; algebraic access pattern is not a measured wall-clock or memory-throughput result.",
+  "harness_ref": "ch-12",
+  "harness_wheel_sha256": "6a1c864096870887526ffc4a9e9ffc177ff9ac668c05372046f1686b4ad07907",
+  "hypothesis": "The analytic Hessian-vector program matches dense multiplication and recovers the signed dominant-magnitude eigenvalue without materializing the matrix in the iteration.",
+  "payload_sha256": "f0cb37072f6edb575ce205ecda08b7eb37e600e41d3f3238ea9039da5515435b",
+  "phenomenon_id": "c12-curvature-choice",
+  "provenance_class": "a",
+  "result": {
+    "dense_eigenvalues": [-0.5998303709385047, 0.24056889746959642],
+    "dense_product": [-0.1799491112815514, -0.16839822822871747],
+    "dominant_magnitude_eigenvalue_estimate": -0.5998303709385047,
+    "iterations": 24,
+    "maximum_product_deviation": 0.0,
+    "operator_product": [-0.1799491112815514, -0.16839822822871747],
+    "rayleigh_trace": [-0.46013086045120727, -0.5737170614557415, -0.5955175818222223, -0.5991336569189871, -0.599718226217008, -0.5998123303988897, -0.5998274690588352, -0.599829904168746, -0.5998302958583832, -0.5998303588618387, -0.5998303689959684, -0.5998303706260469, -0.5998303708882458, -0.5998303709304204, -0.5998303709372043, -0.5998303709382955, -0.599830370938471, -0.5998303709384993, -0.5998303709385038, -0.5998303709385046, -0.5998303709385047, -0.5998303709385047, -0.5998303709385047, -0.5998303709385047],
+    "residual_norm": 2.8065368085083975e-10,
+    "seed": 6212,
+    "vector": [0.3, -0.7]
+  },
+  "schema_version": 1
+}

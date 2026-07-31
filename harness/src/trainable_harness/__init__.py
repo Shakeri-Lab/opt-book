@@ -49,6 +49,13 @@ from .autodiff import (
     reverse_accumulate,
     uniform_checkpoint_cost,
 )
+from .curvature import (
+    CurvatureMatrices,
+    EigenpairEstimate,
+    bernoulli_curvature_matrices,
+    bernoulli_hessian_vector_product,
+    dominant_symmetric_eigenpair,
+)
 from .probability import (
     bernstein_two_regime_rate,
     centered_chi_square_log_mgf,
@@ -74,7 +81,9 @@ from .streaming import (
 __all__ = [
     "MomentState",
     "CheckpointCost",
+    "CurvatureMatrices",
     "EffectiveRankSummary",
+    "EigenpairEstimate",
     "MarchenkoPasturSupport",
     "NoisyQuadraticSummary",
     "PowerIterationResult",
@@ -84,6 +93,8 @@ __all__ = [
     "TapeNode",
     "UpdateTrace",
     "bernstein_two_regime_rate",
+    "bernoulli_curvature_matrices",
+    "bernoulli_hessian_vector_product",
     "centered_chi_square_log_mgf",
     "centered_chi_square_sum_trials",
     "centered_chi_square_sum_upper_tail",
@@ -97,6 +108,7 @@ __all__ = [
     "empirical_tail_profile",
     "empirical_upper_threshold",
     "effective_rank_psd",
+    "dominant_symmetric_eigenpair",
     "float_contract",
     "gaussian_covariance_trials",
     "gaussian_covariance_error_trials",
@@ -130,4 +142,4 @@ __all__ = [
     "subgaussian_max_threshold",
 ]
 
-__version__ = "0.11.0"
+__version__ = "0.12.0"

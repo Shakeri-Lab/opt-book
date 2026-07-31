@@ -9,9 +9,10 @@ book:
   title: "Deep Learning: Making It Trainable"
   subtitle: "Geometry, Dynamics, and the Machine"
   author: "Heman Shakeri"
-  date: "2026-07-30"
+  date: "2026-07-31"
   repo-url: https://github.com/Shakeri-Lab/opt-book
   site-url: https://shakeri-lab.github.io/opt-book/
+  downloads: [pdf]
   sidebar:
     style: docked
     search: true
@@ -39,6 +40,7 @@ book:
     - part: "Act II — Dynamics of optimization"
       chapters:
         - chapters/act2/11-reverse-accumulation.qmd
+        - chapters/act2/12-curvature.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd

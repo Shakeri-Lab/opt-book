@@ -729,7 +729,7 @@ either answer.
 ## Sources and further reading
 
 Vershynin develops sub-exponential equivalences, the square/product lemmas, and
-Bernstein's inequality [@vershynin2018]. Hoeffding's bounded-variable lemma
+Bernstein's inequality [@vershynin2026]. Hoeffding's bounded-variable lemma
 supplies the clipped-variable guarantee [@hoeffding1963]. The canonical
 instructor derivation supplied the MGF-domain reveal and constrained-optimizer
 order; claims that repeated products occupy one universal tail class or that

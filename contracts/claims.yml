@@ -216,6 +216,22 @@
       "status": "exact-uniform-chain-checkpoint-model",
       "provenance_class": "a",
       "evidence": "artifacts/claims/c11-checkpoint-001.json"
+    },
+    {
+      "claim_id": "c12-curvature-choice-001",
+      "phenomenon_id": "c12-curvature-choice",
+      "chapter": "c12",
+      "status": "deterministic-curvature-object-witness",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c12-curvature-choice-001.json"
+    },
+    {
+      "claim_id": "c12-hvp-001",
+      "phenomenon_id": "c12-curvature-choice",
+      "chapter": "c12",
+      "status": "matrix-free-action-against-dense-control",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c12-hvp-001.json"
     }
   ]
 }
