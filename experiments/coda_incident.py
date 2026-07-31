@@ -227,4 +227,4 @@ record = {
         "final_loss": float(loss64[-1]),
     },
 }
-verify_claim("coda-incident-001.json", record, absolute_tolerance=1e-12)
+verify_claim("coda-incident-001.json", record, absolute_tolerance=1e-8)

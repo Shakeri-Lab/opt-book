@@ -44,11 +44,16 @@ jobs:
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
           uv run pytest -q harness/tests
-          uv run python experiments/c17_update_geometry.py
-          uv run python experiments/c17_weight_update_spectrum.py
-          uv run python experiments/c01_roofline.py
-          uv run python experiments/c01_local_measurement.py
-          uv run python experiments/coda_incident.py
+      - name: Verify current C17 geometry claim
+        run: uv run python experiments/c17_update_geometry.py
+      - name: Verify current C17 spectrum trace
+        run: uv run python experiments/c17_weight_update_spectrum.py
+      - name: Verify current C01 resource model
+        run: uv run python experiments/c01_roofline.py
+      - name: Re-execute current C01 local timing protocol
+        run: uv run python experiments/c01_local_measurement.py
+      - name: Verify current Coda incident
+        run: uv run python experiments/coda_incident.py
       - run: uv run python scripts/run_fast_audits.py
 
   render:

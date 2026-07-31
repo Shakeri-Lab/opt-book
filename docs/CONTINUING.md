@@ -58,7 +58,7 @@ Current forced dual-edition build:
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
 - 57 passing harness and repository tests;
 - seven new deep-revision evidence verifiers pass: six match their deterministic
-  controls exactly, while the device-scoped timing protocol re-executes and
+  controls within declared numerical gates, while the device-scoped timing protocol re-executes and
   checks its count/rate arithmetic without a false cross-device speed gate;
   the claim directory remains clean;
 - all fast contract audits and the rendered HTML/PDF audit pass.
