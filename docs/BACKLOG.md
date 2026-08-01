@@ -37,7 +37,10 @@
 
 - Receive or confirm any external harness/lab code.
 - Confirm canonical Spring 2026 source variants.
-- Complete shelf fingerprinting and exercise deduplication.
+- The `Others lectures/` shelf fingerprinting and exercise-deduplication pass
+  is complete in `docs/source-audits/other-lectures-shelf-audit.md`. Preserve
+  its external-reference-only status and route public claims to primary or
+  canonical sources.
 - Record student-work permissions before public reuse.
 - Route the ICML 2026 optimization-theory tutorial's remaining load-bearing
   claims to primary papers at C13, C16, and C17 contract time; do not cite the
@@ -46,6 +49,29 @@
   Hennig–Kiefel (2013), with its primary-source audit committed. Do not
   promote the tutorial's general information-operator framework into the
   core arc.
+
+## Gated other-lectures enrichment pass
+
+Keep the proposed pass bounded to three main-text seams and nine diagnostic
+exercise changes; do not add a chapter or open Act III:
+
+- **T1 / C04:** identify the exact quadratic recurrence as explicit Euler on
+  the corresponding gradient flow, with the nonlinear/stochastic boundary.
+- **T2 / C05:** add a compact Gaussian Lipschitz concentration
+  proof-with-pointer, including its center and distribution boundaries.
+- **T3 / C12:** state and diagnose
+  `kappa(J^T J) = kappa(J)^2`, then compare representation/solver contracts.
+- **E1–E5, E7–E9:** add the stable-quadratic-root, three-clock,
+  alignment-lottery, median-of-means, finite-set projection,
+  eigenspace-stability, condition-squaring, and criticality-implication
+  exercises defined in the audit.
+- **E6 / C08:** refine the existing power-iteration exercise with
+  residual-norm stopping rather than increasing the exercise count.
+
+Before implementation, resolve public/primary citations and enforce chapter
+budgets by displacement. Particle optimization, full NTK/mean-field
+development, chaining, constrained optimization, and method catalogs remain
+branches or shelf material.
 
 ## v1.0 print apparatus
 

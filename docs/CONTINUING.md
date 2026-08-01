@@ -4,7 +4,7 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `8af3d84` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `f6f06b5` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
@@ -45,6 +45,15 @@ now carry bounded Audit branches; C12 harvests the bounded CG/quasi-Newton
 seam without importing the tutorial's full apparatus.
 The shared paper-reading interface is
 `docs/PAPER-AUTOPSY-PROTOCOL.md`.
+
+The full instructor-supplied `Others lectures/` shelf has now been compared
+against C01–C17. Its review, collection fingerprints, claim hazards,
+deduplication decisions, and bounded integration map live in
+`docs/source-audits/other-lectures-shelf-audit.md`. The recommended harvest is
+three short main-text seams (C04 explicit-discretization bridge, C05 Gaussian
+Lipschitz concentration, and C12 normal-equation conditioning) plus nine
+diagnostic exercise changes. No new chapter or Act III expansion is implied;
+the manuscript pass remains gated on primary-source routing and author review.
 
 Current forced dual-edition build:
 
@@ -119,11 +128,15 @@ teaches algorithmic choices rather than an unversioned framework fact.
 - canonical confirmation for source variants;
 - anonymized student feedback;
 - reuse permissions for student work;
-- licensing constraints on the resource shelf.
+- licensing constraints on the resource shelf, especially permission to name
+  privately supplied lecture collections in the public provenance note.
 
 ## Next safe action
 
-Perform author review of the deep-revised C01/C13–C17 and Coda first, then
-accept C03–C12 by diff. Decide whether D02 opens any Act III synthesis only
-after that review. Annotated harness tags remain a separate release task under
-open decision D34; do not invent source identities for rolling-draft wheels.
+Review the bounded other-lectures harvest in
+`docs/source-audits/other-lectures-shelf-audit.md`, then implement T1–T3 and
+E1–E9 one affected chapter at a time if approved. Keep the existing author
+review of C01/C03–C17 and the Coda separate. Decide whether D02 opens any Act
+III synthesis only after that review. Annotated harness tags remain a separate
+release task under open decision D34; do not invent source identities for
+rolling-draft wheels.

@@ -103,3 +103,7 @@
 - Finished the Coda with a claim-and-boundary caption, all four thread sigils,
   the unhedged title callback, and Appendix C's reusable ten-field Incident
   Card as the final leaf.
+- Audited the full instructor-supplied `Others lectures/` shelf against
+  C01–C17, recorded collection fingerprints and claim hazards, and proposed a
+  bounded three-seam/nine-exercise enrichment pass without adding a chapter or
+  opening Act III.
