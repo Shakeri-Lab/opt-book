@@ -70,6 +70,20 @@ Debranding is show-then-name, not suppression.
 - Branded search aliases live in metadata and the Rosetta appendix.
 - Ordinary English must not trigger the branding linter.
 
+When ingesting statistical-physics theory, explain the diagnostic object
+before permitting its standard term:
+
+| Source vocabulary | House diagnostic language |
+|---|---|
+| susceptibility | fixed-point gain |
+| edge of chaos | contraction/expansion boundary for pair separation |
+| universality class | shared fixed-point and scaling family |
+| effective theory | declared-truncation model |
+
+These are source-theory terms, not de-branded primitives, so they do not gain
+Rosetta rows. Once the object is established, the standard term may appear in
+Sources or a paper audit for discoverability.
+
 ## Mathematics
 
 - State shapes before matrix products.

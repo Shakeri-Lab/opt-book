@@ -46,6 +46,9 @@ Locate the analysis at the finest level it actually supports:
 
 These are questions, not a universal hierarchy of method quality. A paper may
 answer several, and a higher-numbered question is not automatically better.
+For any approximation, also record its small parameter, retained or
+truncation order, and order of limits. “Infinite width” is incomplete until
+the treatment of depth, sample size, and training horizon is named.
 
 ### 4. Dynamic regime
 

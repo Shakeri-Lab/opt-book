@@ -301,3 +301,7 @@ Require a forward-only C14 revision pin before executable manuscript changes.
 **Recommendation:** approve D50. It preserves the existing chapter's
 instrument-first authority while importing PDLT's most valuable mathematical
 habit: a limit is only useful when its failure parameter remains visible.
+
+**Author disposition (2026-08-01): approved for implementation.** The
+forward-only executable revision is `ch-14-r2`; D34 remains independently
+open.

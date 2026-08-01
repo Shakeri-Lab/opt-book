@@ -49,7 +49,7 @@ floating-point order independence. The paper-level question is therefore
 both algebraic and physical: what summary composes, and what numerical result
 does a different reduction tree produce?
 
-## Lazy and feature-learning regimes
+## Lazy and feature-learning regimes {#sec-beyond-feature}
 
 C04's fixed quadratic, C08's adaptive directions, C12's curvature objects,
 and C13's stochastic regimes form the control for asking whether training
@@ -57,6 +57,13 @@ mostly changes coefficients in a nearly fixed feature map or changes the
 features themselves. C16 warns that the relevant operator moves with the
 trajectory. C17 asks whether the update geometry encourages that movement or
 suppresses it.
+
+Under a declared tangent-kernel scaling and time horizon, the limit that
+makes training linearized also suppresses feature movement; finite-width
+corrections restore it at the order carried by the expansion
+[@jacot2018; @lee2019; @chizat2019; @roberts2022]. Different
+parameterizations and simultaneous depth--width limits can retain movement,
+so “infinite width” is not itself a regime diagnosis.
 
 These topics remain course synthesis and research-facing Paper audits. Keeping
 them outside the numbered core preserves the book's contract: build the

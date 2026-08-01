@@ -145,6 +145,15 @@ author correction supersedes any default.
 49. **D49 — Public draft identity:** Label the untagged rolling site “Public
     draft 0.1” and keep D34's source-tag decision open; do not imply a stable
     release tag that does not exist.
+50. **D50 — PDLT ingestion scope:** Adopt the corrected two-input and
+    depth-to-width witnesses as a restructured C14 trunk; keep the
+    forward/backward gain distinction, activation-family boundary,
+    declared-truncation rule, and PDLT reading route at paragraph, table, or
+    exercise depth. Route frozen-feature behavior to *Beyond This Volume*,
+    the residual callback to C15, function-space update contribution to a C17
+    exercise, and Bayesian/GP, dNTK/ddNTK, projector, optimal-aspect-ratio,
+    generalization, and RG material to the shelf. Use a forward-only
+    `ch-14-r2` artifact and preserve the historical `ch-14` wheel.
 
 ## Acceptance status
 
@@ -157,3 +166,6 @@ author correction supersedes any default.
   acceptance status.
 - D43–D49 implement the author's 2026-08-01 course-alignment and production
   direction. They do not resolve the separate harness-tag decision D34.
+- D50 was explicitly authorized by the author's instruction to proceed with
+  the PDLT recommendations. Its revision pin is not a decision on the global
+  source-tag policy in D34.

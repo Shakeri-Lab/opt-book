@@ -4,7 +4,7 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `94df4af` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `800a725` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
@@ -68,34 +68,36 @@ the manuscript pass remains gated on primary-source routing and author review.
 
 Roberts and Yaida's *The Principles of Deep Learning Theory* has received a
 separate model-level audit in
-`docs/source-audits/pdlt-effective-theory.md`. The proposed D50 harvest
-restructures C14 around moment, pair-geometry, Jacobian-spectrum, and
-depth-to-width contracts. It corrects two attractive overstatements before
-implementation: zero-bias ReLU correlation dynamics do not split when only
-weight scale changes, and the linear `L/n` fluctuation law is perturbative.
-No manuscript or immutable harness artifact has changed pending D50 and a
-forward-only C14 revision pin.
+`docs/source-audits/pdlt-effective-theory.md`. D50 is now implemented. C14
+separates moment, pair-geometry, Jacobian-spectrum, and depth-to-width
+contracts; its two new class-(a) witnesses use the corrected zero-bias ReLU
+correlation map and the exact finite-width fluctuation law. Historical
+`ch-14` remains untouched, while the forward-only `ch-14-r2` wheel carries
+the new controls. The feature-learning mechanism is routed to the unnumbered
+continuation map rather than made into a second theoretical spine.
 
 Current forced multi-edition build:
 
-- 244 print-PDF pages and 222 screen-PDF pages; the print edition retains 22
+- 258 print-PDF pages and 236 screen-PDF pages; the print edition retains 22
   recto/verso blank pages and the screen edition has none;
 - physical print chapter openers for C01–C17 are pages 23, 31, 47, 61, 79,
-  91, 107, 119, 133, 145, 157, 169, 181, 189, 195, 203, and 209; the Coda
-  begins on 219, *Beyond This Volume* on 225, and the provenance note on 227;
-- physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 12, 12, 12,
-  12, 8, 6, 8, 6, and 10 pages; the Coda spans 6 pages and the continuation
+  91, 107, 119, 133, 149, 163, 175, 187, 197, 207, 215, and 223; the Coda
+  begins on 233, *Beyond This Volume* on 239, and the provenance note on 241;
+- physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 16, 14, 12,
+  12, 10, 10, 8, 8, and 10 pages; the Coda spans 6 pages and the continuation
   map spans 2;
 - source non-code word counts excluding Sources for C01–C17 are 1,247,
   2,733, 2,577, 2,144, 2,021, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
-  2,337, 1,516, 1,220, 1,180, 1,235, and 1,877;
+  2,337, 1,516, 2,396, 1,199, 1,235, and 1,898;
 - `artifacts/book-metrics.json` is the single audited ledger for those values;
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
-- 60 passing harness and repository tests;
-- seven new deep-revision evidence verifiers pass: six match their deterministic
+- 58 passing harness and repository tests;
+- nine current deep-revision evidence verifiers pass: eight match their deterministic
   controls within declared numerical gates, while the device-scoped timing protocol re-executes and
   checks its count/rate arithmetic without a false cross-device speed gate;
   the claim directory remains clean;
+- every frozen HTML and TeX execution is now traceback-free; the rendered
+  audit rejects stale `cell-output-error` blocks;
 - all fast contract audits and the rendered HTML/PDF audit pass.
 
 The harness is being born book-first. No course-wide package was found in the
@@ -130,6 +132,8 @@ Fast audits:
   `harness/src/trainable_harness/update_geometry.py`
 - Evidence: `artifacts/claims/coda-incident-001.json`
 - Current harness pin: `artifacts/harness/ch-17/manifest.json`
+- Most recent forward-only revision pin:
+  `artifacts/harness/ch-14-r2/manifest.json`
 - Current source integrations: the ICML tutorial audits,
   `docs/source-audits/remaining-core-chapters.md`, and
   `docs/PAPER-AUTOPSY-PROTOCOL.md`
@@ -158,8 +162,9 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 Review and accept C01/C03–C17, the Coda, the On-Ramp, and the cumulative
 Incident Card assignments. Keep the bounded other-lectures harvest separate
-unless T1–T3/E1–E9 are explicitly approved, and decide the proposed D50 PDLT
-scope before revising C14. The course's synthesis now has a stable unnumbered
-route rather than an implied Act III. Annotated harness tags remain a separate
-release task under open decision D34; do not invent source identities for
-rolling-draft wheels.
+unless T1–T3/E1–E9 are explicitly approved. The D50 PDLT pass is complete;
+its next safe action is author review of C14's four-rung ladder and two new
+witnesses. The course's synthesis has a stable unnumbered route rather than
+an implied Act III. Annotated harness tags remain a separate release task
+under open decision D34; do not invent source identities for rolling-draft
+wheels.

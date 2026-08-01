@@ -86,6 +86,8 @@ from .stochastic import (
 from .criticality import (
     deep_linear_product,
     mean_squared_singular_value,
+    relu_correlation_trace,
+    relu_moment_fluctuation_variance,
     relu_variance_trace,
 )
 from .normalization import (
@@ -167,6 +169,8 @@ __all__ = [
     "rademacher_projection_trials",
     "raw_and_centered_variance",
     "repeated_update",
+    "relu_correlation_trace",
+    "relu_moment_fluctuation_variance",
     "relu_variance_trace",
     "reverse_accumulate",
     "rms_normalize",
@@ -186,4 +190,4 @@ __all__ = [
     "two_point_clipping_audit",
 ]
 
-__version__ = "0.17.0"
+__version__ = "0.18.0"

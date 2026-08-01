@@ -76,6 +76,14 @@ def main() -> None:
     for reference in sorted(source_refs - rendered_fragment_links):
         errors.append(f"rendered HTML has no link for source reference @{reference}")
 
+    for result_path in sorted(
+        (ROOT / "_freeze").rglob("execute-results/*.json")
+    ):
+        frozen = json.loads(result_path.read_text())
+        markdown = frozen.get("result", {}).get("markdown", "")
+        if "cell-output-error" in markdown or "Traceback (most recent call last)" in markdown:
+            errors.append(f"{result_path}: frozen execution contains an error")
+
     chapter_records = numbered_chapters()
     for _source, path, expected, _title in chapter_records:
         if not path.exists():

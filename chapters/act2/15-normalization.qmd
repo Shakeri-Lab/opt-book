@@ -21,6 +21,7 @@ lenses:
 ```{python}
 #| include: false
 
+from hashlib import sha256
 from book_support.claims import activate_harness, verify_claim
 
 pin = activate_harness("ch-15", "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f")
@@ -296,9 +297,11 @@ $$
 $$
 
 The first contains an explicit identity summand; the second filters every
-path through $\matr J_N$. This algebra explains a diagnostic difference. It
-does not prove that every pre-normalized architecture trains better, because
-the learned function, scale, finite epsilon, and update dynamics also change.
+path through $\matr J_N$. The identity summand changes the criticality budget;
+it does not abolish the need to control the residual branch [@roberts2022].
+This algebra explains a diagnostic difference. It does not prove that every
+pre-normalized architecture trains better, because the learned function,
+scale, finite epsilon, and update dynamics also change.
 
 ## Brand bridge and claim boundary {#sec-c15-bridge}
 

@@ -1,8 +1,9 @@
 # Trainable Harness
 
 This package grows with *Deep Learning: Making It Trainable*. Its public
-surface now runs from C02's stable streaming moments through C09's
-finite spectral-null diagnostics.
+surface now runs from C02's stable streaming moments through C17's
+matrix-aware update diagnostics. The forward-only C14 revision adds separate
+controls for two-input correlation and depth-to-width moment fluctuations.
 
 The package is intentionally small. Plotting, generic model training, and
 future diagnostics are not scaffolded before a chapter needs them. The C07

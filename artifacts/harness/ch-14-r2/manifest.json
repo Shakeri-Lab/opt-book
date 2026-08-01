@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "chapter": "c14",
+  "harness_ref": "ch-14-r2",
+  "package": "trainable-harness",
+  "version": "0.18.0",
+  "api": "0.18",
+  "wheel": "trainable_harness-0.18.0-py3-none-any.whl",
+  "wheel_sha256": "6df4544a4407ed84f1d4326969a5b3e5616444cb91e5e1c7f5f434a5b6a31f7a",
+  "python": "3.12.13",
+  "dependencies": {"numpy": "2.5.1"},
+  "source": {
+    "status": "forward-only-chapter-revision",
+    "commit": null,
+    "annotated_tag": null,
+    "tag_required_before_publication": "harness-ch-14-r2-v1",
+    "pyproject_sha256": "4570f2579fbefa57c1e1748876f414bb7fb2ea9163928885f1413d3793822cbb",
+    "init_sha256": "22b36b9f4f48303b2da32f40d1a522d4a6a50b5727c4aed81ec687d9d8ae01e9",
+    "criticality_sha256": "4ad3ba5623ca3ebc414b808b4988ad29e0225f423315ff934a71005f8c085b4e"
+  },
+  "public_operations": [
+    "relu_variance_trace",
+    "relu_correlation_trace",
+    "relu_moment_fluctuation_variance",
+    "deep_linear_product",
+    "mean_squared_singular_value"
+  ]
+}

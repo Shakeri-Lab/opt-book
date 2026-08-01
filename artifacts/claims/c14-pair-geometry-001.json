@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "claim_id": "c14-pair-geometry-001",
+  "phenomenon_id": "c14-average-criticality",
+  "chapter": "c14",
+  "provenance_class": "a",
+  "hypothesis": "Critical zero-bias ReLU propagation can preserve each input's second moment while normalized pair separation decays with depth.",
+  "hardware_claim_boundary": "Laptop-CPU wide-limit control plus seeded finite-width Gaussian-layer simulation; not a claim about trained representations.",
+  "harness_ref": "ch-14-r2",
+  "harness_wheel_sha256": "6df4544a4407ed84f1d4326969a5b3e5616444cb91e5e1c7f5f434a5b6a31f7a",
+  "result": {
+    "seed": 3972769481,
+    "initial_correlation": 0.5,
+    "width": 128,
+    "depth": 64,
+    "trials": 2048,
+    "wide_correlation": {
+      "1": 0.6089977810442294,
+      "4": 0.778895137394332,
+      "16": 0.9402945923657069,
+      "64": 0.9924912290287992
+    },
+    "wide_final_angle_radians": 0.12262289160547502,
+    "finite_width_correlation": {
+      "1": {
+        "mean": 0.6100275859142419,
+        "median": 0.6122567034952433,
+        "quantile_10": 0.5282178781826129,
+        "quantile_90": 0.6871938648030543
+      },
+      "4": {
+        "mean": 0.7770352255232115,
+        "median": 0.7855145315559309,
+        "quantile_10": 0.6799837720063612,
+        "quantile_90": 0.8619689896211085
+      },
+      "16": {
+        "mean": 0.9400461287819876,
+        "median": 0.950091165520989,
+        "quantile_10": 0.8881899428825086,
+        "quantile_90": 0.9790364971410362
+      },
+      "64": {
+        "mean": 0.9924933782625873,
+        "median": 0.9960837482457736,
+        "quantile_10": 0.9820165438590835,
+        "quantile_90": 0.9994240190032146
+      }
+    }
+  },
+  "payload_sha256": "82a9d291cb25f1cd232317f4bb9e0031b29f900e0627bdad5831b7ddf0d6de74"
+}

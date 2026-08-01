@@ -16,7 +16,7 @@
 | C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; machine acceptance audit passed; author review pending |
 | C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; machine acceptance audit passed; author review pending |
 | C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
-| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Deep-revision witnesses complete; author review pending |
+| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Deep-revision witnesses complete; C14 PDLT ladder revision complete; author review pending |
 | Coda | Diagnose the opening loss-spike incident with the complete instrument panel | Locally complete; author review pending |
 | Final appendix | Hand the blank ten-field Incident Card and four-thread control panel to the reader | Locally complete; author review pending |
 | Beyond This Volume | Route course synthesis through existing instruments without adding a numbered act | Locally complete; author review pending |
@@ -53,6 +53,16 @@ The last two rows remain internal. Gradient/noise balance is too concentrated
 in Act II to justify a fifth public sigil, and “computation is inference” is
 only exact under an explicit probabilistic model. The internal ledgers retain
 the useful callbacks without increasing the reader-visible thread vocabulary.
+
+## PDLT derivational seam
+
+The approved D50 pass keeps PDLT as a derivational companion rather than a
+second spine. C14 now distinguishes four contracts: one-input magnitude,
+two-input pair geometry, derivative spectrum, and the depth-to-width trust
+parameter. The exact finite-width ReLU control makes (L/n) visible before
+the perturbative tangent is used. The frozen-feature mechanism is routed to
+*Beyond This Volume*, residual-path budgeting returns in C15, and equal
+parameter versus function-space steps becomes a C17 exercise.
 
 ## ICML 2026 optimization-theory integration
 

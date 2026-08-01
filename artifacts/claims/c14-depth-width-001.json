@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "claim_id": "c14-depth-width-001",
+  "phenomenon_id": "c14-average-criticality",
+  "chapter": "c14",
+  "provenance_class": "a",
+  "hypothesis": "At critical zero-bias ReLU scale, finite-width moment fluctuations are controlled by depth over width only in a declared perturbative regime.",
+  "hardware_claim_boundary": "Exact finite-width Gaussian model calculation plus seeded CPU Monte Carlo; not a trained-network width prescription.",
+  "harness_ref": "ch-14-r2",
+  "harness_wheel_sha256": "6df4544a4407ed84f1d4326969a5b3e5616444cb91e5e1c7f5f434a5b6a31f7a",
+  "result": {
+    "seed": 3834729383,
+    "trials": 200000,
+    "variance_denominator": 200000,
+    "points": [
+      {"width": 32, "depth": 1, "depth_over_width": 0.03125, "sample_mean": 1.0020500293789931, "sample_variance": 0.15730238527943396, "exact_variance": 0.15625},
+      {"width": 32, "depth": 2, "depth_over_width": 0.0625, "sample_mean": 1.0019273987278452, "sample_variance": 0.34168714039985876, "exact_variance": 0.3369140625},
+      {"width": 32, "depth": 4, "depth_over_width": 0.125, "sample_mean": 1.0003223335852232, "sample_variance": 0.7922304484433711, "exact_variance": 0.7873392105102538},
+      {"width": 128, "depth": 4, "depth_over_width": 0.03125, "sample_mean": 1.0004417776585661, "sample_variance": 0.16704544110528058, "exact_variance": 0.1656460203230381},
+      {"width": 128, "depth": 8, "depth_over_width": 0.0625, "sample_mean": 0.9992815713920776, "sample_variance": 0.35813682897314036, "exact_variance": 0.3587306446949366},
+      {"width": 128, "depth": 16, "depth_over_width": 0.125, "sample_mean": 1.0014445248116113, "sample_variance": 0.8481005016997154, "exact_variance": 0.846148964833118},
+      {"width": 512, "depth": 16, "depth_over_width": 0.03125, "sample_mean": 0.9991800874050496, "sample_variance": 0.1689391518162685, "exact_variance": 0.16823258024237292},
+      {"width": 512, "depth": 32, "depth_over_width": 0.0625, "sample_mean": 0.999840803739751, "sample_variance": 0.3639670747997482, "exact_variance": 0.36476736153975226},
+      {"width": 512, "depth": 64, "depth_over_width": 0.125, "sample_mean": 1.0016447580703272, "sample_variance": 0.8777374098455876, "exact_variance": 0.8625899511241769}
+    ]
+  },
+  "payload_sha256": "7c911bd0f20a43f9dd4327a4823a60f5dc2793acd44abf7d0419bc040455690f"
+}

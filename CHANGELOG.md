@@ -2,6 +2,17 @@
 
 ## 0.1.0 — Public draft (2026-08-01)
 
+- Restructured C14 around four distinct criticality contracts: one-input
+  magnitude, two-input pair geometry, derivative spectrum, and the
+  depth-to-width trust parameter.
+- Added exact and seeded class-(a) controls for critical ReLU pair alignment
+  and finite-width moment fluctuations, using a forward-only `ch-14-r2`
+  harness artifact while preserving the historical `ch-14` wheel.
+- Routed PDLT's frozen-feature mechanism to *Beyond This Volume*, residual
+  criticality budgeting to C15, and parameter-space versus function-space
+  update balance to a C17 exercise.
+- Re-executed six chapters whose freeze caches had retained Python tracebacks,
+  and made stale execution-error blocks a rendered-audit failure.
 - Added a no-prior-course On-Ramp: a 20–30 minute diagnostic, a three-stop
   route through *Making It Learnable*, an executable minimal NumPy training
   loop, and a Chapter 1 readiness checklist.

@@ -40,7 +40,7 @@ def first_body_heading_page(pages: list[str], heading: str) -> int:
     matches = [
         index
         for index, page in enumerate(pages, start=1)
-        if index > 10 and target in normalized(page)
+        if index > 10 and normalized(page).startswith(target)
     ]
     if not matches:
         raise SystemExit(f"cannot locate PDF heading {heading!r}")

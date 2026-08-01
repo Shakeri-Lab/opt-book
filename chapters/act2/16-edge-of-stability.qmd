@@ -22,6 +22,7 @@ fulfills: [promise-c04-c16-fixed-boundary]
 ```{python}
 #| include: false
 
+from hashlib import sha256
 from book_support.claims import activate_harness, verify_claim
 
 pin = activate_harness("ch-16", "dc27db104bfa9a48a500343d6475487b410ddb2e19ea56045d89c2cf89d80cfd")

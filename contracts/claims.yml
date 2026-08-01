@@ -282,6 +282,22 @@
       "evidence": "artifacts/claims/c14-gated-product-001.json"
     },
     {
+      "claim_id": "c14-pair-geometry-001",
+      "phenomenon_id": "c14-average-criticality",
+      "chapter": "c14",
+      "status": "wide-pair-map-with-seeded-finite-width-check",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c14-pair-geometry-001.json"
+    },
+    {
+      "claim_id": "c14-depth-width-001",
+      "phenomenon_id": "c14-average-criticality",
+      "chapter": "c14",
+      "status": "exact-depth-width-control-with-seeded-monte-carlo",
+      "provenance_class": "a",
+      "evidence": "artifacts/claims/c14-depth-width-001.json"
+    },
+    {
       "claim_id": "c15-invariance-001",
       "phenomenon_id": "c15-invariance-choice",
       "chapter": "c15",

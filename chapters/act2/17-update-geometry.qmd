@@ -23,6 +23,7 @@ fulfills: [promise-c08-c17-update-spectrum]
 ```{python}
 #| include: false
 
+from hashlib import sha256
 from book_support.claims import activate_harness, verify_claim
 
 pin = activate_harness("ch-17", "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60")
@@ -446,7 +447,7 @@ contract first, scaling evidence second.
 1. **(Pencil.)** Prove the operator/nuclear duality rows of @eq-c17-steepest-table using von Neumann's trace inequality.
 2. **(Code.)** Test Newton--Schulz across condition numbers, ranks, and dtypes. Separate polar error, orthogonality residual, and elapsed time.
 3. **(Pencil.)** For the factorized control, derive both factor gradients and show why an isometric update to each factor does not imply an isometric update to their product.
-4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and compare update spectra, weight spectra, state bytes, and final loss under matched randomness.
+4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and, under equal nominal learning rates, compare update spectra, weight spectra, state bytes, final loss, and each block's induced output change or Jacobian-Gram contribution. Explain why equal parameter-step norms need not produce equal function-space steps.
 5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.
 6. **(Audit.) Act checkpoint — complete Incident Card.** Complete the
    [Act II assignment](../appendices/incident-card.qmd#sec-incident-act2).

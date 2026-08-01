@@ -440,6 +440,28 @@
       "source": "schoenholz2017"
     },
     {
+      "id": "thm-c14-pair-map",
+      "chapter": "c14",
+      "phenomenon_explained": "c14-average-criticality",
+      "assumptions": "Two equal-moment inputs in the wide exchangeable zero-bias ReLU Gaussian model with normalized correlation in [-1,1].",
+      "conclusion": "Normalized correlation follows the arc-cosine map; at variance-critical scale each input moment is fixed while every finite pair angle decays toward zero at inverse-depth order.",
+      "proof_mode": "diagnostic-derivation",
+      "diagnostic_corollary": "Preserved one-input magnitude does not imply preserved distinction between inputs, even when the infinitesimal pair gain is one.",
+      "boundary": "The recursion is an infinite-width initialization model and does not establish pair geometry after training or for another activation-and-bias family.",
+      "source": "poole2016;schoenholz2017;roberts2022"
+    },
+    {
+      "id": "thm-c14-depth-width",
+      "chapter": "c14",
+      "phenomenon_explained": "c14-average-criticality",
+      "assumptions": "Finite width n, independent Gaussian weights of variance 2/n across layers, zero bias, ReLU coordinates, and a nonzero initial empirical second moment.",
+      "conclusion": "The normalized moment has mean one and variance (1+5/n)^L-1; 5L/n is only its small-depth-over-width tangent, while the simultaneous limit is exp(5r)-1.",
+      "proof_mode": "full-proof",
+      "diagnostic_corollary": "Width is only large relative to a declared depth and retained expansion order.",
+      "boundary": "This exact Gaussian initialization model is not a trained-network width prescription and does not include dtype, rank-loss, or data-dependent update effects.",
+      "source": "roberts2022;on-page-moment-calculation"
+    },
+    {
       "id": "thm-c14-average-spectrum",
       "chapter": "c14",
       "phenomenon_explained": "c14-average-criticality",

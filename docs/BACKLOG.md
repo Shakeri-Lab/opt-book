@@ -84,22 +84,18 @@ budgets by displacement. Particle optimization, full NTK/mean-field
 development, chaining, constrained optimization, and method catalogs remain
 branches or shelf material.
 
-## Gated PDLT enrichment pass
+## Completed PDLT enrichment pass
 
-- Decide proposed D50 in `docs/source-audits/pdlt-effective-theory.md`.
-- If approved, restructure C14 around the four-rung criticality ladder rather
-  than appending a second theoretical spine.
-- Use the corrected zero-bias ReLU pair witness: critical magnitude can coexist
-  with polynomial loss of input separation, but weight scale alone does not
-  create three normalized-correlation regimes.
-- Use the exact finite-width control
-  `Var(q_L/q_0) = (1 + 5/n)^L - 1`; show `5L/n` only as its small-parameter
-  tangent.
-- Preserve `ch-14`. Resolve D34 or create an explicitly forward-only C14
-  revision pin before adding executable harness capabilities or claim
-  artifacts.
-- Keep frozen-feature dynamics in *Beyond This Volume*, function-space layer
-  balance in a C17 exercise, and dNTK/ddNTK/projector machinery on the shelf.
+- D50 is approved and implemented through a restructured four-rung C14
+  ladder: moment, pair geometry, Jacobian spectrum, and depth-to-width trust.
+- The zero-bias ReLU pair witness and exact
+  `Var(q_L/q_0) = (1 + 5/n)^L - 1` control are claim-backed class-(a)
+  studies. The page labels `5L/n` only as the small-parameter tangent.
+- Historical `ch-14` remains byte-identical. New operations and claims use
+  the explicitly forward-only `ch-14-r2` wheel; D34 remains open.
+- Frozen-feature dynamics now live in *Beyond This Volume*, function-space
+  layer balance is a C17 exercise, the residual criticality callback is in
+  C15, and dNTK/ddNTK/projector machinery remains on the shelf.
 
 ## v1.0 print apparatus
 

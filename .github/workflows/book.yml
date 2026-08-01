@@ -37,12 +37,12 @@ jobs:
       - run: uv build harness --wheel --out-dir /tmp/harness-build
       - name: Test immediately previous harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-16/trainable_harness-0.16.0-py3-none-any.whl
-          uv run pytest -q harness/tests --ignore=harness/tests/test_update_geometry.py
-          uv run python experiments/c16_edge_of_stability.py
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
+          uv run pytest -q harness/tests --ignore=harness/tests/test_criticality_revision.py
+          uv run python experiments/c17_update_geometry.py
       - name: Test current harness pin
         run: |
-          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-17/trainable_harness-0.17.0-py3-none-any.whl
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-14-r2/trainable_harness-0.18.0-py3-none-any.whl
           uv run pytest -q harness/tests
       - name: Verify current C17 geometry claim
         run: uv run python experiments/c17_update_geometry.py
@@ -201,6 +201,12 @@ jobs:
           uv run pytest -q harness/tests/test_criticality.py
           uv run python experiments/c14_criticality.py
           uv run python experiments/c14_gated_product.py
+      - name: Execute forward-only ch-14-r2 pin and evidence
+        run: |
+          uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-14-r2/trainable_harness-0.18.0-py3-none-any.whl
+          uv run pytest -q harness/tests/test_criticality.py harness/tests/test_criticality_revision.py
+          uv run python experiments/c14_pair_geometry.py
+          uv run python experiments/c14_depth_width.py
       - name: Execute historical ch-15 pin and evidence
         run: |
           uv pip install --python .venv/bin/python --force-reinstall artifacts/harness/ch-15/trainable_harness-0.15.0-py3-none-any.whl

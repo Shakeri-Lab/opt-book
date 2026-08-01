@@ -26,6 +26,7 @@ fulfills:
 ```{python}
 #| include: false
 
+from hashlib import sha256
 from book_support.claims import activate_harness, verify_claim
 
 pin = activate_harness("ch-09", "0d4b6e953774005f928e74b4e0617e4451f0e82c64adc4d7a1b4c4ad4a504751")

@@ -1,12 +1,12 @@
 ---
-description: "Why criticality in an average moment can coexist with unusable derivative directions."
+description: "Why moment preservation can coexist with lost input separation, finite-width drift, and unusable derivative directions."
 number-offset: 13
 jupyter: python3
-harness-ref: ch-14
-harness-api: "0.14"
-harness-wheel-sha256: "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26"
+harness-ref: ch-14-r2
+harness-api: "0.18"
+harness-wheel-sha256: "6df4544a4407ed84f1d4326969a5b3e5616444cb91e5e1c7f5f434a5b6a31f7a"
 phenomenon_id: c14-average-criticality
-claim_ids: [c14-criticality-001, c14-gated-product-001]
+claim_ids: [c14-criticality-001, c14-gated-product-001, c14-pair-geometry-001, c14-depth-width-001]
 threads:
   random-matrix-spectra: callback
   subgaussian-safe-zone: callback
@@ -25,7 +25,8 @@ fulfills: [promise-c11-c14-depth-products]
 
 from book_support.claims import activate_harness, verify_claim
 
-pin = activate_harness("ch-14", "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26")
+legacy_pin = activate_harness("ch-14", "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26")
+pin = activate_harness("ch-14-r2", "6df4544a4407ed84f1d4326969a5b3e5616444cb91e5e1c7f5f434a5b6a31f7a")
 manifest, wheel_digest = pin.manifest, pin.wheel_sha256
 ```
 
@@ -90,7 +91,160 @@ is fixed, and scale three grows by $(3/2)^\ell$. It does **not** say that a
 finite network exactly follows the recursion, nor that scale two has a
 well-conditioned input-output Jacobian.
 
-## From two layers to depth $L$ {#sec-c14-depth-bridge}
+## The moment survived; the distinction did not {#sec-c14-pair-geometry}
+
+A one-input moment cannot say whether two inputs remain distinguishable.
+Take equal-moment inputs and write their normalized inner product as
+$c_\ell$. In the same wide Gaussian model, zero-bias ReLU propagation closes
+on a second scalar map.
+
+::: {#thm-c14-pair-map phenomenon_id="c14-average-criticality"}
+### Wide-model two-input correlation recursion
+
+For two equal-moment inputs under the assumptions of
+@thm-c14-variance-recursion,
+
+$$
+c_{\ell+1}=\frac{\sqrt{1-c_\ell^2}
++(\pi-\arccos c_\ell)c_\ell}{\pi}.
+$$ {#eq-c14-correlation-map}
+
+For zero bias, ReLU homogeneity cancels the weight scale from this normalized
+map. At the variance-critical scale $\sigma_w^2=2$, each input's moment stays
+fixed while every finite initial angle tends toward alignment. If
+$c_\ell=\cos\psi_\ell$ and $\psi_\ell$ is small, then
+$\psi_{\ell+1}=\psi_\ell-\psi_\ell^2/(3\pi)+O(\psi_\ell^3)$, so
+$\psi_\ell\asymp 1/\ell$.
+:::
+
+### Diagnostic derivation
+
+The two preactivations are correlated Gaussians. Integrating the product of
+their positive parts over the angle between them gives
+@eq-c14-correlation-map. Expanding
+$\sin\psi-\psi\cos\psi=\psi^3/3+O(\psi^5)$ near alignment gives the stated
+angle recurrence. Thus local pair separation is marginal, yet finite-angle
+separation still decays polynomially rather than remaining fixed.
+
+This is the missing contract behind the scalar critical point. The structure
+kept every norm and slowly lost the difference between its inputs. Changing
+only $\sigma_w^2$ changes the magnitude traces but not this normalized ReLU
+correlation trace; three weight scales do not create three pair-geometry
+regimes.
+
+The forward and backward gains should also be named separately. Let
+$\chi_{\parallel}$ be the derivative of the one-input moment map at its fixed
+point, and let $\chi_{\perp}$ be the infinitesimal pair-separation gain. The
+second factor also appears in the mean-square backward recursion. They
+coincide for the scale-invariant piecewise-linear family used here, but that
+coincidence is a property of the family, not a general law connecting forward
+criticality to gradient preservation.
+
+## Width is relative to depth {#sec-c14-depth-width}
+
+The wide map now needs its own trust instrument. In the finite-width critical
+ReLU model, let
+$q_\ell=n^{-1}\sum_i(h_i^{(\ell)})^2$. Conditional on the previous layer,
+
+$$
+\frac{q_{\ell+1}}{q_\ell}=R_\ell
+=\frac{2}{n}\sum_{i=1}^n (Z_i)_+^2,
+\qquad Z_i\overset{\mathrm{iid}}{\sim}\mathcal N(0,1).
+$$ {#eq-c14-random-multiplier}
+
+::: {#thm-c14-depth-width phenomenon_id="c14-average-criticality"}
+### Exact finite-width moment-fluctuation control
+
+With independent Gaussian weights of variance $2/n$ across layers, zero
+bias, and ReLU coordinates,
+
+$$
+\E\!\left[\frac{q_L}{q_0}\right]=1,
+\qquad
+\var\!\left(\frac{q_L}{q_0}\right)
+=\left(1+\frac5n\right)^L-1.
+$$ {#eq-c14-depth-width-variance}
+
+Therefore the variance is $5L/n+O((L/n)^2)$ only while $L/n$ is small. If
+$L,n\to\infty$ together with $L/n\to r$, the same control approaches
+$e^{5r}-1$, not a line.
+:::
+
+### Proof
+
+For $Y=(Z)_+^2$, symmetry gives $\E Y=1/2$ and
+$\E Y^2=\E[Z^4\mathbf 1_{Z>0}]=3/2$, hence
+$\var(Y)=5/4$. Thus $\E R_\ell=1$ and
+$\var(R_\ell)=5/n$. Independent layer weights make the multipliers
+independent, so
+$\E[(q_L/q_0)^2]=(1+5/n)^L$. Subtracting the squared mean proves the result.
+
+:::: {.plan-code}
+::: {.plan}
+1. Evaluate the wide two-input correlation control.
+2. Load its seeded finite-width check.
+3. Evaluate the exact depth-to-width fluctuation control.
+4. Load the seeded moment-ratio checks.
+5. Plot both contracts and test the declared perturbative boundary.
+:::
+
+```{python}
+#| label: fig-c14-pair-width
+#| fig-cap: "Left: at critical ReLU scale, each input keeps its moment while two inputs align; finite-width means follow the wide correlation map. Right: the exact moment-fluctuation variance bends away from its 5L/n tangent as depth over width grows. The Monte Carlo points check the finite-width identity rather than replacing it."
+#| fig-alt: "Two panels. Normalized correlation begins at one half and rises toward one through depth, with finite-width mean points and 10-to-90-percent bars near the wide-limit curve. Moment-ratio variance rises against depth divided by width; exact finite-width curves and Monte Carlo points bend above the straight small-r tangent and approach an exponential double-limit curve."
+#| code-summary: "Code: compare pair-geometry and depth-to-width controls with registered finite-width evidence"
+
+from book_support.criticality_figure import plot_pair_width_controls
+from trainable_harness import (
+    relu_correlation_trace,
+    relu_moment_fluctuation_variance,
+)
+
+# [1]
+pair_trace = relu_correlation_trace(0.5, 64)
+# [2]
+pair_claim = verify_claim("c14-pair-geometry-001", expected_harness=pin)
+pair_final_mean = pair_claim["result"]["finite_width_correlation"]["64"]["mean"]
+# [3]
+exact_at_check = relu_moment_fluctuation_variance(512, 64)
+# [4]
+width_claim = verify_claim("c14-depth-width-001", expected_harness=pin)
+points = width_claim["result"]["points"]
+max_relative_deviation = max(
+    abs(row["sample_variance"] / row["exact_variance"] - 1)
+    for row in points
+)
+# [5]
+assert abs(pair_final_mean - pair_trace[-1]) < 2e-3
+assert exact_at_check > 5 * (64 / 512)
+assert max_relative_deviation < 0.025
+fig = plot_pair_width_controls(
+    pair_trace, pair_claim, width_claim,
+    relu_moment_fluctuation_variance,
+)
+print("pair correlation at depth 64: " f"{pair_trace[-1]:.6f}")
+print("largest Monte Carlo relative deviation: " f"{max_relative_deviation:.3%}")
+```
+::::
+
+<span class="provenance-strip">Claims `c14-pair-geometry-001`, `c14-depth-width-001` · seeds: SHA-256-derived 3972769481 and 3834729383 · dtype: FP64 · device: CPU · estimators: 2,048-trial pair-correlation summaries and 200,000-trial population variances · [pair artifact](../../artifacts/claims/c14-pair-geometry-001.json) · [depth/width artifact](../../artifacts/claims/c14-depth-width-001.json)</span>
+
+The final wide-model correlation is $0.992491$; the finite-width mean differs
+by about $2\times10^{-6}$. Across the nine fluctuation checks, the largest
+Monte Carlo deviation from the exact variance is under $1.8\%$. The seeded
+points validate the implementation. The exact curve carries the claim.
+
+::: {.callout-note title="Field note: an approximation names its small parameter"}
+Every usable limit in this book buys solvability with a declared small
+quantity: a step--curvature product, a noise-to-signal ratio, a covering
+radius, and now a depth-to-width ratio. The claim, retained order, and order
+of limits travel together; the claim dies where that contract stops being
+small. The first audit question for a clean approximation is therefore:
+which quantity did it assume was small, and how large is that quantity in the
+run on your screen?
+:::
+
+## Average control does not survive multiplication {#sec-c14-depth-bridge}
 
 The scalar recursion is easiest to trust after carrying it twice. Set
 $q_0=1$, zero bias, and
@@ -137,6 +291,7 @@ or spectral information at the same depth.
 
 import matplotlib.pyplot as plt
 import numpy as np
+from hashlib import sha256
 
 # [1]
 from trainable_harness import deep_linear_product, relu_variance_trace
@@ -179,8 +334,8 @@ axes[1].set(xlabel="ordered direction", ylabel="singular value")
 axes[1].legend(frameon=False)
 fig.tight_layout()
 # [5]
-claim = verify_claim("c14-criticality-001", expected_harness=pin)
-gated_claim = verify_claim("c14-gated-product-001", expected_harness=pin)
+claim = verify_claim("c14-criticality-001", expected_harness=legacy_pin)
+gated_claim = verify_claim("c14-gated-product-001", expected_harness=legacy_pin)
 assert np.isclose(
     sg[0],
     claim["result"]["gaussian_product"]["maximum"],
@@ -235,6 +390,23 @@ solve the deep-linear control exactly. Nonlinear gates, finite width,
 correlations, biases, normalization, and trained weights change the product;
 orthogonality at initialization is an instrument, not a universal cure.
 
+The word *critical* is therefore incomplete until it names a rung:
+
+| Contract | Observable | What it can certify | What it cannot exclude |
+|---|---|---|---|
+| one-input magnitude | $q_\ell$ | average scale survives | two inputs become indistinguishable |
+| pair geometry | $c_\ell$ or $\psi_\ell$ | separation contracts, expands, or is marginal | derivative directions are ill-conditioned |
+| derivative geometry | singular values of $\matr J$ | directional stretch and rank | the infinite-width model is inaccurate |
+| approximation trust | $L/n$ with retained order | the declared expansion is controlled | training leaves the declared scaling regime |
+
+The first three rows diagnose the compositional structure. The fourth audits
+the theory used to describe it. In particular, an infinite-width calculation
+can make training linearized by suppressing feature movement under its
+declared parameterization and time horizon. The feature-learning branch is
+mapped in [Beyond This Volume](../beyond-this-volume.qmd#sec-beyond-feature);
+no width-only diagnosis is licensed here
+[@jacot2018; @lee2019; @chizat2019; @roberts2022].
+
 ## The de-branded object first {#sec-c14-brand-bridge}
 
 We have derived **variance-preserving initialization** from a moment recursion.
@@ -242,44 +414,52 @@ The Rosetta appendix carries the conventional aliases for search and ties
 each to its fan-in/fan-out and nonlinearity assumptions. The mathematics
 decides which moment a name actually covers.
 
-::: {.callout-warning title="Named wrong answer: critical means trainable"}
-A fixed point of a scalar moment map controls one average statistic under its
-model assumptions. It does not control finite-width fluctuations, spectral
-edges, derivative correlations, or numerical range.
+::: {.callout-warning title="Named wrong answer: every activation has one critical initialization"}
+The moment map may produce a scale-invariant critical curve, a tuned point at
+a zero fixed point, a half-stable boundary, or no usable critical point in the
+declared family. Even when a scalar critical point exists, it controls one
+average statistic, not finite-width fluctuations, pair geometry, spectral
+edges, or numerical range.
 :::
 
 ## Check yourself {#sec-c14-check}
 
 At zero bias with ReLU and weight scale $2(1+\varepsilon)$, what is the moment
-after $L$ layers? At the exact scalar critical point, what do the mean squared
+after $L$ layers? At the exact scalar critical point, why can two inputs still
+align? For $L/n=1/8$, which is the claim: $5L/n$, the exact finite-width
+formula, or its simultaneous-limit curve? Finally, what do the mean squared
 singular value and lower spectral edge say for
-$\operatorname{diag}(\sqrt2,0)$? Which statement is relevant to a gradient
+$\operatorname{diag}(\sqrt2,0)$, and which statement governs a gradient
 component aligned with the second coordinate?
 
 ## Okay, so — {#sec-c14-recap}
 
 - **Inherited:** C11's reverse product and C08's two spectral edges now describe signal propagation.
-- **Changed:** “variance preserved” is treated as a trace claim, not a synonym for trainable.
-- **Instrumented:** `c14-criticality-001` compares moment recursion with complete product spectra.
-- **Established:** scalar criticality and dynamical isometry are distinct contracts.
+- **Changed:** “critical” is separated into magnitude, pair, derivative, and approximation-trust contracts.
+- **Instrumented:** four claims compare moment recursion, pair correlation, depth-to-width fluctuations, and complete product spectra.
+- **Established:** preserving a scalar moment neither preserves finite-angle distinctions nor controls Jacobian edges; $L/n$ marks where the wide approximation accumulates finite-width corrections.
 - **Unresolved:** Which invariances and null directions does a
   coordinate-wise normalization choose when it resets scale?
 
 ## Sources and further reading {#sec-c14-sources}
 
-Mean-field signal propagation follows @schoenholz2017; dynamical-isometry
-diagnostics follow @pennington2017. Variance-preserving initialization was
-developed for saturating and rectified compositional structures by
-@glorot2010 and @he2015.
+Two-input signal propagation follows @poole2016 and @schoenholz2017;
+dynamical-isometry diagnostics follow @pennington2017. Variance-preserving
+initialization was developed for saturating and rectified compositional
+structures by @glorot2010 and @he2015. For a derivational companion to the
+moment and pair-correlation recursions, and for a systematic leading
+finite-width expansion whose trust parameter is depth over width, see
+@roberts2022; begin with Chapter 5, Sections 5.1, 5.4, and 5.5.
 
-**Reading order.** Start with @schoenholz2017 for the scalar moment recursion,
-then read @pennington2017 for the Jacobian spectrum; use @glorot2010 and
-@he2015 for the historical initialization bridge.
+**Reading order.** Start with @schoenholz2017 for the one- and two-input maps,
+then read @pennington2017 for the Jacobian spectrum, and use @roberts2022 last
+to audit the depth-to-width expansion and order of limits.
 
 ## Exercises {#sec-c14-exercises}
 
-1. **(Pencil.)** Derive @eq-c14-variance-map for an odd saturating nonlinearity and identify its small-variance linearization.
-2. **(Code.)** Repeat the product experiment across 100 seeds. Plot distributions of trace, lower edge, and upper edge separately.
-3. **(Pencil.)** For $\matr J=\matr D_L\matr W_L\cdots\matr D_1\matr W_1$, show that $\operatorname{rank}(\matr J)$ cannot exceed the smallest gate rank. Explain why this bound can be loose.
-4. **(Code.)** Hold the critical variance fixed and vary width and input direction. Compare the active-count profile, numerical rank, mean squared singular value, and both edges under shared weight streams.
-5. **(Audit.) Paper audit:** Locate a paper that uses “critical” and complete the **Mathematical object**, **Dynamic regime**, **Assumption stress test**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Is its object activation variance, correlation, mean squared singular value, or a full spectral statement? As an agent-generated-proof control, remove one independence or width assumption silently, identify the first invalid step, and state the weakest repair.
+1. **(Pencil.)** Derive @eq-c14-variance-map for an odd saturating nonlinearity and identify its small-variance linearization. Decide whether the fixed point is stable from one side, both sides, or neither. **Route:** Core. **Estimated time:** 25 minutes. **Prerequisite:** C04 fixed points. **Deliverable:** derivation plus stability classification. **Hint:** differentiate the moment map at the fixed point.
+2. **(Code.)** Repeat the product experiment across 100 seeds. Plot distributions of trace, lower edge, and upper edge separately. **Route:** Core. **Estimated time:** 45 minutes. **Prerequisite:** C08 spectrum summaries. **Deliverable:** three matched-seed distributions and a one-paragraph verdict. **Hint:** do not average the lower and upper edges together.
+3. **(Pencil.)** For $\matr J=\matr D_L\matr W_L\cdots\matr D_1\matr W_1$, show that $\operatorname{rank}(\matr J)$ cannot exceed the smallest gate rank. Explain why this bound can be loose. **Route:** Core. **Estimated time:** 20 minutes. **Prerequisite:** rank inequalities. **Deliverable:** proof and one strict example. **Hint:** apply the rank inequality one factor at a time.
+4. **(Audit.)** Build the implication graph among moment preservation, infinitesimal pair preservation, finite-angle preservation, mean-square Jacobian preservation, dynamical isometry, and trainability. Break every invalid arrow with a counterexample or a missing assumption. In particular, locate the invalid transfer from $\chi_\perp=1$ to finite-angle preservation and state the needed smoothness or uniformity condition. **Route:** Extension. **Estimated time:** 50 minutes. **Prerequisite:** this chapter. **Deliverable:** annotated implication graph. **Hint:** @eq-c14-correlation-map is marginal locally but not constant at finite angle.
+5. **(Code.)** Reproduce @fig-c14-pair-width for a smooth saturating activation. Estimate $\chi_\parallel$ and $\chi_\perp$ separately, and classify the critical point without assuming they coincide. **Route:** Extension. **Estimated time:** 75 minutes. **Prerequisite:** Gaussian quadrature or Monte Carlo. **Deliverable:** two gain estimates, a pair trace, and a boundary statement. **Hint:** perturb the diagonal and off-diagonal kernel coordinates independently.
+6. **(Audit.) Paper audit:** Locate a paper that uses “critical” and complete the **Mathematical object**, **Resolution of the theory**, **Dynamic regime**, **Assumption stress test**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Name its small parameter, retained order, and order of limits. As an agent-generated-proof control, remove one independence or width assumption silently, identify the first invalid step, and state the weakest repair. **Route:** Research. **Estimated time:** 90 minutes. **Prerequisite:** C11–C14. **Deliverable:** six-field autopsy plus repaired statement. **Hint:** “infinite width” is not an order of limits until depth is named.

@@ -4,6 +4,7 @@ project:
   resources:
     - notebooks/on-ramp-training-loop.ipynb
     - book_support/claims.py
+    - book_support/criticality_figure.py
     - book_support/incident_panel.py
   execute-dir: project
   post-render:
