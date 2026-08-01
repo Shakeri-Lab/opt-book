@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+import re
 
 from _audit_utils import ROOT, file_sha256, front_matter, read_yaml, fail_if
 
@@ -46,8 +47,16 @@ def main() -> None:
             errors.append(f"{path}: wheel digest mismatch")
         if manifest["harness_ref"] != harness_ref:
             errors.append(f"{path}: harness-ref disagrees with manifest")
-        if 'sys.path.insert(0, str(wheel_path.resolve()))' not in text:
-            errors.append(f"{path}: exact vendored wheel is verified but not activated")
+        activation = re.search(
+            rf'activate_harness\(\s*"{re.escape(harness_ref)}",\s*'
+            rf'"{re.escape(expected)}"',
+            text,
+        )
+        if activation is None:
+            errors.append(
+                f"{path}: centralized harness activation does not carry "
+                "the exact chapter digest"
+            )
         if manifest["source"]["commit"] is None or manifest["source"]["annotated_tag"] is None:
             pending.append(f"{harness_ref}: source commit/tag pending publication authority")
 

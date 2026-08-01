@@ -1,5 +1,4 @@
 ---
-subtitle: "Streaming state and stable variance"
 description: "Why an algebraically correct one-pass variance can become negative, and how centered mergeable state repairs the computation."
 number-offset: 1
 jupyter: python3
@@ -20,7 +19,16 @@ lenses:
   algorithmic: primary
 ---
 
-# One Pass, Two Failures {#c02}
+# One Pass, Two Failures: Streaming State and Stable Variance {#c02}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-02", "253a9367089f073e468608a4eee2ff4e4842eabb3c54b0663b49d6497e3830fd")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">NS · Numerical stability</span>
 <span class="lens-ledger">Geometric quiet · Dynamic quiet · Algorithmic primary</span>
@@ -70,14 +78,14 @@ online calculation? Name the operation that you expect to fail.
 
 ## The impossible output
 
-The first code surface verifies the chapter's vendored harness wheel before
-importing its result. The random values are cast to FP32 *before* the FP64
-reference is computed. Every method therefore receives the same represented
-inputs.
+The chapter setup verifies its content-addressed harness once, outside the
+printed mechanism kernel. The random values are cast to FP32 *before* the
+FP64 reference is computed. Every method therefore receives the same
+represented inputs.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify the vendored wheel against the chapter manifest.
+1. Load the chapter-pinned variance instruments.
 2. Generate one seeded FP32 stream with a large common offset.
 3. Compare three variance methods with a same-input FP64 reference.
 4. Assert the impossible symptom and the centered controls.
@@ -88,20 +96,10 @@ inputs.
 #| code-summary: "Code: reproduce the negative-variance witness"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-02/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     comparison_audit,

@@ -1,5 +1,4 @@
 ---
-subtitle: "Effective dimension, covariance complexity, and the limits of one scalar"
 description: "Why two full-rank populations can require radically different sample sizes to estimate."
 number-offset: 9
 jupyter: python3
@@ -20,7 +19,16 @@ fulfills:
   - promise-c09-c10-effective-dimension
 ---
 
-# Full Rank, Few Directions {#c10}
+# Full Rank, Few Directions: Effective Rank and Covariance Complexity {#c10}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-10", "bc9dbad6f5e147bbf4bcafa0a747415e05a7d06d4d36f52196f0287974bad7d7")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">RS · Random-matrix spectra</span>
 <span class="thread">SG · The sub-Gaussian safe zone</span>
@@ -69,7 +77,7 @@ only the spectral coloring changes.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-10</code>.
+1. Load the chapter-pinned covariance instruments.
 2. Construct the two full-rank population spectra.
 3. Run the predeclared matched Gaussian covariance trials.
 4. Compute relative operator-norm error quantiles.
@@ -84,20 +92,10 @@ only the spectral coloring changes.
 #| code-summary: "Code: compare covariance-estimation error for two full-rank spectra"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-10/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     effective_rank_psd,
@@ -537,3 +535,11 @@ the covariance theorem, then read @koltchinskii2017 for sharper bounds and
    norm and effective rank but different truncation ranks at relative
    tolerance $0.1$. State which covariance claim remains comparable and which
    compression claim changes.
+6. **(Audit.) Act checkpoint — extend the Incident Card.** Complete the
+   [Act I assignment](../appendices/incident-card.qmd#sec-incident-act1). Add
+   a named matrix, finite-null or
+   perturbation control, and a “detects only” option to the Act 0 card.
+   **Route:** Act checkpoint. **Estimated time:** 75 minutes.
+   **Deliverable:** the revised card and one spectrum plot whose matrix is
+   named in the caption. **Hint:** plotting the wrong matrix can produce a
+   true spectrum and a false diagnosis.

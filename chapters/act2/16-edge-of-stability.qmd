@@ -1,5 +1,4 @@
 ---
-subtitle: "Fixed quadratic controls, moving curvature, and directional diagnostics"
 description: "Why a step size can begin safely and later meet a boundary that the trajectory itself moves."
 number-offset: 15
 jupyter: python3
@@ -18,7 +17,16 @@ lenses:
 fulfills: [promise-c04-c16-fixed-boundary]
 ---
 
-# The Boundary Moves {#c16}
+# The Boundary Moves: Progressive Sharpening and Edge-of-Stability Diagnostics {#c16}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-16", "dc27db104bfa9a48a500343d6475487b410ddb2e19ea56045d89c2cf89d80cfd")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">LG · Landscape and update geometry · NS · Numerical stability</span>
 
@@ -85,7 +93,7 @@ actually sees. C12 already warned that the matrix itself must be named.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-16</code>.
+1. Load the chapter-pinned stability instruments.
 2. Run matched deterministic and additive-noise trajectories.
 3. Record loss, top curvature, and gradient-direction curvature each step.
 4. Mark the fixed-quadratic threshold and first crossing.
@@ -98,20 +106,10 @@ actually sees. C12 already warned that the matrix itself must be named.
 #| fig-alt: "Two aligned plots over 350 gradient steps. Deterministic and small-noise losses fall and then oscillate. Their top Hessian curvatures cross the horizontal threshold ten near steps 155 and 156, while deterministic gradient-direction curvature follows a different path."
 #| code-summary: "Code: track a reproducible moving-curvature stability witness"
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-16/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 from trainable_harness import (
     moving_curvature_trace,
     valley_loss_gradient_hessian,
@@ -165,11 +163,10 @@ axes[1].set(xlabel="step", ylabel="curvature")
 axes[1].legend(frameon=False, ncol=3, fontsize=8)
 fig.tight_layout()
 # [5]
-claim = json.loads(Path("artifacts/claims/c16-moving-boundary-001.json").read_text())
-stochastic_claim = json.loads(
-    Path("artifacts/claims/c16-stochastic-contrast-001.json").read_text()
+claim = verify_claim("c16-moving-boundary-001", expected_harness=pin)
+stochastic_claim = verify_claim(
+    "c16-stochastic-contrast-001", expected_harness=pin
 )
-assert claim["harness_wheel_sha256"] == wheel_digest
 assert int(np.argmax(trace.top_curvatures > threshold)) == claim["result"][
     "first_crossing_step"
 ]
@@ -187,6 +184,8 @@ print("claim c16-stochastic-contrast-001: verified")
 ```
 ::::
 
+<span class="provenance-strip">Claims `c16-moving-boundary-001`, `c16-stochastic-contrast-001` · seed: deterministic primary trajectory; registered stochastic control · dtype: FP64 · device: CPU · estimator: top and directional curvature along the realized path · [artifact](../../artifacts/claims/c16-moving-boundary-001.json)</span>
+
 This is a laptop-exact demonstration: minutes are not needed, no GPU is
 required, and every point is regenerated on a CPU. It establishes the logical
 possibility of a moving boundary. The additive-noise trace crosses at step
@@ -194,6 +193,22 @@ possibility of a moving boundary. The additive-noise trace crosses at step
 that the crossing story survives this small perturbation while its timing and
 nonmonotonicity do not. Neither trace claims that a two-parameter valley
 reproduces mini-batch training or every feature of a large run.
+
+## One boundary, two diagnostic objects {#sec-c16-transfer-panel}
+
+The exact quadratic and the nonlinear trajectory should be read in one panel,
+not as consecutive stories:
+
+| Diagnostic field | Fixed quadratic control | Moving nonlinear trajectory | What transfers |
+|---|---|---|---|
+| state | one eigenmode $z_k$ | parameter vector $\vect w_k$ | compare the update with curvature at the same time index |
+| curvature | constant scalar $\lambda$ | $\lambda_{\max}(\matr H_k)$ and gradient-direction curvature | $2/\alpha$ remains a reference scale |
+| prediction | exact convergence iff $0<\alpha\lambda<2$ | crossing is an event to investigate | sign alternation and local aggressiveness remain useful clues |
+| history | one fixed multiplier | rotating directions and changing Hessian | the trajectory must be recorded |
+| conclusion | necessary and sufficient for this mode | no universal divergence verdict | the quadratic is a control, not a theorem about the full run |
+
+The matched panel slows the transfer at the point where it is easiest to
+overreach. “Above two” is an exact statement only in the left column.
 
 ## Local Taylor information is historical {#sec-c16-taylor}
 

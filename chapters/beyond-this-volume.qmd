@@ -1,0 +1,63 @@
+---
+description: "A map from the completed trainability instruments to the synthesis topics taught beyond the book's narrow core."
+aliases:
+  - /attention-flashattention-parallel-scan-feature-learning.html
+---
+
+# Beyond This Volume {.unnumbered #beyond}
+
+The Coda closes this book's promise: a training failure becomes diagnosable
+when geometry, dynamics, arithmetic, state, and estimator controls are read
+together. DS 6210 continues beyond that endpoint. Those later topics are not
+missing chapters from this volume; they are branches that reuse its trunk.
+
+## Similarity-weighted aggregation and kernel geometry
+
+An all-pairs similarity matrix raises three questions already owned here:
+which high-dimensional alignments are typical, which normalization keeps
+weights in a usable numerical range, and which Jacobian paths preserve
+signal. C05–C10 supply concentration and spectral baselines; C14–C15 supply
+criticality and normalization diagnostics.
+
+::: {.brand-bridge}
+The standard literature calls this primitive **attention**. The sibling
+volume supplies its assembly mechanics; the continuation of DS 6210 asks
+which kernel geometry, estimator, and derivative-path claims survive at
+finite width and precision.
+:::
+
+## IO-aware exact algorithms
+
+An exact all-pairs result need not materialize the full intermediate matrix.
+C01 returns through arithmetic intensity and traffic lower bounds. C02 returns
+through bounded mergeable state. C03 and C15 return through stable online
+normalizers. The central audit is whether tiling and recomputation preserve
+the mathematical output while changing the bytes moved.
+
+::: {.brand-bridge}
+**FlashAttention** is the standard named case. It belongs after the traffic
+model and online-normalizer invariant, not before them.
+:::
+
+## Parallel recurrence and associativity
+
+A recurrence can sometimes be represented by an associative summary and
+evaluated by a parallel prefix scan. C02 supplies the state-and-merge
+question; C11 supplies retained-state and recomputation accounting; C03
+supplies the warning that algebraic associativity does not imply
+floating-point order independence. The paper-level question is therefore
+both algebraic and physical: what summary composes, and what numerical result
+does a different reduction tree produce?
+
+## Lazy and feature-learning regimes
+
+C04's fixed quadratic, C08's adaptive directions, C12's curvature objects,
+and C13's stochastic regimes form the control for asking whether training
+mostly changes coefficients in a nearly fixed feature map or changes the
+features themselves. C16 warns that the relevant operator moves with the
+trajectory. C17 asks whether the update geometry encourages that movement or
+suppresses it.
+
+These topics remain course synthesis and research-facing Paper audits. Keeping
+them outside the numbered core preserves the book's contract: build the
+instruments once, then recognize their return quickly in a new method.

@@ -93,6 +93,13 @@ Separate:
 2. **Kernel:** the smallest implementation exposing the mechanism.
 3. **Harness:** setup, measurement, checking, and display.
 
+The printed-code contract is: equation; a mechanism kernel of roughly 10–25
+lines; two or three interpretation-protecting assertions; and one provenance
+strip naming claim ID, seed, dtype, device, estimator, and artifact. Exact
+harness activation and content verification run in hidden setup through
+`book_support.claims`; the complete implementation remains linked and
+collapsible in HTML.
+
 Every learner-visible code block has a compact numbered Plan immediately
 before it and bracket-only markers such as `# [1]` or `# [2][4]`. Markers do
 not repeat the plan prose. Hide only pure plotting layout.
@@ -171,6 +178,12 @@ Every numbered chapter carries at least five exercises, with at least one
 Pencil, one Code, and one Audit item. A Paper audit names the selected fields
 from the Paper Autopsy Protocol explicitly.
 
+Exercises 1–3 form the **Core** route, Exercise 4 is normally **Extension**,
+and Exercise 5 is normally **Research**; any additional item is labeled
+explicitly. State an estimated time, prerequisite chapter or tool, expected
+deliverable, and whether a hint is available. C04, C10, and C17 end with a
+cumulative Incident Card checkpoint for their act.
+
 The public callout taxonomy is closed: Prediction, Named wrong answer, Field
 note, and Check yourself. Do not add Key takeaway, Remember, or decorative
 summary boxes.
@@ -188,7 +201,8 @@ The public manuscript must not contain slide or classroom residue such as:
 
 ## Accessibility and cross-format parity
 
-- HTML is canonical; PDF carries the same content.
+- HTML is canonical; both print and continuous screen PDFs carry the same
+  content.
 - Headings, links, tables, and callouts are semantic.
 - Alt text is substantive.
 - PDF tagging is attempted from the first build.

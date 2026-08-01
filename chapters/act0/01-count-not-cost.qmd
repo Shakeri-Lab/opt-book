@@ -1,5 +1,4 @@
 ---
-subtitle: "Arithmetic intensity, the memory hierarchy, and honest performance claims"
 description: "Why an operation count cannot identify the resource that sets elapsed time."
 number-offset: 0
 jupyter: python3
@@ -12,7 +11,13 @@ lenses:
   algorithmic: primary
 ---
 
-# The Count Is Not the Cost {#c01}
+# The Count Is Not the Cost: Arithmetic Intensity and the Memory Hierarchy {#c01}
+
+```{python}
+#| include: false
+
+from book_support.claims import verify_claim
+```
 
 <span class="lens-ledger">Geometric quiet · Dynamic supporting · Algorithmic primary</span>
 
@@ -90,13 +95,11 @@ that a kernel reaches either roof.
 #| fig-alt: "Log-log roofline chart with a sloped bandwidth ceiling meeting a flat arithmetic ceiling at intensity 20. The vector transform is at intensity 0.25 on the sloped branch; the order-512 matrix product is at intensity about 85 on the flat branch."
 #| code-summary: "Code: place two exact traffic models on a declared roofline"
 
-import json
-from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-claim = json.loads(Path("artifacts/claims/c01-roofline-001.json").read_text())
+claim = verify_claim("c01-roofline-001")
 # [2]
 balance = claim["result"]["machine_balance_flop_per_byte"]
 # [3]
@@ -155,9 +158,7 @@ that a laptop CPU represents an accelerator.
 #| code-summary: "Code: inspect a pinned CPU copy and matrix-product measurement"
 
 # [1]
-measurement = json.loads(
-    Path("artifacts/claims/c01-local-measurement-001.json").read_text()
-)
+measurement = verify_claim("c01-local-measurement-001")
 protocol = measurement["measurement_contract"]
 
 # [2]
@@ -252,7 +253,7 @@ not a synonym for a smaller operation count.
 
 A kernel performs $10^{10}$ operations and moves $10^9$ bytes. On a device
 with $P_{\max}=10^{13}$ operation/s and $B=5\times10^{11}$ byte/s, its
-what are its intensity, machine balance, active roofline branch, and model
+intensity is what? What are the machine balance, active roofline branch, and model
 ceiling? If $F$ is halved while $Q$ is unchanged, which lower bound changes
 and which one does not?
 

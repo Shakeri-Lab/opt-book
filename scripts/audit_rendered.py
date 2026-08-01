@@ -103,7 +103,12 @@ def main() -> None:
         if any(link.select_one(".chapter-number") for link in home_links):
             errors.append("introduction is numbered in rendered HTML navigation")
 
-    for relative in ("chapters/coda.html", "chapters/provenance.html"):
+    for relative in (
+        "chapters/on-ramp.html",
+        "chapters/coda.html",
+        "chapters/beyond-this-volume.html",
+        "chapters/provenance.html",
+    ):
         path = ROOT / "_book" / relative
         if not path.exists():
             errors.append(f"missing unnumbered unit HTML {path}")
@@ -149,6 +154,18 @@ def main() -> None:
         errors.append("PDF numbered the Coda as Chapter 18")
     if "19. Provenance and Acknowledgements" in extracted:
         errors.append("PDF numbered the provenance note as Chapter 19")
+    for forbidden in (
+        "Part I. Act 0",
+        "Part II. Act I",
+        "Part III. Act II",
+        "I. Act 0",
+        "II. Act I",
+        "III. Act II",
+        "Figure 17.3",
+        "18. Beyond This Volume",
+    ):
+        if forbidden in extracted:
+            errors.append(f"PDF retained forbidden production label {forbidden!r}")
 
     vocabulary = source_vocabulary()
     for page_number, page in enumerate(extracted.split("\f"), start=1):

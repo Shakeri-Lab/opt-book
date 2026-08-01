@@ -18,8 +18,8 @@
 | C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
 | C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Deep-revision witnesses complete; author review pending |
 | Coda | Diagnose the opening loss-spike incident with the complete instrument panel | Locally complete; author review pending |
-| Appendix C | Hand the blank ten-field Incident Card and four-thread control panel to the reader | Locally complete; author review pending |
-| Act III | Synthesis through modern primitives | Gated after core budget evidence |
+| Final appendix | Hand the blank ten-field Incident Card and four-thread control panel to the reader | Locally complete; author review pending |
+| Beyond This Volume | Route course synthesis through existing instruments without adding a numbered act | Locally complete; author review pending |
 
 ## Public threads
 
@@ -37,7 +37,7 @@ act may not pass without a meaningful callback.
 The Coda harvests all four threads in one incident report: it rules out a
 precision-scale explanation, evaluates the local curvature boundary, audits
 the estimator target, compares update and weight spectra, and checks repeated
-normalization state before assigning cause. Appendix C removes the completed
+normalization state before assigning cause. The final appendix removes the completed
 values and preserves the controls as the reader's reusable diagnostic card.
 
 ## Internal cross-cutting ledgers

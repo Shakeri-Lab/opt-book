@@ -94,6 +94,12 @@ jobs:
           cp tmp/pdfs/Deep-Learning--Making-It-Trainable.log tmp/pdfs/book-build.log
       - run: uv run python scripts/audit_rendered.py
       - run: uv run python scripts/audit_book_metrics.py
+      - name: Render continuous screen PDF
+        run: QUARTO_PYTHON=.venv/bin/python quarto render --profile screen --to pdf
+      - name: Add and audit the screen edition
+        run: |
+          cp _book-screen/Deep-Learning--Making-It-Trainable-Screen.pdf _book/
+          uv run python scripts/audit_screen_pdf.py
       - uses: actions/upload-artifact@v4
         with:
           name: rendered-book

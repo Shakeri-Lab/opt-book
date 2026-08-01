@@ -1,0 +1,23 @@
+project:
+  output-dir: _book-screen
+  post-render: []
+
+book:
+  output-file: Deep-Learning--Making-It-Trainable-Screen
+
+format:
+  pdf:
+    documentclass: scrbook
+    classoption:
+      - oneside
+      - open=any
+    pdf-engine: lualatex
+    include-in-header:
+      - tex/macros.tex
+      - tex/accessibility.tex
+    toc: true
+    number-sections: true
+    colorlinks: true
+    keep-tex: true
+    geometry:
+      - margin=1.05in

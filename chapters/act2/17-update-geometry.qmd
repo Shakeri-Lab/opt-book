@@ -1,5 +1,4 @@
 ---
-subtitle: "Matrix-norm steepest descent, polar factors, and the paper-autopsy endpoint"
 description: "Why a matrix update is not fully specified until its norm, approximation, scaling, and parameter routing are named."
 number-offset: 16
 jupyter: python3
@@ -19,7 +18,16 @@ lenses:
 fulfills: [promise-c08-c17-update-spectrum]
 ---
 
-# The Norm Chooses the Update {#c17}
+# The Norm Chooses the Update: Matrix Geometry and Orthogonalized Optimization {#c17}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-17", "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">RS · Random-matrix spectra · LG · Landscape and update geometry · NS · Numerical stability</span>
 
@@ -78,7 +86,7 @@ matrix.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-17</code>.
+1. Load the chapter-pinned matrix-update instruments.
 2. Construct the registered rectangular gradient.
 3. Compute the three norm-steepest directions.
 4. Approximate the polar factor by Newton--Schulz iteration.
@@ -91,20 +99,10 @@ matrix.
 #| fig-alt: "Two panels. The first compares singular values of the original gradient, normalized Frobenius direction, operator-ball polar direction, and nuclear-ball rank-one direction. The second shows the Newton-Schulz orthogonality residual decreasing over iterations."
 #| code-summary: "Code: compare exact matrix-norm directions with an iterative polar approximation"
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-17/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 from trainable_harness import (
     newton_schulz_polar,
     norm_steepest_directions,
@@ -134,8 +132,7 @@ axes[1].semilogy(residuals, "o-", color="#232D4B")
 axes[1].set(xlabel="Newton–Schulz step", ylabel=r"$\|X^T X-I\|_F$")
 fig.tight_layout()
 # [5]
-claim = json.loads(Path("artifacts/claims/c17-update-norm-001.json").read_text())
-assert claim["harness_wheel_sha256"] == wheel_digest
+claim = verify_claim("c17-update-norm-001", expected_harness=pin)
 assert np.allclose(
     np.linalg.svd(polar_factor(gradient), compute_uv=False),
     claim["result"]["polar_singular_values"],
@@ -148,6 +145,8 @@ assert np.isclose(
 print("claim c17-update-norm-001: verified")
 ```
 ::::
+
+<span class="provenance-strip">Claim `c17-update-norm-001` · seed: none · dtype: FP64 · device: CPU · estimator: exact singular values plus polynomial residual · [artifact](../../artifacts/claims/c17-update-norm-001.json)</span>
 
 ## A polynomial is an approximation contract {#sec-c17-newton-schulz}
 
@@ -260,8 +259,8 @@ for axis in axes.flat:
     axis.grid(alpha=0.2)
 fig.tight_layout()
 
-trace_claim = json.loads(
-    Path("artifacts/claims/c17-weight-update-spectrum-001.json").read_text()
+trace_claim = verify_claim(
+    "c17-weight-update-spectrum-001", expected_harness=pin
 )
 assert np.allclose(
     spectral_traces["polar"]["update"][-1],
@@ -301,6 +300,75 @@ The control also makes routing and scale explicit:
 This is not an implementation footnote. A method that transforms selected
 matrices but routes embeddings, biases, scales, or output heads differently
 is a family of update rules. The paper autopsy must identify all of them.
+
+## One complete matrix-block step {#sec-c17-complete-step}
+
+For one matrix block $\matr W\in\mathbb R^{m\times n}$ with $m\ge n$, a
+complete routed step needs more than the polar idealization. Let
+
+$$
+\matr M^+=\beta\matr M+(1-\beta)\matr G,\qquad
+\matr X_0=\frac{\matr M^+}{\norm{\matr M^+}_{\mathrm F}},\qquad
+\matr W^+=\matr W-\eta s_{m,n}\matr X_T.
+$$ {#eq-c17-complete-step}
+
+Here $T$ polynomial iterations approximate the polar factor and
+$s_{m,n}$ restores a declared external scale. The following kernel exposes
+the whole block transition:
+
+:::: {.plan-code}
+::: {.plan}
+1. Update the momentum state.
+2. Normalize the matrix entering the polynomial.
+3. Apply a fixed number of Newton--Schulz steps.
+4. Measure approximation error.
+5. Restore the external scale and update the block.
+:::
+
+```{python}
+#| code-summary: "Code: execute one complete matrix-block update"
+
+# [1]
+def matrix_block_step(weight, gradient, momentum, beta, step, scale, iterations):
+    momentum = beta * momentum + (1 - beta) * gradient
+    # [2]
+    update = momentum / np.linalg.norm(momentum, "fro")
+    # [3]
+    for _ in range(iterations):
+        update = 1.5 * update - 0.5 * update @ (update.T @ update)
+    # [4]
+    residual = np.linalg.norm(update.T @ update - np.eye(update.shape[1]), "fro")
+    # [5]
+    return weight - step * scale * update, momentum, residual
+
+trial_weight = np.zeros_like(gradient)
+trial_momentum = np.zeros_like(gradient)
+trial_weight, trial_momentum, trial_residual = matrix_block_step(
+    trial_weight, gradient, trial_momentum, 0.9, 0.08, 1.0, 12
+)
+assert trial_weight.shape == gradient.shape
+assert np.isfinite(trial_residual)
+```
+::::
+
+For FP32 storage, $\matr W$ and persistent momentum already require
+$8mn$ bytes together. One Newton--Schulz step for a tall block forms an
+$n\times n$ Gram matrix and performs matrix products costing
+$O(mn^2)$ arithmetic. A materialized implementation also moves the block,
+momentum, iterates, and Gram temporary; fusion or tiling can change that
+traffic without changing @eq-c17-complete-step.
+
+| Contract field | This block step declares | Still requires measurement |
+|---|---|---|
+| normalization | Frobenius scale before iteration | overflow/underflow and low-precision accumulation |
+| approximation | $T$ steps and $\|X_T^{\mathsf T}X_T-I\|_{\mathrm F}$ | error relative to the exact polar factor |
+| persistent state | one $m\times n$ momentum matrix | optimizer state for excluded parameters |
+| arithmetic | $O(Tmn^2)$ for $m\ge n$ | achieved kernel rate |
+| traffic | at least weights, gradients, momentum, and outputs | cache reuse, fusion, and communication |
+| routing | this matrix block only | biases, scales, embeddings, and output blocks |
+
+The table is the algorithmic lens on the same update whose singular values
+supplied the geometric lens. A paper must own both.
 
 ## Brand bridge {#sec-c17-bridge}
 
@@ -380,3 +448,11 @@ contract first, scaling evidence second.
 3. **(Pencil.)** For the factorized control, derive both factor gradients and show why an isometric update to each factor does not imply an isometric update to their product.
 4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and compare update spectra, weight spectra, state bytes, and final loss under matched randomness.
 5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.
+6. **(Audit.) Act checkpoint — complete Incident Card.** Complete the
+   [Act II assignment](../appendices/incident-card.qmd#sec-incident-act2).
+   Start from the Act I spectrum locator, then add curvature,
+   conditional-estimator, retained-state, and update-routing controls.
+   **Route:** Act checkpoint. **Estimated time:** 90 minutes.
+   **Deliverable:** one complete card plus the cheapest discriminating rerun.
+   **Hint:** an activated instrument may detect the event without identifying
+   its cause.

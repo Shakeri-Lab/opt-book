@@ -1,0 +1,100 @@
+---
+description: "A short diagnostic and minimal route into the tensors, training-loop, and reverse-accumulation mechanics used by the book."
+---
+
+# On-Ramp: The Minimum Mechanics {.unnumbered #on-ramp}
+
+This book does not require a prior deep-learning course. It does require a
+small operational vocabulary: tensors have named axes, a scalar loss is
+differentiated through a composition, a mini-batch defines an estimator, and
+parameters are updated outside the derivative graph. This on-ramp lets you
+test that vocabulary before Chapter 1.
+
+It is deliberately not a primer on architectures. If the diagnostic exposes
+a gap, the repair is a short route through selected sections of the earlier
+volume, not the whole book.
+
+## The 20–30 minute diagnostic
+
+Work without searching for a finished training script. Explanations matter
+more than syntax.
+
+1. **Shapes, 4 minutes.** Let $\matr X\in\mathbb R^{32\times 8}$,
+   $\matr W\in\mathbb R^{8\times 3}$, and
+   $\vect b\in\mathbb R^3$. State the shape of
+   $\matr X\matr W+\vect b$, identify the broadcast axis, and name the
+   reduction that would produce one scalar mean loss.
+2. **Composition, 4 minutes.** For
+   $\vect h=\phi(\matr X\matr W_1)$ and
+   $\widehat{\vect y}=\vect h\matr W_2$, draw the dependency graph and
+   mark which primal values a reverse derivative calculation may need.
+3. **Loss and estimator, 5 minutes.** Distinguish the full-data objective
+   from the mean loss on a mini-batch. Under what sampling rule is the latter
+   an unbiased estimator of the former?
+4. **Reverse accumulation, 5 minutes.** If one intermediate value feeds two
+   children, explain why its two cotangent contributions must add rather than
+   overwrite one another.
+5. **Update boundary, 4 minutes.** Put these operations in a valid order:
+   clear gradients, evaluate predictions, form a scalar loss, propagate
+   derivatives, update parameters. Which operation must occur without being
+   recorded as part of the next derivative graph?
+6. **Numerical contract, 4 minutes.** Name the dtype and device of the
+   parameters, loss accumulation, and update. Explain why “the model uses
+   FP16” is not a complete answer.
+
+If you can answer five or six items precisely, begin Chapter 1. If you can
+answer three or four, run the notebook below and read only the indicated
+sibling sections. If you can answer fewer than three, take the minimal route
+in order before returning.
+
+## The minimal route through *Making It Learnable*
+
+::: {.brand-bridge}
+The required route has three stops:
+
+1. [Nonlinearity and the MLP](https://shakeri-lab.github.io/dl-book/chapters/part1/03-nonlinearity-mlp.html#sec-03-nonlinearity-mlp):
+   read “Your first real MLP” to see a tensor composition assembled once.
+2. [Training: Loss and Stochastic Gradient Descent](https://shakeri-lab.github.io/dl-book/chapters/part1/04-training-loss-sgd.html#sec-04-training-loss-sgd):
+   read through the mini-batch and learning-rate sections; optimizer catalogs
+   are optional for this book.
+3. [Backpropagation](https://shakeri-lab.github.io/dl-book/chapters/part1/05-backpropagation.html#sec-05-backpropagation):
+   read the one-chain derivation, the autograd rules, and “Keep updates
+   outside the graph.”
+
+If Item 1 was the obstacle, begin instead with
+[Tensors in Practice](https://shakeri-lab.github.io/dl-book/chapters/appendices/a2-tensors.html#sec-a2-tensors),
+then return to the three stops. The sibling volume is a repair shelf, not a
+prerequisite course.
+:::
+
+## One minimal training loop
+
+Open or download
+[the on-ramp notebook](../notebooks/on-ramp-training-loop.ipynb). It uses one
+linear map and one mean-squared loss so architecture cannot hide the
+mechanics. The notebook makes five objects inspectable:
+
+- tensor shapes and the batch axis;
+- prediction and scalar loss;
+- reverse accumulation into parameter gradients;
+- mini-batch sampling and averaging;
+- an update performed outside the derivative graph.
+
+The notebook is complete when you can change the batch size and learning rate,
+predict which quantities change, and explain which target the batch loss
+estimates.
+
+## You are ready for Chapter 1 when…
+
+- you can state tensor shapes before a matrix product and name every reduction
+  axis;
+- you can distinguish a full objective from its mini-batch estimator;
+- you can read a scalar loss, call reverse accumulation, and find each
+  parameter gradient;
+- you can explain why gradient contributions add at fan-out;
+- you can update parameters without accidentally differentiating through the
+  update;
+- you can name storage, compute, and accumulation dtypes separately.
+
+Chapter 1 starts from there. Everything beyond this list is built when the
+diagnosis needs it.

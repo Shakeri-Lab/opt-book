@@ -50,13 +50,16 @@ def main() -> None:
     expected_appendices = [
         "chapters/appendices/notation.qmd",
         "chapters/appendices/rosetta.qmd",
+        "chapters/appendices/executable-claims.qmd",
         "chapters/appendices/incident-card.qmd",
     ]
     if quarto["book"].get("appendices") != expected_appendices:
         errors.append("Incident Card must remain the final appendix")
 
     unnumbered_units = {
+        ROOT / "chapters" / "on-ramp.qmd": "on-ramp",
         ROOT / "chapters" / "coda.qmd": "coda",
+        ROOT / "chapters" / "beyond-this-volume.qmd": "beyond",
         ROOT / "chapters" / "provenance.qmd": "provenance-note",
     }
     for path, stable_id in unnumbered_units.items():

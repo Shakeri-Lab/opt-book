@@ -1,6 +1,22 @@
 # Changelog
 
-## 0.1.0 — Unreleased
+## 0.1.0 — Public draft (2026-08-01)
+
+- Added a no-prior-course On-Ramp: a 20–30 minute diagnostic, a three-stop
+  route through *Making It Learnable*, an executable minimal NumPy training
+  loop, and a Chapter 1 readiness checklist.
+- Added searchable technical subtitles to all chapter headings and a compact
+  conceptual route before the detailed table of contents.
+- Centralized wheel and claim verification in `book_support/claims.py`, hid
+  repeated provenance scaffolding, and added learner-visible provenance strips
+  plus an executable-claims appendix.
+- Added worked transfer bridges to C14, C16, and C17; cumulative Incident Card
+  checkpoints; adversarial proof/code/claim audits; and an unrevealed incident
+  with a valid non-identifiability verdict.
+- Added the unnumbered *Beyond This Volume* map and a continuous screen PDF
+  alongside the recto-aware print PDF.
+- Suppressed redundant part numerals, assigned Coda figure numbering, and
+  labeled the rolling untagged publication as a public draft.
 
 - Established the phenomenon-first book, notation, thread, provenance, and
   accessibility contracts.
@@ -101,7 +117,7 @@
   carry lines, practical reading orders in every Sources section, and an
   explicit references page before the appendices.
 - Finished the Coda with a claim-and-boundary caption, all four thread sigils,
-  the unhedged title callback, and Appendix C's reusable ten-field Incident
+  the unhedged title callback, and the final appendix's reusable ten-field Incident
   Card as the final leaf.
 - Audited the full instructor-supplied `Others lectures/` shelf against
   C01–C17, recorded collection fingerprints and claim hazards, and proposed a

@@ -1,5 +1,4 @@
 ---
-subtitle: "Squares, local MGFs, and Bernstein's constrained optimizer"
 description: "Why a harmless square destroys global sub-Gaussian control, how a local MGF creates Bernstein's two deviation regimes, and why clipping repairs concentration only by changing the estimator."
 number-offset: 5
 jupyter: python3
@@ -21,7 +20,16 @@ fulfills:
   - promise-c05-c06-squared-boundary
 ---
 
-# One Square, Two Regimes {#c06}
+# One Square, Two Regimes: Sub-Exponential Tails and Clipping Bias {#c06}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-06", "160afa2bff7051769d71818551178fc1cbfc3c21ff8f4c44e721f92a81621410")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">SG · The sub-Gaussian safe zone</span>
 <span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
@@ -59,7 +67,7 @@ impossible.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate `harness@ch-06`.
+1. Load the chapter-pinned tail instruments.
 2. Evaluate the exact log-MGF below its finite boundary.
 3. Evaluate exact upper tails on a declared threshold grid.
 4. Locate the first failure of a variance-matched quadratic candidate.
@@ -73,20 +81,10 @@ impossible.
 #| code-summary: "Code: expose the finite MGF domain created by one square"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-06/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     bernstein_two_regime_rate,

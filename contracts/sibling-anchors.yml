@@ -4,6 +4,18 @@
   "status": "consumer-side mirror pending sibling-repository enforcement",
   "anchors": [
     {
+      "id": "sibling-tensor-mechanics",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/appendices/a2-tensors.html#sec-a2-tensors"
+    },
+    {
+      "id": "sibling-compositional-model-mechanics",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part1/03-nonlinearity-mlp.html#sec-03-nonlinearity-mlp"
+    },
+    {
+      "id": "sibling-training-loop-mechanics",
+      "url": "https://shakeri-lab.github.io/dl-book/chapters/part1/04-training-loss-sgd.html#sec-04-training-loss-sgd"
+    },
+    {
       "id": "sibling-backpropagation-mechanics",
       "url": "https://shakeri-lab.github.io/dl-book/chapters/part1/05-backpropagation.html#sec-05-backpropagation"
     },

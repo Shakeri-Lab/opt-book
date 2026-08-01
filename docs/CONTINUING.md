@@ -4,11 +4,11 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `f6f06b5` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `94df4af` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
-- Derived edition: PDF
+- Derived editions: recto-aware print PDF and continuous screen PDF
 - Publication state: public rolling `v0.x` site; no annotated book release tag
   yet
 
@@ -23,12 +23,23 @@ matrix-update geometry through the terminal Paper Autopsy Protocol. The
 unnumbered Coda now closes the opening loss-spike incident with all five
 diagnostic controls. Three authored act interludes now make the lens handoffs
 explicit, every recap ends on a question, every Sources section supplies a
-reading order, and Appendix C hands the blank Incident Card to the reader
+reading order, and the final appendix hands the blank Incident Card to the reader
 after the references. C02 is the accepted pilot; C01/C03–C17, the Coda, and
-the Incident Card remain author-review drafts. Act III is still gated by D02
-and was not silently created. Both local HTML and the derived PDF render
+the Incident Card remain author-review drafts. D45 supersedes the earlier
+gated-Act-III possibility for this volume: the unnumbered continuation map
+owns the course synthesis routes. Both local HTML and both derived PDFs render
 successfully; source, contract, HTML, and PDF audits pass subject to the
 documented untagged-PDF fallback.
+
+The unnumbered On-Ramp now makes the prerequisite boundary explicit: no prior
+deep-learning course is required. It supplies a 20–30 minute diagnostic, a
+three-stop repair route through the earlier sibling volume, one minimal NumPy
+training loop, and a Chapter 1 readiness checklist. Searchable technical
+locators now appear in all chapter titles. C14, C16, and C17 carry worked
+transfer bridges, while C04/C10/C17 build the Incident Card cumulatively. The
+unnumbered *Beyond This Volume* section maps the course's attention/kernel,
+IO-aware, parallel-scan, and feature-learning synthesis without opening a new
+act in this book.
 
 The 211-slide ICML 2026 tutorial *Is numerical optimization theory irrelevant
 to machine learning practice in 2026?* has been reviewed completely as an
@@ -55,20 +66,22 @@ Lipschitz concentration, and C12 normal-equation conditioning) plus nine
 diagnostic exercise changes. No new chapter or Act III expansion is implied;
 the manuscript pass remains gated on primary-source routing and author review.
 
-Current forced dual-edition build:
+Current forced multi-edition build:
 
-- 246 total PDF pages;
-- physical chapter openers for C01–C17 are pages 17, 25, 41, 55, 73, 85,
-  101, 113, 127, 143, 157, 169, 181, 191, 197, 207, and 215; the Coda begins
-  on 225 and the provenance note on 233;
-- physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 16, 14, 12,
-  12, 10, 6, 10, 8, and 10 pages; the Coda spans 8 pages;
-- source non-code word counts excluding Sources for C01–C17 are 1,239,
-  2,732, 2,576, 2,071, 2,016, 2,339, 2,035, 2,190, 2,531, 1,991, 1,896,
-  2,331, 1,490, 1,011, 1,150, 1,044, and 1,497;
+- 244 print-PDF pages and 222 screen-PDF pages; the print edition retains 22
+  recto/verso blank pages and the screen edition has none;
+- physical print chapter openers for C01–C17 are pages 23, 31, 47, 61, 79,
+  91, 107, 119, 133, 145, 157, 169, 181, 189, 195, 203, and 209; the Coda
+  begins on 219, *Beyond This Volume* on 225, and the provenance note on 227;
+- physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 12, 12, 12,
+  12, 8, 6, 8, 6, and 10 pages; the Coda spans 6 pages and the continuation
+  map spans 2;
+- source non-code word counts excluding Sources for C01–C17 are 1,247,
+  2,733, 2,577, 2,144, 2,021, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
+  2,337, 1,516, 1,220, 1,180, 1,235, and 1,877;
 - `artifacts/book-metrics.json` is the single audited ledger for those values;
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
-- 57 passing harness and repository tests;
+- 60 passing harness and repository tests;
 - seven new deep-revision evidence verifiers pass: six match their deterministic
   controls within declared numerical gates, while the device-scoped timing protocol re-executes and
   checks its count/rate arithmetic without a false cross-device speed gate;
@@ -133,10 +146,9 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 ## Next safe action
 
-Review the bounded other-lectures harvest in
-`docs/source-audits/other-lectures-shelf-audit.md`, then implement T1–T3 and
-E1–E9 one affected chapter at a time if approved. Keep the existing author
-review of C01/C03–C17 and the Coda separate. Decide whether D02 opens any Act
-III synthesis only after that review. Annotated harness tags remain a separate
-release task under open decision D34; do not invent source identities for
-rolling-draft wheels.
+Review and accept C01/C03–C17, the Coda, the On-Ramp, and the cumulative
+Incident Card assignments. Keep the bounded other-lectures harvest separate
+unless T1–T3/E1–E9 are explicitly approved. The course's synthesis now has a
+stable unnumbered route rather than an implied Act III. Annotated harness tags
+remain a separate release task under open decision D34; do not invent source
+identities for rolling-draft wheels.

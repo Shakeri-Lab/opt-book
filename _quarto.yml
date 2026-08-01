@@ -1,6 +1,10 @@
 project:
   type: book
   output-dir: _book
+  resources:
+    - notebooks/on-ramp-training-loop.ipynb
+    - book_support/claims.py
+    - book_support/incident_panel.py
   execute-dir: project
   post-render:
     - python3 scripts/stabilize_html_numbering.py
@@ -17,7 +21,7 @@ book:
     laptop-scale code. The destination is a capability, not a catalog: open a
     current optimization paper and find the assumption it is really leaning on.
   author: "Heman Shakeri"
-  date: "2026-07-31"
+  date: "2026-08-01"
   repo-url: https://github.com/Shakeri-Lab/opt-book
   site-url: https://shakeri-lab.github.io/opt-book/
   downloads: [pdf]
@@ -32,6 +36,7 @@ book:
       DS 6210 · Numerical Analysis & Optimization
   chapters:
     - index.qmd
+    - chapters/on-ramp.qmd
     - part: chapters/parts/act0.qmd
       chapters:
         - chapters/act0/01-count-not-cost.qmd
@@ -56,11 +61,13 @@ book:
         - chapters/act2/16-edge-of-stability.qmd
         - chapters/act2/17-update-geometry.qmd
     - chapters/coda.qmd
+    - chapters/beyond-this-volume.qmd
     - chapters/provenance.qmd
     - references.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd
+    - chapters/appendices/executable-claims.qmd
     - chapters/appendices/incident-card.qmd
 
 bibliography: references.bib
@@ -98,3 +105,4 @@ format:
 
 language:
   title-block-author-single: "Author"
+  title-block-published: "Public draft"

@@ -10,6 +10,19 @@ claim_ids: [coda-incident-001]
 
 # One Spike, Four Suspects {.unnumbered #coda}
 
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+from book_support.incident_panel import incident_figure
+
+pin = activate_harness(
+    "ch-17",
+    "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60",
+)
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
+
 <span class="thread">NS · Numerical stability · RS · Random-matrix spectra · LG · Landscape and update geometry · SG · The sub-Gaussian safe zone</span>
 
 The first page opened with an incident: one loss spike, at least four
@@ -52,8 +65,8 @@ estimator target, reduction, denominator, dtype pair, seed, and wheel digest.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate the final chapter-pinned harness.
-2. Read the content-addressed incident claim.
+1. Open the content-addressed incident claim through the verifier.
+2. Extract the registered result.
 3. Extract one control for each suspect.
 4. Plot the spike and the complete diagnostic panel.
 5. Check the incident step and the discriminating target-shift statistic.
@@ -61,111 +74,34 @@ estimator target, reduction, denominator, dtype pair, seed, and wheel digest.
 
 ```{python}
 #| label: coda-incident-panel
-#| fig-cap: "One engineered loss spike activates the complete diagnostic panel. Precision, curvature, and repeated-state controls acquit their named mechanisms; the update spectrum detects the event without explaining it; a same-input target control attributes 99.8 percent of the gradient discrepancy to the intervention. The panel diagnoses this pinned incident, not every loss spike."
 #| fig-alt: "Six-panel incident report. Loss jumps by a factor of about 60. Precision differences remain near one part per million. Gradient discrepancy is nearly one million times the full-gradient scale and almost entirely explained by a target shift. Step times top and directional curvature remain far below two. The incident update has one dominant singular value while the weight spectrum remains broad. Repeated-batch mean and variance differences are exactly zero."
 #| code-summary: "Code: inspect one loss spike through the book's full diagnostic panel"
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
-import matplotlib.pyplot as plt
-import numpy as np
-
 # [1]
-manifest_path = Path("artifacts/harness/ch-17/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
-
+incident = verify_claim("coda-incident-001", expected_harness=pin)
 # [2]
-incident = json.loads(
-    Path("artifacts/claims/coda-incident-001.json").read_text()
-)
 result = incident["result"]
 
 # [3]
-precision = result["precision_control"]
 regime = result["regime_control"]
-curvature = result["curvature_control"]
-spectrum = result["spectrum_control"]
-normalizer = result["normalization_state_control"]
+controls = tuple(
+    result[name]
+    for name in (
+        "precision_control",
+        "regime_control",
+        "curvature_control",
+        "spectrum_control",
+        "normalization_state_control",
+    )
+)
 
 # [4]
-fig, axes = plt.subplots(2, 3, figsize=(10.0, 6.2))
-axes[0, 0].bar(
-    ["before", "after"],
-    [result["loss_before_incident"], result["loss_after_incident"]],
-    color=["#232D4B", "#9C2F2F"],
-)
-axes[0, 0].set(yscale="log", ylabel="full-data loss", title="symptom")
-axes[0, 1].bar(
-    ["loss deviation", "ulp / magnitude"],
-    [
-        precision["maximum_relative_loss_deviation_float32_vs_float64"],
-        precision["float32_spacing_at_that_scale"]
-        / precision["maximum_state_or_update_magnitude"],
-    ],
-    color=["#232D4B", "#2E7D32"],
-)
-axes[0, 1].set(yscale="log", title="precision control")
-axes[0, 2].bar(
-    ["gradient\ndiscrepancy", "target-shift\nfraction"],
-    [
-        regime["realized_gradient_discrepancy_ratio"],
-        regime["fraction_of_discrepancy_from_engineered_target_shift"],
-    ],
-    color=["#9C2F2F", "#E57200"],
-)
-axes[0, 2].set(yscale="log", title="estimator control")
-axes[1, 0].bar(
-    [r"$\alpha\lambda_{\max}$", "directional"],
-    [
-        curvature["step_times_top_curvature"],
-        curvature["step_times_directional_curvature"],
-    ],
-    color=["#232D4B", "#2E7D32"],
-)
-axes[1, 0].axhline(2, color="#9C2F2F", linestyle="--")
-axes[1, 0].set(ylim=(0, 2.2), title="curvature control")
-locations = np.arange(4)
-axes[1, 1].bar(
-    locations - 0.18,
-    spectrum["incident_update_singular_values"],
-    width=0.36,
-    color="#9C2F2F",
-    label="update",
-)
-axes[1, 1].bar(
-    locations + 0.18,
-    spectrum["incident_weight_singular_values"],
-    width=0.36,
-    color="#232D4B",
-    label="weights",
-)
-axes[1, 1].set(yscale="log", title="incident spectra")
-axes[1, 1].legend(frameon=False)
-axes[1, 2].bar(
-    ["mean", "variance"],
-    [
-        normalizer["maximum_mean_difference_from_same_batch_previous_cycle"],
-        normalizer[
-            "maximum_variance_difference_from_same_batch_previous_cycle"
-        ],
-    ],
-    color=["#232D4B", "#2E7D32"],
-)
-axes[1, 2].set(ylim=(0, 1), title="repeated input state")
-for axis in axes.flat:
-    axis.grid(axis="y", alpha=0.2)
-fig.tight_layout()
+incident_figure(result)
 
 # [5]
 assert result["incident_step"] == 60
 assert result["loss_spike_factor"] > 60
+assert len(controls) == 5
 assert regime["fraction_of_discrepancy_from_engineered_target_shift"] > 0.99
 print(f"step 60 loss spike: {result['loss_spike_factor']:.1f}x")
 print(
@@ -175,10 +111,14 @@ print(
 ```
 ::::
 
-*Diagnostic panel.* Precision, curvature, and repeated input-statistic
-controls remain benign. The update spectrum records the event but does not
-identify its cause. The gradient discrepancy is enormous, and $99.8\%$ of it
-is traced to a changed target in the incident batch.
+<span class="provenance-strip">Claim `coda-incident-001` · seed: 3287492823 · dtype: FP64 with paired FP32 control · device: laptop CPU · estimator: same-step six-instrument incident panel · [artifact](../artifacts/claims/coda-incident-001.json)</span>
+
+*Figure Coda.1 — One engineered loss spike activates the complete diagnostic
+panel.* Precision, curvature, and repeated-state controls acquit their named
+mechanisms; the update spectrum detects the event without explaining it; a
+same-input target control attributes $99.8\%$ of the gradient discrepancy to
+the intervention. The panel diagnoses this pinned incident, not every loss
+spike.
 
 The panels are not five votes. They are a sequence of attempts to falsify a
 cause.
@@ -264,7 +204,9 @@ trace the batch target and its provenance.
 | estimator target | $99.8\%$ of gradient discrepancy traced to target shift | cause identified |
 | corrective control | restore clean target; rerun same seed and batch order | spike removed by construction |
 
-A blank copy of this report is [Appendix C](appendices/incident-card.qmd).
+A blank copy and three cumulative act assignments are in the [final
+appendix](appendices/incident-card.qmd). Its second incident is intentionally
+unrevealed and may remain unidentifiable under the supplied instruments.
 
 The first page's question now has an answer and a method. A loss trace proposes
 an incident; it does not name one. Geometry supplies candidate directions,

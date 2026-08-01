@@ -1,5 +1,4 @@
 ---
-subtitle: "Hessians, positive-semidefinite surrogates, and matrix-free probes"
 description: "Why a second-order claim is incomplete until it names the curvature operator, averaging distribution, and approximation policy."
 number-offset: 11
 jupyter: python3
@@ -22,7 +21,16 @@ fulfills:
   - promise-c11-c12-hvp
 ---
 
-# Curvature Is Not One Matrix {#c12}
+# Curvature Is Not One Matrix: Hessian, Generalized Gauss–Newton, Fisher, and Matrix-Free Products {#c12}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-12", "6a1c864096870887526ffc4a9e9ffc177ff9ac668c05372046f1686b4ad07907")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">RS · Random-matrix spectra · LG · Landscape and update geometry</span>
 <span class="lens-ledger">Geometric primary · Dynamic supporting · Algorithmic supporting</span>
@@ -87,7 +95,7 @@ parameter, labels, and Bernoulli loss fixed.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-12</code>.
+1. Load the chapter-pinned curvature instruments.
 2. Fix four inputs, four labels, and one parameter vector.
 3. Compute the realized Hessian, GGN, model Fisher, and empirical Fisher.
 4. Repeat for affine and composed logits.
@@ -102,21 +110,10 @@ parameter, labels, and Bernoulli loss fixed.
 #| code-summary: "Code: isolate curvature-object disagreement with affine and composed logits"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-12/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import bernoulli_curvature_matrices
 
@@ -165,10 +162,7 @@ axes[1].legend(frameon=False, fontsize=8)
 fig.tight_layout()
 
 # [6]
-claim = json.loads(
-    Path("artifacts/claims/c12-curvature-choice-001.json").read_text()
-)
-assert claim["harness_wheel_sha256"] == wheel_digest
+claim = verify_claim("c12-curvature-choice-001", expected_harness=pin)
 assert np.allclose(
     claim["result"]["composed_logit"]["hessian_eigenvalues"],
     np.linalg.eigvalsh(composed.hessian),
@@ -427,8 +421,7 @@ axis.legend(frameon=False)
 fig.tight_layout()
 
 # [6]
-hvp_claim = json.loads(Path("artifacts/claims/c12-hvp-001.json").read_text())
-assert hvp_claim["harness_wheel_sha256"] == wheel_digest
+hvp_claim = verify_claim("c12-hvp-001", expected_harness=pin)
 assert np.allclose(
     hvp_claim["result"]["operator_product"],
     operator_product,

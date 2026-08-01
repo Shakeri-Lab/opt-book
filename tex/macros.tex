@@ -21,6 +21,12 @@
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\loss}{\mathcal{L}}
 
+% The authored dividers already carry the Act labels. Suppress KOMA-Script's
+% additional "Part I/II/III" prefix so the two numbering systems do not
+% compete in print.
+\renewcommand*{\partformat}{}
+\renewcommand*{\thepart}{}
+
 % Decorative callout icons should not become copied or spoken words.
 \AtBeginDocument{%
   \ifdefined\faInfo

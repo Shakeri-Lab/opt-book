@@ -1,5 +1,4 @@
 ---
-subtitle: "Range, resolution, and rounding"
 description: "Why a nonzero update can become identically zero, and how a complete precision contract separates range, representation, arithmetic, cancellation, and scale allocation."
 number-offset: 2
 jupyter: python3
@@ -23,7 +22,16 @@ fulfills:
   - promise-c02-c03-precision-contract
 ---
 
-# The Grid Under the Update {#c03}
+# The Grid Under the Update: Range, Resolution, and Rounding {#c03}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-03", "833cfe618f0ca4869424c1832361c7f8281e63a32934ad8e9b14bc391db89918")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">NS · Numerical stability</span>
 <span class="lens-ledger">Geometric supporting · Dynamic supporting · Algorithmic primary</span>
@@ -55,7 +63,7 @@ cannot silently alter this result.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate the chapter's exact harness wheel.
+1. Load the chapter-pinned precision instruments.
 2. Request four hundred $+0.25$ updates from the same initial value.
 3. Record the local spacing and the full precision contract.
 4. Assert the stalled stored path against the exact path.
@@ -68,20 +76,10 @@ cannot silently alter this result.
 #| code-summary: "Code: expose a nonzero update that never changes stored state"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-03/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     float_contract,

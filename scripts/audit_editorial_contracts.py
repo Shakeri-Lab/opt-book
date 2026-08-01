@@ -112,8 +112,8 @@ def main() -> None:
             errors.append(f"{path}: unapproved figure colors {sorted(unapproved)}")
 
     coda = (ROOT / "chapters" / "coda.qmd").read_text()
-    if '#| fig-cap: "' not in coda:
-        errors.append("Coda incident panel must carry a claim-and-boundary caption")
+    if "#| fig-cap:" in coda or "Figure Coda.1" not in coda:
+        errors.append("Coda incident panel must use the Coda.1 caption namespace")
     for sigil in ("NS ·", "RS ·", "LG ·", "SG ·"):
         if sigil not in coda:
             errors.append(f"Coda must harvest public thread sigil {sigil}")

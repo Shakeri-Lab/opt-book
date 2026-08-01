@@ -19,6 +19,7 @@ AUDITS = [
     "audit_harness_pins.py",
     "audit_claims.py",
     "audit_sibling_anchors.py",
+    "audit_reader_routes.py",
     "audit_book_structure.py",
 ]
 

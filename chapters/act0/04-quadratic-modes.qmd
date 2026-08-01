@@ -1,5 +1,4 @@
 ---
-subtitle: "Stability, conditioning, and the stochastic floor"
 description: "Why one learning rate creates a different clock in every eigendirection, and how a quadratic control experiment separates oscillation, slow convergence, preconditioning, and stochastic forcing."
 number-offset: 3
 jupyter: python3
@@ -19,7 +18,16 @@ lenses:
   algorithmic: supporting
 ---
 
-# One Step, Many Clocks {#c04}
+# One Step, Many Clocks: Quadratic Stability and Conditioning {#c04}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-04", "a3478fd77e8c9b4401ae5d23e35d7b7bddd45ae5211bd14f72662be6dadcd62b")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">LG · Landscape and update geometry</span>
 <span class="lens-ledger">Geometric supporting · Dynamic primary · Algorithmic supporting</span>
@@ -68,7 +76,7 @@ vendored harness wheel before importing the quadratic instruments.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate `harness@ch-04`.
+1. Load the chapter-pinned quadratic instruments.
 2. Run four hundred exact quadratic steps.
 3. Rotate the iterates into Hessian eigencoordinates.
 4. Assert the closed form and classify the mode factors.
@@ -82,20 +90,10 @@ vendored harness wheel before importing the quadratic instruments.
 #| code-summary: "Code: expose the independent clocks hidden inside one gradient trajectory"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-04/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     classify_mode_factors,
@@ -678,3 +676,12 @@ strongly-convex control, then read @robbins1951 for the stochastic branch and
    convergence claims differ from the constant-step finite recurrence in this
    chapter. Label each extracted result as theorem, asymptotic statement, or
    heuristic interpretation.
+
+7. **(Audit.) Act checkpoint — open an Incident Card.** Complete the
+   [Act 0 assignment](../appendices/incident-card.qmd#sec-incident-act0) for a
+   numerical or performance failure. Fill
+   Symptom, Prediction, Contract, Precision control, and Corrective control
+   before reading the result. **Route:** Act checkpoint. **Estimated time:**
+   60 minutes. **Deliverable:** a partial card and one paired rerun. **Hint:**
+   a speedup without a traffic boundary and a reduction over the wrong axis
+   are different contract failures.

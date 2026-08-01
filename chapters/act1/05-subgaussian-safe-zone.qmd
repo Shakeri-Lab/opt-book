@@ -1,5 +1,4 @@
 ---
-subtitle: "Exponential tails, simultaneous control, and scale"
 description: "Why a large collection of random coordinates can remain predictable, and how the MGF, union bound, independent sums, and the sub-Gaussian Orlicz norm define a usable safe zone."
 number-offset: 4
 jupyter: python3
@@ -18,7 +17,16 @@ lenses:
   algorithmic: supporting
 ---
 
-# The Safe Zone Is Logarithmic {#c05}
+# The Safe Zone Is Logarithmic: Sub-Gaussian Concentration and Simultaneous Control {#c05}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-05", "316959af60076c4c79cf740212c866a155fa78bf9b1cea0ba9a819b90b2d769a")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">SG · The sub-Gaussian safe zone</span>
 <span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
@@ -49,7 +57,7 @@ $\delta=0.01$.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate `harness@ch-05`.
+1. Load the chapter-pinned concentration instruments.
 2. Draw one independent standard-normal vector at each declared size.
 3. Compute the simultaneous sub-Gaussian threshold.
 4. Assert the witness remains inside the threshold.
@@ -63,20 +71,10 @@ $\delta=0.01$.
 #| code-summary: "Code: compare simultaneous-control scales across many random coordinates"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-05/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     empirical_tail_profile,

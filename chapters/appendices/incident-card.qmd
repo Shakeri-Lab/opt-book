@@ -4,6 +4,57 @@ When a run fails, complete one card. Fill fields 1–3 before opening any
 diagnostic panel. A strong diagnosis does not collect votes; it names a rival
 cause and the control that could acquit it.
 
+## Three cumulative act assignments {#sec-incident-cumulative}
+
+The card is built across the course rather than introduced after the diagnosis
+is complete.
+
+### Act 0 — execution contract {#sec-incident-act0}
+
+Choose one numerical or performance symptom from C01–C04. Complete Fields
+1–4 and 10 before seeing the reference outcome. Your paired control must keep
+the mathematical target fixed while changing exactly one of traffic,
+reduction order, dtype, or step size.
+
+The audit packet includes two intentionally plausible defects:
+
+- a speedup claim with no traffic or device boundary;
+- code that computes the right statistic over the wrong axis.
+
+**Deliverable:** the partial card, the corrected claim or code, and one
+sentence explaining why the other defect would survive your control.
+
+### Act I — geometric locator {#sec-incident-act1}
+
+Extend the same card with Field 7 and revise the verdict vocabulary to include
+**detects only**. The packet supplies a spectrum plot whose values are
+correct but whose matrix is not named. Identify at least two candidate
+matrices, then state which conclusion changes when the matrix changes.
+
+**Deliverable:** a caption that names matrix, scaling, centering, finite-null
+or perturbation control, and the conclusion the spectrum does not establish.
+
+### Act II — causal incident {#sec-incident-act2}
+
+Complete all ten fields. The packet now contains:
+
+- a proof with one silently dropped independence or smoothness assumption;
+- clipping described as variance reduction without its target shift;
+- a matrix-update trace whose update spectrum is mislabeled as a weight
+  spectrum.
+
+Correct each item before assigning cause.
+
+**Incident B is deliberately unrevealed.** Its available panel activates more
+than one mechanism-specific instrument, and the supplied observations are
+compatible with at least two causal explanations. There is no answer key in
+the book. A valid submission may conclude **not identifiable** if it proves
+the observational equivalence and requests the cheapest additional control.
+The card is not a deterministic troubleshooting flowchart.
+
+**Deliverable:** a complete card, one rejected causal story, one surviving
+rival, and the next measurement that would distinguish them.
+
 ## Blank incident report
 
 | Field | Record before interpretation |

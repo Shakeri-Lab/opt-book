@@ -77,6 +77,7 @@ def metrics() -> dict[str, object]:
             + 1
         )
 
+    beyond_start = first_body_heading_page(pages, "Beyond This Volume")
     provenance_start = first_body_heading_page(
         pages, "Provenance and Acknowledgements"
     )
@@ -85,14 +86,20 @@ def metrics() -> dict[str, object]:
         "counting_contract": (
             "source prose after front-matter and fenced-code removal, with "
             "Sources and further reading excluded; PDF physical spans end "
-            "immediately before the next numbered chapter or Coda"
+            "immediately before the next numbered chapter or Coda; the Coda "
+            "ends immediately before Beyond This Volume"
         ),
         "pdf_total_pages": len(pages),
         "chapters": chapters,
         "coda": {
             "pdf_physical_start": coda_start,
+            "pdf_physical_end": beyond_start - 1,
+            "pdf_span_pages": beyond_start - coda_start,
+        },
+        "beyond_this_volume": {
+            "pdf_physical_start": beyond_start,
             "pdf_physical_end": provenance_start - 1,
-            "pdf_span_pages": provenance_start - coda_start,
+            "pdf_span_pages": provenance_start - beyond_start,
         },
         "provenance_note_pdf_physical_start": provenance_start,
     }

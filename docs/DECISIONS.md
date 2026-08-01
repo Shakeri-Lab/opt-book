@@ -121,6 +121,31 @@ author correction supersedes any default.
     Every Unresolved recap entry ends as a question, and every Sources section
     contains one practical reading-order sentence.
 
+43. **D43 — Prerequisite route:** Do not require a completed deep-learning
+    course and do not add a conventional primer. Supply an unnumbered
+    20–30 minute diagnostic, a three-stop sibling repair route, one minimal
+    NumPy training loop, and a Chapter 1 readiness checklist.
+44. **D44 — Printed-code contract:** Show equations, short mechanism kernels,
+    critical assertions, and compact provenance strips. Centralize repeated
+    wheel and artifact verification in `book_support/claims.py` and keep the
+    full harness linked rather than repeatedly printed.
+45. **D45 — Synthesis boundary:** Keep C01–C17 and the Coda as the book's
+    narrow core. Route attention/kernel geometry, IO-aware exact algorithms,
+    parallel scans, and feature-learning regimes through an unnumbered
+    *Beyond This Volume* map.
+46. **D46 — Searchable titles:** Put standard topic names in every chapter's
+    H1 so the HTML navigation, PDF contents, and search index carry both the
+    poetic title and the technical locator.
+47. **D47 — Exercise routes:** Keep Pencil/Code/Audit as the only taxonomy;
+    add Core/Extension/Research navigation, time/prerequisite/deliverable/hint
+    metadata, and cumulative Incident Card checkpoints at C04, C10, and C17.
+48. **D48 — Dual derived PDFs:** Publish both the recto-aware print PDF and a
+    continuous one-sided screen PDF. HTML remains canonical and content is
+    identical across editions.
+49. **D49 — Public draft identity:** Label the untagged rolling site “Public
+    draft 0.1” and keep D34's source-tag decision open; do not imply a stable
+    release tag that does not exist.
+
 ## Acceptance status
 
 - D01–D28 remain the approved implementation baseline.
@@ -130,3 +155,5 @@ author correction supersedes any default.
 - D35–D42 are adopted working decisions for this revision. They can be
   superseded by an explicit author correction without changing D34 or chapter
   acceptance status.
+- D43–D49 implement the author's 2026-08-01 course-alignment and production
+  direction. They do not resolve the separate harness-tag decision D34.

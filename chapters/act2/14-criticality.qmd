@@ -1,5 +1,4 @@
 ---
-subtitle: "Variance propagation, Jacobian products, and dynamical isometry"
 description: "Why criticality in an average moment can coexist with unusable derivative directions."
 number-offset: 13
 jupyter: python3
@@ -19,7 +18,16 @@ lenses:
 fulfills: [promise-c11-c14-depth-products]
 ---
 
-# Critical on Average, Broken by Direction {#c14}
+# Critical on Average, Broken by Direction: Initialization and Dynamical Isometry {#c14}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-14", "7702c2b166d334b7d48eea5e9b6ca4d593ce0823b689110d647887b4b3b12b26")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">RS · Random-matrix spectra · SG · Sub-Gaussian safe zone · LG · Landscape and update geometry</span>
 
@@ -82,9 +90,39 @@ is fixed, and scale three grows by $(3/2)^\ell$. It does **not** say that a
 finite network exactly follows the recursion, nor that scale two has a
 well-conditioned input-output Jacobian.
 
+## From two layers to depth $L$ {#sec-c14-depth-bridge}
+
+The scalar recursion is easiest to trust after carrying it twice. Set
+$q_0=1$, zero bias, and
+$\sigma_w^2=2(1+\varepsilon)$. For rectified coordinates,
+
+$$
+q_1=1+\varepsilon,\qquad
+q_2=(1+\varepsilon)^2,\qquad
+q_L=(1+\varepsilon)^L.
+$$ {#eq-c14-depth-drift}
+
+At $\varepsilon=0$, the average second moment is fixed at every depth. For a
+small nonzero mismatch, depth compounds the local error: the relevant
+quantity is $L\log(1+\varepsilon)$, not $\varepsilon$ alone.
+
+Now compare the directional statement. The two matrices
+
+$$
+\matr J_1=\operatorname{diag}(\sqrt2,0),\qquad
+\matr J_2=\operatorname{diag}(0,\sqrt2)
+$$
+
+each have mean squared singular value one, yet
+$\matr J_2\matr J_1=\matr 0$. Two layers can therefore be mean-square
+critical individually while their derivative product destroys every
+direction. Repeating the scalar recursion to depth $L$ controls an average
+under its independence model; controlling the product requires directional
+or spectral information at the same depth.
+
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-14</code>.
+1. Load the chapter-pinned signal-propagation instruments.
 2. Plot the ReLU moment recursion at three scales.
 3. Recreate the registered Gaussian and orthogonal matrix products.
 4. Insert ReLU gates from one finite-width forward pass at critical scale.
@@ -97,20 +135,10 @@ well-conditioned input-output Jacobian.
 #| fig-alt: "Two panels. The first shows activation second moment decaying for scale 1, constant for scale 2, and growing for scale 3. The second shows ordered singular values: an orthogonal product is flat at one, a Gaussian linear product spreads, and a ReLU-gated product at critical variance has only eight singular values above one times ten to the minus ten."
 #| code-summary: "Code: separate a variance-critical recursion from a Jacobian-spectrum diagnostic"
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-14/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 from trainable_harness import deep_linear_product, relu_variance_trace
 
 # [2]
@@ -151,11 +179,8 @@ axes[1].set(xlabel="ordered direction", ylabel="singular value")
 axes[1].legend(frameon=False)
 fig.tight_layout()
 # [5]
-claim = json.loads(Path("artifacts/claims/c14-criticality-001.json").read_text())
-gated_claim = json.loads(
-    Path("artifacts/claims/c14-gated-product-001.json").read_text()
-)
-assert claim["harness_wheel_sha256"] == wheel_digest
+claim = verify_claim("c14-criticality-001", expected_harness=pin)
+gated_claim = verify_claim("c14-gated-product-001", expected_harness=pin)
 assert np.isclose(
     sg[0],
     claim["result"]["gaussian_product"]["maximum"],
@@ -169,6 +194,8 @@ print("claim c14-criticality-001: verified")
 print("claim c14-gated-product-001: verified")
 ```
 ::::
+
+<span class="provenance-strip">Claims `c14-criticality-001`, `c14-gated-product-001` · seed: 6214 · dtype: FP64 · device: CPU · estimator: finite-product singular spectrum · [artifact](../../artifacts/claims/c14-criticality-001.json)</span>
 
 The gated product is not an independent random-matrix toy. Its diagonal gates
 come from one forward pass through the same finite-width compositional
@@ -255,4 +282,4 @@ then read @pennington2017 for the Jacobian spectrum; use @glorot2010 and
 2. **(Code.)** Repeat the product experiment across 100 seeds. Plot distributions of trace, lower edge, and upper edge separately.
 3. **(Pencil.)** For $\matr J=\matr D_L\matr W_L\cdots\matr D_1\matr W_1$, show that $\operatorname{rank}(\matr J)$ cannot exceed the smallest gate rank. Explain why this bound can be loose.
 4. **(Code.)** Hold the critical variance fixed and vary width and input direction. Compare the active-count profile, numerical rank, mean squared singular value, and both edges under shared weight streams.
-5. **(Audit.) Paper audit:** Locate a paper that uses “critical” and complete the **Mathematical object**, **Dynamic regime**, **Assumption stress test**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Is its object activation variance, correlation, mean squared singular value, or a full spectral statement?
+5. **(Audit.) Paper audit:** Locate a paper that uses “critical” and complete the **Mathematical object**, **Dynamic regime**, **Assumption stress test**, **Discriminating control**, and **Transfer verdict** fields of the Paper Autopsy Protocol. Is its object activation variance, correlation, mean squared singular value, or a full spectral statement? As an agent-generated-proof control, remove one independence or width assumption silently, identify the first invalid step, and state the weakest repair.

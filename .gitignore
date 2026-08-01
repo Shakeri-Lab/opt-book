@@ -1,5 +1,6 @@
 .DS_Store
 _book/
+_book-screen/
 .quarto/
 .jupyter_cache/
 __pycache__/
@@ -20,6 +21,8 @@ private-ledgers/
 **/*_files/
 /Deep-Learning--Making-It-Trainable.tex
 /Deep-Learning--Making-It-Trainable.pdf
+/Deep-Learning--Making-It-Trainable-Screen.tex
+/Deep-Learning--Making-It-Trainable-Screen.pdf
 
 /.quarto/
 **/*.quarto_ipynb

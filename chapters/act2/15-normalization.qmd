@@ -1,5 +1,4 @@
 ---
-subtitle: "Chosen invariances, null directions, and stable coordinate statistics"
 description: "Why coordinate-wise normalization is not one operation and not a free stability guarantee."
 number-offset: 14
 jupyter: python3
@@ -17,7 +16,16 @@ lenses:
   algorithmic: supporting
 ---
 
-# Normalization Chooses an Invariance {#c15}
+# Normalization Chooses an Invariance: Coordinate Statistics and Derivative Paths {#c15}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-15", "780b6dce19a0e380f6b60a293358f80f9d20d11ded0ae572b27d4d7815a7cf4f")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">NS · Numerical stability · LG · Landscape and update geometry</span>
 
@@ -88,7 +96,7 @@ $\vect1$ because $\matr P\vect1=0$.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate <code>harness@ch-15</code>.
+1. Load the chapter-pinned normalization instruments.
 2. Normalize one vector before and after a constant shift.
 3. Compute both exact zero-epsilon Jacobians.
 4. Compare raw-moment and centered FP32 variance.
@@ -101,20 +109,10 @@ $\vect1$ because $\matr P\vect1=0$.
 #| fig-alt: "Grouped coordinate plot for a vector and its constant-shifted copy. The two centered-normalized curves overlap exactly, while the two RMS-normalized curves differ."
 #| code-summary: "Code: expose the invariances, null directions, and arithmetic of two coordinate-wise normalizers"
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-15/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-wheel_digest = sha256(wheel_path.read_bytes()).hexdigest()
-assert wheel_digest == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 from trainable_harness import (
     centered_normalize,
     merge_moments,
@@ -151,12 +149,13 @@ assert raw_and_centered_variance(
     np.array([9998, 9999, 10001, 10002])
 ) == (0.0, 2.5)
 # [5]
-claim = json.loads(Path("artifacts/claims/c15-invariance-001.json").read_text())
-assert claim["harness_wheel_sha256"] == wheel_digest
+claim = verify_claim("c15-invariance-001", expected_harness=pin)
 assert claim["result"]["centered_shift_deviation"] == 0.0
 print("claim c15-invariance-001: verified")
 ```
 ::::
+
+<span class="provenance-strip">Claim `c15-invariance-001` · seed: none · dtype: FP64 with paired FP32 cancellation check · device: CPU · estimator: deterministic map and Jacobian · [artifact](../../artifacts/claims/c15-invariance-001.json)</span>
 
 ## Epsilon changes the map {#sec-c15-epsilon}
 
@@ -256,9 +255,7 @@ for axis in axes:
     axis.grid(alpha=0.2)
 fig.tight_layout()
 
-running_claim = json.loads(
-    Path("artifacts/claims/c15-running-state-001.json").read_text()
-)
+running_claim = verify_claim("c15-running-state-001", expected_harness=pin)
 assert np.isclose(running_state.mean, direct_state.mean, atol=3e-15)
 assert running_state.m2 == direct_state.m2
 assert np.isclose(

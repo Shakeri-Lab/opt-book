@@ -1,0 +1,53 @@
+# Executable Claim Contract {#app-claims}
+
+The book separates learner-visible code into an equation, a mechanism kernel,
+and build orchestration. Hashing paths, activating a vendored wheel, loading a
+JSON record, and checking its content digest are essential to publication but
+are not the semantic change a new chapter teaches.
+
+The printed contract is therefore:
+
+| Surface | Kept on the page |
+|---|---|
+| equation | the mathematical object, with shapes and reductions |
+| mechanism kernel | normally 10–25 lines exposing the chapter's new operation |
+| critical assertions | two or three checks that protect the interpretation |
+| provenance strip | claim ID, provenance class, seed, dtype, device, estimator, and artifact |
+| full harness | linked source and collapsible HTML where useful; not repeatedly printed |
+
+Chapter source still executes the full verification. It calls the centralized
+interfaces below from a hidden setup cell:
+
+```python
+pin = activate_harness("ch-13", expected_wheel_sha256)
+claim = verify_claim("c13-regime-001", expected_harness=pin)
+```
+
+`activate_harness` verifies the manifest identity and wheel SHA-256 before
+placing the exact vendored wheel on the import path. `verify_claim` checks the
+claim registry, artifact identity, canonical payload digest, and wheel
+agreement. Removing those lines from repeated printed panels changes no
+assertion and no executed output.
+
+The complete implementation is available in
+[`book_support/claims.py`](https://github.com/Shakeri-Lab/opt-book/blob/main/book_support/claims.py).
+Claim records are browsable under
+[`artifacts/claims/`](https://github.com/Shakeri-Lab/opt-book/tree/main/artifacts/claims),
+and historical harness pins under
+[`artifacts/harness/`](https://github.com/Shakeri-Lab/opt-book/tree/main/artifacts/harness).
+
+## Reading a provenance strip
+
+The strip is a locator, not evidence by itself:
+
+- **claim** names the proposition being checked;
+- **class** distinguishes laptop reproduction, CPU simulation, and a pinned
+  external endpoint;
+- **seed** names a stream but never substitutes for a seed panel;
+- **dtype/device** scope the execution;
+- **estimator** names the target, reduction, and denominator;
+- **artifact** links the complete record and its environment sidecar.
+
+The chapter remains responsible for the mathematical and empirical
+interpretation. A valid digest can prove that the intended artifact was read;
+it cannot make the artifact's assumptions true.

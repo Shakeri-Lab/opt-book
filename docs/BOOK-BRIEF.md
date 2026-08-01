@@ -17,8 +17,10 @@ computation succeeds or fails.
 ## Reader and terminal capability
 
 The reader is a mathematically mature graduate student who knows linear
-algebra, probability, Python, NumPy, PyTorch, and the mechanics of a first deep
-learning course.
+algebra, probability, Python, and NumPy. A prior deep-learning course is not a
+prerequisite. The unnumbered On-Ramp supplies a short diagnostic, three
+targeted repair stops in the earlier sibling volume, and one minimal training
+loop before Chapter 1.
 
 By the end of the book, the reader can inspect a current paper,
 implementation, or training trace and identify:
@@ -81,8 +83,9 @@ ledger below its thread sigil.
 The numbered v1 core ends with C17. An unnumbered Coda then reopens the loss
 spike from the first page and requires the separate instruments to diagnose
 one event together. The final appendix hands the blank incident report to the
-reader as a reusable instrument. A synthesis Act III remains gated until the
-core page and runtime budgets are known.
+reader as a reusable instrument. An unnumbered *Beyond This Volume* map routes
+the course's architecture-facing synthesis without opening an Act III or
+turning the book into an architecture survey.
 
 ## Public narrative threads
 
@@ -98,6 +101,9 @@ ledgers until evidence shows that six public sigils remain readable.
 
 - One `harness/` package grows by chapter. The first package is born with C02.
 - Every visible code surface uses numbered Plan → Code markers.
+- Printed studies show the equation, a 10–25 line mechanism kernel, critical
+  assertions, and a compact provenance strip. Repeated verification machinery
+  lives in `book_support/claims.py` and linked source, not learner-visible code.
 - Every printed numerical claim has a claim ID and provenance.
 - Every chapter keeps a laptop-CPU witness. Accelerator-only endpoints use
   committed, content-addressed artifacts.
@@ -107,6 +113,9 @@ ledgers until evidence shows that six public sigils remain readable.
 - Every numbered chapter carries at least five exercises, including Pencil,
   Code, and Audit work; Check-yourself boxes pose questions rather than print
   their solutions.
+- Exercises follow a Core/Extension/Research route with time, prerequisites,
+  deliverable, and hint status. C04, C10, and C17 carry cumulative Incident
+  Card checkpoints.
 - Paper audits use the compact fields in
   `docs/PAPER-AUTOPSY-PROTOCOL.md`. Chapter exercises select only the fields
   activated by the chapter; the C17 capstone uses the full card.
@@ -116,8 +125,8 @@ ledgers until evidence shows that six public sigils remain readable.
 This book is not:
 
 - a harder rewrite of the sibling;
-- a second treatment of backpropagation, transformer, or convolutional
-  mechanics;
+- a conventional neural-network primer or a second architecture survey; the
+  On-Ramp owns only the minimum mechanics needed to enter Chapter 1;
 - an optimizer or architecture catalog;
 - a conventional numerical-analysis encyclopedia;
 - a theory book that ignores representation error or data movement;
@@ -125,8 +134,9 @@ This book is not:
 
 ## Editions, budget, and publication
 
-HTML is canonical. PDF is a derived, content-equivalent print edition.
-Differences are limited to layout. C02 has a provisional cap of approximately
+HTML is canonical. Two content-equivalent PDFs are derived: a recto-aware
+print edition and a continuous screen edition without intentional blank
+versos. Differences are limited to layout. C02 has a provisional cap of approximately
 6,500 prose words and 22 derived-PDF pages; the complete edition budget will
 be set from the measured pilot.
 

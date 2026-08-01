@@ -1,5 +1,4 @@
 ---
-subtitle: "Epsilon-nets, covering budgets, and continuous extrema"
 description: "How a finite cover and a deterministic interpolation rule turn fixed-direction concentration into a uniform diagnostic."
 number-offset: 6
 jupyter: python3
@@ -20,7 +19,16 @@ fulfills:
   - promise-c06-c07-tail-budget
 ---
 
-# The Sphere Has a Finite Price {#c07}
+# The Sphere Has a Finite Price: Epsilon-Nets and Uniform Operator Control {#c07}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-07", "50543994a041525dd5b8704120558bf0e87ea518e28272f67e94eb3d9513a252")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">SG · The sub-Gaussian safe zone</span>
 <span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
@@ -56,7 +64,7 @@ an upper certificate.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate `harness@ch-07`.
+1. Load the chapter-pinned covering instruments.
 2. Construct a rotated map with known singular values.
 3. Evaluate its stretch over the entire circle and on verified epsilon-nets.
 4. Compute the sampled maximum and interpolation certificate separately.
@@ -70,20 +78,10 @@ an upper certificate.
 #| code-summary: "Code: turn a finite set of directional probes into an operator-norm certificate"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-07/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     circle_covering_radius,

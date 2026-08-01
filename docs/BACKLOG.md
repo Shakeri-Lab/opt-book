@@ -11,6 +11,17 @@
 - Decide the complete-book budget from the committed C01–C17 metrics ledger
   rather than extrapolating from the C02 pilot alone.
 
+## Completed 2026-08-01 alignment pass
+
+- Added the no-prior-course On-Ramp and executable NumPy training loop.
+- Replaced repeated printed verification scaffolding with the centralized
+  claim helper and compact provenance strips.
+- Added searchable chapter titles, the bounded *Beyond This Volume* map,
+  C14/C16/C17 transfer bridges, cumulative act checkpoints, and a second
+  deliberately non-identifiable incident.
+- Added an audited continuous screen PDF while retaining the recto-aware print
+  edition.
+
 ## Cross-book
 
 - Add `docs/public-anchors.md` and anchor CI to the sibling repository after
@@ -125,7 +136,8 @@ object needed to audit it.
 
 ## Deferred by scope
 
-- Act III decision after core budget evidence.
+- No Act III in this volume; the unnumbered continuation map owns the course
+  synthesis routes unless the author explicitly opens a separate volume.
 - Full Rosetta alias redirects beyond terms actually introduced.
 - Full historical harness matrix until immutable publication tags exist; the
   current and immediately previous vendored wheels already run per PR.

@@ -1,5 +1,4 @@
 ---
-subtitle: "Fixed directions, singular edges, and one-sided instruments"
 description: "Why isotropy can preserve an average while adaptive singular directions stretch and contract very differently."
 number-offset: 7
 jupyter: python3
@@ -22,7 +21,16 @@ fulfills:
   - promise-c07-c08-adaptive-directions
 ---
 
-# One Average, Two Edges {#c08}
+# One Average, Two Edges: Random Operators and Singular Values {#c08}
+
+```{python}
+#| include: false
+
+from book_support.claims import activate_harness, verify_claim
+
+pin = activate_harness("ch-08", "9ec8176699a4a5f297fdbade68dd42d94cd46ab0e1940d79f705fe84a0b65cf1")
+manifest, wheel_digest = pin.manifest, pin.wheel_sha256
+```
 
 <span class="thread">RS · Random-matrix spectra</span>
 <span class="thread">SG · The sub-Gaussian safe zone</span>
@@ -60,7 +68,7 @@ adaptive extrema; this chapter gives those extrema names and instruments.
 
 :::: {.plan-code}
 ::: {.plan}
-1. Verify and activate `harness@ch-08`.
+1. Load the chapter-pinned operator instruments.
 2. Generate one scaled Gaussian matrix from a declared seed.
 3. Compare a predeclared direction and the Frobenius average with exact SVD edges.
 4. Verify the stretches of the top and bottom right singular vectors.
@@ -74,20 +82,10 @@ adaptive extrema; this chapter gives those extrema names and instruments.
 #| code-summary: "Code: compare fixed, average, and data-dependent directional stretches"
 #| code-fold: false
 
-from hashlib import sha256
-import json
-from pathlib import Path
-import sys
-
 import matplotlib.pyplot as plt
 import numpy as np
 
 # [1]
-manifest_path = Path("artifacts/harness/ch-08/manifest.json")
-manifest = json.loads(manifest_path.read_text())
-wheel_path = manifest_path.parent / manifest["wheel"]
-assert sha256(wheel_path.read_bytes()).hexdigest() == manifest["wheel_sha256"]
-sys.path.insert(0, str(wheel_path.resolve()))
 
 from trainable_harness import (
     gaussian_singular_value_trials,
