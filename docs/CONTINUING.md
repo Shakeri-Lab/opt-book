@@ -66,6 +66,16 @@ Lipschitz concentration, and C12 normal-equation conditioning) plus nine
 diagnostic exercise changes. No new chapter or Act III expansion is implied;
 the manuscript pass remains gated on primary-source routing and author review.
 
+Roberts and Yaida's *The Principles of Deep Learning Theory* has received a
+separate model-level audit in
+`docs/source-audits/pdlt-effective-theory.md`. The proposed D50 harvest
+restructures C14 around moment, pair-geometry, Jacobian-spectrum, and
+depth-to-width contracts. It corrects two attractive overstatements before
+implementation: zero-bias ReLU correlation dynamics do not split when only
+weight scale changes, and the linear `L/n` fluctuation law is perturbative.
+No manuscript or immutable harness artifact has changed pending D50 and a
+forward-only C14 revision pin.
+
 Current forced multi-edition build:
 
 - 244 print-PDF pages and 222 screen-PDF pages; the print edition retains 22
@@ -148,7 +158,8 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 Review and accept C01/C03–C17, the Coda, the On-Ramp, and the cumulative
 Incident Card assignments. Keep the bounded other-lectures harvest separate
-unless T1–T3/E1–E9 are explicitly approved. The course's synthesis now has a
-stable unnumbered route rather than an implied Act III. Annotated harness tags
-remain a separate release task under open decision D34; do not invent source
-identities for rolling-draft wheels.
+unless T1–T3/E1–E9 are explicitly approved, and decide the proposed D50 PDLT
+scope before revising C14. The course's synthesis now has a stable unnumbered
+route rather than an implied Act III. Annotated harness tags remain a separate
+release task under open decision D34; do not invent source identities for
+rolling-draft wheels.
