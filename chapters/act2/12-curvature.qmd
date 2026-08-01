@@ -529,8 +529,8 @@ must you check before declaring the implementation wrong?
 - **Established:** the Hessian splits into GGN plus model curvature; the
   Fisher identity requires a model expectation and regularity; dense Hessians
   are unnecessary when the diagnostic needs only $\matr{H}\vect{v}$.
-- **Unresolved:** none of these local matrices yet explains how products of
-  layerwise derivative operators preserve or destroy signal with depth.
+- **Unresolved:** Even with the curvature object named, when does a stochastic
+  gradient estimator predict descent rather than noise-dominated motion?
 
 ## Sources and further reading {#sec-c12-sources}
 
@@ -541,6 +541,10 @@ against @martens2020 and @kunstner2019. The inferential interpretation of
 conjugate gradients follows @hennig2015; the quasi-Newton branch follows
 @hennigkiefel2013. The ICML probabilistic-numerics tutorial supplied an
 intellectual seam, not the technical authority for these claims.
+
+**Reading order.** Start with @martens2020 and @kunstner2019 to name the
+curvature object, use @pearlmutter1994 for action-only computation, and then
+read @hennig2015 or @hennigkiefel2013 for the bounded inferential branches.
 
 ## Exercises {#sec-c12-exercises}
 

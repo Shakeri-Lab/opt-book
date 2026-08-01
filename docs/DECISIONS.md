@@ -101,10 +101,25 @@ author correction supersedes any default.
     belong in instructor material under D16, not inside the self-check box.
 37. **D37 — Closing incident:** Close the core with an unnumbered Coda, not an
     Act III seed. The Coda must use the C01–C17 instruments to diagnose one
-    pinned incident and complete the book's opening promise.
+    pinned incident and complete the book's opening promise. Its final line
+    uses the unhedged title callback: a diagnosable run is therefore trainable.
 38. **D38 — Figure palette:** Use the UVA-centered navy, wine, green, orange,
     secondary-blue, and gray family recorded in `docs/STYLE-GUIDE.md`. A fast
     audit rejects unapproved manuscript hex values.
+39. **D39 — Epigraph:** Use none. The opening phenomenon is the book's
+    epigraph device; no borrowed sentence precedes it.
+40. **D40 — Act interludes:** Author each part divider as a brief ledger:
+    what the previous act built, what it cannot yet do, and the question the
+    next act opens. Keep each interlude near 120 words and free of editorial
+    ornament.
+41. **D41 — Incident Card and ending order:** Make the blank Incident Card the
+    final appendix and place the explicit references page before the
+    appendices. The Coda points to the blank card after completing its worked
+    report.
+42. **D42 — Memory polish:** Promote one load-bearing carry line per chapter
+    only through paragraph placement; never box, label, or collect the lines.
+    Every Unresolved recap entry ends as a question, and every Sources section
+    contains one practical reading-order sentence.
 
 ## Acceptance status
 
@@ -112,6 +127,6 @@ author correction supersedes any default.
 - D29–D33 are implemented provisional policies and await explicit author
   ratification; “proceed with revision” is not silently recorded as acceptance.
 - D34 is open. No harness tags are created until the author chooses a scheme.
-- D35–D38 are adopted working decisions for this revision. They can be
+- D35–D42 are adopted working decisions for this revision. They can be
   superseded by an explicit author correction without changing D34 or chapter
   acceptance status.

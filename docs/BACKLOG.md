@@ -47,6 +47,14 @@
   promote the tutorial's general information-operator framework into the
   core arc.
 
+## v1.0 print apparatus
+
+- Build a real subject index.
+- Derive a symbol index from the notation covenant.
+- Add a theorem and named-wrong-answer index.
+- Add running heads keyed to chapter titles.
+- Complete the D24 tagged-PDF and reading-order validation gate.
+
 ## Completed chapter gates from the ICML 2026 source audit
 
 - **C12 complete locally:** the disagreement witness, matrix-free action,

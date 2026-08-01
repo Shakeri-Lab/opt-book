@@ -8,6 +8,14 @@ project:
 book:
   title: "Deep Learning: Making It Trainable"
   subtitle: "Geometry, Dynamics, and the Machine"
+  description: >
+    Training failures can look alike while arising from curvature, arithmetic,
+    estimator noise, or an implementation that moves the right mathematics
+    through the machine incorrectly. This book builds the instruments that
+    separate those causes through high-dimensional geometry, optimization
+    dynamics, and hardware constraints. Every number is reproduced by pinned,
+    laptop-scale code. The destination is a capability, not a catalog: open a
+    current optimization paper and find the assumption it is really leaning on.
   author: "Heman Shakeri"
   date: "2026-07-31"
   repo-url: https://github.com/Shakeri-Lab/opt-book
@@ -24,13 +32,13 @@ book:
       DS 6210 · Numerical Analysis & Optimization
   chapters:
     - index.qmd
-    - part: "Act 0 — The computational arena"
+    - part: chapters/parts/act0.qmd
       chapters:
         - chapters/act0/01-count-not-cost.qmd
         - chapters/act0/02-streaming-state.qmd
         - chapters/act0/03-precision-contract.qmd
         - chapters/act0/04-quadratic-modes.qmd
-    - part: "Act I — Geometry of high dimensions"
+    - part: chapters/parts/act1.qmd
       chapters:
         - chapters/act1/05-subgaussian-safe-zone.qmd
         - chapters/act1/06-products-squares.qmd
@@ -38,7 +46,7 @@ book:
         - chapters/act1/08-random-operators.qmd
         - chapters/act1/09-marchenko-pastur.qmd
         - chapters/act1/10-effective-rank.qmd
-    - part: "Act II — Dynamics of optimization"
+    - part: chapters/parts/act2.qmd
       chapters:
         - chapters/act2/11-reverse-accumulation.qmd
         - chapters/act2/12-curvature.qmd
@@ -49,9 +57,11 @@ book:
         - chapters/act2/17-update-geometry.qmd
     - chapters/coda.qmd
     - chapters/provenance.qmd
+    - references.qmd
   appendices:
     - chapters/appendices/notation.qmd
     - chapters/appendices/rosetta.qmd
+    - chapters/appendices/incident-card.qmd
 
 bibliography: references.bib
 filters:

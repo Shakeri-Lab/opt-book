@@ -1,0 +1,10 @@
+# Act 0 — The computational arena
+
+A formula becomes an algorithm only after its state, arithmetic, and traffic
+are declared. This act builds that contract from the machine upward: first the
+bytes that must move, then the state a stream must retain, then the grid on
+which arithmetic lands, and finally the mode-by-mode dynamics of a solvable
+quadratic control. The result can distinguish a bandwidth ceiling from a
+floating-point failure and a flat direction from a sharp one. It still cannot
+say what high dimension makes typical. Act I turns from one declared execution
+to the geometry of many possible directions.

@@ -318,8 +318,10 @@ $$
 When $\kappa$ is large, $\rho^\star$ is close to one. A scalar step cannot
 simultaneously erase a flat mode and remain stable in a sharp mode.
 
-The word *best* needs an object. The step above is minimax over every
-eigenvalue in the interval and remains fixed for every iteration. If the
+The word *best* needs an object.
+
+The step above is minimax over every eigenvalue in the interval and remains
+fixed for every iteration. If the
 question is instead “which step minimizes the objective along the current
 negative-gradient direction?”, the answer changes. With
 $\vect{g}_t=\matr{Q}\vect{e}_t$,
@@ -620,10 +622,9 @@ contraction, both, or neither?
   traces, preconditioned traces, and stochastic second moments.
 - **Established:** The stability interval, optimal constant-step contraction,
   and additive-noise floor follow exactly under their stated models.
-- **Unresolved:** Real curvature moves, stochastic gradients need not be
-  additive or light-tailed, one-step and finite-horizon choices need not
-  agree, and a cheaper iteration count need not mean a faster machine
-  execution.
+- **Unresolved:** What probabilistic control survives when there are many
+  possible directions and the stochastic perturbation is not fixed,
+  additive, or light-tailed?
 
 ## Sources and further reading
 
@@ -634,6 +635,10 @@ uses those sources as context, but derives its three exact recurrences on the
 page. Schmidt's ICML 2026 tutorial motivates the global, local, directional,
 and finite-horizon questions used to delimit “best” [@schmidt2026tutorial];
 it is an intellectual map, not the technical authority for the equations.
+
+**Reading order.** Start with @nesterov2004 for the fixed smooth,
+strongly-convex control, then read @robbins1951 for the stochastic branch and
+@schmidt2026tutorial for the research-question map.
 
 \newpage
 

@@ -1,0 +1,10 @@
+# Act I — Geometry of high dimensions
+
+Act 0 made execution inspectable: traffic has a boundary, streaming has a
+state, precision has a local grid, and a quadratic update has independent
+spectral clocks. What it cannot yet decide is which directions a large random
+system is likely to expose. Act I builds that arena's instruments: a tail class
+that survives a union bound, the price of a continuum, two singular edges, a
+calibrated bulk, and a dimension that counts spectral mass instead of
+coordinates. The machine does not disappear. Its finite grids and finite
+samples remain the boundaries against which the geometric claims are audited.

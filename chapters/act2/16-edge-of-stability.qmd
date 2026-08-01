@@ -254,13 +254,18 @@ predicting the next several iterates?
 - **Changed:** stability is treated as a trajectory diagnosis, not an initialization certificate.
 - **Instrumented:** matched deterministic and additive-noise traces track top and directional curvature beside loss.
 - **Established:** a reproducible nonlinear path can cross $2/\alpha$ after beginning below it.
-- **Unresolved:** curvature says where a scalar step struggles; C17 asks which norm should shape a matrix-valued update.
+- **Unresolved:** Which norm should shape a matrix-valued update when scalar
+  curvature says only where one step struggles?
 
 ## Sources and further reading {#sec-c16-sources}
 
 The edge-of-stability phenomenon and progressive sharpening measurements are
 documented by @cohen2021. The fixed control is elementary spectral gradient
 descent.
+
+**Reading order.** Start with @cohen2021 for the measurements, then return to
+the fixed quadratic theorem in C04 before transferring the observed threshold
+to a moving nonlinear trajectory.
 
 ## Exercises {#sec-c16-exercises}
 

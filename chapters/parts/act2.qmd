@@ -1,0 +1,10 @@
+# Act II — Dynamics of optimization
+
+Act I built the arena's instruments: a tail class that survives a union bound,
+the price of a continuum, two singular edges, a calibrated bulk, and a
+dimension that counts spectral mass instead of coordinates. What it cannot do
+is move. Every object so far was measured at a point chosen in advance.
+Training chooses its points as it goes: the derivative traverses a graph, the
+estimator is drawn mid-flight, and the landscape is evaluated exactly where
+the trajectory drags it. Act II turns the dynamic lens forward. The geometry
+does not retire; it becomes the control group.

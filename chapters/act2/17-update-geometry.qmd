@@ -31,6 +31,7 @@ step follows the normalized gradient. A nuclear-unit step spends its entire
 budget on the leading singular pair. An operator-unit step uses the polar
 factor and gives all four singular directions unit magnitude. Their inner
 products with the gradient are respectively $-9.54$, $-9$, and $-13.2$.
+
 “Steepest” was never a property of the gradient alone; it was a property of a
 normed geometry.
 
@@ -359,13 +360,18 @@ two tempting optimizer claims remain unsupported?
 - **Changed:** an optimizer is read as a normed update contract plus approximation, routing, state, and evidence.
 - **Instrumented:** one claim compares three dual geometries and a polynomial approximation; another separates update spectra from evolving weight spectra.
 - **Established:** the norm chooses the steepest direction; the method name does not.
-- **Unresolved:** no optimizer wins outside a declared workload and evidence contract—the open research question is now legible rather than branded.
+- **Unresolved:** When one loss spike activates several instruments, which
+  control identifies the cause rather than merely detecting the event?
 
 ## Sources and further reading {#sec-c17-sources}
 
 Matrix-norm steepest descent and recent optimizer connections are developed by
 @bernstein2024. The original Muon technical account is @jordan2024muon, with
 large-scale implementation evidence in @liu2025muon.
+
+**Reading order.** Start with @bernstein2024 for dual-norm geometry, then
+audit @jordan2024muon and @liu2025muon in that order: mathematical update
+contract first, scaling evidence second.
 
 ## Exercises {#sec-c17-exercises}
 

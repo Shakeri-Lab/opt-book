@@ -52,6 +52,11 @@ settled before its assumptions are visible. We therefore build the primitive
 first and supply the conventional literature name when that name becomes
 useful for search, comparison, and primary sources.
 
+Each chapter closes its ledger under the heading “Okay, so —”: what was
+inherited, what changed, what was instrumented, what is now established, and
+what remains unresolved. The unresolved entry is always a question; the next
+chapter opens with the phenomenon that forces it.
+
 ## Proof modes and reading paths
 
 Three proof labels carry different permissions. A **Proof** supplies the

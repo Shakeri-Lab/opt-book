@@ -623,11 +623,8 @@ average and upper edge but an arbitrarily small lower edge.
   sets a fixed-direction center; concentration plus covering creates a
   dimension-dependent edge interval; aspect ratio controls whether the
   Gaussian lower benchmark has positive margin.
-- **Unresolved:** two edges do not reveal the spectral mass between them. C09
-  will introduce empirical spectral distributions and
-  Marchenko--Pastur before any finite-size outlier is called signal. C17 will
-  reuse singular-value geometry for matrix-valued updates and must distinguish
-  the spectrum of an update from the spectrum of the weights it changes.
+- **Unresolved:** What does the spectral mass between two random-matrix edges
+  say, and when does a finite outlier carry evidence rather than noise?
 
 ## Sources and further reading
 
@@ -637,6 +634,10 @@ matrix theorem, and Gaussian comparison bounds used here
 iteration inside an upper-edge intervention [@miyato2018]; the paper supplies
 a useful audit of what such an instrument controls and what it leaves
 unmeasured.
+
+**Reading order.** Start with @vershynin2026 for the two-edge theorem and its
+covering proof, then use @miyato2018 to audit what an upper-edge intervention
+does not say about the lower edge.
 
 ## Exercises
 

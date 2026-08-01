@@ -553,9 +553,8 @@ epsilon over two, and which term does not?
 - **Established:** Euclidean covers have exponential size but linear log cost;
   an epsilon-net and a Lipschitz rule convert anchor control into a uniform
   bound.
-- **Unresolved:** the extremal directions of a random matrix are selected
-  after the matrix is observed. C08 will spend this machinery on those adaptive
-  singular directions.
+- **Unresolved:** How can a finite-cover certificate control extremal singular
+  directions selected only after a random matrix is observed?
 
 ## Sources and further reading
 
@@ -564,6 +563,10 @@ and epsilon-net arguments for random operators [@vershynin2026]. Baraniuk,
 Davenport, DeVore, and Wakin combine
 fixed-vector concentration with finite-dimensional covering numbers in a
 restricted-isometry proof [@baraniuk2008].
+
+**Reading order.** Start with @vershynin2026 for covering numbers and the
+interpolation lemma, then read @baraniuk2008 as a complete worked example of a
+finite tail budget paying for a continuous guarantee.
 
 ## Exercises
 

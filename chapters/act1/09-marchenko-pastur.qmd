@@ -715,9 +715,8 @@ metadata needed to reproduce Team B's threshold.
   assumptions; covariance estimation can still have order-one operator error;
   repeated looks spend a false-positive budget; and a genuine subcritical
   population spike can remain inside the sample bulk.
-- **Unresolved:** ambient dimension is too crude when spectral mass is
-  concentrated. C10 will turn trace divided by the upper edge into effective
-  rank and replace parameter counting with a geometric size.
+- **Unresolved:** Which dimension should replace ambient coordinate count
+  when most spectral mass lies in only a few directions?
 
 ## Sources and further reading
 
@@ -726,6 +725,10 @@ Marchenko and Pastur establish the limiting empirical spectral law
 theorem and its whitening argument [@vershynin2026]. Baik and Silverstein
 derive the almost-sure sample-eigenvalue limits for spiked population models
 [@baik2006].
+
+**Reading order.** Start with @marchenko1967 for the limiting bulk, use
+@vershynin2026 for finite covariance error, and read @baik2006 only after
+separating a population spike from a finite sample verdict.
 
 ## Exercises
 

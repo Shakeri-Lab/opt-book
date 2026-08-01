@@ -28,9 +28,10 @@ lenses:
 A variance cannot be negative. Yet the following one-pass calculation returns
 one.
 
-That is useful. An impossible output is more than a failed test: it is a
-diagnostic instrument. It tells us that algebraic correctness did not survive
-execution.
+An impossible output is more than a failed test: it is a diagnostic
+instrument.
+
+It tells us that algebraic correctness did not survive execution.
 
 The setting is ordinary. We receive a stream
 $x_1,\ldots,x_n$, and we want its population variance
@@ -745,9 +746,8 @@ the result, and what does that term measure?
 - **Established:** The centered online recurrence and the pairwise correction
   preserve $M_2$ in exact arithmetic. The seeded FP32 witness establishes
   that the raw-moment evaluation can return an impossible negative result.
-- **Unresolved:** A centered algorithm cannot repair values already lost at
-  storage, and floating-point reduction trees are not exactly associative.
-  The next precision contract makes those boundaries quantitative.
+- **Unresolved:** Which precision contract separates values lost at storage
+  from errors introduced by a non-associative reduction?
 
 ## Sources and further reading
 
@@ -766,6 +766,10 @@ rounding examples, see the sibling volume's
 [precision and hardware appendix](https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance).
 This chapter instead owns the centered invariant, merge law, and same-input
 diagnostic.
+
+**Reading order.** Start with @welford1962 for the recurrence and @chan1983
+for the stability and merge analysis; read @hennig2015 only after the chapter's
+state-versus-belief boundary is clear.
 
 ## Exercises
 

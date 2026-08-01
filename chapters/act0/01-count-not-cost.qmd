@@ -16,12 +16,15 @@ lenses:
 
 <span class="lens-ledger">Geometric quiet · Dynamic supporting · Algorithmic primary</span>
 
-Consider two computations on $N$ stored FP32 values. A copy performs no
-floating-point arithmetic and moves at least $8N$ bytes: one read and one
-write. A fused affine transform $y_i=ax_i+b$ performs $2N$ floating-point
-operations and has the same dominant traffic when $a$ and $b$ remain in a
-fast store. One count is zero; the ratio is not the point. Their bandwidth
-ceilings are essentially the same.
+A copy performs no arithmetic. A fused affine transform performs $2N$
+operations. Their compulsory traffic — and therefore their bandwidth time
+bound — is the same.
+
+Both computations act on $N$ stored FP32 values. The copy moves at least
+$8N$ bytes: one read and one write. The fused transform
+$y_i=ax_i+b$ has the same dominant traffic when $a$ and $b$ remain in a fast
+store. One operation count is zero; that count does not identify elapsed
+time.
 
 Now compare a square matrix product of order $n=512$. The conventional count
 is $2n^3$ operations. Its compulsory traffic under an idealized one-read,
@@ -259,12 +262,17 @@ and which one does not?
 - **Changed:** elapsed-time reasoning now requires a declared traffic denominator and machine balance.
 - **Instrumented:** one exact roofline claim and one pinned laptop measurement separate modeled ceilings from achieved rates.
 - **Established:** $P\leq\min(P_{\max},BI)$ follows from two resource lower bounds.
-- **Unresolved:** real executions move more state through more levels; C02 asks which state an online computation must retain.
+- **Unresolved:** Which state must an online computation retain when real
+  executions move data through multiple memory levels?
 
 ## Sources and further reading {#sec-c01-sources}
 
 The roofline formulation and its machine-balance interpretation follow
 @williams2009.
+
+**Reading order.** Start with @williams2009 for the two-resource diagram, then
+return to this chapter's denominator and measurement sections before treating
+the roofline as a performance claim.
 
 ## Exercises {#sec-c01-exercises}
 

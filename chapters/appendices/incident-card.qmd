@@ -1,0 +1,35 @@
+# The Incident Card {#app-incident}
+
+When a run fails, complete one card. Fill fields 1–3 before opening any
+diagnostic panel. A strong diagnosis does not collect votes; it names a rival
+cause and the control that could acquit it.
+
+## Blank incident report
+
+| Field | Record before interpretation |
+|---|---|
+| **1. Symptom** | Quantity, step or interval, magnitude, baseline: ____________________ |
+| **2. Prediction** | Rank suspects; one acquitting control each: ____________________ |
+| **3. Contract** | Target; axes; denominator; dtype; seed; device; wheel/commit: ____________________ |
+| **4. Precision control** | Paired-precision deviation versus local spacing and range (@sec-c03-local-grid): ____________________ |
+| **5. Curvature control** | $\alpha\lambda_{\max}$; directional value; reference boundary (@sec-c16-path): ____________________ |
+| **6. Estimator control** | Conditional target; noise-to-signal ratio; discrepancy attribution (@sec-c13-estimator): ____________________ |
+| **7. Spectrum locator** | Matrix name; update and weight singular values (@sec-c17-weight-update-trace): ____________________ |
+| **8. State control** | Repeated-input statistics; retained state; replay determinism (@sec-c15-running-state): ____________________ |
+| **9. Verdict** | Acquitted / detects only / cause identified: ____________________ |
+| **10. Corrective control** | Rerun that removes the symptom while declared controls remain fixed: ____________________ |
+
+\newpage
+
+## Compact instrument panel
+
+| Thread | Symptom | Instrument and control | What the control cannot decide |
+|---|---|---|---|
+| Numerical stability | represented values stall, overflow, or disagree across precision | local spacing, range, and a paired-precision rerun (@sec-c03-audit) | whether curvature, data, or retained state caused an event that survives the precision control |
+| Random-matrix spectra | one matrix direction expands, collapses, or separates | name the matrix; compare edges, bulk, and update-versus-weight spectra (@sec-c17-weight-update-trace) | why the direction changed |
+| Landscape and update geometry | loss oscillates or a scalar step becomes locally aggressive | top and directional curvature beside the exact fixed-quadratic boundary (@sec-c16-fixed) | a global nonlinear divergence claim from one local value |
+| Sub-Gaussian safe zone | a mean estimate hides dispersion or rare updates dominate | conditional estimator, tail diagnostic, matched batch control, and clipping-bias audit (@sec-c13-clipping) | a population tail class from one finite trace |
+
+The completed card in the Coda is a worked example, not a universal ordering
+of suspects. When a control detects an event without identifying its cause,
+record **detects only** and keep the rival explanations alive.

@@ -24,9 +24,10 @@ lenses:
 <span class="lens-ledger">Geometric primary · Dynamic quiet · Algorithmic supporting</span>
 
 Draw one standard-normal vector of length $100$, then one of length one
-million. The second vector contains ten thousand times as many opportunities
-for an extreme coordinate. Its largest magnitude is not ten thousand times
-larger. In the seeded witness below, the maxima are about $2.50$ and $4.71$.
+million. In the seeded witness below, their largest magnitudes are $2.50$ and
+$4.71$.
+
+The number of opportunities grew by ten thousand. The maximum did not.
 
 ::: {.callout-important title="Prediction"}
 If the number of coordinates grows by a factor of ten, should a
@@ -522,9 +523,8 @@ does the theorem remain valid? Which earlier proof step changes?
 - **Established:** A quadratic MGF envelope yields Gaussian tail decay,
   independent weighted sums add proxy variances, and a union bound charges
   only $\sqrt{\log m}$.
-- **Unresolved:** Squares and products leave this safe zone, empirical samples
-  do not certify population tails, and depth introduces dependent,
-  state-changing scales.
+- **Unresolved:** Which tail class replaces global sub-Gaussian control after
+  a square or product changes the moment-generating function?
 
 ## Sources and further reading
 
@@ -533,6 +533,10 @@ Chernoff's exponential method supplies the optimization view of tail bounds
 bounded independent variables [@hoeffding1963]. Vershynin gives the modern
 sub-Gaussian equivalence, Orlicz norm, and high-dimensional toolkit used here
 [@vershynin2026].
+
+**Reading order.** Start with @vershynin2026 for the reusable equivalences,
+then read @chernoff1952 and @hoeffding1963 for the original exponential-method
+and bounded-sum viewpoints.
 
 ## Exercises
 

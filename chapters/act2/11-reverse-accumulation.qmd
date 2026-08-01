@@ -469,8 +469,8 @@ needed for its gradient with respect to the input?
 - **Established:** reverse mode is efficient for scalar outputs because of
   Jacobian orientation, and correct DAG execution requires additive
   cotangents plus retained or recomputable primal state.
-- **Unresolved:** first derivatives reveal neither curvature nor the spectral
-  conditioning of the update dynamics.
+- **Unresolved:** Which curvature object should be probed before a spectrum is
+  interpreted, and can its action be computed without materializing it?
 
 ## Sources and further reading {#sec-c11-sources}
 
@@ -478,6 +478,10 @@ The modern automatic-differentiation taxonomy and implementation vocabulary
 follow @baydin2018. The algebraic complexity boundary for derivative
 evaluation is due to @baur1983. The practical checkpointing trade and
 sublinear-memory schedules follow @chen2016.
+
+**Reading order.** Start with @baydin2018 for the JVP/VJP taxonomy, then
+separate @baur1983's arithmetic result from @chen2016's retained-state and
+recomputation problem.
 
 ## Exercises {#sec-c11-exercises}
 

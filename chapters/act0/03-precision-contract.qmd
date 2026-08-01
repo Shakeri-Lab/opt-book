@@ -620,9 +620,8 @@ part of the answer would change under stochastic adjacent rounding?
 - **Established:** Binade spacing predicts the stalled update; cancellation
   amplifies operand errors relative to a small difference; stochastic
   adjacent rounding is locally unbiased with an exact error variance.
-- **Unresolved:** Local unbiasedness is not trajectory-level convergence, CPU
-  simulation is not accelerator performance, and later chapters must test
-  whether an observed training failure is numerical, dynamic, or geometric.
+- **Unresolved:** Is an observed training failure numerical, dynamic, or
+  geometric, and which control separates those explanations?
 
 ## Sources and further reading
 
@@ -645,6 +644,10 @@ motivation, see the sibling volume's
 [precision and hardware appendix](https://shakeri-lab.github.io/dl-book/chapters/appendices/a3-precision-performance.html#sec-a3-precision-performance).
 This chapter owns the local-grid diagnosis, the cancellation boundary,
 resolution allocation, and the rounding-rule audit.
+
+**Reading order.** Start with @higham2002 for the error-analysis language,
+consult @ieee7542019 for the exact format contract, and then use
+@connolly2021 to audit what stochastic rounding changes.
 
 ## Exercises
 

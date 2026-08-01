@@ -332,12 +332,17 @@ approximate?
 - **Changed:** normalization is specified by invariance, statistic, epsilon, and placement.
 - **Instrumented:** one claim checks invariance, rank, and FP32 arithmetic; another merges running state and exposes a train/evaluation estimator gap.
 - **Established:** centered and RMS-only rules erase different directions.
-- **Unresolved:** even a locally controlled derivative map can approach a moving curvature boundary during training; C16 follows that boundary.
+- **Unresolved:** What happens when a locally controlled derivative map
+  approaches a curvature boundary that moves with the trajectory?
 
 ## Sources and further reading {#sec-c15-sources}
 
 See @ba2016 for the centered method, @zhang2019rms for its RMS-only variant,
 and @santurkar2018 for a loss-geometry investigation.
+
+**Reading order.** Read @ba2016 and @zhang2019rms side by side to compare the
+invariances they choose, then use @santurkar2018 to audit which geometric
+mechanism its experiments actually support.
 
 ## Exercises {#sec-c15-exercises}
 

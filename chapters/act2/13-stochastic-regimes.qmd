@@ -374,7 +374,8 @@ fail for the shape-$3/2$ Pareto model?
 - **Changed:** an update claim now begins with a conditional estimator, not the word “stochastic.”
 - **Instrumented:** an exact one-step claim and an online control separate regime crossing, batch scaling, momentum filtering, and clipping bias.
 - **Established:** expected descent depends on both smoothness and a noise-to-signal ratio.
-- **Unresolved:** preserving one scalar variance through depth does not preserve every derivative direction; C14 diagnoses the spectrum.
+- **Unresolved:** Why can preserving one scalar variance through depth still
+  destroy individual derivative directions?
 
 ## Sources and further reading {#sec-c13-sources}
 
@@ -384,6 +385,10 @@ optimization; see @bottou2018 and the foundational approximation scheme of
 The 2026 ICML tutorial by Mark Schmidt supplied the intellectual map from
 theory resolution to regime diagnosis; the equations and qualifications here
 are derived on the page rather than attributed to the tutorial.
+
+**Reading order.** Start with @bottou2018 for conditional descent and batch
+effects, use @simsekli2019 to stress the finite-variance assumption, and read
+@schmidt2026tutorial last as a map of research resolutions and regimes.
 
 ## Exercises {#sec-c13-exercises}
 

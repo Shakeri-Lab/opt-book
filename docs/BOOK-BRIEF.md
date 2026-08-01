@@ -80,8 +80,9 @@ ledger below its thread sigil.
 
 The numbered v1 core ends with C17. An unnumbered Coda then reopens the loss
 spike from the first page and requires the separate instruments to diagnose
-one event together. A synthesis Act III remains gated until the core page and
-runtime budgets are known.
+one event together. The final appendix hands the blank incident report to the
+reader as a reusable instrument. A synthesis Act III remains gated until the
+core page and runtime budgets are known.
 
 ## Public narrative threads
 

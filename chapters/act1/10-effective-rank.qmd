@@ -499,9 +499,8 @@ $\matr{A}^{\mathsf T}\matr{A}=\matr{\Sigma}$. Which two quantities agree?
   covariances with the same operator norm.
 - **Established:** effective rank controls the diagnostic sample scale for
   covariance estimation under a relative sub-Gaussian contract.
-- **Unresolved:** a scalar spectrum summary does not identify which
-  directions matter to an optimizer or how derivative information traverses
-  a computation.
+- **Unresolved:** How does derivative information traverse a computation when
+  a scalar spectrum summary cannot say which paths matter?
 
 ## Sources and further reading {#sec-c10-sources}
 
@@ -511,6 +510,10 @@ Remark 5.6.4, and the covariance theorem is Theorem 9.2.2
 @koltchinskii2017. The warning that effective dimension alone does not imply
 generalization is consistent with the interpolation evidence of
 @zhang2017.
+
+**Reading order.** Start with @vershynin2026 for the book's exact notation and
+the covariance theorem, then read @koltchinskii2017 for sharper bounds and
+@zhang2017 for the boundary on generalization claims.
 
 ## Exercises {#sec-c10-exercises}
 

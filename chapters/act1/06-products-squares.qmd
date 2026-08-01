@@ -722,9 +722,8 @@ either answer.
 - **Established:** squares and products of sub-Gaussian variables are
   sub-exponential; independent centered sub-exponential sums obey a
   two-regime bound; bounded transforms concentrate around their own means.
-- **Unresolved:** a finite tail budget controls only declared variables or
-  directions. The next chapter must make an uncountable supremum finite enough
-  for that budget to pay.
+- **Unresolved:** How can a finite tail budget control an uncountable
+  supremum without sampling directions and hoping the maximum was found?
 
 ## Sources and further reading
 
@@ -734,6 +733,10 @@ supplies the clipped-variable guarantee [@hoeffding1963]. Simsekli, Sagun, and
 Gurbuzbalaban provide a primary empirical tail-index study
 [@simsekli2019], while Koloskova, Hendrikx, and Stich analyze the stochastic
 bias and threshold dependence of gradient clipping [@koloskova2023].
+
+**Reading order.** Start with @vershynin2026 for the square, product, and
+Bernstein machinery; use @simsekli2019 and @koloskova2023 to audit the
+heavy-tail evidence and the target changed by clipping.
 
 ## Exercises
 

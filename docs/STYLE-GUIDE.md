@@ -9,6 +9,11 @@
 - Classroom deixis is not: “we saw this last week.”
 - Prefer direct technical prose. Use em dashes sparingly.
 - Name the seductive wrong answer when it helps the reader recognize a trap.
+- Let one load-bearing carry line stand as its own paragraph when the prose
+  has earned it. Do not box, label, decorate, or collect those lines.
+- Use no chapter epigraphs. The opening phenomenon performs that job.
+- Avoid exclamation points, congratulatory second-person language,
+  journey/adventure metaphors, mascots, and ornamental margin devices.
 
 ## Chapter architecture
 
@@ -30,6 +35,18 @@ Every numbered chapter ends with:
 
 This Sources-before-Exercises order is inherited from the sibling's current
 edition.
+
+The Unresolved slot is always a question. It should state the question that
+the next opening phenomenon forces, not append a miniature preview of the
+answer.
+
+Every Sources section ends with one concise **Reading order.** sentence that
+tells a research-facing reader which source to open first and why. It does not
+become a literature survey.
+
+Each act divider is an authored interlude of roughly 120 words. In ledger
+voice, it names what the previous act built, what remains impossible, and why
+the next lens is needed.
 
 The introduction is unnumbered front matter. A numbered chapter declares the
 offset implied by its C-number, so an unwritten earlier chapter never causes a
@@ -153,6 +170,10 @@ capstone or a standalone handout.
 Every numbered chapter carries at least five exercises, with at least one
 Pencil, one Code, and one Audit item. A Paper audit names the selected fields
 from the Paper Autopsy Protocol explicitly.
+
+The public callout taxonomy is closed: Prediction, Named wrong answer, Field
+note, and Check yourself. Do not add Key takeaway, Remember, or decorative
+summary boxes.
 
 ## Public residue forbidden
 

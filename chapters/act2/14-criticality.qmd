@@ -25,12 +25,14 @@ fulfills: [promise-c11-c14-depth-products]
 
 <span class="lens-ledger">Geometric primary · Dynamic supporting · Algorithmic supporting</span>
 
-Build twelve independent $24\times24$ Gaussian matrices with entry variance
-$1/24$. Each layer preserves squared norm **in expectation**. Their product in
-the registered witness has mean squared singular value $0.795$, yet its
-largest singular value is $3.62$ and its smallest is $9.6\times10^{-13}$.
-An equally deep product of orthogonal factors has every singular value equal
-to one up to rounding. The average-moment story cannot distinguish them.
+Twelve layers each preserve squared norm **in expectation**. Their product
+destroys one direction to $9.6\times10^{-13}$.
+
+The registered witness uses independent $24\times24$ Gaussian matrices with
+entry variance $1/24$. Their product has mean squared singular value $0.795$
+and largest singular value $3.62$. An equally deep product of orthogonal
+factors has every singular value equal to one up to rounding. The
+average-moment story cannot distinguish them.
 
 ::: {.callout-important title="Prediction"}
 Two initializations preserve activation variance layer by layer. Must they
@@ -233,7 +235,8 @@ component aligned with the second coordinate?
 - **Changed:** “variance preserved” is treated as a trace claim, not a synonym for trainable.
 - **Instrumented:** `c14-criticality-001` compares moment recursion with complete product spectra.
 - **Established:** scalar criticality and dynamical isometry are distinct contracts.
-- **Unresolved:** coordinate-wise normalization can reset scale, but every reset chooses invariances and null directions; C15 makes those choices explicit.
+- **Unresolved:** Which invariances and null directions does a
+  coordinate-wise normalization choose when it resets scale?
 
 ## Sources and further reading {#sec-c14-sources}
 
@@ -241,6 +244,10 @@ Mean-field signal propagation follows @schoenholz2017; dynamical-isometry
 diagnostics follow @pennington2017. Variance-preserving initialization was
 developed for saturating and rectified compositional structures by
 @glorot2010 and @he2015.
+
+**Reading order.** Start with @schoenholz2017 for the scalar moment recursion,
+then read @pennington2017 for the Jacobian spectrum; use @glorot2010 and
+@he2015 for the historical initialization bridge.
 
 ## Exercises {#sec-c14-exercises}
 

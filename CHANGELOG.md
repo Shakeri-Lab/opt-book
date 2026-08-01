@@ -97,3 +97,9 @@
 - Added claim-backed promise fulfillment, a committed seed registry, a
   92-character rendered-output limit, deterministic rendering environment,
   and an audited C01–C17 word-count/PDF-span ledger.
+- Added authored act interludes, question-form Unresolved recaps, promoted
+  carry lines, practical reading orders in every Sources section, and an
+  explicit references page before the appendices.
+- Finished the Coda with a claim-and-boundary caption, all four thread sigils,
+  the unhedged title callback, and Appendix C's reusable ten-field Incident
+  Card as the final leaf.

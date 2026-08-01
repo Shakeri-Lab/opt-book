@@ -10,6 +10,8 @@ claim_ids: [coda-incident-001]
 
 # One Spike, Four Suspects {.unnumbered #coda}
 
+<span class="thread">NS · Numerical stability · RS · Random-matrix spectra · LG · Landscape and update geometry · SG · The sub-Gaussian safe zone</span>
+
 The first page opened with an incident: one loss spike, at least four
 plausible causes. The intervening chapters built instruments one at a time.
 Now they must work together.
@@ -59,6 +61,7 @@ estimator target, reduction, denominator, dtype pair, seed, and wheel digest.
 
 ```{python}
 #| label: coda-incident-panel
+#| fig-cap: "One engineered loss spike activates the complete diagnostic panel. Precision, curvature, and repeated-state controls acquit their named mechanisms; the update spectrum detects the event without explaining it; a same-input target control attributes 99.8 percent of the gradient discrepancy to the intervention. The panel diagnoses this pinned incident, not every loss spike."
 #| fig-alt: "Six-panel incident report. Loss jumps by a factor of about 60. Precision differences remain near one part per million. Gradient discrepancy is nearly one million times the full-gradient scale and almost entirely explained by a target shift. Step times top and directional curvature remain far below two. The incident update has one dominant singular value while the weight spectrum remains broad. Repeated-batch mean and variance differences are exactly zero."
 #| code-summary: "Code: inspect one loss spike through the book's full diagnostic panel"
 
@@ -220,8 +223,11 @@ rival: a changed input-statistic state at the incident step.
 
 The leading update singular value is 176 times its value at the preceding
 step, and the incident update is nearly rank one. The spectrum therefore
-detects the event. But detection is not diagnosis. The current weight
-singular values remain broad, and nothing in the spectrum alone says whether
+detects the event.
+
+But detection is not diagnosis.
+
+The current weight singular values remain broad, and nothing in the spectrum alone says whether
 the large direction came from curvature, data, arithmetic, or a routing bug.
 
 C17's instrument is a locator. It identifies which matrix and directions
@@ -258,11 +264,13 @@ trace the batch target and its provenance.
 | estimator target | $99.8\%$ of gradient discrepancy traced to target shift | cause identified |
 | corrective control | restore clean target; rerun same seed and batch order | spike removed by construction |
 
+A blank copy of this report is [Appendix C](appendices/incident-card.qmd).
+
 The first page's question now has an answer and a method. A loss trace proposes
 an incident; it does not name one. Geometry supplies candidate directions,
 dynamics supplies time-indexed boundaries, and the machine supplies arithmetic
 and state contracts. The estimator discipline binds them to the quantity the
 code actually computed.
 
-That is what it means to make a training run diagnosable—and therefore, in the
-sense this book has developed, trainable.
+That is what it means to make a training run diagnosable — and therefore
+trainable.

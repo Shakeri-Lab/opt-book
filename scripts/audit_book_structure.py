@@ -31,6 +31,30 @@ def main() -> None:
     ):
         errors.append("index.qmd must use an explicitly unnumbered main heading")
 
+    quarto = read_yaml(ROOT / "_quarto.yml")
+    chapter_spec = quarto["book"]["chapters"]
+    expected_parts = [
+        "chapters/parts/act0.qmd",
+        "chapters/parts/act1.qmd",
+        "chapters/parts/act2.qmd",
+    ]
+    actual_parts = [
+        item["part"]
+        for item in chapter_spec
+        if isinstance(item, dict) and "part" in item
+    ]
+    if actual_parts != expected_parts:
+        errors.append("book must use the three authored act-divider files")
+    if "references.qmd" not in chapter_spec:
+        errors.append("explicit references page must precede the appendices")
+    expected_appendices = [
+        "chapters/appendices/notation.qmd",
+        "chapters/appendices/rosetta.qmd",
+        "chapters/appendices/incident-card.qmd",
+    ]
+    if quarto["book"].get("appendices") != expected_appendices:
+        errors.append("Incident Card must remain the final appendix")
+
     unnumbered_units = {
         ROOT / "chapters" / "coda.qmd": "coda",
         ROOT / "chapters" / "provenance.qmd": "provenance-note",
