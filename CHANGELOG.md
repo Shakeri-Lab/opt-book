@@ -2,6 +2,17 @@
 
 ## 0.1.0 — Public draft (2026-08-01)
 
+- Recorded author acceptance of the complete C01–C17 core and its C14
+  revision, the Coda, interludes, Incident Card, On-Ramp, and continuation
+  map; ratified D29–D50.
+- Added a four-audience *How to read this book* preface, including an explicit
+  judgment contract for study with a language model.
+- Implemented the bounded shelf-audit seams: explicit Euler in C04, Gaussian
+  Lipschitz concentration in C05, and normal-equations condition squaring in
+  C12.
+- Completed D34's forward-only tag ceremony: sixteen historical wheels retain
+  SHA-256 identities, while `harness-ch-14-r2-v1` begins the annotated
+  source-tag contract.
 - Restructured C14 around four distinct criticality contracts: one-input
   magnitude, two-input pair geometry, derivative spectrum, and the
   depth-to-width trust parameter.

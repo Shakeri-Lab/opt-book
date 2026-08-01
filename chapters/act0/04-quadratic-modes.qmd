@@ -231,6 +231,20 @@ exactly when $|1-\alpha\lambda_k|<1$, or
 $0<\alpha\lambda_k<2$. Satisfying the inequality for the largest eigenvalue
 satisfies it for all modes. $\square$
 
+The same recurrence is explicit Euler applied to the quadratic gradient flow
+
+$$
+\dot{\vect{e}}(t)=-\matr{Q}\vect{e}(t),
+$$
+
+with time step $h=\alpha$. On an eigenmode of curvature $\lambda_k$, the
+continuous flow multiplies by $e^{-h\lambda_k}$ while explicit Euler uses its
+stability polynomial $R(-h\lambda_k)=1-h\lambda_k$. Thus the optimization
+boundary $0<h\lambda_k<2$ is also a discretization-stability boundary. This
+identity is exact for the fixed quadratic control. It does not say that a
+nonlinear stochastic training trajectory is merely its continuous gradient
+flow sampled on a grid.
+
 | Mode factor $r_k=1-\alpha\lambda_k$ | What the coordinate does |
 |---:|---|
 | $0<r_k<1$ | decays without changing sign |

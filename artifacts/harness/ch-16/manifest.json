@@ -2,6 +2,6 @@
   "schema_version": 1, "chapter": "c16", "harness_ref": "ch-16", "package": "trainable-harness", "version": "0.16.0", "api": "0.16",
   "wheel": "trainable_harness-0.16.0-py3-none-any.whl", "wheel_sha256": "dc27db104bfa9a48a500343d6475487b410ddb2e19ea56045d89c2cf89d80cfd", "python": "3.12.13",
   "dependencies": {"numpy": "2.5.1"},
-  "source": {"status": "pre-release-uncommitted", "commit": null, "annotated_tag": null, "tag_required_before_publication": "harness-ch-16-v1", "pyproject_sha256": "b8fa0c11a0a7a77cee845dec81b7fede6b56ae593b663dde1cce14f025217f5e", "init_sha256": "d2e9280978514839259a795fef77570617ddffb2283d53e59d34693bb04ae851", "stability_sha256": "b0d93bea48a8d9edde42be83dac48f7ca087ed87be2aaaa6b49ce6f68fa352d5"},
+  "source": {"status": "content-addressed-rolling-draft", "commit": null, "annotated_tag": null, "identity_contract": "wheel-sha256-under-d34", "pyproject_sha256": "b8fa0c11a0a7a77cee845dec81b7fede6b56ae593b663dde1cce14f025217f5e", "init_sha256": "d2e9280978514839259a795fef77570617ddffb2283d53e59d34693bb04ae851", "stability_sha256": "b0d93bea48a8d9edde42be83dac48f7ca087ed87be2aaaa6b49ce6f68fa352d5"},
   "public_operations": ["StabilityTrace", "valley_loss_gradient_hessian", "moving_curvature_trace"]
 }

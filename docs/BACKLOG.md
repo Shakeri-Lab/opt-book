@@ -2,14 +2,18 @@
 
 ## Build-blocking
 
-- Obtain author acceptance of the locally complete C03–C17 chapters.
-- Resolve D34 before release identity is frozen. Do not backfill false
-  commit/tag identities onto the sixteen C02–C17 wheels already built; their
-  content-addressed artifacts remain the rolling-draft identities.
-- Obtain explicit author ratification of provisional D29–D33. Their editorial
-  policies are implemented, but implementation is not recorded as acceptance.
 - Decide the complete-book budget from the committed C01–C17 metrics ledger
   rather than extrapolating from the C02 pilot alone.
+
+## Completed 2026-08-01 acceptance and release-identity pass
+
+- Recorded author acceptance of C01/C03–C17, the C14 revision, the Coda, all
+  three act interludes, the Incident Card, the On-Ramp, and *Beyond This
+  Volume*. C02 remains the previously accepted pilot.
+- Recorded explicit author ratification of D29–D50.
+- Resolved D34 forward-only: historical wheels retain SHA-256 identities;
+  `harness-ch-14-r2-v1` begins the annotated source-tag contract.
+- Implemented T1–T3 as bounded main-text seams in C04, C05, and C12.
 
 ## Completed 2026-08-01 alignment pass
 
@@ -61,17 +65,10 @@
   promote the tutorial's general information-operator framework into the
   core arc.
 
-## Gated other-lectures enrichment pass
+## Gated other-lectures exercise enrichment pass
 
-Keep the proposed pass bounded to three main-text seams and nine diagnostic
-exercise changes; do not add a chapter or open Act III:
-
-- **T1 / C04:** identify the exact quadratic recurrence as explicit Euler on
-  the corresponding gradient flow, with the nonlinear/stochastic boundary.
-- **T2 / C05:** add a compact Gaussian Lipschitz concentration
-  proof-with-pointer, including its center and distribution boundaries.
-- **T3 / C12:** state and diagnose
-  `kappa(J^T J) = kappa(J)^2`, then compare representation/solver contracts.
+T1–T3 are complete. Keep the remaining proposed pass bounded to nine
+diagnostic exercise changes; do not add a chapter or open Act III:
 - **E1–E5, E7–E9:** add the stable-quadratic-root, three-clock,
   alignment-lottery, median-of-means, finite-set projection,
   eigenspace-stability, condition-squaring, and criticality-implication
@@ -118,12 +115,12 @@ branches or shelf material.
   Newton–Schulz residuals, and the paper-autopsy endpoint are present;
   QJL/TurboQuant remains an Audit branch.
 
-## Release identity decision
+## Release identity decision — completed
 
-- **D34 pending:** choose a forward-only annotated tagging scheme for harness
-  artifacts. Recommended: begin with the first wheel built from a recorded
-  commit and tag (`harness-ch-12-v1` or later), never invent identities for the
-  ten existing public draft wheels, and retain their SHA-256 identities.
+- **D34 ratified:** historical C02–C17 wheels retain their content-addressed
+  identities. `harness-ch-14-r2-v1` points to the committed source verified
+  against the 0.18.0 wheel. Every future wheel records its commit and annotated
+  source tag before publication.
 
 ## Paper-presentation menu after source verification
 
@@ -146,6 +143,12 @@ object needed to audit it.
   evidence and require the student to audit topology definition, width axis,
   finite-sample endpoint, and transfer boundary before drawing an edge-of-
   stability conclusion.
+
+## Reproducible figure bytes
+
+- **R17 queued:** turn the style guide's fixed environment and metadata rule
+  into a mechanical two-render byte comparison. Do not normalize away a real
+  dependency or source change merely to make the audit green.
 
 ## Deferred by scope
 

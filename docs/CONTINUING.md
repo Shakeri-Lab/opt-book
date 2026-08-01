@@ -4,13 +4,14 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `800a725` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `aff0b20` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
 - Derived editions: recto-aware print PDF and continuous screen PDF
 - Publication state: public rolling `v0.x` site; no annotated book release tag
-  yet
+  yet; the first forward-only harness source tag is
+  `harness-ch-14-r2-v1`
 
 ## Current build
 
@@ -24,12 +25,13 @@ unnumbered Coda now closes the opening loss-spike incident with all five
 diagnostic controls. Three authored act interludes now make the lens handoffs
 explicit, every recap ends on a question, every Sources section supplies a
 reading order, and the final appendix hands the blank Incident Card to the reader
-after the references. C02 is the accepted pilot; C01/C03–C17, the Coda, and
-the Incident Card remain author-review drafts. D45 supersedes the earlier
-gated-Act-III possibility for this volume: the unnumbered continuation map
-owns the course synthesis routes. Both local HTML and both derived PDFs render
-successfully; source, contract, HTML, and PDF audits pass subject to the
-documented untagged-PDF fallback.
+after the references. On 2026-08-01 the author accepted C01/C03–C17, the C14
+revision, the Coda, all three act interludes, the Incident Card, the On-Ramp,
+and *Beyond This Volume*; C02 remains the previously accepted pilot. D01–D50
+are ratified. D45 supersedes the earlier gated-Act-III possibility for this
+volume: the unnumbered continuation map owns the course synthesis routes. Both
+local HTML and both derived PDFs render successfully; source, contract, HTML,
+and PDF audits pass subject to the documented untagged-PDF fallback.
 
 The unnumbered On-Ramp now makes the prerequisite boundary explicit: no prior
 deep-learning course is required. It supplies a 20–30 minute diagnostic, a
@@ -63,8 +65,9 @@ deduplication decisions, and bounded integration map live in
 `docs/source-audits/other-lectures-shelf-audit.md`. The recommended harvest is
 three short main-text seams (C04 explicit-discretization bridge, C05 Gaussian
 Lipschitz concentration, and C12 normal-equation conditioning) plus nine
-diagnostic exercise changes. No new chapter or Act III expansion is implied;
-the manuscript pass remains gated on primary-source routing and author review.
+diagnostic exercise changes. T1–T3 are now implemented with their assumptions
+and primary/canonical routing on the page. The exercise package remains a
+separate bounded revision; no new chapter or Act III expansion is implied.
 
 Roberts and Yaida's *The Principles of Deep Learning Theory* has received a
 separate model-level audit in
@@ -78,7 +81,7 @@ continuation map rather than made into a second theoretical spine.
 
 Current forced multi-edition build:
 
-- 258 print-PDF pages and 236 screen-PDF pages; the print edition retains 22
+- 258 print-PDF pages and 238 screen-PDF pages; the print edition retains 22
   recto/verso blank pages and the screen edition has none;
 - physical print chapter openers for C01–C17 are pages 23, 31, 47, 61, 79,
   91, 107, 119, 133, 149, 163, 175, 187, 197, 207, 215, and 223; the Coda
@@ -87,8 +90,8 @@ Current forced multi-edition build:
   12, 10, 10, 8, 8, and 10 pages; the Coda spans 6 pages and the continuation
   map spans 2;
 - source non-code word counts excluding Sources for C01–C17 are 1,247,
-  2,733, 2,577, 2,144, 2,021, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
-  2,337, 1,516, 2,396, 1,199, 1,235, and 1,898;
+  2,733, 2,577, 2,243, 2,236, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
+  2,524, 1,516, 2,396, 1,199, 1,235, and 1,898;
 - `artifacts/book-metrics.json` is the single audited ledger for those values;
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
 - 58 passing harness and repository tests;
@@ -160,11 +163,11 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 ## Next safe action
 
-Review and accept C01/C03–C17, the Coda, the On-Ramp, and the cumulative
-Incident Card assignments. Keep the bounded other-lectures harvest separate
-unless T1–T3/E1–E9 are explicitly approved. The D50 PDLT pass is complete;
-its next safe action is author review of C14's four-rung ladder and two new
-witnesses. The course's synthesis has a stable unnumbered route rather than
-an implied Act III. Annotated harness tags remain a separate release task
-under open decision D34; do not invent source identities for rolling-draft
-wheels.
+The author-acceptance and D29–D50 ratification gates are closed. T1–T3 are
+implemented; E1–E9 remain a separate displacement-controlled exercise pass.
+The next queued work is D23 sibling reciprocity at v0.2, registration of the
+KMP staircase as a C16 Paper-audit exhibit, and the R17 figure-byte
+determinism audit. The course's synthesis has a stable unnumbered route rather
+than an implied Act III. D34 is forward-only: preserve SHA-256 identities for
+historical rolling-draft wheels and require an annotated source tag for every
+new wheel.

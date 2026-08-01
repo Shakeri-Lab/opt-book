@@ -15,3 +15,7 @@ empirical upper-tail thresholds.
 
 Published chapters install a content-addressed wheel from
 `artifacts/harness/ch-N/`; they never import the mutable working tree.
+Under D34, the historical rolling-draft wheels retain their SHA-256 identity
+without a retroactive source tag. `harness-ch-14-r2-v1` begins the
+forward-only annotated source-tag contract; every later wheel must record its
+tagged source commit before publication.

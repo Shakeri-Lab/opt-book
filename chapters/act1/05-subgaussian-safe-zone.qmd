@@ -301,6 +301,39 @@ $7.21\sigma$, not $10^9\sigma$. Change the tail class, however, and the
 scaling can change with it.
 :::
 
+::: {#thm-c05-gaussian-lipschitz phenomenon_id="c05-simultaneous-safe-zone"}
+## Gaussian input, nonlinear diagnostic
+
+Let $\vect{G}\sim\mathcal{N}(\vect{0},\matr{I}_d)$ and let
+$f:\mathbb{R}^d\to\mathbb{R}$ be $L$-Lipschitz in Euclidean distance, with
+$L>0$. There are universal constants $c,C>0$ such that
+
+$$
+\norm{f(\vect{G})-\E f(\vect{G})}_{\psi_2}\le CL,
+$$
+
+and therefore
+
+$$
+\Pr\!\left(\left|f(\vect{G})-\E f(\vect{G})\right|\ge t\right)
+\le 2\exp\!\left(-\frac{ct^2}{L^2}\right),
+\qquad t\ge0.
+$$ {#eq-c05-gaussian-lipschitz}
+:::
+
+**Proof with pointer.** This is Gaussian concentration, stated in the Orlicz
+form of Vershynin's second-edition Theorem 5.2.3 [@vershynin2026]. The tail form follows from the
+$\psi_2$ characterization below. The useful extension is not a new exponent
+but a new object: $f$ can be nonlinear. For example,
+$f(\vect{x})=\norm{\matr{A}\vect{x}}_2$ is
+$\norm{\matr{A}}_{\mathrm{op}}$-Lipschitz, so its fluctuation around its mean
+inherits a sub-Gaussian scale.
+
+The theorem controls fluctuation around a declared center; it does not compute
+that center. Its standard-Gaussian input is also part of the contract. The
+statement is not a dependence theorem for arbitrary inputs and does not
+extend unchanged to heavy-tailed data.
+
 ## Four instruments for the same safe zone {#sec-c05-equivalence}
 
 Sometimes the MGF is easy to calculate. Sometimes moments or a tail bound are
@@ -519,8 +552,9 @@ does the theorem remain valid? Which earlier proof step changes?
   maxima, weighted-sign projections, empirical tails, and moment-growth
   profiles.
 - **Established:** A quadratic MGF envelope yields Gaussian tail decay,
-  independent weighted sums add proxy variances, and a union bound charges
-  only $\sqrt{\log m}$.
+  independent weighted sums add proxy variances, a union bound charges only
+  $\sqrt{\log m}$, and Lipschitz diagnostics of a standard Gaussian input
+  concentrate around their own means.
 - **Unresolved:** Which tail class replaces global sub-Gaussian control after
   a square or product changes the moment-generating function?
 
@@ -529,8 +563,8 @@ does the theorem remain valid? Which earlier proof step changes?
 Chernoff's exponential method supplies the optimization view of tail bounds
 [@chernoff1952]. Hoeffding develops probability inequalities for sums of
 bounded independent variables [@hoeffding1963]. Vershynin gives the modern
-sub-Gaussian equivalence, Orlicz norm, and high-dimensional toolkit used here
-[@vershynin2026].
+sub-Gaussian equivalence, Orlicz norm, and Gaussian Lipschitz concentration
+used here [@vershynin2026].
 
 **Reading order.** Start with @vershynin2026 for the reusable equivalences,
 then read @chernoff1952 and @hoeffding1963 for the original exponential-method

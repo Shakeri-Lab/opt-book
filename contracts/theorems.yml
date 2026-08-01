@@ -143,6 +143,17 @@
       "source": "vershynin2026"
     },
     {
+      "id": "thm-c05-gaussian-lipschitz",
+      "chapter": "c05",
+      "phenomenon_explained": "c05-simultaneous-safe-zone",
+      "assumptions": "A standard Gaussian vector in R^d and an L-Lipschitz real-valued function under the Euclidean metric, with L positive.",
+      "conclusion": "The centered nonlinear diagnostic has psi2 norm at most C L and a two-sided tail at most 2 exp(-c t^2/L^2), for universal positive constants c and C.",
+      "proof_mode": "proof-with-pointer",
+      "diagnostic_corollary": "A nonlinear Lipschitz diagnostic of a Gaussian input can remain in the sub-Gaussian safe zone even when it is not displayed as a sum.",
+      "boundary": "The theorem controls fluctuations around the mean but does not compute the mean, and it does not transfer unchanged to arbitrary dependent or heavy-tailed inputs.",
+      "source": "vershynin2026"
+    },
+    {
       "id": "thm-c05-equivalent-diagnostics",
       "chapter": "c05",
       "phenomenon_explained": "c05-simultaneous-safe-zone",

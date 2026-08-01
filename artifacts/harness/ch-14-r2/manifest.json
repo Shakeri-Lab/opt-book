@@ -10,10 +10,10 @@
   "python": "3.12.13",
   "dependencies": {"numpy": "2.5.1"},
   "source": {
-    "status": "forward-only-chapter-revision",
-    "commit": null,
-    "annotated_tag": null,
-    "tag_required_before_publication": "harness-ch-14-r2-v1",
+    "status": "tagged-source",
+    "commit": "aff0b2097efd1ac9aea938fe836c24bfe0b9e15e",
+    "annotated_tag": "harness-ch-14-r2-v1",
+    "identity_contract": "annotated-source-tag-under-d34",
     "pyproject_sha256": "4570f2579fbefa57c1e1748876f414bb7fb2ea9163928885f1413d3793822cbb",
     "init_sha256": "22b36b9f4f48303b2da32f40d1a522d4a6a50b5727c4aed81ec687d9d8ae01e9",
     "criticality_sha256": "4ad3ba5623ca3ebc414b808b4988ad29e0225f423315ff934a71005f8c085b4e"

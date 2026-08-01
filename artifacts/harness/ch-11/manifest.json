@@ -13,10 +13,10 @@
     "uv_lock_sha256": "3d437373fde78b09a63e4b4e054f056d5171c86c2aa52c0581d9b3ab127864ef"
   },
   "source": {
-    "status": "pre-release-uncommitted",
+    "status": "content-addressed-rolling-draft",
     "commit": null,
     "annotated_tag": null,
-    "tag_required_before_publication": "harness-ch-11-v1",
+    "identity_contract": "wheel-sha256-under-d34",
     "pyproject_sha256": "ae3454870a7e4afa64ea56419ac6ae759a960f4e6c1d50bd5ddcc86898e77884",
     "init_sha256": "db0483d3c5e0899f624ff87080b62595427b1845b4c054efc691417fd23669f5",
     "streaming_sha256": "8549a3dbc681e18410d9567d7bab97352d0c873b4cca2f9dd3b2ccb3642fd205",

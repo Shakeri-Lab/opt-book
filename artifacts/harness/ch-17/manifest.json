@@ -2,6 +2,6 @@
   "schema_version": 1, "chapter": "c17", "harness_ref": "ch-17", "package": "trainable-harness", "version": "0.17.0", "api": "0.17",
   "wheel": "trainable_harness-0.17.0-py3-none-any.whl", "wheel_sha256": "12b89a5ae1f68e234bc0dce02bd42f13acb35781aafcc78068d94c3a68018d60", "python": "3.12.13",
   "dependencies": {"numpy": "2.5.1"},
-  "source": {"status": "pre-release-uncommitted", "commit": null, "annotated_tag": null, "tag_required_before_publication": "harness-ch-17-v1", "pyproject_sha256": "f087b09a5b3c66a70c9d270d7b46ce81982d8b85aa4ba28d1ec5694be8104ede", "init_sha256": "b6c5f1df97288aefdad3f458198ce6b678f75687063e35826d715aa773e96126", "update_geometry_sha256": "0d8891fcdb2ec92499424885e5db70574356a81230555bcb499169802cf4fd40"},
+  "source": {"status": "content-addressed-rolling-draft", "commit": null, "annotated_tag": null, "identity_contract": "wheel-sha256-under-d34", "pyproject_sha256": "f087b09a5b3c66a70c9d270d7b46ce81982d8b85aa4ba28d1ec5694be8104ede", "init_sha256": "b6c5f1df97288aefdad3f458198ce6b678f75687063e35826d715aa773e96126", "update_geometry_sha256": "0d8891fcdb2ec92499424885e5db70574356a81230555bcb499169802cf4fd40"},
   "public_operations": ["polar_factor", "norm_steepest_directions", "newton_schulz_polar"]
 }

@@ -161,6 +161,15 @@ These seams should consume no more than about 1.5 derived-PDF pages in total.
 The finite-set projection result needed by C17 is kept as an exercise rather
 than becoming a fourth exposition branch.
 
+**Implementation disposition (2026-08-01).** T1–T3 are now on the manuscript
+trunk. C04 identifies the fixed-quadratic recurrence as explicit Euler and
+states the nonlinear/stochastic boundary. C05 states Gaussian Lipschitz
+concentration around the mean as a proof-with-pointer to Vershynin's
+second-edition Theorem 5.2.3. C12 derives the full-column-rank
+$\kappa_2(J^{\mathsf T}J)=\kappa_2(J)^2$ identity and keeps QR, LSQR,
+matrix-free action, damping, cost, and stopping boundaries visible. The
+exercise package remains separately gated.
+
 ## Exercise enrichment package
 
 Each item is designed as a branch off an object already introduced. New work

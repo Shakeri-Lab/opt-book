@@ -477,6 +477,29 @@ graphs, and perform reductions. “Matrix free” is a storage statement until a
 measurement establishes more. CPU timing here would not establish accelerator
 performance.
 
+Representation can also change the numerical problem before a solver takes a
+step. Let $\matr{J}\in\mathbb{R}^{m\times p}$ have full column rank, with
+singular values $\sigma_1\ge\cdots\ge\sigma_p>0$. The eigenvalues of
+$\matr{J}^{\mathsf T}\matr{J}$ are $\sigma_i^2$, so
+
+$$
+\kappa_2(\matr{J}^{\mathsf T}\matr{J})
+=
+\frac{\sigma_1^2}{\sigma_p^2}
+=
+\kappa_2(\matr{J})^2.
+$$ {#eq-c12-normal-equations-conditioning}
+
+Forming normal equations therefore squares the spectral condition number and
+can spend roughly twice the digits that the original least-squares operator
+made vulnerable. This is the C03 precision contract applied to a curvature
+representation, not a reason to declare one solver universally superior.
+QR avoids explicitly squaring the operator; LSQR uses products with
+$\matr{J}$ and $\matr{J}^{\mathsf T}$; matrix-free curvature products avoid
+forming the dense Gram matrix. Each alternative still owes a cost, stopping,
+precision, and residual contract. Damping replaces the system by a different
+one rather than undoing the squaring [@higham2002].
+
 ## One linear solver, two lenses {#sec-c12-cg-seam}
 
 Suppose a positive-definite curvature operator $\matr{A}$ defines the system
@@ -521,7 +544,9 @@ must you check before declaring the implementation wrong?
   an action-only power iteration recovered the signed dominant-magnitude mode.
 - **Established:** the Hessian splits into GGN plus model curvature; the
   Fisher identity requires a model expectation and regularity; dense Hessians
-  are unnecessary when the diagnostic needs only $\matr{H}\vect{v}$.
+  are unnecessary when the diagnostic needs only $\matr{H}\vect{v}$; forming
+  $\matr{J}^{\mathsf T}\matr{J}$ squares $\matr{J}$'s spectral condition
+  number when $\matr{J}$ has full column rank.
 - **Unresolved:** Even with the curvature object named, when does a stochastic
   gradient estimator predict descent rather than noise-dominated motion?
 
@@ -532,7 +557,9 @@ follow @pearlmutter1994. The distinctions among the Hessian, generalized
 Gauss--Newton matrix, Fisher information, and empirical Fisher are checked
 against @martens2020 and @kunstner2019. The inferential interpretation of
 conjugate gradients follows @hennig2015; the quasi-Newton branch follows
-@hennigkiefel2013. The ICML probabilistic-numerics tutorial supplied an
+@hennigkiefel2013. The normal-equations precision boundary follows the
+singular-value calculation on the page and the numerical linear algebra
+contract in @higham2002. The ICML probabilistic-numerics tutorial supplied an
 intellectual seam, not the technical authority for these claims.
 
 **Reading order.** Start with @martens2020 and @kunstner2019 to name the

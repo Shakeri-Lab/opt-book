@@ -4,22 +4,24 @@
 
 | Unit | Working transformation | Status |
 |---|---|---|
-| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Deep-revision witness complete; author review pending |
+| C01 | Diagnose runtime from bytes and reuse rather than FLOPs alone | Author accepted 2026-08-01 |
 | C02 | Repair a one-pass variance computation by preserving centered, mergeable state | Pilot accepted; C03 handoff harvested |
-| C03 | Predict floating-point failures from a precision contract | Locally complete; author review pending |
-| C04 | Read gradient descent mode by mode | Locally complete; machine acceptance audit passed; author review pending |
-| C05 | Turn exponential tails into simultaneous control | Locally complete; machine acceptance audit passed; author review pending |
-| C06 | Diagnose the two-regime tail created by squares and products | Locally complete; machine acceptance audit passed; author review pending |
-| C07 | Turn a fixed-direction tail budget into a uniform finite-cover certificate | Locally complete; machine acceptance audit passed; author review pending |
-| C08 | Separate fixed-direction isotropy from adaptive singular edges | Locally complete; machine acceptance audit passed; author review pending |
-| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Locally complete; machine acceptance audit passed; author review pending |
-| C10 | Replace ambient dimension and parameter count with effective dimension | Locally complete; machine acceptance audit passed; author review pending |
-| C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Locally complete; machine acceptance audit passed; author review pending |
-| C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Locally complete; machine acceptance audit passed; author review pending |
-| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Deep-revision witnesses complete; C14 PDLT ladder revision complete; author review pending |
-| Coda | Diagnose the opening loss-spike incident with the complete instrument panel | Locally complete; author review pending |
-| Final appendix | Hand the blank ten-field Incident Card and four-thread control panel to the reader | Locally complete; author review pending |
-| Beyond This Volume | Route course synthesis through existing instruments without adding a numbered act | Locally complete; author review pending |
+| C03 | Predict floating-point failures from a precision contract | Author accepted 2026-08-01 |
+| C04 | Read gradient descent mode by mode | Author accepted 2026-08-01; explicit-Euler seam added |
+| C05 | Turn exponential tails into simultaneous control | Author accepted 2026-08-01; Gaussian-Lipschitz seam added |
+| C06 | Diagnose the two-regime tail created by squares and products | Author accepted 2026-08-01 |
+| C07 | Turn a fixed-direction tail budget into a uniform finite-cover certificate | Author accepted 2026-08-01 |
+| C08 | Separate fixed-direction isotropy from adaptive singular edges | Author accepted 2026-08-01 |
+| C09 | Distinguish asymptotic spectral mass from a finite null verdict | Author accepted 2026-08-01 |
+| C10 | Replace ambient dimension and parameter count with effective dimension | Author accepted 2026-08-01 |
+| C11 | Treat reverse derivatives as accumulation and retained-state algorithms | Author accepted 2026-08-01 |
+| C12 | Name the curvature object, expectation, representation, and matrix action before interpreting a spectrum | Author accepted 2026-08-01; normal-equations seam added |
+| C13–C17 | Diagnose stochastic regimes, criticality, normalization, stability, and update geometry | Author accepted 2026-08-01, including the C14 PDLT revision |
+| Act interludes | Hand the instrument ledger from one act to the next | Author accepted 2026-08-01 |
+| Coda | Diagnose the opening loss-spike incident with the complete instrument panel | Author accepted 2026-08-01 |
+| Final appendix | Hand the blank ten-field Incident Card and four-thread control panel to the reader | Author accepted 2026-08-01 |
+| On-Ramp | Establish the minimal tensor, loss, reverse-accumulation, mini-batch, and update mechanics | Author accepted 2026-08-01 |
+| Beyond This Volume | Route course synthesis through existing instruments without adding a numbered act | Author accepted 2026-08-01 |
 
 ## Public threads
 

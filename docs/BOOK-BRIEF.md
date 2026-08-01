@@ -152,4 +152,6 @@ The introduction is unnumbered front matter. C01–C17 alone own chapter numbers
 The author instructed the build to proceed on 2026-07-30. Recommendations in
 Build Plan v2 therefore become the working defaults recorded in
 `docs/DECISIONS.md`. Later author instructions explicitly authorized routine
-commits and pushes. Release tags remain separately gated by D34.
+commits and pushes. The author ratified D29–D50 on 2026-08-01; D34 now uses a
+forward-only annotated source-tag contract without inventing identities for
+historical rolling-draft wheels.

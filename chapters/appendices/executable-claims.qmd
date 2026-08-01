@@ -29,6 +29,11 @@ claim registry, artifact identity, canonical payload digest, and wheel
 agreement. Removing those lines from repeated printed panels changes no
 assertion and no executed output.
 
+Historical rolling-draft wheels are identified by their committed SHA-256;
+the book does not invent source tags after the fact. Beginning with
+`harness-ch-14-r2-v1`, each new wheel also records an annotated source tag and
+commit. The two cases are explicit in the manifest and checked by CI.
+
 The complete implementation is available in
 [`book_support/claims.py`](https://github.com/Shakeri-Lab/opt-book/blob/main/book_support/claims.py).
 Claim records are browsable under

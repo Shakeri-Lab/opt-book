@@ -88,11 +88,13 @@ author correction supersedes any default.
     WSD, Adam-surrogate details, and Probabilistic Numerics examples remain
     exercises, field notes, or further reading unless one becomes necessary
     to resolve a chapter's opening phenomenon.
-34. **D34 — Harness publication tags (pending author decision):** Recommended
-    forward-only scheme: start annotated source tags with the first wheel
-    actually built from a recorded commit/tag pair; do not backfill false
-    source identities onto C02–C12. Keep SHA-256 as the identity of those
-    eleven rolling-draft wheels.
+34. **D34 — Harness publication tags:** Ratified as a forward-only scheme.
+    Historical C02–C17 wheels keep their committed wheel SHA-256 as their
+    honest rolling-draft identity; no source tags are backfilled onto builds
+    that did not record one. The first annotated source identity is
+    `harness-ch-14-r2-v1`, whose tag points to the committed source from which
+    the byte-identical wheel was verified. Every future wheel must record its
+    source commit and annotated tag before it enters the public manuscript.
 35. **D35 — Published provenance register:** Consolidate repeated instructor-
     source notes into one unnumbered Provenance and Acknowledgements note.
     Chapter Sources remain bibliographic; local source audits retain the full
@@ -157,15 +159,13 @@ author correction supersedes any default.
 
 ## Acceptance status
 
-- D01–D28 remain the approved implementation baseline.
-- D29–D33 are implemented provisional policies and await explicit author
-  ratification; “proceed with revision” is not silently recorded as acceptance.
-- D34 is open. No harness tags are created until the author chooses a scheme.
-- D35–D42 are adopted working decisions for this revision. They can be
-  superseded by an explicit author correction without changing D34 or chapter
-  acceptance status.
-- D43–D49 implement the author's 2026-08-01 course-alignment and production
-  direction. They do not resolve the separate harness-tag decision D34.
-- D50 was explicitly authorized by the author's instruction to proceed with
-  the PDLT recommendations. Its revision pin is not a decision on the global
-  source-tag policy in D34.
+- On 2026-08-01 the author explicitly ratified D29–D50. Together with the
+  prior baseline, D01–D50 are now approved decisions; implementation is no
+  longer being mistaken for acceptance.
+- The same pass records author acceptance of C01/C03–C17, the C14 revision,
+  all three act interludes, the Coda, the Incident Card, the On-Ramp, and
+  *Beyond This Volume*. C02 remains the previously accepted pilot.
+- D34's historical exception is deliberate: a wheel SHA-256 is the complete
+  identity for the already-published rolling-draft wheels, while
+  `harness-ch-14-r2-v1` begins the annotated source-tag contract going
+  forward.

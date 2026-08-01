@@ -71,6 +71,61 @@ chapter opens with the phenomenon that forces it.
 The detailed contents locates every theorem and subsection. This table is the
 argument to remember before opening that index.
 
+## How to read this book
+
+**As a student.** Read in order, and read each chapter as an investigation
+rather than a summary target. Stop at the Prediction and commit to an answer
+specific enough to fail; the gap between your answer and the diagnostic is the
+chapter's actual content. Work the three exercise kinds as three different
+muscles: Pencil is derivation, Code is implementation, and Audit is judgment.
+Let none substitute for another. Keep your own closing ledger as you go: the
+object you can now name, the failure you can now detect, the rival you can now
+acquit, and the question still open. By the Coda, that notebook should read as
+an instrument panel, not a collection of formulas.
+
+**As a researcher or practitioner.** Enter through your incident, not through
+Chapter 1. Complete the first fields of the Incident Card: symptom, ranked
+suspects, and declared contract. Do that before shopping for a remedy, then let
+the route table above send you to the missing instrument. A result from a clean
+example transfers exactly as far as its contract survives: the same object,
+the same estimator, the same axes and denominator, a comparable numerical
+contract, and a control that still separates the same rivals. When one of
+these breaks, the conclusion has quietly moved from identification to
+detection. Say so, and measure again.
+
+**As an instructor.** The chapter structure is a lesson plan. Assign the
+opening phenomenon and require predictions before class; spend the class
+deriving the minimum theory that separates the rivals; put the deliberate
+error in the computational session and let it produce a reasonable-looking
+answer; grade the declared contract and the control, not the polish of the
+final artifact. A companion instructor note on assessment patterns, broken
+implementations, and assistance policy lives with the course materials rather
+than in this volume.
+
+**With a language model beside you.** This book assumes you may study it with
+a model open in the next window, and treats that neither as cheating nor as a
+substitute for the work. What has changed is the price of fluency: a
+restatement, a derivation, an implementation, or a plausible diagnosis now
+costs seconds. What has not changed is the price of judgment: deciding what
+was actually computed, which object it is, which assumptions carry the
+conclusion, and what the evidence permits you to say. The reading contract
+below was written for exactly that judgment, and every clause doubles as a
+rule for model-assisted work.
+
+Predict before you ask, and keep your prediction distinct from the model's.
+Make generated code declare its object, shapes, reduction axes, denominator,
+and dtype before you accept it. Treat it as a proposed experiment, and add the
+assertion that would fail if the contract were violated. Use the model as
+tutor, translator, and implementer where translation is the bottleneck; use it
+above all as an adversary. Ask it for the rival mechanism, the hidden
+assumption, the counterexample, and the control under which your preferred
+explanation should fail. Do not let it serve as an authority: fluency is not
+evidence, and a polished explanation does not enlarge the permission granted
+by the proof or experiment beneath it. The test of any session is whether you
+could defend the result after the conversation disappeared: name the object,
+state the contract, run the control, and say what remains uncertain. That
+test, not possession of an answer, is what this book trains.
+
 ## Proof modes and reading paths
 
 Three proof labels carry different permissions. A **Proof** supplies the
@@ -178,7 +233,9 @@ Learnable*](https://shakeri-lab.github.io/dl-book/).
 
 This is a public working `v0.x` edition. A numbered chapter enters the public draft
 only after its mathematics, code, provenance, HTML, and PDF pass the
-repository audits; author acceptance is recorded separately.
+repository audits. The present C01–C17 core, Coda, interludes, On-Ramp,
+Incident Card, and continuation map are author accepted; later revisions must
+pass the same gates again.
 
 ## Suggested citation
 
