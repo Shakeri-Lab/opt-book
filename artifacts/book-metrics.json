@@ -19,7 +19,7 @@
     {"unit": "C14", "title": "Critical on Average, Broken by Direction: Initialization and Dynamical Isometry", "source": "chapters/act2/14-criticality.qmd", "source_noncode_words_excluding_sources": 2396, "pdf_physical_start": 197, "pdf_physical_end": 206, "pdf_span_pages": 10},
     {"unit": "C15", "title": "Normalization Chooses an Invariance: Coordinate Statistics and Derivative Paths", "source": "chapters/act2/15-normalization.qmd", "source_noncode_words_excluding_sources": 1199, "pdf_physical_start": 207, "pdf_physical_end": 214, "pdf_span_pages": 8},
     {"unit": "C16", "title": "The Boundary Moves: Progressive Sharpening and Edge-of-Stability Diagnostics", "source": "chapters/act2/16-edge-of-stability.qmd", "source_noncode_words_excluding_sources": 1235, "pdf_physical_start": 215, "pdf_physical_end": 222, "pdf_span_pages": 8},
-    {"unit": "C17", "title": "The Norm Chooses the Update: Matrix Geometry and Orthogonalized Optimization", "source": "chapters/act2/17-update-geometry.qmd", "source_noncode_words_excluding_sources": 1898, "pdf_physical_start": 223, "pdf_physical_end": 232, "pdf_span_pages": 10}
+    {"unit": "C17", "title": "The Norm Chooses the Update: Matrix Geometry and Orthogonalized Optimization", "source": "chapters/act2/17-update-geometry.qmd", "source_noncode_words_excluding_sources": 1910, "pdf_physical_start": 223, "pdf_physical_end": 232, "pdf_span_pages": 10}
   ],
   "coda": {"pdf_physical_start": 233, "pdf_physical_end": 238, "pdf_span_pages": 6},
   "beyond_this_volume": {"pdf_physical_start": 239, "pdf_physical_end": 240, "pdf_span_pages": 2},

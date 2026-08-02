@@ -4,14 +4,14 @@
 
 - Repository: `Shakeri-Lab/opt-book`
 - Local branch: `main`
-- Reviewed predecessor: `aff0b20` on `origin/main`; use `git log -1` for the
+- Reviewed predecessor: `ee16e13` on `origin/main`; use `git log -1` for the
   revision that supersedes it
 - GitHub Pages: <https://shakeri-lab.github.io/opt-book/>
 - Canonical edition: HTML
 - Derived editions: recto-aware print PDF and continuous screen PDF
-- Publication state: public rolling `v0.x` site; no annotated book release tag
-  yet; the first forward-only harness source tag is
-  `harness-ch-14-r2-v1`
+- Publication state: tagged public draft 0.2 plus the rolling `v0.x` site;
+  `book-v0.2.0` is the first annotated book release, and
+  `harness-ch-14-r2-v1` is the first forward-only harness source tag
 
 ## Current build
 
@@ -27,8 +27,9 @@ explicit, every recap ends on a question, every Sources section supplies a
 reading order, and the final appendix hands the blank Incident Card to the reader
 after the references. On 2026-08-01 the author accepted C01/C03–C17, the C14
 revision, the Coda, all three act interludes, the Incident Card, the On-Ramp,
-and *Beyond This Volume*; C02 remains the previously accepted pilot. D01–D50
-are ratified. D45 supersedes the earlier gated-Act-III possibility for this
+and *Beyond This Volume*; C02 remains the previously accepted pilot. D01–D53
+are ratified and implemented; D54, possible arXiv distribution, remains open.
+D45 supersedes the earlier gated-Act-III possibility for this
 volume: the unnumbered continuation map owns the course synthesis routes. Both
 local HTML and both derived PDFs render successfully; source, contract, HTML,
 and PDF audits pass subject to the documented untagged-PDF fallback.
@@ -91,7 +92,7 @@ Current forced multi-edition build:
   map spans 2;
 - source non-code word counts excluding Sources for C01–C17 are 1,247,
   2,733, 2,577, 2,243, 2,236, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
-  2,524, 1,516, 2,396, 1,199, 1,235, and 1,898;
+  2,524, 1,516, 2,396, 1,199, 1,235, and 1,910;
 - `artifacts/book-metrics.json` is the single audited ledger for those values;
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
 - 58 passing harness and repository tests;
@@ -102,6 +103,12 @@ Current forced multi-edition build:
 - every frozen HTML and TeX execution is now traceback-free; the rendered
   audit rejects stale `cell-output-error` blocks;
 - all fast contract audits and the rendered HTML/PDF audit pass.
+- the release contract locks the 0.2 citation across `CITATION.cff`, project
+  metadata, changelog, and `book-v0.2.0`; both PDF text layers carry the
+  rights statement;
+- the diagnostic-card audit locks the Paper Autopsy between C17 and its
+  protocol and locks all ten Incident Card fields across C17, the Coda, and
+  the final appendix.
 
 The harness is being born book-first. No course-wide package was found in the
 reviewed course tree. If additional instructor-held harness code appears,
@@ -163,11 +170,13 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 ## Next safe action
 
-The author-acceptance and D29–D50 ratification gates are closed. T1–T3 are
-implemented; E1–E9 remain a separate displacement-controlled exercise pass.
-The next queued work is D23 sibling reciprocity at v0.2, registration of the
-KMP staircase as a C16 Paper-audit exhibit, and the R17 figure-byte
-determinism audit. The course's synthesis has a stable unnumbered route rather
-than an implied Act III. D34 is forward-only: preserve SHA-256 identities for
+The v0.2 publication gate is closed: P-1/P-2/P-3 are implemented and
+`book-v0.2.0` binds the source, citation, and both PDF digests. The immediate
+cross-repository task is D23 sibling reciprocity, whose v0.2 trigger is now
+open. T1–T3 are implemented; E1–E9 remain a separate
+displacement-controlled exercise pass. Registration of the KMP staircase as
+a C16 Paper-audit exhibit and the R17 figure-byte determinism audit remain
+queued. The course's synthesis has a stable unnumbered route rather than an
+implied Act III. D34 is forward-only: preserve SHA-256 identities for
 historical rolling-draft wheels and require an annotated source tag for every
 new wheel.

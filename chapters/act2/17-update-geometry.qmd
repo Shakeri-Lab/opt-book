@@ -449,10 +449,11 @@ contract first, scaling evidence second.
 3. **(Pencil.)** For the factorized control, derive both factor gradients and show why an isometric update to each factor does not imply an isometric update to their product.
 4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and, under equal nominal learning rates, compare update spectra, weight spectra, state bytes, final loss, and each block's induced output change or Jacobian-Gram contribution. Explain why equal parameter-step norms need not produce equal function-space steps.
 5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.
-6. **(Audit.) Act checkpoint — complete Incident Card.** Complete the
+6. **(Audit.) Act checkpoint — complete Incident Card.** For a run rather than
+   a paper, keep this fixed order: **Symptom → Prediction → Contract →
+   Precision control → Curvature control → Estimator control → Spectrum
+   locator → State control → Verdict → Corrective control.** Complete the
    [Act II assignment](../appendices/incident-card.qmd#sec-incident-act2).
-   Start from the Act I spectrum locator, then add curvature,
-   conditional-estimator, retained-state, and update-routing controls.
    **Route:** Act checkpoint. **Estimated time:** 90 minutes.
    **Deliverable:** one complete card plus the cheapest discriminating rerun.
    **Hint:** an activated instrument may detect the event without identifying

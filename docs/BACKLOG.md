@@ -5,6 +5,16 @@
 - Decide the complete-book budget from the committed C01–C17 metrics ledger
   rather than extrapolating from the C02 pilot alone.
 
+## Completed v0.2 publication gate
+
+- Added the detached-PDF rights statement and enforced it in both PDF audits.
+- Bound the public-draft 0.2 citation to source metadata and the annotated
+  `book-v0.2.0` tag, including both derived-PDF digests.
+- Added the diagnostic-card covenant and fast audit: the Paper Autopsy and
+  Incident Card remain distinct, while every public manifestation of each is
+  order-locked.
+- Added the 0.2 changelog entry and release note.
+
 ## Completed 2026-08-01 acceptance and release-identity pass
 
 - Recorded author acceptance of C01/C03–C17, the C14 revision, the Coda, all
@@ -26,7 +36,7 @@
 - Added an audited continuous screen PDF while retaining the recto-aware print
   edition.
 
-## Cross-book
+## Cross-book — v0.2 trigger open
 
 - Add `docs/public-anchors.md` and anchor CI to the sibling repository after
   explicit write authority for that repository.

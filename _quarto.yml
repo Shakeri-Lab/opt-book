@@ -22,7 +22,7 @@ book:
     laptop-scale code. The destination is a capability, not a catalog: open a
     current optimization paper and find the assumption it is really leaning on.
   author: "Heman Shakeri"
-  date: "2026-08-01"
+  date: "2026-08-02"
   repo-url: https://github.com/Shakeri-Lab/opt-book
   site-url: https://shakeri-lab.github.io/opt-book/
   downloads: [pdf]

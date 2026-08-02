@@ -140,9 +140,10 @@ versos. Differences are limited to layout. C02 has a provisional cap of approxim
 6,500 prose words and 22 derived-PDF pages; the complete edition budget will
 be set from the measured pilot.
 
-Drafts use `v0.x`; stable anchors begin around v0.2; v1.0 is the first complete
-edition. Text/figures use CC BY-NC-SA 4.0 and code uses MIT, subject to the
-source audit.
+Drafts use `v0.x`; `book-v0.2.0` is the first fixed, annotated public-draft
+release; v1.0 is the first complete edition. Text/figures use CC BY-NC-SA 4.0
+and code uses MIT, subject to the source audit. Both detached PDFs carry the
+rights statement in their text layer.
 
 The introduction is unnumbered front matter. C01–C17 alone own chapter numbers
 1–17, including while an earlier chapter remains unwritten.
@@ -152,6 +153,7 @@ The introduction is unnumbered front matter. C01–C17 alone own chapter numbers
 The author instructed the build to proceed on 2026-07-30. Recommendations in
 Build Plan v2 therefore become the working defaults recorded in
 `docs/DECISIONS.md`. Later author instructions explicitly authorized routine
-commits and pushes. The author ratified D29–D50 on 2026-08-01; D34 now uses a
-forward-only annotated source-tag contract without inventing identities for
+commits and pushes. The author ratified D29–D50 on 2026-08-01; the
+publication-readiness pass approves D51–D53, with D54 left open. D34 now uses
+a forward-only annotated source-tag contract without inventing identities for
 historical rolling-draft wheels.

@@ -16,11 +16,13 @@ AUDITS = [
     "audit_seeds.py",
     "audit_plan_code.py",
     "audit_editorial_contracts.py",
+    "audit_diagnostic_cards.py",
     "audit_harness_pins.py",
     "audit_claims.py",
     "audit_sibling_anchors.py",
     "audit_reader_routes.py",
     "audit_book_structure.py",
+    "audit_release_identity.py",
 ]
 
 

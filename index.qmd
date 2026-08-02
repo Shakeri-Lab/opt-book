@@ -231,6 +231,8 @@ Data Science at the University of Virginia. It is the advanced companion to
 [*Deep Learning: Making It
 Learnable*](https://shakeri-lab.github.io/dl-book/).
 
+© Heman Shakeri · Text CC BY-NC-SA 4.0 · Code MIT
+
 This is a public working `v0.x` edition. A numbered chapter enters the public draft
 only after its mathematics, code, provenance, HTML, and PDF pass the
 repository audits. The present C01–C17 core, Coda, interludes, On-Ramp,
@@ -240,5 +242,5 @@ pass the same gates again.
 ## Suggested citation
 
 Shakeri, Heman. 2026. *Deep Learning: Making It Trainable*. Public draft
-0.1. School of Data Science, University of Virginia.
+0.2. School of Data Science, University of Virginia.
 <https://shakeri-lab.github.io/opt-book/>.

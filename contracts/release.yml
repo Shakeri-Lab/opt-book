@@ -1,0 +1,11 @@
+version: 1
+book_version: 0.2.0
+display_version: "0.2"
+release_date: 2026-08-02
+tag: book-v0.2.0
+status: Public draft
+rights_statement: "© Heman Shakeri · Text CC BY-NC-SA 4.0 · Code MIT"
+citation: >-
+  Shakeri, Heman. 2026. Deep Learning: Making It Trainable. Public draft 0.2.
+  School of Data Science, University of Virginia.
+  https://shakeri-lab.github.io/opt-book/.

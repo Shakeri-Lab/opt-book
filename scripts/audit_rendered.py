@@ -10,7 +10,14 @@ import subprocess
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
 
-from _audit_utils import ROOT, front_matter, prose_only, public_qmd_files, fail_if
+from _audit_utils import (
+    ROOT,
+    fail_if,
+    front_matter,
+    prose_only,
+    public_qmd_files,
+    read_yaml,
+)
 
 
 PDF = ROOT / "_book" / "Deep-Learning--Making-It-Trainable.pdf"
@@ -148,6 +155,9 @@ def main() -> None:
     extracted = subprocess.check_output(
         ["pdftotext", "-enc", "UTF-8", str(PDF), "-"]
     ).decode("utf-8", errors="replace")
+    rights = read_yaml(ROOT / "contracts" / "release.yml")["rights_statement"]
+    if rights not in re.sub(r"\s+", " ", extracted):
+        errors.append("PDF text layer omits the release rights statement")
     if "\x00" in extracted or "\ufffd" in extracted:
         errors.append("PDF extraction contains NUL or U+FFFD")
     if "??" in extracted or re.search(r"@(?:fig|eq|thm|exr)-", extracted):

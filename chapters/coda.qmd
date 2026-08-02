@@ -196,13 +196,16 @@ trace the batch target and its provenance.
 
 | Field | Finding | Verdict |
 |---|---|---|
-| symptom | full loss increases by $60.2\times$ after step 60 | established |
-| precision | paired FP32/FP64 loss deviation at most $1.54\times10^{-6}$ | acquitted for this event |
-| curvature | $\alpha\lambda_{\max}=0.139$; directional value $0.110$ | acquitted |
-| normalization state | repeated input-batch mean and variance unchanged | acquitted |
-| update spectrum | leading update singular value jumps $176\times$ | detects, does not explain |
-| estimator target | $99.8\%$ of gradient discrepancy traced to target shift | cause identified |
-| corrective control | restore clean target; rerun same seed and batch order | spike removed by construction |
+| **1. Symptom** | full loss increases by $60.2\times$ after step 60 | established |
+| **2. Prediction** | precision, curvature, estimator/data, and implementation state are predeclared rivals | each retains an acquitting control before the panel opens |
+| **3. Contract** | seeded $6\times4$ linear map; 256 observations; batch 32; step $0.12$; fixed batch order | target, axes, denominator, dtype pair, seed, device, and wheel are declared |
+| **4. Precision control** | paired FP32/FP64 loss deviation at most $1.54\times10^{-6}$ | acquitted for this event |
+| **5. Curvature control** | $\alpha\lambda_{\max}=0.139$; directional value $0.110$ | acquitted |
+| **6. Estimator control** | $99.8\%$ of gradient discrepancy traced to target shift | cause identified |
+| **7. Spectrum locator** | leading update singular value jumps $176\times$ | detects only |
+| **8. State control** | repeated input-batch mean and variance unchanged | named normalization-state rival acquitted |
+| **9. Verdict** | the step-60 batch targets a different objective | cause identified; precision, curvature, and named state rival acquitted |
+| **10. Corrective control** | restore clean target; rerun same seed and batch order | spike removed by construction |
 
 A blank copy and three cumulative act assignments are in the [final
 appendix](appendices/incident-card.qmd). Its second incident is intentionally

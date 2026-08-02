@@ -3,10 +3,11 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 
 from pypdf import PdfReader
 
-from _audit_utils import ROOT, fail_if
+from _audit_utils import ROOT, fail_if, read_yaml
 
 
 PRINT = ROOT / "_book" / "Deep-Learning--Making-It-Trainable.pdf"
@@ -29,6 +30,9 @@ def main() -> None:
             f"screen PDF has {screen_pages} pages; print has {print_pages}"
         )
     extracted = [(page.extract_text() or "").strip() for page in screen_reader.pages]
+    rights = read_yaml(ROOT / "contracts" / "release.yml")["rights_statement"]
+    if rights not in re.sub(r"\s+", " ", " ".join(extracted)):
+        errors.append("screen PDF text layer omits the release rights statement")
     blank_runs = []
     blank_pages = []
     run_start = None

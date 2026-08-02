@@ -156,12 +156,29 @@ author correction supersedes any default.
     exercise, and Bayesian/GP, dNTK/ddNTK, projector, optimal-aspect-ratio,
     generalization, and RG material to the shelf. Use a forward-only
     `ch-14-r2` artifact and preserve the historical `ch-14` wheel.
+51. **D51 — Reading modes:** Adopt the four-audience *How to read this book*
+    preface for students, researchers/practitioners, instructors, and readers
+    working beside a language model. Keep the main reading contract by
+    reference rather than restating it under each mode.
+52. **D52 — Diagnostic-card covenant:** Keep the Paper Autopsy and training-run
+    Incident Card distinct. Lock the former between C17 and its protocol, and
+    lock the latter's ten field names and order across C17's act checkpoint,
+    the Coda's completed report, and the blank appendix card.
+53. **D53 — First book release tag:** Cut `book-v0.2.0` as an annotated tag.
+    Its message carries the canonical citation and the SHA-256 digest of both
+    derived PDFs; the tag, citation metadata, changelog, and source release
+    contract must agree mechanically.
+54. **D54 — arXiv distribution:** Open author decision. An arXiv posting is a
+    distribution choice rather than a v0.2 readiness gate; do not infer it
+    from the tagged repository release.
 
 ## Acceptance status
 
-- On 2026-08-01 the author explicitly ratified D29–D50. Together with the
-  prior baseline, D01–D50 are now approved decisions; implementation is no
-  longer being mistaken for acceptance.
+- On 2026-08-01 the author explicitly ratified D29–D50. The accepted preface
+  and the 2026-08-02 publication-readiness instruction approve D51–D53.
+  Together with the prior baseline, D01–D53 are now approved decisions;
+  implementation is no longer being mistaken for acceptance. D54 remains
+  explicitly open.
 - The same pass records author acceptance of C01/C03–C17, the C14 revision,
   all three act interludes, the Coda, the Incident Card, the On-Ramp, and
   *Beyond This Volume*. C02 remains the previously accepted pilot.

@@ -1,0 +1,25 @@
+version: 1
+incident_card:
+  fields:
+    - Symptom
+    - Prediction
+    - Contract
+    - Precision control
+    - Curvature control
+    - Estimator control
+    - Spectrum locator
+    - State control
+    - Verdict
+    - Corrective control
+paper_autopsy:
+  fields:
+    - Claim
+    - Mathematical object
+    - Resolution of the theory
+    - Dynamic regime
+    - Evidence culture and interface
+    - Estimator and comparison contract
+    - Numerical and hardware contract
+    - Assumption stress test
+    - Discriminating control
+    - Transfer verdict

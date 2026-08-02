@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0 — Tagged public draft (2026-08-02)
+
+- Cut the first annotated book release after author acceptance of the complete
+  C01–C17 core, Coda, interludes, On-Ramp, Incident Card, and continuation
+  map, with D01–D53 recorded.
+- Added the detached-artifact rights statement to the colophon and made both
+  PDF audits require it in the extracted text layer.
+- Locked the Paper Autopsy Protocol to C17 and locked the Incident Card's ten
+  field names and order across C17, the completed Coda report, and the blank
+  appendix card.
+- Bound the suggested citation, `CITATION.cff`, project metadata, changelog,
+  annotated book tag, and tagged-PDF digests to one release contract.
+- Added reciprocal public-anchor contracts and collision-surface pointers with
+  the sibling volume *Deep Learning: Making It Learnable*.
+
 ## 0.1.0 — Public draft (2026-08-01)
 
 - Recorded author acceptance of the complete C01–C17 core and its C14
