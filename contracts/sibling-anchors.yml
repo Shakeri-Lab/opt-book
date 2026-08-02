@@ -1,7 +1,9 @@
 {
   "version": 1,
   "owner_repository": "Shakeri-Lab/dl-book",
-  "status": "consumer-side mirror pending sibling-repository enforcement",
+  "owner_release": "v1.2.1",
+  "owner_contract": "https://github.com/Shakeri-Lab/dl-book/blob/v1.2.1/docs/public-anchors.md",
+  "status": "enforced by sibling source and rendered-HTML CI",
   "anchors": [
     {
       "id": "sibling-tensor-mechanics",

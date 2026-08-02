@@ -36,13 +36,13 @@
 - Added an audited continuous screen PDF while retaining the recto-aware print
   edition.
 
-## Cross-book — v0.2 trigger open
+## Cross-book — completed at sibling v1.2.1
 
-- Add `docs/public-anchors.md` and anchor CI to the sibling repository after
-  explicit write authority for that repository.
-- At opt-book v0.2, add reciprocal sibling pointers at the five approved
-  collision surfaces.
-- Add mutual colophon pointers when the new site is public.
+- The sibling repository now owns `docs/public-anchors.md`; CI checks all ten
+  consumed interfaces in source and rendered HTML.
+- Five collision surfaces carry bounded forward pointers into this volume,
+  and both colophons identify the companion book.
+- Any future change to a declared anchor is a coordinated interface migration.
 
 ## Accessibility
 

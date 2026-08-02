@@ -33,8 +33,13 @@ def main() -> None:
     arguments = parser.parse_args()
 
     contract = read_yaml(ROOT / "contracts" / "sibling-anchors.yml")
+    if contract.get("owner_release") != "v1.2.1":
+        errors = ["sibling anchor owner release must be v1.2.1"]
+    else:
+        errors = []
+    if contract.get("status") != "enforced by sibling source and rendered-HTML CI":
+        errors.append("sibling anchor contract is not marked enforced")
     declared = {item["url"] for item in contract["anchors"]}
-    errors: list[str] = []
     observed: set[str] = set()
     for root in (ROOT / "chapters", ROOT / "docs"):
         for path in sorted(root.rglob("*.qmd")) + sorted(root.rglob("*.md")):

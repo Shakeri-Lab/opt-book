@@ -51,9 +51,10 @@ author correction supersedes any default.
     Reopen only if extant course-wide lab code is supplied before the pilot pin.
 22. **D22 — Notation covenant:** Approved at
     `contracts/notation-covenant.yml`; inherit and extend without redefinition.
-23. **D23 — Sibling reciprocity:** Approved in principle. The sibling anchor
-    contract requires explicit sibling-repository write authority; back
-    references wait for opt-book v0.2 anchors.
+23. **D23 — Sibling reciprocity:** Implemented at sibling release `v1.2.1`.
+    Ten consumed anchors are protected by source and rendered-HTML CI; five
+    collision surfaces carry bounded forward pointers, and the colophons point
+    in both directions. Future anchor moves require a coordinated two-repo change.
 24. **D24 — Accessibility:** Attempt tagged PDF and replacement text from the
     first build. The first attempt did not produce a valid tagged structure,
     so untagged PDF is the explicit v0.x fallback. Validated tagging and

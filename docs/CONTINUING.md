@@ -172,8 +172,9 @@ teaches algorithmic choices rather than an unversioned framework fact.
 
 The v0.2 publication gate is closed: P-1/P-2/P-3 are implemented and
 `book-v0.2.0` binds the source, citation, and both PDF digests. The immediate
-cross-repository task is D23 sibling reciprocity, whose v0.2 trigger is now
-open. T1–T3 are implemented; E1–E9 remain a separate
+cross-repository task, D23 sibling reciprocity, is complete in sibling release
+`v1.2.1`: ten public anchors are CI-protected, five collision surfaces point
+forward, and the colophons are mutual. T1–T3 are implemented; E1–E9 remain a separate
 displacement-controlled exercise pass. Registration of the KMP staircase as
 a C16 Paper-audit exhibit and the R17 figure-byte determinism audit remain
 queued. The course's synthesis has a stable unnumbered route rather than an
