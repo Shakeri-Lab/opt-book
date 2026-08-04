@@ -71,6 +71,23 @@ chapter opens with the phenomenon that forces it.
 The detailed contents locates every theorem and subsection. This table is the
 argument to remember before opening that index.
 
+## Why this book
+
+@goodfellow2016 owns the broad mechanics and modeling vocabulary of modern
+deep learning; this volume assumes only the small on-ramp above and does not
+rebuild that survey. @vershynin2026 owns the general high-dimensional
+probability theory, while Act I turns selected results into finite diagnostic
+controls. @bottou2018 and @schmidt2026tutorial map optimization theory and
+practice; this book follows quantities across an actual trajectory instead of
+cataloging methods. @roberts2022 is the derivational companion for wide and
+finite-width statistical models, whereas the witnesses here measure where a
+declared approximation succeeds or fails. @austin2025scaling and
+@tazi2025ultrascale are systems-side companions for accelerator topology and
+distributed execution. The division of labor is deliberate: this book
+connects arithmetic, geometry, and dynamics through differential diagnosis,
+typed evidence, and executable controls; it does not claim new research
+theorems in place of those sources.
+
 ## How to read this book
 
 **As a student.** Read in order, and read each chapter as an investigation

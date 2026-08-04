@@ -405,10 +405,11 @@ print(
 ```
 ::::
 
-@chen2016 turns this trade into a practical sublinear-memory strategy for
-deep compositional structures. More elaborate schedules improve the trade
-for particular graphs and budgets. The invariant remains: discarded primal
-state must be reconstructed somehow.
+The square-root checkpoint schedule originates in reverse-AD memory analysis
+by @griewank1992 and is developed systematically by @griewank2008.
+@chen2016 reintroduced the trade in the deep-learning systems setting. More
+elaborate schedules improve it for particular graphs and budgets. The
+invariant remains: discarded primal state must be reconstructed somehow.
 
 ## Replay is part of the numerical contract {#sec-c11-replay-contract}
 
@@ -472,14 +473,16 @@ needed for its gradient with respect to the input?
 
 ## Sources and further reading {#sec-c11-sources}
 
-The modern automatic-differentiation taxonomy and implementation vocabulary
-follow @baydin2018. The algebraic complexity boundary for derivative
-evaluation is due to @baur1983. The practical checkpointing trade and
-sublinear-memory schedules follow @chen2016.
+The first published reverse-accumulation account is @linnainmaa1970; the
+modern taxonomy and implementation vocabulary follow @baydin2018. The
+algebraic complexity boundary for derivative evaluation is due to @baur1983.
+The square-root checkpoint trade originates with @griewank1992 and is treated
+in book form by @griewank2008; @chen2016 is the deep-learning-era
+rediscovery and systems translation.
 
-**Reading order.** Start with @baydin2018 for the JVP/VJP taxonomy, then
-separate @baur1983's arithmetic result from @chen2016's retained-state and
-recomputation problem.
+**Reading order.** Start with @baydin2018 for the JVP/VJP taxonomy, use
+@griewank2008 for checkpointing and priority, then separate @baur1983's
+arithmetic result from @chen2016's systems setting.
 
 ## Exercises {#sec-c11-exercises}
 

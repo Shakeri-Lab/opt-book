@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "rule": "Every standard name that denotes a specific published artifact carries that artifact's primary citation in its Rosetta row.",
+  "artifacts": [
+    {"name": "LayerNorm", "citation": "ba2016"},
+    {"name": "RMSNorm", "citation": "zhang2019rms"},
+    {"name": "BatchNorm", "citation": "ioffe2015"},
+    {"name": "Xavier/Glorot", "citation": "glorot2010"},
+    {"name": "He/Kaiming", "citation": "he2015"},
+    {"name": "Adam", "citation": "kingma2015adam"},
+    {"name": "AdamW", "citation": "loshchilov2019adamw"},
+    {"name": "attention", "citation": "vaswani2017"},
+    {"name": "self-attention", "citation": "vaswani2017"},
+    {"name": "FlashAttention", "citation": "dao2022flashattention"},
+    {"name": "Muon", "citation": "jordan2024muon"},
+    {"name": "Shampoo", "citation": "gupta2018shampoo"},
+    {"name": "SOAP", "citation": "vyas2024soap"},
+    {"name": "QJL", "citation": "zandieh2024qjl"},
+    {"name": "TurboQuant", "citation": "zandieh2025turboquant"}
+  ]
+}

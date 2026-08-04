@@ -28,11 +28,20 @@ reading order, and the final appendix hands the blank Incident Card to the reade
 after the references. On 2026-08-01 the author accepted C01/C03–C17, the C14
 revision, the Coda, all three act interludes, the Incident Card, the On-Ramp,
 and *Beyond This Volume*; C02 remains the previously accepted pilot. D01–D53
-are ratified and implemented; D54, possible arXiv distribution, remains open.
+and D55 are ratified and implemented; D54, possible arXiv distribution,
+remains open.
 D45 supersedes the earlier gated-Act-III possibility for this
 volume: the unnumbered continuation map owns the course synthesis routes. Both
 local HTML and both derived PDFs render successfully; source, contract, HTML,
 and PDF audits pass subject to the documented untagged-PDF fallback.
+
+The 2026-08-04 attribution gate adds primary routes for the named artifacts in
+the Rosetta, corrects checkpointing and arc-cosine-kernel priority, and states
+the book's division of labor with its theory and systems companions. All 66
+bibliography entries are cited, and a fast attribution audit now requires
+every specific Rosetta artifact to carry its primary source and every
+bibliographic theorem source to appear in the chapter's reader-visible
+Sources section.
 
 The unnumbered On-Ramp now makes the prerequisite boundary explicit: no prior
 deep-learning course is required. It supplies a 20–30 minute diagnostic, a
@@ -82,20 +91,20 @@ continuation map rather than made into a second theoretical spine.
 
 Current forced multi-edition build:
 
-- 258 print-PDF pages and 238 screen-PDF pages; the print edition retains 22
+- 262 print-PDF pages and 243 screen-PDF pages; the print edition retains 19
   recto/verso blank pages and the screen edition has none;
 - physical print chapter openers for C01–C17 are pages 23, 31, 47, 61, 79,
   91, 107, 119, 133, 149, 163, 175, 187, 197, 207, 215, and 223; the Coda
-  begins on 233, *Beyond This Volume* on 239, and the provenance note on 241;
+  begins on 235, *Beyond This Volume* on 241, and the provenance note on 243;
 - physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 16, 14, 12,
-  12, 10, 10, 8, 8, and 10 pages; the Coda spans 6 pages and the continuation
+  12, 10, 10, 8, 8, and 12 pages; the Coda spans 6 pages and the continuation
   map spans 2;
 - source non-code word counts excluding Sources for C01–C17 are 1,247,
-  2,733, 2,577, 2,243, 2,236, 2,344, 2,040, 2,195, 2,536, 2,065, 1,898,
-  2,524, 1,516, 2,396, 1,199, 1,235, and 1,910;
+  2,733, 2,577, 2,243, 2,236, 2,344, 2,040, 2,195, 2,536, 2,065, 1,910,
+  2,524, 1,516, 2,432, 1,210, 1,235, and 1,928;
 - `artifacts/book-metrics.json` is the single audited ledger for those values;
   `scripts/audit_book_metrics.py` fails when the rendered build drifts;
-- 58 passing harness and repository tests;
+- 63 passing harness and repository tests;
 - nine current deep-revision evidence verifiers pass: eight match their deterministic
   controls within declared numerical gates, while the device-scoped timing protocol re-executes and
   checks its count/rate arithmetic without a false cross-device speed gate;

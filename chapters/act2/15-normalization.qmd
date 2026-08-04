@@ -308,10 +308,11 @@ scale, finite epsilon, and update dynamics also change.
 ::: {.brand-bridge}
 The centered coordinate-wise rule is conventionally called LayerNorm
 [@ba2016]; the uncentered rule is RMSNorm [@zhang2019rms]. These aliases appear
-here only after the mathematical objects are separated. Claims that
-normalization “smooths the landscape” require a named slice, metric, and
-experimental setting; @santurkar2018 provides influential evidence, not a
-universal theorem about all normalized models.
+here only after the mathematical objects are separated. The batch-and-spatial
+rule with running statistics is conventionally called BatchNorm
+[@ioffe2015]. Claims that normalization “smooths the landscape” require a
+named slice, metric, and experimental setting; @santurkar2018 provides
+influential evidence, not a universal theorem about all normalized models.
 :::
 
 ::: {.callout-warning title="Named wrong answer: normalization preserves information"}
@@ -337,12 +338,14 @@ approximate?
 
 ## Sources and further reading {#sec-c15-sources}
 
-See @ba2016 for the centered method, @zhang2019rms for its RMS-only variant,
-and @santurkar2018 for a loss-geometry investigation.
+See @ioffe2015 for the batch-statistic method, @ba2016 for the centered
+coordinate-wise method, @zhang2019rms for its RMS-only variant, and
+@santurkar2018 for a later loss-geometry investigation.
 
-**Reading order.** Read @ba2016 and @zhang2019rms side by side to compare the
-invariances they choose, then use @santurkar2018 to audit which geometric
-mechanism its experiments actually support.
+**Reading order.** Start with @ioffe2015 to fix the batch/evaluation-state
+contract, read @ba2016 and @zhang2019rms side by side to compare their chosen
+invariances, then use @santurkar2018 to audit which geometric mechanism its
+experiments actually support.
 
 ## Exercises {#sec-c15-exercises}
 

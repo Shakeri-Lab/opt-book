@@ -732,6 +732,9 @@ Gurbuzbalaban provide a primary empirical tail-index study
 [@simsekli2019], while Koloskova, Hendrikx, and Stich analyze the stochastic
 bias and threshold dependence of gradient clipping [@koloskova2023].
 
+For the general theory, use @vershynin2026; this chapter's contribution is
+the squared-quantity witness and the audit that clipping changes the target.
+
 **Reading order.** Start with @vershynin2026 for the square, product, and
 Bernstein machinery; use @simsekli2019 and @koloskova2023 to audit the
 heavy-tail evidence and the target changed by clipping.

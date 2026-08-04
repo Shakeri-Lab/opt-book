@@ -269,11 +269,13 @@ and which one does not?
 ## Sources and further reading {#sec-c01-sources}
 
 The roofline formulation and its machine-balance interpretation follow
-@williams2009.
+@williams2009. For systems-scale companions that carry rooflines into
+accelerator topology, collectives, and large-model execution, see
+@austin2025scaling and @tazi2025ultrascale.
 
 **Reading order.** Start with @williams2009 for the two-resource diagram, then
-return to this chapter's denominator and measurement sections before treating
-the roofline as a performance claim.
+return to this chapter's denominator and measurement sections before using
+@austin2025scaling or @tazi2025ultrascale for multi-device scale.
 
 ## Exercises {#sec-c01-exercises}
 

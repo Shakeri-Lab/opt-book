@@ -382,10 +382,11 @@ momentum, polynomial coefficients, dtype, and excluded parameters remain part
 of the method. Published compute-efficiency numbers are paper evidence tied to
 their hardware and baselines; this chapter does not reproduce them.
 
-QJL/TurboQuant belongs beside this discussion as a paper-audit branch about
-communication, quantization, and random projections—not as a second method
-tutorial. Its claims should be routed through C01's traffic boundary, C03's
-quantizer contract, and C07's uniformization question.
+QJL [@zandieh2024qjl] and TurboQuant [@zandieh2025turboquant] belong beside
+this discussion as a paper-audit branch about communication, quantization,
+and random projections—not as a second method tutorial. Their claims should
+be routed through C01's traffic boundary, C03's quantizer contract, and C07's
+uniformization question.
 :::
 
 ::: {.callout-warning title="Named wrong answer: orthogonalized updates are scale free"}
@@ -436,11 +437,16 @@ two tempting optimizer claims remain unsupported?
 
 Matrix-norm steepest descent and recent optimizer connections are developed by
 @bernstein2024. The original Muon technical account is @jordan2024muon, with
-large-scale implementation evidence in @liu2025muon.
+large-scale implementation evidence in @liu2025muon. The neighboring
+matrix-preconditioning artifacts are Shampoo [@gupta2018shampoo] and SOAP
+[@vyas2024soap]. For the diagonal-moment and decoupled-decay baselines, see
+@kingma2015adam and @loshchilov2019adamw. The quantized-projection audit branch
+starts with @zandieh2024qjl and continues with @zandieh2025turboquant.
 
 **Reading order.** Start with @bernstein2024 for dual-norm geometry, then
 audit @jordan2024muon and @liu2025muon in that order: mathematical update
-contract first, scaling evidence second.
+contract first, scaling evidence second. If quantization is the target, read
+@zandieh2024qjl before @zandieh2025turboquant.
 
 ## Exercises {#sec-c17-exercises}
 
@@ -448,7 +454,7 @@ contract first, scaling evidence second.
 2. **(Code.)** Test Newton--Schulz across condition numbers, ranks, and dtypes. Separate polar error, orthogonality residual, and elapsed time.
 3. **(Pencil.)** For the factorized control, derive both factor gradients and show why an isometric update to each factor does not imply an isometric update to their product.
 4. **(Code.)** Add vector biases and per-layer scale factors to the trace. Implement an explicit routing table and, under equal nominal learning rates, compare update spectra, weight spectra, state bytes, final loss, and each block's induced output change or Jacobian-Gram contribution. Explain why equal parameter-step norms need not produce equal function-space steps.
-5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. End by naming the single assumption whose failure would most weaken its central claim.
+5. **(Audit.) Paper audit:** Apply all ten fields of the Paper Autopsy Protocol to one routed matrix-update, quantization, or edge-of-stability paper. For the quantization branch, begin with @zandieh2024qjl or @zandieh2025turboquant rather than a method name alone. End by naming the single assumption whose failure would most weaken its central claim.
 6. **(Audit.) Act checkpoint — complete Incident Card.** For a run rather than
    a paper, keep this fixed order: **Symptom → Prediction → Contract →
    Precision control → Curvature control → Estimator control → Spectrum

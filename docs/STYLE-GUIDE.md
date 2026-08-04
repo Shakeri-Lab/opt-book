@@ -68,6 +68,9 @@ Debranding is show-then-name, not suppression.
 - At the first sanctioned naming point, use a `brand-bridge` aside.
 - The bridge states the standard name, scope, variants, and primary source.
 - Branded search aliases live in metadata and the Rosetta appendix.
+- Every Rosetta row naming a specific published artifact carries that
+  artifact's primary citation; generic techniques may instead point to the
+  owning section.
 - Ordinary English must not trigger the branding linter.
 
 When ingesting statistical-physics theory, explain the diagnostic object
@@ -95,6 +98,9 @@ Sources or a paper audit for discoverability.
 - The full seven-field theorem ledger lives in the chapter contract; the page
   carries only the statement, assumptions needed there, proof policy, and
   phenomenon link.
+- Every bibliographic key in a theorem ledger's `source` field appears in that
+  chapter's reader-visible Sources section. Internal labels such as
+  `elementary-linear-algebra` remain ledger provenance, not citations.
 - Use the committed notation covenant. Never redefine a sibling core symbol.
 - Distinguish population variance \(M_2/n\) from the usual unbiased sample
   variance \(M_2/(n-1)\).

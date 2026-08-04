@@ -1,5 +1,21 @@
 # Changelog
 
+## Unreleased — rolling public draft
+
+- Added D55's positioning passage and made Act I's division of labor with the
+  general high-dimensional-probability reference explicit.
+- Added primary citations for every specific artifact in the Rosetta,
+  including BatchNorm, Adam/AdamW, attention, FlashAttention,
+  Shampoo/SOAP, QJL, and TurboQuant.
+- Corrected checkpointing priority to Griewank (1992) and Griewank--Walther
+  (2008), distinguishing the Chen et al. (2016) deep-learning translation;
+  added Linnainmaa's reverse-accumulation priority record.
+- Credited the ReLU pair map to the Cho--Saul arc-cosine kernel with the
+  Williams infinite-network antecedent, and added Polyak and Saxe primary
+  routes.
+- Added a fast attribution audit requiring reader-visible theorem sources and
+  primary citations for named Rosetta artifacts.
+
 ## 0.2.0 — Tagged public draft (2026-08-02)
 
 - Cut the first annotated book release after author acceptance of the complete

@@ -562,6 +562,9 @@ Davenport, DeVore, and Wakin combine
 fixed-vector concentration with finite-dimensional covering numbers in a
 restricted-isometry proof [@baraniuk2008].
 
+For the general theory, use @vershynin2026; this chapter's contribution is
+the sampled-maximum versus uniform-certificate diagnostic.
+
 **Reading order.** Start with @vershynin2026 for covering numbers and the
 interpolation lemma, then read @baraniuk2008 as a complete worked example of a
 finite tail budget paying for a continuous guarantee.

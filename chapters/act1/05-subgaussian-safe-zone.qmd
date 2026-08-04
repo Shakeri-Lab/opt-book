@@ -566,6 +566,9 @@ bounded independent variables [@hoeffding1963]. Vershynin gives the modern
 sub-Gaussian equivalence, Orlicz norm, and Gaussian Lipschitz concentration
 used here [@vershynin2026].
 
+For the general theory, use @vershynin2026; this chapter's contribution is
+the precision-facing safe-zone diagnostic and its explicit failure boundary.
+
 **Reading order.** Start with @vershynin2026 for the reusable equivalences,
 then read @chernoff1952 and @hoeffding1963 for the original exponential-method
 and bounded-sum viewpoints.

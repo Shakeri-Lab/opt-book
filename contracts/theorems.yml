@@ -393,7 +393,7 @@
       "proof_mode": "full-proof",
       "diagnostic_corollary": "For L=64 and k=8, the count-model peak is 16 states with 56 replayed forward transitions.",
       "boundary": "The schedule is not globally optimal for arbitrary DAGs, heterogeneous tensors, communication, or measured runtime.",
-      "source": "chen2016"
+      "source": "griewank1992;griewank2008;chen2016"
     },
     {
       "id": "thm-c12-composite-hessian",
@@ -459,7 +459,7 @@
       "proof_mode": "diagnostic-derivation",
       "diagnostic_corollary": "Preserved one-input magnitude does not imply preserved distinction between inputs, even when the infinitesimal pair gain is one.",
       "boundary": "The recursion is an infinite-width initialization model and does not establish pair geometry after training or for another activation-and-bias family.",
-      "source": "poole2016;schoenholz2017;roberts2022"
+      "source": "williams1997;cho2009;poole2016;schoenholz2017;roberts2022"
     },
     {
       "id": "thm-c14-depth-width",

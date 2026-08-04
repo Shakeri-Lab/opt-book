@@ -510,6 +510,10 @@ Remark 5.6.4, and the covariance theorem is Theorem 9.2.2
 generalization is consistent with the interpolation evidence of
 @zhang2017.
 
+For the general theory, use @vershynin2026 and @koltchinskii2017; this
+chapter's contribution is the full-rank/few-directions witness and the
+separation of five dimension summaries.
+
 **Reading order.** Start with @vershynin2026 for the book's exact notation and
 the covariance theorem, then read @koltchinskii2017 for sharper bounds and
 @zhang2017 for the boundary on generalization claims.

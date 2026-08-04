@@ -172,12 +172,19 @@ author correction supersedes any default.
 54. **D54 — arXiv distribution:** Open author decision. An arXiv posting is a
     distribution choice rather than a v0.2 readiness gate; do not infer it
     from the tagged repository release.
+55. **D55 — Positioning and attribution integrity:** State the book's division
+    of labor with the deep-learning, high-dimensional-probability,
+    optimization, derivational-theory, and systems companions without claiming
+    novel research theorems. Every named published artifact receives a primary
+    citation, theorem priority distinguishes origin from later translation,
+    and fast CI makes both Rosetta and theorem-source visibility auditable.
 
 ## Acceptance status
 
 - On 2026-08-01 the author explicitly ratified D29–D50. The accepted preface
   and the 2026-08-02 publication-readiness instruction approve D51–D53.
-  Together with the prior baseline, D01–D53 are now approved decisions;
+  The 2026-08-04 adversarial attribution review approves D55. Together with
+  the prior baseline, D01–D53 and D55 are now approved decisions;
   implementation is no longer being mistaken for acceptance. D54 remains
   explicitly open.
 - The same pass records author acceptance of C01/C03–C17, the C14 revision,

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "counting_contract": "source prose after front-matter and fenced-code removal, with Sources and further reading excluded; PDF physical spans end immediately before the next numbered chapter or Coda; the Coda ends immediately before Beyond This Volume",
-  "pdf_total_pages": 258,
+  "pdf_total_pages": 262,
   "chapters": [
     {"unit": "C01", "title": "The Count Is Not the Cost: Arithmetic Intensity and the Memory Hierarchy", "source": "chapters/act0/01-count-not-cost.qmd", "source_noncode_words_excluding_sources": 1247, "pdf_physical_start": 23, "pdf_physical_end": 30, "pdf_span_pages": 8},
     {"unit": "C02", "title": "One Pass, Two Failures: Streaming State and Stable Variance", "source": "chapters/act0/02-streaming-state.qmd", "source_noncode_words_excluding_sources": 2733, "pdf_physical_start": 31, "pdf_physical_end": 46, "pdf_span_pages": 16},
@@ -13,15 +13,15 @@
     {"unit": "C08", "title": "One Average, Two Edges: Random Operators and Singular Values", "source": "chapters/act1/08-random-operators.qmd", "source_noncode_words_excluding_sources": 2195, "pdf_physical_start": 119, "pdf_physical_end": 132, "pdf_span_pages": 14},
     {"unit": "C09", "title": "The Bulk Is Not a Verdict: Marchenko–Pastur and Finite-Null Calibration", "source": "chapters/act1/09-marchenko-pastur.qmd", "source_noncode_words_excluding_sources": 2536, "pdf_physical_start": 133, "pdf_physical_end": 148, "pdf_span_pages": 16},
     {"unit": "C10", "title": "Full Rank, Few Directions: Effective Rank and Covariance Complexity", "source": "chapters/act1/10-effective-rank.qmd", "source_noncode_words_excluding_sources": 2065, "pdf_physical_start": 149, "pdf_physical_end": 162, "pdf_span_pages": 14},
-    {"unit": "C11", "title": "The Gradient Has a Memory: Reverse Accumulation and Checkpointing", "source": "chapters/act2/11-reverse-accumulation.qmd", "source_noncode_words_excluding_sources": 1898, "pdf_physical_start": 163, "pdf_physical_end": 174, "pdf_span_pages": 12},
+    {"unit": "C11", "title": "The Gradient Has a Memory: Reverse Accumulation and Checkpointing", "source": "chapters/act2/11-reverse-accumulation.qmd", "source_noncode_words_excluding_sources": 1910, "pdf_physical_start": 163, "pdf_physical_end": 174, "pdf_span_pages": 12},
     {"unit": "C12", "title": "Curvature Is Not One Matrix: Hessian, Generalized Gauss–Newton, Fisher, and Matrix-Free Products", "source": "chapters/act2/12-curvature.qmd", "source_noncode_words_excluding_sources": 2524, "pdf_physical_start": 175, "pdf_physical_end": 186, "pdf_span_pages": 12},
     {"unit": "C13", "title": "The Mean Gradient Is Not the Regime: Conditional Noise and Stochastic Dynamics", "source": "chapters/act2/13-stochastic-regimes.qmd", "source_noncode_words_excluding_sources": 1516, "pdf_physical_start": 187, "pdf_physical_end": 196, "pdf_span_pages": 10},
-    {"unit": "C14", "title": "Critical on Average, Broken by Direction: Initialization and Dynamical Isometry", "source": "chapters/act2/14-criticality.qmd", "source_noncode_words_excluding_sources": 2396, "pdf_physical_start": 197, "pdf_physical_end": 206, "pdf_span_pages": 10},
-    {"unit": "C15", "title": "Normalization Chooses an Invariance: Coordinate Statistics and Derivative Paths", "source": "chapters/act2/15-normalization.qmd", "source_noncode_words_excluding_sources": 1199, "pdf_physical_start": 207, "pdf_physical_end": 214, "pdf_span_pages": 8},
+    {"unit": "C14", "title": "Critical on Average, Broken by Direction: Initialization and Dynamical Isometry", "source": "chapters/act2/14-criticality.qmd", "source_noncode_words_excluding_sources": 2432, "pdf_physical_start": 197, "pdf_physical_end": 206, "pdf_span_pages": 10},
+    {"unit": "C15", "title": "Normalization Chooses an Invariance: Coordinate Statistics and Derivative Paths", "source": "chapters/act2/15-normalization.qmd", "source_noncode_words_excluding_sources": 1210, "pdf_physical_start": 207, "pdf_physical_end": 214, "pdf_span_pages": 8},
     {"unit": "C16", "title": "The Boundary Moves: Progressive Sharpening and Edge-of-Stability Diagnostics", "source": "chapters/act2/16-edge-of-stability.qmd", "source_noncode_words_excluding_sources": 1235, "pdf_physical_start": 215, "pdf_physical_end": 222, "pdf_span_pages": 8},
-    {"unit": "C17", "title": "The Norm Chooses the Update: Matrix Geometry and Orthogonalized Optimization", "source": "chapters/act2/17-update-geometry.qmd", "source_noncode_words_excluding_sources": 1910, "pdf_physical_start": 223, "pdf_physical_end": 232, "pdf_span_pages": 10}
+    {"unit": "C17", "title": "The Norm Chooses the Update: Matrix Geometry and Orthogonalized Optimization", "source": "chapters/act2/17-update-geometry.qmd", "source_noncode_words_excluding_sources": 1928, "pdf_physical_start": 223, "pdf_physical_end": 234, "pdf_span_pages": 12}
   ],
-  "coda": {"pdf_physical_start": 233, "pdf_physical_end": 238, "pdf_span_pages": 6},
-  "beyond_this_volume": {"pdf_physical_start": 239, "pdf_physical_end": 240, "pdf_span_pages": 2},
-  "provenance_note_pdf_physical_start": 241
+  "coda": {"pdf_physical_start": 235, "pdf_physical_end": 240, "pdf_span_pages": 6},
+  "beyond_this_volume": {"pdf_physical_start": 241, "pdf_physical_end": 242, "pdf_span_pages": 2},
+  "provenance_note_pdf_physical_start": 243
 }

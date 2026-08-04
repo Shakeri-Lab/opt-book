@@ -8,3 +8,6 @@ that survives a union bound, the price of a continuum, two singular edges, a
 calibrated bulk, and a dimension that counts spectral mass instead of
 coordinates. The machine does not disappear. Its finite grids and finite
 samples remain the boundaries against which the geometric claims are audited.
+For general high-dimensional probability, @vershynin2026 is the reference
+spine. This act's narrower job is to turn that theory into calibrated nulls,
+finite-sample witnesses, and controls that can diagnose a training run.

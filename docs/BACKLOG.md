@@ -99,10 +99,14 @@ branches or shelf material.
   `Var(q_L/q_0) = (1 + 5/n)^L - 1` control are claim-backed class-(a)
   studies. The page labels `5L/n` only as the small-parameter tangent.
 - Historical `ch-14` remains byte-identical. New operations and claims use
-  the explicitly forward-only `ch-14-r2` wheel; D34 remains open.
+  the explicitly forward-only `ch-14-r2` wheel; D34's forward-only identity
+  rule applies.
 - Frozen-feature dynamics now live in *Beyond This Volume*, function-space
   layer balance is a C17 exercise, the residual criticality callback is in
   C15, and dNTK/ddNTK/projector machinery remains on the shelf.
+- Re-run the prose-overlap audit against the full PDLT arXiv text once that
+  source is present in project knowledge; it is the one corpus gap in the
+  2026-08-04 attribution review and does not block the citation repair.
 
 ## v1.0 print apparatus
 

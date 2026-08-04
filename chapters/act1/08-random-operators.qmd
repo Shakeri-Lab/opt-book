@@ -633,6 +633,9 @@ iteration inside an upper-edge intervention [@miyato2018]; the paper supplies
 a useful audit of what such an instrument controls and what it leaves
 unmeasured.
 
+For the general theory, use @vershynin2026; this chapter's contribution is
+the matched two-edge witness and its finite certificate boundary.
+
 **Reading order.** Start with @vershynin2026 for the two-edge theorem and its
 covering proof, then use @miyato2018 to audit what an upper-edge intervention
 does not say about the lower edge.

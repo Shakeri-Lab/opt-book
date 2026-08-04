@@ -126,6 +126,11 @@ $\sin\psi-\psi\cos\psi=\psi^3/3+O(\psi^5)$ near alignment gives the stated
 angle recurrence. Thus local pair separation is marginal, yet finite-angle
 separation still decays polynomially rather than remaining fixed.
 
+The closed form in @eq-c14-correlation-map is the degree-one arc-cosine
+kernel introduced by @cho2009; @williams1997 is the Gaussian-process
+covariance antecedent. Here the standard name arrives only after the
+normalized correlation object and its wide-model assumptions are fixed.
+
 This is the missing contract behind the scalar critical point. The structure
 kept every norm and slowly lost the difference between its inputs. Changing
 only $\sigma_w^2$ changes the magnitude traces but not this normalized ReLU
@@ -443,17 +448,21 @@ component aligned with the second coordinate?
 
 ## Sources and further reading {#sec-c14-sources}
 
-Two-input signal propagation follows @poole2016 and @schoenholz2017;
-dynamical-isometry diagnostics follow @pennington2017. Variance-preserving
-initialization was developed for saturating and rectified compositional
-structures by @glorot2010 and @he2015. For a derivational companion to the
+The Gaussian covariance antecedent is @williams1997, and the ReLU closed form
+is the degree-one arc-cosine kernel of @cho2009. Two-input signal propagation
+follows @poole2016 and @schoenholz2017; dynamical-isometry diagnostics follow
+@pennington2017. Orthogonal initialization as a controlled dynamical system
+appears in @saxe2014. Variance-preserving initialization was developed for
+saturating and rectified compositional structures by @glorot2010 and
+@he2015. For a derivational companion to the
 moment and pair-correlation recursions, and for a systematic leading
 finite-width expansion whose trust parameter is depth over width, see
 @roberts2022; begin with Chapter 5, Sections 5.1, 5.4, and 5.5.
 
-**Reading order.** Start with @schoenholz2017 for the one- and two-input maps,
-then read @pennington2017 for the Jacobian spectrum, and use @roberts2022 last
-to audit the depth-to-width expansion and order of limits.
+**Reading order.** Begin with @cho2009 for the closed form, continue with
+@schoenholz2017 for the one- and two-input maps and @pennington2017 for the
+Jacobian spectrum, then use @roberts2022 to audit the depth-to-width expansion
+and order of limits.
 
 ## Exercises {#sec-c14-exercises}
 

@@ -13,6 +13,7 @@ AUDITS = [
     "audit_branding.py",
     "audit_threads.py",
     "audit_notation_covenant.py",
+    "audit_attribution.py",
     "audit_seeds.py",
     "audit_plan_code.py",
     "audit_editorial_contracts.py",

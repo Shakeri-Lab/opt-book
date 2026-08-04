@@ -20,10 +20,10 @@ signal. C05–C10 supply concentration and spectral baselines; C14–C15 supply
 criticality and normalization diagnostics.
 
 ::: {.brand-bridge}
-The standard literature calls this primitive **attention**. The sibling
-volume supplies its assembly mechanics; the continuation of DS 6210 asks
-which kernel geometry, estimator, and derivative-path claims survive at
-finite width and precision.
+The standard literature calls this primitive **attention**; the canonical
+self-attention architecture is @vaswani2017. The sibling volume supplies its
+assembly mechanics; the continuation of DS 6210 asks which kernel geometry,
+estimator, and derivative-path claims survive at finite width and precision.
 :::
 
 ## IO-aware exact algorithms
@@ -35,8 +35,9 @@ normalizers. The central audit is whether tiling and recomputation preserve
 the mathematical output while changing the bytes moved.
 
 ::: {.brand-bridge}
-**FlashAttention** is the standard named case. It belongs after the traffic
-model and online-normalizer invariant, not before them.
+**FlashAttention** [@dao2022flashattention] is the standard named case. It
+belongs after the traffic model and online-normalizer invariant, not before
+them.
 :::
 
 ## Parallel recurrence and associativity

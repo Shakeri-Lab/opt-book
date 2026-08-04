@@ -24,18 +24,19 @@ state, or assumptions.
 | Primitive in this book | Standard name or aliases | Notation and diagnostic contract | Unit |
 |:--------------------------|:-----------------------|:---------------------------------|:---------|
 | Coordinate-wise or token-wise normalization | LayerNorm; RMSNorm | Axes; centering; scale; $\varepsilon$ placement; @ba2016; @zhang2019rms | @sec-c15-maps |
-| Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators | @sec-c15-epsilon |
+| Batch-and-spatial coordinate normalization | BatchNorm | Running and batch statistics are distinct estimators; @ioffe2015 | @sec-c15-epsilon |
 | Variance-preserving initialization | Xavier/Glorot; He/Kaiming | Variance convention; nonlinearity assumptions; @glorot2010; @he2015 | @sec-c14-recursion |
-| Diagonal moment preconditioning | Adam; AdamW | Moments; bias correction; decay; $\varepsilon$ placement | C13/C17 |
+| Diagonal moment preconditioning | Adam; AdamW | Moments; bias correction; decay; $\varepsilon$ placement; @kingma2015adam; @loshchilov2019adamw | C13/C17 |
 | Gradient-dominated or noise-dominated regime | signal-to-noise regime; critical batch regime | $\chi_k=\sigma_k^2/\|\nabla f(w_k)\|^2$; conditional estimator, target, and finite-moment contract | @sec-c13-crossing |
-| Similarity-weighted aggregation | attention; self-attention | Scale; normalized axis; mask; materialization | Synthesis |
-| IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order | Synthesis |
-| Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state; @bernstein2024 | @sec-c17-duality |
-| Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint | @sec-c17-bridge |
+| Similarity-weighted aggregation | attention; self-attention | Scale; normalized axis; mask; materialization; @vaswani2017 | [Beyond this volume](../beyond-this-volume.qmd) |
+| IO-aware exact all-pairs aggregation | FlashAttention | Exact map; finite-precision order; @dao2022flashattention | [Beyond this volume](../beyond-this-volume.qmd) |
+| Matrix-aware or orthogonalized update | Muon; Shampoo; SOAP | Routing; iteration count; scale; state; @jordan2024muon; @gupta2018shampoo; @vyas2024soap | @sec-c17-duality |
+| Quantized random projection or update sketch | QJL; TurboQuant | Quantizer; estimator; sketch size; hardware endpoint; @zandieh2024qjl; @zandieh2025turboquant | @sec-c17-bridge |
 | Reverse accumulation on a computation graph | reverse-mode automatic differentiation; backpropagation | JVP/VJP orientation; fan-out sums; retained primal state | C11 |
 
 :::
 
-The unit column records where the full entry is scheduled, not where the
-literature name is owned. Each completed row will gain a stable chapter anchor,
-sibling pointer when applicable, primary citation, and tested aliases.
+The unit column records where the full entry lives, not where the literature
+name is owned. A specific published artifact carries its primary citation in
+the row; a generic technique may instead point to the unit that owns its
+contract. Search aliases and those citations are tested in CI.

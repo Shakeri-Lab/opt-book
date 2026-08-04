@@ -725,6 +725,9 @@ theorem and its whitening argument [@vershynin2026]. Baik and Silverstein
 derive the almost-sure sample-eigenvalue limits for spiked population models
 [@baik2006].
 
+For the general theory, use @vershynin2026 and the primary random-matrix
+papers; this chapter's contribution is an executable finite-null calibration.
+
 **Reading order.** Start with @marchenko1967 for the limiting bulk, use
 @vershynin2026 for finite covariance error, and read @baik2006 only after
 separating a population spike from a finite sample verdict.

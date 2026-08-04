@@ -379,14 +379,19 @@ fail for the shape-$3/2$ Pareto model?
 
 The conditional descent calculation is standard in large-scale stochastic
 optimization; see @bottou2018 and the foundational approximation scheme of
-@robbins1951. Heavy-tailed gradient evidence is discussed by @simsekli2019.
+@robbins1951. The heavy-ball control originates with @polyak1964. The named
+diagonal-moment method and its decoupled-decay variant are @kingma2015adam and
+@loshchilov2019adamw; this chapter uses them as literature bridges, not as a
+substitute for the estimator contract. Heavy-tailed gradient evidence is
+discussed by @simsekli2019.
 The 2026 ICML tutorial by Mark Schmidt supplied the intellectual map from
 theory resolution to regime diagnosis; the equations and qualifications here
 are derived on the page rather than attributed to the tutorial.
 
 **Reading order.** Start with @bottou2018 for conditional descent and batch
-effects, use @simsekli2019 to stress the finite-variance assumption, and read
-@schmidt2026tutorial last as a map of research resolutions and regimes.
+effects, use @polyak1964 for the exact momentum control and @simsekli2019 to
+stress the finite-variance assumption, then read @schmidt2026tutorial last as
+a map of research resolutions and regimes.
 
 ## Exercises {#sec-c13-exercises}
 
