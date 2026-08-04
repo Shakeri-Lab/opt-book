@@ -28,7 +28,7 @@ reading order, and the final appendix hands the blank Incident Card to the reade
 after the references. On 2026-08-01 the author accepted C01/C03–C17, the C14
 revision, the Coda, all three act interludes, the Incident Card, the On-Ramp,
 and *Beyond This Volume*; C02 remains the previously accepted pilot. D01–D53
-and D55 are ratified and implemented; D54, possible arXiv distribution,
+and D55–D56 are ratified and implemented; D54, possible arXiv distribution,
 remains open.
 D45 supersedes the earlier gated-Act-III possibility for this
 volume: the unnumbered continuation map owns the course synthesis routes. Both
@@ -91,13 +91,15 @@ continuation map rather than made into a second theoretical spine.
 
 Current forced multi-edition build:
 
-- 262 print-PDF pages and 243 screen-PDF pages; the print edition retains 19
+- the print edition uses a 0.85-inch margin; the screen edition retains its
+  1.05-inch margin;
+- 252 print-PDF pages and 243 screen-PDF pages; the print edition retains 23
   recto/verso blank pages and the screen edition has none;
-- physical print chapter openers for C01–C17 are pages 23, 31, 47, 61, 79,
-  91, 107, 119, 133, 149, 163, 175, 187, 197, 207, 215, and 223; the Coda
-  begins on 235, *Beyond This Volume* on 241, and the provenance note on 243;
-- physical spans for C01–C17 are 8, 16, 14, 18, 12, 16, 12, 14, 16, 14, 12,
-  12, 10, 10, 8, 8, and 12 pages; the Coda spans 6 pages and the continuation
+- physical print chapter openers for C01–C17 are pages 23, 31, 45, 59, 77,
+  90, 105, 117, 129, 145, 159, 169, 181, 191, 201, 209, and 217; the Coda
+  begins on 227, *Beyond This Volume* on 233, and the provenance note on 235;
+- physical spans for C01–C17 are 8, 14, 14, 18, 13, 15, 12, 12, 16, 14, 10,
+  12, 10, 10, 8, 8, and 10 pages; the Coda spans 6 pages and the continuation
   map spans 2;
 - source non-code word counts excluding Sources for C01–C17 are 1,247,
   2,733, 2,577, 2,243, 2,236, 2,344, 2,040, 2,195, 2,536, 2,065, 1,910,

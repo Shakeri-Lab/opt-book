@@ -2,6 +2,9 @@
 
 ## Unreleased — rolling public draft
 
+- Reduced the print-edition margin from 1.05 to 0.85 inches while retaining
+  the screen edition's 1.05-inch margin; the print PDF contracts from 262 to
+  252 pages without changing manuscript content.
 - Added D55's positioning passage and made Act I's division of labor with the
   general high-dimensional-probability reference explicit.
 - Added primary citations for every specific artifact in the Rosetta,
